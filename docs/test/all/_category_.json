@@ -1,0 +1,8 @@
+{
+  "label": "maxoptics_sdk.all",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "Package"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "label": "PD",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "This is PIC examples library."
+  }
+}

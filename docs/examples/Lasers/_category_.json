@@ -1,0 +1,8 @@
+{
+  "label": "Lasers",
+  "position": 6,
+  "link": {
+    "type": "generated-index",
+    "description": "This is Lasers examples library."
+  }
+}

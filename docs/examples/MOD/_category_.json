@@ -1,0 +1,8 @@
+{
+  "label": "MOD",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "This is MOD examples library."
+  }
+}

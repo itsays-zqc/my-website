@@ -15,15 +15,20 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 ## Simulation Methods: 
 
+<div class="text-justify">
 &emsp;&emsp;The symmetric and antisymmetric mode field distributions of the directional coupler‘s (DC) two arms can be calculated using the 
 `FDE module`. From these calculations, the effective refractive index can be determined, allowing for the theoretical calculation of the coupling length required to achieve the target splitting ratio.
 
 &emsp;&emsp;It is possible to perform precise calculations of light propagation in the DC using the `FDTD module`. The light field transmission images in the monitor allows for a visual assessment. This data facilitates further optimization and validation of the coupling length and spacing parameters in the DC splitter.
 
 &emsp;&emsp;After data processing, the directional coupler's splitting ratio, insertion loss, and operating bandwidth can be obtained. These calculations and optimization processes are instrumental in designing high-performance directional couplers for various optical communication and integrated photonics applications.
+</div>
 
 ##  Directional Coupler(FDE module)
+
+<div class="text-justify">
 &emsp;&emsp;Below, we will learn how to model a Directional Coupler using the SDK and perform calculations of the symmetric and antisymmetric modes in the structure using the FDE module.
+</div>
 
 ###  1.Basic Operations:
 

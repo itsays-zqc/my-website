@@ -34,25 +34,35 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 #### 1.1 import file
 
+<div class="text-justify">
 &emsp;&emsp;After installing and configuring the environment, import the relevant SDK code file "DC_FDE.py" and the layout of the model "DC.gds".
 
 &emsp;&emsp;The example library and related model code are usually located in the directory `"AIO_SDK/.venv_maxoptics/site-packages/maxoptics_sdk/examples"`, and the GDS file is generally imported into the `"../examples/examples_gds"` folder.
+</div>
 
 #### 1.2 SDK initialization
+
+<div class="text-justify">
 &emsp;&emsp;After importing the py and GDS files, you can create a new terminal and run the code. Please note that the first run may require some time for Max-Optics SDK initialization.
+</div>
 
 ```
 Version of Max-Optics sdk is 2.3.0.4.630.2000
 Max-Optics SDK is initializing...
 ```
 
+
 ### 2.Code description
 
+<div class="text-justify">
 &emsp;&emsp;Next, let's learn the functions corresponding to the specific code.
+</div>
 
 #### 2.1 import modules
 
+<div class="text-justify">
 &emsp;&emsp;To begin, we need to use the "import" command to call the relevant functional modules.
+</div>
 
 ```
 import maxoptics_sdk.all as mo

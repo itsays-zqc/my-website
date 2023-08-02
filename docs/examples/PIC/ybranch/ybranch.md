@@ -15,7 +15,7 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 </div>
 
-![GC introduction](y_intro.png 'GC introduction')
+![GC introduction](yintro.png 'GC introduction')
 
 ## Simulation Methods
 

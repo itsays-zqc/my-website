@@ -1,30 +1,26 @@
-# Y branch 
 
-The insertion loss, transmission and S-parameters of a Y-branch are calculated using FDTD Solver.
+import 'katex/dist/katex.min.css';
+import { InlineMath, BlockMath } from 'react-katex';
 
-# Overview 
+#  Y branch 
 
-The  y  branch is simulated using the EME solver to measure the power transmission , insertion losss and the S-parameters .
+## Introduction
+
+<div class="text-justify">
+
+&emsp;&emsp;The Y-junction splitter is a fundamental component of integrated optics. Its primary function is to split the incoming light from a single input waveguide into two separate waveguides (splitter). Likewise, it can also combine light from two waveguides into a single waveguide (combiner). 
+
+&emsp;&emsp;The main performance parameters of the Y-junction splitter include **insertion loss**, **device dimensions**, *and **operating bandwidth**.
 
 
-## step 1 :Initial simulation
-Ensure the simulation is setup properly and explore the results.
+</div>
 
-![Y branch structure](ybranchStructure.PNG 'Y branch structure')
+![GC introduction](y_intro.png 'GC introduction')
 
+## Simulation Methods
 
-# run and results 
+<div class="text-justify">
 
-## measure Y beanch  performance 
+&emsp;&emsp;Through the FDTD module or EME module, the Y-junction splitter‘s structure can be optimized to obtain the transmittance of fundamental mode or S-parameters of each output port. This optimization process aims to improve the Y-junction splitter's insertion loss and bandwidth performance. 
 
-## Field profile
-![](ybranchFeildResult.PNG)
-
-## Insertion loss
-![](ybranchInsertionLoss.PNG)
-
-## S-parameters sweep
-### for s21 
-
-![](ybranchs21.PNG)
-
+</div>

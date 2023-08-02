@@ -4,17 +4,17 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 # Directional Coupler
 
-![DC introduction](DC_intro.png 'DC introduction')
-
 ## Introduction:
 
 <div class="text-justify">
 
-&emsp;&emsp;Directional couplers(DC) are an important category of optical splitters. They are typically composed of two adjacent single-mode waveguides, and the coupling coefficient is determined by both the length of the coupler and the spacing between them. This feature allows for effective control of the splitting ratio.
+&emsp;&emsp;Directional couplers (DC) are an important category of optical splitters. They are typically composed of two adjacent single-mode waveguides, and the coupling coefficient is determined by both the length of the coupler and the spacing between them. This feature allows for effective control of the splitting ratio.
 
 &emsp;&emsp;When it comes to directional couplers, we pay close attention to several key parameters, including **insertion loss**, **splitting ratio**, **device dimensions**, and **operating bandwidth**. 
 
 </div>
+
+![DC introduction](DC_intro.png 'DC introduction')
 
 ## Simulation Methods: 
 
@@ -24,7 +24,7 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 &emsp;&emsp; And the `FDTD module` can be used to perform precise calculations of light propagation in the DC. The light field transmission images in the monitor allow for a visual assessment,the related data of which facilitate further optimization and validation of the coupling length and spacing parameters in the DC splitter.
 
-&emsp;&emsp;After data processing, it can be obtained that the splitting ratio, insertion loss, and operating bandwidth of DC. In designing high-performance directional couplers for various optical communication and integrated photonics applications, these calculations and optimization processes are instrμmental.
+&emsp;&emsp;After data processing, it can be obtained that the splitting ratio, insertion loss, and operating bandwidth of DC. In designing high-performance directional couplers for various optical communication and integrated photonics applications, these calculations and optimization processes are instrumental.
 
 </div>
 
@@ -94,12 +94,12 @@ import time
 </div>
 
 ```
-def simulation(*, run_mode='local', wavelength=1.55, grid=0.02, nμmber_of_trial_modes=20, run_options: 'RunOptions', `kwargs):
+def simulation(*, run_mode='local', wavelength=1.55, grid=0.02, number_of_trial_modes=20, run_options: 'RunOptions', `kwargs):
 ```
 
 <div class="text-justify">
 
-&emsp;&emsp;The provided code contains comments that define the simulation parameters. Let's explain each of these parameters. <br/>&emsp;&emsp;The function `simulation` is used to define the simulation parameters for the program. <br/>&emsp;&emsp;The `run_mode` parameter determines the type of calculation resources to be used. <br/>&emsp;&emsp;The `wavelength` parameter specifies the wavelength of the input light in micrometers. <br/>&emsp;&emsp;The `grid` parameter represents the grid accuracy in micrometers. <br/>&emsp;&emsp;Lastly, the `nμmber_of_trial_modes` parameter sets the nμmber of modes to be calculated.
+&emsp;&emsp;The provided code contains comments that define the simulation parameters. Let's explain each of these parameters. <br/>&emsp;&emsp;The function `simulation` is used to define the simulation parameters for the program. <br/>&emsp;&emsp;The `run_mode` parameter determines the type of calculation resources to be used. <br/>&emsp;&emsp;The `wavelength` parameter specifies the wavelength of the input light in micrometers. <br/>&emsp;&emsp;The `grid` parameter represents the grid accuracy in micrometers. <br/>&emsp;&emsp;Lastly, the `number_of_trial_modes` parameter sets the number of modes to be calculated.
 
 </div>
 
@@ -247,12 +247,12 @@ simu.add(name=simu_name, type='FDE',
           property={
               # 'general': {'solver_type': '2d_x_normal'},  # default is '2d_x_normal' 
               'mesh_settings': {
-                  'global_mesh_uniform_grid': {'dy': grid, 'dz': grid},  # 'minimμm_mesh_step_settings': {'min_mesh_step': 1.0e-4}
+                  'global_mesh_uniform_grid': {'dy': grid, 'dz': grid},  # 'minimum_mesh_step_settings': {'min_mesh_step': 1.0e-4}
               },
               'fde_analysis': {
                   'modal_analysis': {
                       'calculate_modes': run_options.run, 'mesh_structure': True,
-                      'wavelength': wavelength, 'wavelength_offset': 0.0001, 'nμmber_of_trial_modes': nμmber_of_trial_modes,
+                      'wavelength': wavelength, 'wavelength_offset': 0.0001, 'number_of_trial_modes': number_of_trial_modes,
                       'search': 'max_index',  
                       # 'n': 2,
                       'calculate_group_index': False,
@@ -261,7 +261,7 @@ simu.add(name=simu_name, type='FDE',
                   },
                   "frequency_analysis": {
                       "frequency_analysis": run_options.run_frequency_sweep,
-                      # "start_wavelength": 1.50, "stop_wavelength": 1.60, "nμmber_of_points": 3,
+                      # "start_wavelength": 1.50, "stop_wavelength": 1.60, "number_of_points": 3,
                       # "effective_index": 1, "detailed_dispersion_calculation": False
                   }}})
 # endregion
@@ -356,7 +356,7 @@ if run_options.extract:
 
     if run_options.run_frequency_sweep:
         attr_selections: List[Literal["neff", "loss", "group_index", "polarization"]] = ["neff", "loss", "group_index", "polarization"]
-        for i, a in enμmerate(attr_selections):
+        for i, a in enumerate(attr_selections):
             k = kL[4]
             result_fde.extract(data="frequency_analysis", savepath=f'{plot_path}{k}_freq_sweep_{a}',
                                 attribute=a, real=True, imag=True, export_csv=True, export_mat=True, show=False)
@@ -650,13 +650,13 @@ src.add(name="source", type="mode_source", axis="x_forward",
 
 <div class="text-justify">
 
-&emsp;&emsp;For the GlobalMonitor, the `Monitor` function is utilized to retrieve the monitor manager for the current project, which allows users to access and manage various types of monitors used during simulation. The `name` parameter represents the name of the Global Option associated with the monitor. The `type` parameter defines the type of the Global Option and is formatted as a list containing one of several monitor types, such as `["electric_monitor"], ["current_monitor"], ["charge_monitor"], ["band_monitor"], ["profile_monitor"], ["global_monitor", "global_option"], ["time_monitor"], ["power_monitor"], or ["mode_expansion"]`. The `property` parameter is used to define and set the relevant parameters specific to the chosen monitor type. These parameters control the behavior and data collection settings of the monitor during the simulation. 
+&emsp;&emsp;For the global monitor, the `Monitor` function is utilized to retrieve the monitor manager for the current project, which allows users to access and manage various types of monitors used during simulation. The `name` parameter represents the name of the Global Option associated with the monitor. The `type` parameter defines the type of the Global Option and is formatted as a list containing one of several monitor types, such as `["electric_monitor"], ["current_monitor"], ["charge_monitor"], ["band_monitor"], ["profile_monitor"], ["global_monitor", "global_option"], ["time_monitor"], ["power_monitor"], or ["mode_expansion"]`. The `property` parameter is used to define and set the relevant parameters specific to the chosen monitor type. These parameters control the behavior and data collection settings of the monitor during the simulation. 
 
 </div>
 
 <div class="text-justify">
 
-&emsp;&emsp;For the power_monitor, the power monitor is a configuration setting that allows users to specify various simulation parameters.The `name` parameter is used to assign a name to the power monitor.The `type` parameter defines the type of power monitor. The `general` parameter pertains to settings related to the frequency domain and frequency-dependent behaviors of the simulation. The `geometry` parameter is used to define the geometric characteristics of the simulated structure.The `mode_expansion` parameter involves relevant settings for mode expansion simulations. By utilizing these input parameters, users can customize the simulation settings to achieve accurate and comprehensive results based on their specific simulation requirements.
+&emsp;&emsp;For the power monitor, the power monitor is a configuration setting that allows users to specify various simulation parameters.The `name` parameter is used to assign a name to the power monitor.The `type` parameter defines the type of power monitor. The `general` parameter pertains to settings related to the frequency domain and frequency-dependent behaviors of the simulation. The `geometry` parameter is used to define the geometric characteristics of the simulated structure.The `mode_expansion` parameter involves relevant settings for mode expansion simulations. By utilizing these input parameters, users can customize the simulation settings to achieve accurate and comprehensive results based on their specific simulation requirements.
 
 </div>
 
@@ -674,14 +674,14 @@ src.add(name="source", type="mode_source", axis="x_forward",
     simu.add(name=simu_name, type="FDTD",
              property={"general": {"simulation_time": 1000},
                        "mesh_settings": {"mesh_accuracy": {"cells_per_wavelength": grids_per_lambda, },
-                                         "minimμm_mesh_step_settings": {"min_mesh_step": 0.01}}})
+                                         "minimum_mesh_step_settings": {"min_mesh_step": 0.01}}})
 
     # endregion
 ```
 
 <div class="text-justify">
 
-&emsp;&emsp;The `Simulation` manager is a critical component for setting up and running simulations in the current project. The `name` parameter allows users to assign a unique name to the simulation for identification purposes. The `type` parameter defines the type of the simulation. The `simulation_time` parameter specifies the duration of the simulation.The `mesh_settings` parameter enables users to configure various settings related to the simulation mesh. The `mesh_accuracy` parameter controls the precision of the mesh used in the simulation. The `cells_per_wavelength` parameter determines the wavelength precision used in the simulation The `minimμm_mesh_step_settings` parameter sets the minimμm mesh step, allowing users to define the smallest allowable size for mesh elements. By utilizing these input parameters, users can tailor the simulation setup to meet their specific requirements, enabling accurate and efficient electromagnetic simulations of complex optical structures.
+&emsp;&emsp;The `Simulation` manager is a critical component for setting up and running simulations in the current project. The `name` parameter allows users to assign a unique name to the simulation for identification purposes. The `type` parameter defines the type of the simulation. The `simulation_time` parameter specifies the duration of the simulation.The `mesh_settings` parameter enables users to configure various settings related to the simulation mesh. The `mesh_accuracy` parameter controls the precision of the mesh used in the simulation. The `cells_per_wavelength` parameter determines the wavelength precision used in the simulation The `minimum_mesh_step_settings` parameter sets the minium mesh step, allowing users to define the smallest allowable size for mesh elements. By utilizing these input parameters, users can tailor the simulation setup to meet their specific requirements, enabling accurate and efficient electromagnetic simulations of complex optical structures.
 
 </div>
 
@@ -711,7 +711,7 @@ src.add(name="source", type="mode_source", axis="x_forward",
 if run_options.calculate_modes:
     simu.add(name=simu_name+"_cal_mode", type="mode_selection:user_select", simulation_name=simu_name, source_name="source",
               property={"modal_analysis": {"mesh_structure": True, "calculate_modes": True,
-                                          "wavelength": wavelength, "nμmber_of_trial_modes": 10, "search": "max_index", "calculate_group_index": True}})
+                                          "wavelength": wavelength, "number_of_trial_modes": 10, "search": "max_index", "calculate_group_index": True}})
     src_res = simu[simu_name+"_cal_mode"].run()
     src_res.extract(data="calculate_modes", savepath=plot_path + "00_source_modeprofile_fdeonly",
                     mode=0, attribute="E", export_csv=True)
@@ -748,7 +748,7 @@ if run_options.extract and run_options.run:
     # region --- z_normal ---
     """ 01_top_profile """
     for λ in [1.5, 1.55, 1.6]:
-        fdtd_res.extract(data="fdtd:power_monitor", savepath=plot_path + "01_top_profile_" + str(λ) + "μm",
+        fdtd_res.extract(data="fdtd:power_monitor", savepath=plot_path + "01_top_profile_" + str(λ) + "um",
                           monitor_name="z_normal", target="intensity", attribute="E", wavelength=str(λ), export_csv=True)
     # endregion
 
@@ -800,7 +800,8 @@ if __name__ == "__main__":
     simulation(
                run_options=RunOptions(index_preview=True, calculate_modes=True, run=True, extract=True))
 ```
-## 3.Output results
+
+### 3.Output results
 
 <div class="text-justify">
 

@@ -479,10 +479,11 @@ if __name__ == '__main__':
 
 &emsp;&emsp;Next, we will learn how to model a Directional Coupler using the SDK and calculate the light propagation in the structure using the FDTD module.
 
+</div>
+
 ### 1.Basic Operations
 
 
-</div>
 
 <div class="text-justify">
 

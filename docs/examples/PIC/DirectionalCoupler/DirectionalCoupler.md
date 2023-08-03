@@ -377,7 +377,7 @@ if run_options.extract:
 
 <div class="text-justify">
 
-&emsp;&emsp;We also support control switches for various functionalities at the end of the code, and you can use configuration flags(True or False). These flags can be used to turn specific functionalities on or off, making it easier to check the model and perform efficient calculations.
+&emsp;&emsp;In this section of the code, the `simulation` function is called and executed, which allows you to reset relevant parameters for more convenient parameter scanning and optimization design. We also support control switches for various functionalities at the end of the code, and you can use configuration flags(True or False). These flags can be used to turn specific functionalities on or off, making it easier to check the model and perform efficient calculations.
 
 </div>
 
@@ -390,13 +390,20 @@ class RunOptions(NamedTuple):
 
 
 if __name__ == '__main__':
-    simulation(
+    simulation( 
+            run_mode="local", wavelength=1.55, grid=0.02, number_of_trial_modes=20, 
                run_options=RunOptions(index_preview=True,
                                       run=True,
                                       run_frequency_sweep=False,
                                       extract=True)
                )
 ```
+
+<div class="text-justify">
+
+&emsp;&emsp;By turning on/off the relevant functionalities, you can control the simulation process and obtain the desired results. For example, the `index_preview` is to control whether to output images of the structural refractive index. `run` determines whether to run the program. `run_frequency_sweep` is used to enable frequency scanning, and `extract` is used to control data extraction. Properly utilizing these switches can help you inspect the simulation effectively.
+
+</div>
 
 ### 3.Output Results
 
@@ -668,7 +675,7 @@ src.add(name="source", type="mode_source", axis="x_forward",
 
 <div class="text-justify">
 
-&emsp;&emsp;In Region 9, we add the FDTD simulation
+&emsp;&emsp;In Region 9, we add the FDTD simulation. 
 
 </div>
 
@@ -731,10 +738,16 @@ if run_options.calculate_modes:
 
 ```
 # region --- 12. Run ---
-if run_options.run:
-    fdtd_res = simu[simu_name].run(
-        # resources={"compute_resources": "gpu", "gpu_devices": [{"id": 0}]}
-    )
+class RunOptions(NamedTuple):
+    index_preview: bool
+    calculate_modes: bool
+    run: bool
+    extract: bool
+
+
+if __name__ == "__main__":
+    simulation( run_mode="local", wavelength=1.55, wavelength_span=0.1 , grids_per_lambda=6, 
+               run_options=RunOptions(index_preview=True, calculate_modes=True, run=True, extract=True))
 # endregion
 ```
 #### 2.11  Results
@@ -806,7 +819,7 @@ if __name__ == "__main__":
                run_options=RunOptions(index_preview=True, calculate_modes=True, run=True, extract=True))
 ```
 
-### 3.Output results
+### 3.Output Results
 
 <div class="text-justify">
 

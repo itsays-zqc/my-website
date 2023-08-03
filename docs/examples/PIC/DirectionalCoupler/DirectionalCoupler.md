@@ -291,7 +291,7 @@ simu.add(name=simu_name, type='FDE',
 
 &emsp;&emsp;In this code segment, we use the `structure_show` function to form a picture.<br/>&emsp;&emsp;The `fig_type` specifies the type of figure. It supports the following list selection["png", "svg"].<br/>&emsp;&emsp;The `show` , which is a switch that controls whether the picture is generated or not.
 
-If you have already installed the GUI locally, you can automatically pop up the 3D structural model within the GUI using `simu[simu_name].show3d(show_with="local_gui")`. Additionally, `show_with` also supports `matplotlib`, so you can also view the image through python.
+&emsp;&emsp;If you have already installed the GUI locally, you can automatically pop up the 3D structural model within the GUI using `simu[simu_name].show3d(show_with="local_gui")`. Additionally, the parameter dictionary `show_with` also supports `matplotlib`, so you can also view the image through python.
 
 
 

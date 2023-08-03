@@ -19,7 +19,7 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 <div class="text-justify">
 
-&emsp;&emsp;By employing the `EFDTD module`, the process of coupling light from an optical fiber to an on-chip waveguide can be simulated. In the simulation, a Gaussian light source with a certain tilt angle is introduced. The monitor will then provide the throughput of the device, indicating the transmission of energy of the fundamental mode  in waveguide, as well as the distribution of the optical field intensity during the transmission.
+&emsp;&emsp;By employing the `FDTD module`, the process of coupling light from an optical fiber to an on-chip waveguide can be simulated. In the simulation, a Gaussian light source with a certain tilt angle is introduced. The monitor will then provide the throughput of the device, indicating the transmission of energy of the fundamental mode  in waveguide, as well as the distribution of the optical field intensity during the transmission.
 
 &emsp;&emsp; After data processing, the coupling efficiency of the grating coupler can be obtained, facilitating the optimization of the grating coupler's design to achieve high-efficiency transmission of optical signals from optical fibers to on-chip waveguides.
 

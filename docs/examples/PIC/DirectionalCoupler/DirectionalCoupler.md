@@ -289,9 +289,7 @@ simu.add(name=simu_name, type='FDE',
 
 <div class="text-justify">
 
-&emsp;&emsp;In this code segment, we use the `structure_show` function to form a picture.<br/>&emsp;&emsp;The `fig_type` specifies the type of figure. It supports the following list selection["png", "svg"].<br/>&emsp;&emsp;The `show` , which is a switch that controls whether the picture is generated or not.
-
-&emsp;&emsp;If you have already installed the GUI locally, you can automatically pop up the 3D structural model within the GUI using `simu[simu_name].show3d(show_with="local_gui")`. Additionally, the parameter dictionary `show_with` also supports `matplotlib`, so you can also view the image through python.
+&emsp;&emsp;In this code segment, we use the `structure_show` function to form a picture.<br/>&emsp;&emsp;The `fig_type` specifies the type of figure. It supports the following list selection["png", "svg"].<br/>&emsp;&emsp;The `show` , which is a switch that controls whether the picture is generated or not.<br/>&emsp;&emsp;If you have already installed the GUI locally, you can automatically pop up the 3D structural model within the GUI using `simu[simu_name].show3d(show_with="local_gui")`. Additionally, the parameter dictionary `show_with` also supports `matplotlib`, so you can also view the image through python.
 
 
 
@@ -662,13 +660,7 @@ src.add(name="source", type="mode_source", axis="x_forward",
 
 <div class="text-justify">
 
-&emsp;&emsp;For the global monitor, the `Monitor` function is utilized to retrieve the monitor manager for the current project, which allows users to access and manage various types of monitors used during simulation. The `name` parameter represents the name of the Global Option associated with the monitor. The `type` parameter defines the type of the Global Option and is formatted as a list containing one of several monitor types, such as `["electric_monitor"], ["current_monitor"], ["charge_monitor"], ["band_monitor"], ["profile_monitor"], ["global_monitor", "global_option"], ["time_monitor"], ["power_monitor"], or ["mode_expansion"]`. The `property` parameter is used to define and set the relevant parameters specific to the chosen monitor type. These parameters control the monitor's behavior and data collection settings during the simulation. 
-
-</div>
-
-<div class="text-justify">
-
-&emsp;&emsp;The power monitor is a configuration setting that allows users to specify various simulation parameters. The `name` parameter assigns a name to the power monitor. The `type` parameter defines the type of power monitor. The `general` parameter pertains to settings related to the frequency domain and frequency-dependent behaviors of the simulation. The `geometry` parameter is used to define the geometric characteristics of the simulated structure. The `mode_expansion` parameter involves relevant settings for mode expansion simulations. Users can customize the simulation settings by utilizing these input parameters to achieve accurate and comprehensive results based on their specific simulation requirements.
+&emsp;&emsp;For the global monitor, the `Monitor` function is utilized to retrieve the monitor manager for the current project, which allows users to access and manage various types of monitors used during simulation. The `name` parameter represents the name of the Global Option associated with the monitor. The `type` parameter defines the type of the Global Option and is formatted as a list containing one of several monitor types, such as `["electric_monitor"], ["current_monitor"], ["charge_monitor"], ["band_monitor"], ["profile_monitor"], ["global_monitor", "global_option"], ["time_monitor"], ["power_monitor"], or ["mode_expansion"]`. The `property` parameter is used to define and set the relevant parameters specific to the chosen monitor type. These parameters control the monitor's behavior and data collection settings during the simulation. <br/>&emsp;&emsp;The power monitor is a configuration setting that allows users to specify various simulation parameters. The `name` parameter assigns a name to the power monitor. The `type` parameter defines the type of power monitor. The `general` parameter pertains to settings related to the frequency domain and frequency-dependent behaviors of the simulation. The `geometry` parameter is used to define the geometric characteristics of the simulated structure. The `mode_expansion` parameter involves relevant settings for mode expansion simulations. Users can customize the simulation settings by utilizing these input parameters to achieve accurate and comprehensive results based on their specific simulation requirements.
 
 </div>
 

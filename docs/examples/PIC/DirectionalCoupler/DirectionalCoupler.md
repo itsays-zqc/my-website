@@ -850,6 +850,11 @@ if __name__ == "__main__":
 
 ![FDTD mode](fdtd_wavesweep2.png 'FDTD mode')
 
+<div class="text-justify">
+
+&emsp;&emsp;Based on the information provided, we can get the following results  when propogating wavelength  is 1.55 μm and the two beam length of directional couper is equal to 15 μm:<br/>&emsp;&emsp;1.Insertion Loss: 0.177 dB;<br/>&emsp;&emsp;2.Power Split Ratio: 13.2:83.8 (or approximately 13.2% to one port and 83.8% to the other port);<br/>&emsp;&emsp;3.Dimensions: Approximately 5 μm X 25 μm. 
+   
+</div>
 
 ## Supplement
 

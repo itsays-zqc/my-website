@@ -828,7 +828,7 @@ if __name__ == "__main__":
 
 <div class="text-justify">
 
-&emsp;&emsp;2.DC (Directional Coupler)  Z-direction electric field intensity at different wavelengths: 1.5 μm, 1.55 μm, and 1.6 μm.
+&emsp;&emsp;2.DC (Directional Coupler)  Z-direction electric field intensity at different wavelengths: 1.50 *μ*m, 1.55 *μ*m, and 1.60 *μ*m.
 
 </div>
 
@@ -836,7 +836,7 @@ if __name__ == "__main__":
 
 <div class="text-justify">
 
-&emsp;&emsp;3.Cross output port and TRU output port transmittance at different wavelengths: 1.5 μm, 1.55 μm, and 1.6 μm.
+&emsp;&emsp;3.Cross output port and TRU output port transmittance at different wavelengths: 1.50 *μ*m, 1.55 *μ*m, and 1.60 *μ*m.
 
 </div>
 
@@ -844,7 +844,7 @@ if __name__ == "__main__":
 
 <div class="text-justify">
 
-&emsp;&emsp;4.TE0 mode transmittance at Cross output port and TRU output port for different wavelengths: 1.5 μm, 1.55 μm, and 1.6 μm.
+&emsp;&emsp;4.TE0 mode transmittance at Cross output port and TRU output port for different wavelengths: 1.50 *μ*m, 1.55 *μ*m, and 1.60 *μ*m.
 
 </div>
 
@@ -852,7 +852,7 @@ if __name__ == "__main__":
 
 <div class="text-justify">
 
-&emsp;&emsp;Based on the information provided, we can get the following results  when propogating wavelength  is 1.55 μm and the two beam length of directional couper is equal to 15 μm:<br/>&emsp;&emsp;1.Insertion Loss: 0.177 dB;<br/>&emsp;&emsp;2.Power Split Ratio: 13.2:83.8 (or approximately 13.2% to one port and 83.8% to the other port);<br/>&emsp;&emsp;3.Dimensions: Approximately 5 μm X 25 μm. 
+&emsp;&emsp;Based on the information provided, we can get the following results  when propogating wavelength  is 1.55 *μ*m and the two beam length of directional couper is equal to 15 *μ*m:<br/>&emsp;&emsp;1.Insertion Loss: 0.177 dB;<br/>&emsp;&emsp;2.Power Split Ratio: 13.2 : 83.8 (or approximately 13.2% to one port and 83.8% to the other port);<br/>&emsp;&emsp;3.Dimensions: Approximately 5 *μ*m X 25 *μ*m. 
    
 </div>
 

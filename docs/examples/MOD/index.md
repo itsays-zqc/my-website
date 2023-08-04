@@ -1,14 +1,18 @@
 # Modulator
 
-
-
 ##  Introduction
 
 ​	We have developed an electro-optic modulator based on carrier-depletion mechanism in silicon to simulate carrier and index distribution in a global structure. The drift and diffusion of carriers result in depletion at the PN junction. Applying a reverse bias voltage at the cathode broadens the depletion region, altering the carrier concentration and modulating the material's refractive index. Gaussian doping was employed in this model. Modulation efficiency, capacitance, and resistance were calculated to analyze the electro-optic characteristics of the modulator.
 
+​	The figure below illustrates the device structure we constructed, wherein the aluminum electrode is applied to the silicon modulator, and the entire device is encapsulated with silicon dioxide material.
+
+![](D:\typora\MOD\plot\MOD_structure.png)
+
+
+
 ## Simulation Methods
 
-
+​	
 
 ## Simulation Structure
 
@@ -21,6 +25,8 @@ Application Library path: `:\SDK\V2.3.0.4\examples\active_demo\doping_function\M
 ### 1. Basic Operations
 
 ​	It is essential to incorporate materials for structure. Although module of `maxoptics_sdk.all` provides default values for standard semiconductors, these values can be customized in `MOD_material.py` . 
+
+​	Application Library path: `:\SDK\V2.3.0.4\examples\active_demo\doping_function\MOD\MOD_material.py`
 
 ​	The module of `basic` specifies the electron affinity and relative dielectric permittivity of the material. It is crucial to define the mode type and parameter values, if another model is used instead of the default. The default mobility model of Silicon is `Analytic` , but we use the mobility model of `Masetti` in this modulator. The `band` module includes the model of bandgap, bandgap narrowing , and recombination of  Auger, SRH, and Radiative. 
 
@@ -90,7 +96,7 @@ from MOD_material import matparas_1550, matparas_1310, elec_Si_properties
 
 ##### 2.2.1 General Parameters
 
-We define these parameters for entire simulation process.
+​	We define these parameters for entire simulation process.
 
 ```python
 wavelength = 1.31   
@@ -364,7 +370,7 @@ if st_type == "normal":
 
 ##### 2.3.4 Add Doping
 
-​	You should define the basic parameters of doping module, such as  type、region and model. Then define source face、junction width peak concentration and  reference concentration in gaussian doping, or only concenteration in uniform doping.  `type` specifies the n-type or donor dopant in `"n"` , and  p-type or acceptor dopant in `"p"` , which may be used with gaussian and uniform prodile types.  `ref_concentration` specifies the XXX.
+​	You should define the basic parameters of doping module, such as  type、region and model. Then define source face、junction width peak concentration and  reference concentration in gaussian doping, or only concenteration in uniform doping.  `type` specifies the n-type or donor dopant in `"n"` , and  p-type or acceptor dopant in `"p"` , which may be used with gaussian and uniform prodile types.  `ref_concentration` specifies the .
 
 ```python
 st.add_doping(name="background_doping", type="p", property={
@@ -409,7 +415,7 @@ st.OBoundary(property={
 
 ##### 2.3.6 Add Mesh
 
-​	When specifying meshes, a balance must be struck between accuracy and numerical efficiency. Achieving accuracy requires a fine mesh that can resolve all significant features of the solution, while numerical efficiency requires a coarse mesh that minimizes the total number of grid points.  
+​	When specifying meshes, a balance should be struck between accuracy and numerical efficiency. The accuracy, convergence, and program memory of the subsequent computation are all affected by the quality and size of the elements in the mesh, making mesh partitioning crucial in this module. Achieving accuracy requires a fine mesh that can resolve all significant features of the solution, while numerical efficiency requires a coarse mesh that minimizes the total number of grid points.  
 
 ​	Due to the relatively simple structure of this modulator, a rough initial mesh can be established for electrical and optical simulation of the entire device. In order to obtain more accurate calculation results and better convergence, the `emesh`  module is employed to refine the mesh of the regions with significant electrical characteristics.
 
@@ -423,10 +429,14 @@ st.add_emesh(name="EMesh_Local", property={
 
 ##### 2.3.7 Define Structure File
 
-​	You should call the previous defined simulation module and define the name and path of the output file.
+​	You should call the previous defined simulation module and define the name and path of the output file. 
+
+​	Through invoking the `time` module and adding it to the file name, the output file of each simulation can be unique, which facilitates accurate file retrieval after multiple simulations. The `plot_path` will be used as the path for saving extracted results and is set here to the plots folder in the same directory as the script. If this path does not exist, the `os.makedirs`  function needs to be called to create the path.
 
 ```python
 return pj
+
+time_str = time.strftime("%Y%m%d_%H%M%S/", time.localtime())
 
 @timed
 def preview():
@@ -439,7 +449,13 @@ def preview():
 
 ##### 2.3.8 Set Simulate Solver
 
- 	 add electrical and optical silmulation solver for output structure file. 
+ 	 Adding electrical and optical silmulation solver, is the prerequisite for output structure file. You can specify solver name and type in `name` and `type` module, and then define its other property. 
+
+​	The type of `AFDE` is finite difference eigenmode (FDE) simulation module for active devices, which can be used to investigate the refractive index distribution of a device. This solver solves the single-frequency Maxwell's equations directly on a discretized grid of the waveguide cross-section, enabling exploration of the refractive index distribution of the device. The FDE analysis module can then be used to set the boundary conditions, define the model, mesh structure, and wavelength of the light source for calculation. 
+
+​	The type of `OEDevice` module can be invoked to enable the charge carrier transport solver for analyzing the optoelectronic properties of a device. Since the simulation analysis is conducted in the two-dimensional Y-Z plane that is perpendicular to the X-axis, `2d_x_normal`  is adopted to define the simulation calculation geometry.
+
+​	We utilize the `Newton` iteration method for calculation, and the `MUMPS`  direct solver is employed as the linear solver. The `max_iterations` parameter defines the maximum number of nonlinear iterations. When the number of iterations exceeds this value, the solver reports failure. Additionally, we define the length of the three-dimensional X direction and the solution mode and temperature during the composite process. For this study, we set the solver to solve the steady state of the device at room temperature.
 
 ```python
 simu = pj.Simulation()
@@ -457,7 +473,9 @@ simu.add(name="preview_oedevice", type="OEDevice", property={
 
 ```
 
+​	You can invoke the `FDE`  module to analyze the refractive index distribution of the device. To define the region of the refractive index distribution to be extracted in `geometry` , which is the coordinate in the two-dimensional Y-Z plane at X-axis equal to 0. Then, define the file name of the result image and save it to the "plot" folder.
 
+​	To analyze the doping distribution of the device, the `OEDevice`  module can be invoked. First, define the region from which to extract the refractive index distribution, which is the coordinate in the two-dimensional Y-Z plane where the X-axis equals 0. Then, define the file name for the resulting image and save it to the "plot" folder. Additionally, save the simulation process to the "log" folder in the "project" directory.
 
 ```python
 simu["preview_oedevice"].run_doping(name="x_in", property={
@@ -470,37 +488,464 @@ simu["preview_fde"].run_index(name="index_preview_x_0", property={
         savepath=plot_path + simu_name + "_" + time_str + "Index", export_csv=False, show=False)
 ```
 
+### 3. Output Result
+
+​	Here, we present the device geometry as defined in the structure file, along with the P-type and N-type dopant distributions, and the overall doping distribution.
+
+Application Library path: `:\SDK\V2.3.0.4\examples\active_demo\doping\MOD\plots\MOD00_struct-time\doping` 
+
+|                     Boron Active Doping                      |                          Net Doping                          |                   Phosphorus Active Doping                   |
+| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+| ![](D:\typora\MOD\plot\MOD00_struc\doping\BoronActive_dop.jpg) | ![](D:\typora\MOD\plot\MOD00_struc\doping\NetDoping_dop.jpg) | ![](D:\typora\MOD\plot\MOD00_struc\doping\PhosphorusActive_dop.jpg) |
+
+​	We can see the distribution of the refractive index in the radial direction of the three coordinates of the device.
+
+Application Library path: `:\SDK\V2.3.0.4\examples\active_demo\doping\MOD\plots\MOD00_struct-time` 
+
+|                        X-axis                         |                        Y-axis                         |                        Z-axis                         |
+| :---------------------------------------------------: | :---------------------------------------------------: | :---------------------------------------------------: |
+| ![](D:\typora\MOD\plot\MOD00_struc\Index.index X.png) | ![](D:\typora\MOD\plot\MOD00_struc\Index.index Y.png) | ![](D:\typora\MOD\plot\MOD00_struc\Index.index Z.png) |
+
+## Analytic Character
+
+### 1.Modulation efficiency
+
+​	The half-wave voltage refers to the applied voltage required by the modulator's optical signal to generate a phase difference of pi radians, directly reflecting the modulation efficiency of the modulator. Usually, the modulation efficiency of a device is represented by multiplying the half-wave voltage with a parameter that represents the length of the modulator required for phase variation. A smaller value of this parameter indicates higher modulation efficiency, resulting in a smaller required device size.
+
+#### 1.1 Basic Operations
+
+​	Before analyzing the characteristic parameters of the device, you need to set up the simulation environment in advance and invoke the modules into the file by  `import` .
+
+#### 1.2 Code Description
+
+##### 1.2.1 Import Modules
+
+​	To begion, we need to use the `import` command to call the relevant functional modules.
+
+```python
+from MOD00_structure import *
+import time
+import os
+from pathlib import Path
+import numpy as np
+import sys
+from matplotlib import pyplot as plt
+import warnings
+```
+
+​	For specific instructions, see the description document of PD device.
+
+​	By adding the runtime function module to the file name, you can ensure the orderly storage of simulation results without data overlay or overwriting during multiple simulation runs.
+
+```python
+start = time.time()
+time_str = time.strftime("%Y%m%d_%H%M%S/", time.localtime())
+```
+
+##### 1.2.2 Define Parameters
+
+​	The operational mechanism of the device we simulated in this study primarily revolves around the application of a reverse voltage to modify the width of the depletion region, thereby effectively modifying the carrier concentration and subsequently modulating the refractive index. Hence, it is necessary to specify the voltage of initial、termination and step, with both parameters expressed in volts. It is important to note that  `vpi_vswing` is twice the value of `tcad_vstep`  .
+
+```python
+tcad_vmin = -0.5   
+tcad_vmax = 4      
+tcad_vstep = 0.5   
+vpi_vswing = 1.0   suggest as 2*tcad_vstep
+```
+
+##### 1.2.3 Set Path
+
+​	You could define the project name of path, and then set the parameters for path.
+
+```python
+simu_name = "MOD0A_vpi"
+project_name = simu_name + "_" + run_mode + "_" + time_str
+
+plot_path = str(Path(__file__).parent.as_posix()) + "/plots/"
+if not os.path.exists(plot_path):
+    os.makedirs(plot_path)
+neff_real_folder = plot_path + project_name + "neffreal"
+neff_imag_folder = plot_path + project_name + "neffimag"
+loss_folder = plot_path + project_name + "loss"
+vpil_folder = plot_path + project_name + "vpil"
+vpiloss_folder = plot_path + project_name + "vpiloss"
+```
+
+##### 1.2.4 Confirm swing of voltage
 
 
-##### 2.6  Set Simulation
 
-##### 2.7 Retrieve Result
-
-### 3 Output Result
-
-
-
-​	
-
-## Modulation efficiency
-
-### 1. Basic Operations
+```python
+di = int(np.round(np.abs(vpi_vswing/tcad_vstep/2)))  # Count dot num between volt of vpi and neff.
+if di < 1:
+    sys.exit("\x1b[6;30;41m" + "\nError: vpi_swing must be >= tcad_vstep." + "\x1b[0m")
+if np.abs((np.abs(vpi_vswing)-np.abs(di*tcad_vstep*2))/tcad_vstep) > 0.01:
+    warnings.warn("\x1b[6;30;43m" + "\n[Warning: vpi_swing is %(t)sV in program]" % {"t": di*2*tcad_vstep} + "\x1b[0m", UserWarning)
+```
 
 
 
-### 2. Code description
+##### 1.2.5 Creat Component
 
-## Capacitance And Resistance
+####  
+
+```python
+pj = mod_project(project_name, run_mode, st_type="normal")
+st = pj.Structure()
+
+st.add_electrode(name="cathode", property={
+    "solid": "Cathode", "bc_mode": "steady_state",
+    "sweep_type": "range", "range_start": tcad_vmin, "range_stop": tcad_vmax, "range_interval": tcad_vstep, "apply_AC_small_signal": "none"})
+st.add_electrode(name="anode", property={
+    "solid": "Anode", "bc_mode": "steady_state",
+    "sweep_type": "single", "voltage": 0, "apply_AC_small_signal": "none"})
+```
+
+
+
+##### 1.2.6 Set Simulation
+
+
+
+```python
+simu = pj.Simulation()
+simu.add(name="oedevice", type="OEDevice", property={
+    "geometry": {"dimension": "2d_x_normal", "x": oe_x_mean, "x_span": 0, "y": oe_y_mean, "y_span": oe_y_span, "z_min": oe_z_min, "z_max": oe_z_max},
+    "general": {"norm_length": normal_length, "solver_mode": "steady_state", "simulation_temperature": temperature},
+    "advanced": {"non_linear_solver": "Newton", "linear_solver": "MUMPS", "max_iterations": 50}})
+
+simu.add(name="fde", type="AFDE", property={
+    "mesh_settings": {"global_mesh_uniform_grid": {"dy": ogrid_global_y, "dz": ogrid_global_z}},
+    "fde_analysis": {"modal_analysis": {"calculate_modes": False, "mesh_structure": False, "wavelength": wavelength},
+                     "modulator_analysis": {"modulator_analysis": True, "wavelength": wavelength, "mode_select": 0, "np_path": ""}},
+    "other": {**Si_index_vs_doping}})
+```
+
+
+
+##### 1.2.7 Run
+
+
+
+```python
+result_device = simu["oedevice"].run()
+result_fde = simu["fde"].run()
+```
+
+
+
+##### 1.2.8 Extract Parameters 
+
+```python
+result_fde.extract(data="effective_index", export_csv=True, operation="real", show=False, savepath=plot_path + project_name + "neffreal")
+result_fde.extract(data="effective_index", export_csv=True, operation="imag", show=False, savepath=plot_path + project_name + "neffimag")
+result_fde.extract(data="loss", export_csv=True, show=False, savepath=plot_path + project_name + "loss")
+result_fde.extract(data="vpil", export_csv=True, show=False, savepath=plot_path + project_name + "vpil")
+result_fde.extract(data="vpiloss", export_csv=True, show=False, savepath=plot_path + project_name + "vpiloss")
+```
+
+
+
+##### 1.2.9 Calculate
+
+```python
+neff_file = os.path.join(neff_real_folder, "0_effective index_Real.csv")
+loss_file = os.path.join(loss_folder, "0_loss_Real.csv")
+
+for i in range(10):
+    neff_file = os.path.join(neff_real_folder, str(i) + "_effective index_Real.csv")
+    if os.path.exists(neff_file):
+        break
+
+for i in range(10):
+    loss_file = os.path.join(loss_folder, str(i) + "_loss_Real.csv")
+    if os.path.exists(loss_file):
+        break
+
+rawdata = np.genfromtxt(neff_file, skip_header=3, delimiter=',')
+
+neff = rawdata[:,1]
+volt = rawdata[:,0]
+
+rawdata = np.genfromtxt(loss_file, skip_header=3, delimiter=',')
+
+loss = rawdata[:,1]
+
+vpil = []
+volt_out = []
+vpiloss = []
+for i in range(di, len(volt)-di):
+    volt_out.append(volt[i])
+    vpil.append((volt[i+di]-volt[i-di])/(neff[i+di]-neff[i-di])*wavelength/2*1e-4)
+    vpiloss.append(vpil[-1]*loss[i])
+
+vpil_file = os.path.join(vpil_folder, "0_VpiL_Real.csv")
+vpil_pic = os.path.join(vpil_folder, "0_VpiL_Real.png")
+vpiloss_file = os.path.join(vpiloss_folder, "0_VpiLoss_Real.csv")
+vpiloss_pic = os.path.join(vpiloss_folder, "0_VpiLoss_Real.png")
+
+if not os.path.exists(vpil_folder):
+    os.makedirs(vpil_folder)
+
+if not os.path.exists(vpiloss_folder):
+    os.makedirs(vpiloss_folder)
+
+np.savetxt(vpil_file, np.array((volt_out, vpil)).T, fmt='%f,%.15f', header='voltage,VpiL')
+np.savetxt(vpiloss_file, np.array((volt_out, vpiloss)).T, fmt='%f,%.15f', header='voltage,VpiLoss')
+
+fontsize = 20
+linewidth = 1
+plt.rcParams.update({"font.size": fontsize})
+fig, ax = plt.subplots()
+fig.set_size_inches(12, 8)
+ax.plot(volt_out, vpil, 'b', linewidth=linewidth, label="VpiL")
+ax.plot(volt_out, vpil, 'bo')
+ax.set_xlabel('VBias[V]')
+ax.set_ylabel('VpiL[V·cm]')
+plt.legend()
+plt.ticklabel_format(style='sci', scilimits=(-1, 2))
+ax.grid()
+plt.savefig(vpil_pic)
+plt.close()
+
+fig, ax = plt.subplots()
+fig.set_size_inches(12, 8)
+ax.plot(volt_out, vpiloss, 'b', linewidth=linewidth, label="VpiLoss")
+ax.plot(volt_out, vpiloss, 'bo')
+ax.set_xlabel('VBias[V]')
+ax.set_ylabel('VpiLoss[V·dB]')
+plt.legend()
+plt.ticklabel_format(style='sci', scilimits=(-1, 2))
+ax.grid()
+plt.savefig(vpiloss_pic)
+plt.close()
+
+# endregion
+
+print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - start)/60, 2)} + "\x1b[0m")
+```
+
+#### 1.3 Output Result
+
+##### 1.3.1 Loss
+
+
+
+<img src="D:\typora\MOD\plot\MOD0A_vpi_loca_time\loss\0_loss_Real.png" style="zoom:50%;" />
+
+
+
+##### 1.3.2 Effective Index
+
+|                    Reffective index real                     |                  Reffective index imaginary                  |
+| :----------------------------------------------------------: | :----------------------------------------------------------: |
+| ![](D:\typora\MOD\plot\MOD0A_vpi_loca_time\neffreal\0_effective index_Real.png) | ![](D:\typora\MOD\plot\MOD0A_vpi_loca_time\neffimag\0_effective index_Imaginary.png) |
+
+##### 1.3.3 Modulation efficiency
+
+|                             VpiL                             |                           VpiLoss                            |
+| :----------------------------------------------------------: | :----------------------------------------------------------: |
+| ![](D:\typora\MOD\plot\MOD0A_vpi_loca_time\vpil\0_VpiL_Real.png) | ![](D:\typora\MOD\plot\MOD0A_vpi_loca_time\vpiloss\0_VpiLoss_Real.png) |
+
+
+
+### 2.Capacitance And Resistance
 
 ​	Capacitance and resistance play crucial roles in determining the performance of devices. Optimal capacitance values enable the modulator to selectively allow or block signals within specific frequency ranges, facilitating signal coupling. Suitable resistance values enable adjustment of signal amplitude and modulation current determination.
 
-### 1. Basic Operations
+#### 2.1 Basic Operations
 
 
 
-### 2. Code description
+#### 2.2 Code Description
 
+##### 2.2.1 Import Modules
 
+```python
+from MOD00_structure import *
+import time
+import os
+from pathlib import Path
+import re
+import numpy as np
+from matplotlib import pyplot as plt
+```
+
+##### 2.2.2 Define Parameters
+
+```python
+tcad_vmin = -0.5  
+tcad_vmax = 4     
+tcad_vstep = 0.5   
+```
+
+##### 2.2.3 Set Path
+
+```python
+start = time.time()
+time_str = time.strftime("%Y%m%d_%H%M%S/", time.localtime())
+simu_name = "MOD0B_RC"
+project_name = simu_name + "_" + run_mode + "_" + time_str
+
+plot_path = str(Path(__file__).parent.as_posix()) + "/plots/"
+if not os.path.exists(plot_path):
+    os.makedirs(plot_path)
+```
+
+##### 2.2.4 Creat Component
+
+```python
+pj = mod_project(project_name, run_mode, st_type="normal")
+st = pj.Structure()
+
+st.add_electrode(name="cathode", property={
+    "solid": "Cathode", "bc_mode": "steady_state",
+    "sweep_type": "range", "range_start": tcad_vmin, "range_stop": tcad_vmax, "range_interval": tcad_vstep, "apply_AC_small_signal": "All"})
+
+st.add_electrode(name="anode", property={
+    "solid": "Anode", "bc_mode": "steady_state",
+    "sweep_type": "single", "voltage": 0, "apply_AC_small_signal": "none"})
+```
+
+##### 2.2.5 Set Simulation
+
+```python
+simu = pj.Simulation()
+
+simu.add(name="oedevice", type="OEDevice", property={
+    "geometry": {"dimension": "2d_x_normal", "x": oe_x_mean, "x_span": 0, "y": oe_y_mean, "y_span": oe_y_span, "z_min": oe_z_min, "z_max": oe_z_max},
+    "general": {"norm_length": normal_length, "solver_mode": "SSAC", "simulation_temperature": temperature},
+    "small_signal_ac": {"frequency_spacing": "log", "log_start_frequency": 1e6, "log_stop_frequency": 1e10, "log_num_frequency_points": 3, "perturbation_amplitude": ssac_amplitude},
+    "advanced": {"non_linear_solver": "Newton", "linear_solver": "MUMPS", "max_iterations": 50}})
+```
+
+##### 2.2.6 Run
+
+```python
+result_device = simu["oedevice"].run()
+```
+
+##### 2.2.7 Extract Parameters
+
+```python
+Iac_real_folder = plot_path + project_name + "Iac_real"
+Iac_imag_folder = plot_path + project_name + "Iac_imag"
+result_device.extract(data="Iac", electrode="cathode", operation="real", export_csv=True, show=False, savepath=Iac_real_folder)
+result_device.extract(data="Iac", electrode="cathode", operation="imag", export_csv=True, show=False, savepath=Iac_imag_folder)
+```
+
+##### 2.2.8 Calculate
+
+```python
+Iac_real_files = []
+Iac_imag_files = []
+resistance_files = []
+capacitance_files = []
+file_regex = r"([0-9]+)_Iac_Real_(.*)\.csv"
+for file in os.listdir(Iac_real_folder):
+    if re.match(file_regex, file, re.I):
+        search_group = re.search(file_regex, file, re.I)
+        if search_group != None:
+            Iac_real_files.append(file)
+            Iac_imag_files.append(search_group.group(1) + "_Iac_Imaginary_" + search_group.group(2) + ".csv")
+            resistance_files.append(search_group.group(1) + "_Resistance_" + search_group.group(2) + ".csv")
+            capacitance_files.append(search_group.group(1) + "_Capacitance_" + search_group.group(2) + ".csv")
+
+resistance_folder = plot_path + project_name + "Resistance"
+capacitance_folder = plot_path + project_name + "Capacitance"
+
+if not os.path.exists(resistance_folder):
+    os.makedirs(resistance_folder)
+
+if not os.path.exists(capacitance_folder):
+    os.makedirs(capacitance_folder)
+
+for i in range(len(Iac_real_files)):
+    Iac_real_file = os.path.join(Iac_real_folder, Iac_real_files[i])
+    Iac_imag_file = os.path.join(Iac_imag_folder, Iac_imag_files[i])
+    resistance_file = os.path.join(resistance_folder, resistance_files[i])
+    capacitance_file = os.path.join(capacitance_folder, capacitance_files[i])
+
+    Iac_real_data = np.genfromtxt(Iac_real_file, skip_header=3, delimiter=",")
+    Iac_imag_data = np.genfromtxt(Iac_imag_file, skip_header=3, delimiter=",")
+
+    with open(Iac_real_file, 'r') as fp:
+        line = fp.readline()
+        line = fp.readline()
+        frequency = float(re.search(r".*frequency=(.*)\[MHz\]", line, re.I).group(1))*1e6
+
+    if len(Iac_real_data.shape) < 2:
+        Iac_real_data.reshape((1, len(Iac_real_data)))
+        Iac_imag_data.reshape((1, len(Iac_imag_data)))
+
+    Vdc = Iac_real_data[:,0]
+    Vac = ssac_amplitude
+    Iac_real = Iac_real_data[:,1]
+    Iac_imag = Iac_imag_data[:,1]
+    Iac = Iac_real + 1j*Iac_imag
+    Z = Vac/Iac
+    R = np.abs(np.real(Z))
+    C = np.abs(np.imag(1/Z)/(2*np.pi*frequency))
+
+    np.savetxt(resistance_file, np.array((Vdc, R)).T, fmt='%f,%.15e', header='voltage,resistance')
+    np.savetxt(capacitance_file, np.array((Vdc, C)).T, fmt='%f,%.15e', header='voltage,capacitance')
+    
+    resistance_fig = os.path.splitext(resistance_file)[0] + ".jpg"
+    capacitance_fig = os.path.splitext(capacitance_file)[0] + ".jpg"
+    fontsize = 20
+    linewidth = 1
+    plt.rcParams.update({"font.size": fontsize})
+    fig, ax = plt.subplots()
+    fig.set_size_inches(12, 8)
+    ax.plot(Vdc, R, 'b', linewidth=linewidth, label="resistance_" + str(frequency*1e-6) + "MHz")
+    ax.plot(Vdc, R, 'bo')
+    ax.set_xlabel('VBias[V]')
+    ax.set_ylabel('Resistance[Ohm]')
+    plt.legend()
+    plt.ticklabel_format(style='sci', scilimits=(-1, 2))
+    ax.grid()
+    plt.savefig(resistance_fig)
+    plt.close()
+
+    fig, ax = plt.subplots()
+    fig.set_size_inches(12, 8)
+    ax.plot(Vdc, C, 'b', linewidth=linewidth, label="capacitance_" + str(frequency*1e-6) + "MHz")
+    ax.plot(Vdc, C, 'bo')
+    ax.set_xlabel('VBias[V]')
+    ax.set_ylabel('Capacitance[F]')
+    plt.legend()
+    plt.ticklabel_format(style='sci', scilimits=(-1, 2))
+    ax.grid()
+    plt.savefig(capacitance_fig)
+    plt.close()
+# endregion
+
+print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - start)/60, 2)} + "\x1b[0m")
+
+```
+
+#### 2.3 Output Result
+
+##### 2.3.1 Capacitance
+
+different frequency 
+
+| 1 MHZ                                                        | 100 MHZ                                                      | 10000 MHZ                                                    |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![](D:\typora\MOD\plot\MOD0B_RC_local_time\Capacitance\0_Capacitance_1.0MHz.jpg) | ![](D:\typora\MOD\plot\MOD0B_RC_local_time\Capacitance\0_Capacitance_100.0MHz.jpg) | ![](D:\typora\MOD\plot\MOD0B_RC_local_time\Capacitance\0_Capacitance_10000.0MHz.jpg) |
+
+##### 2.3.2 Photocurrent
+
+|       | 1 MHZ                                                        | 100 MHZ                                                      | 10000 MHZ                                                    |
+| ----- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Real  | ![](D:\typora\MOD\plot\MOD0B_RC_local_time\Iac_real\0_Iac_Real_1.0MHz.png) | ![](D:\typora\MOD\plot\MOD0B_RC_local_time\Iac_real\0_Iac_Real_100.0MHz.png) | ![](D:\typora\MOD\plot\MOD0B_RC_local_time\Iac_real\0_Iac_Real_10000.0MHz.png) |
+| Image | ![](D:\typora\MOD\plot\MOD0B_RC_local_time\Iac_imag\0_Iac_Imaginary_1.0MHz.png) | ![](D:\typora\MOD\plot\MOD0B_RC_local_time\Iac_imag\0_Iac_Imaginary_100.0MHz.png) | ![](D:\typora\MOD\plot\MOD0B_RC_local_time\Iac_imag\0_Iac_Imaginary_10000.0MHz.png) |
+
+##### 2.3.3 Resistance
+
+| 1 MHZ                                                        | 100 MHZ                                                      | 10000 MHZ                                                    |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![](D:\typora\MOD\plot\MOD0B_RC_local_time\Resistance\0_Resistance_1.0MHz.jpg) | ![](D:\typora\MOD\plot\MOD0B_RC_local_time\Resistance\0_Resistance_100.0MHz.jpg) | ![](D:\typora\MOD\plot\MOD0B_RC_local_time\Resistance\0_Resistance_10000.0MHz.jpg) |
 
 
 

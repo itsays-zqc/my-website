@@ -14,7 +14,7 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 </div>
 
-![DC introduction](DC_intro.png 'DC introduction')
+![DC introduction](../DirectionalCoupler/DC_intro.png 'DC introduction')
 
 ## Simulation Methods
 
@@ -44,7 +44,7 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 &emsp;&emsp;Once you have installed and configured the environment, import the `DC_FDE.py` SDK code and the `DC.gds` layout.
 
-&emsp;&emsp;The example library and related model code are usually located in the directory `AIO_SDK/.venv_maxoptics/site-packages/maxoptics_sdk/examples`, and the GDS file is generally imported into the `../examples/examples_gds` folder.
+&emsp;&emsp;The example library and related model code are usually located in the directory `AIO_SDK/.venv_maxoptics/site-packages/maxoptics_sdk/examples`, and the GDS file is generally imported into the `AIO_SDK/.venv_maxoptics/site-packages/maxoptics_sdk/examples/examples_gds` folder.
 
 </div>
 

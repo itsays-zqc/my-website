@@ -22,7 +22,7 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 &emsp;&emsp;The `FDE module` can be used to calculate the symmetric and anti-symmetric mode field distributions of the directional coupler’s two arms. From these calculations, the effective index can be determined, allowing for the theoretical calculation of the coupling length required to achieve the target splitting ratio. 
 
-&emsp;&emsp; And the `FDTD module` can be used to perform precise calculations of light propagation in the DC. The light field transmission images in the monitor allow for a visual assessment,the related data of which facilitate further optimization and validation of the coupling length and spacing parameters in the DC splitter.
+&emsp;&emsp;And the `FDTD module` can be used to perform precise calculations of light propagation in the DC. The light field transmission images in the monitor allow for a visual assessment,the related data of which facilitate further optimization and validation of the coupling length and spacing parameters in the DC splitter.
 
 &emsp;&emsp;After data processing, it can be obtained that the splitting ratio, insertion loss, and operating bandwidth of DC. In designing high-performance directional couplers for various optical communication and integrated photonics applications, these calculations and optimization processes are instrumental.
 
@@ -42,7 +42,7 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 <div class="text-justify">
 
-&emsp;&emsp;Once you have installed and configured the environment, import the `DC_FDE.py` SDK code and the `DC.gds layout`.
+&emsp;&emsp;Once you have installed and configured the environment, import the `DC_FDE.py` SDK code and the `DC.gds` layout.
 
 &emsp;&emsp;The example library and related model code are usually located in the directory `AIO_SDK/.venv_maxoptics/site-packages/maxoptics_sdk/examples`, and the GDS file is generally imported into the `../examples/examples_gds` folder.
 
@@ -289,7 +289,7 @@ simu.add(name=simu_name, type='FDE',
 
 <div class="text-justify">
 
-&emsp;&emsp;In this code segment, we use the `structure_show` function to form a picture.<br/>&emsp;&emsp;The `fig_type` specifies the type of figure. It supports the following list selection["png", "svg"].<br/>&emsp;&emsp;The `show` , which is a switch that controls whether the picture is generated or not.<br/>&emsp;&emsp;If you have already installed the GUI locally, you can automatically pop up the 3D structural model within the GUI using `simu[simu_name].show3d(show_with="local_gui")`. Additionally, the parameter dictionary `show_with` also supports `matplotlib`, so you can also view the image through python.
+&emsp;&emsp;In this code segment, we use the `structure_show` function to form a picture.<br/>&emsp;&emsp;The `fig_type` specifies the type of figure. It supports the following list selection["png", "svg"].<br/>&emsp;&emsp;The `show` , which is a switch that controls whether the picture is generated or not. If you have already installed the GUI locally, you can automatically pop up the 3D structural model within the GUI using `show_with="local_gui"`. Additionally, the parameter dictionary `show_with` also supports `matplotlib`, so you can also view the image through python.
 
 
 
@@ -542,7 +542,7 @@ mt.add_lib(name="Air", data=mo.Material.Air, order=2)
 
 <div class="text-justify">
 
-&emsp;&emsp;The `add_nondispersion` function adds a non-dispersion material to the project in the simulation. The `data`, is specified as a list, typically in the format [(index real, index imag)]. This list contains the complex refractive index values for the material, enabling the simulation to model its optical properties accurately. The `Order` parameter determines the mesh order for the material during the simulation. The function allows users to incorporate non-dispersion materials into the simulation, contributing to a comprehensive and precise optical analysis of the system under investigation.
+&emsp;&emsp;The `add_nondispersion` function adds a non-dispersion material to the project in the simulation. <br/>&emsp;&emsp;The `data`, is specified as a list, typically in the format [(index real, index imag)]. This list contains the complex refractive index values for the material, enabling the simulation to model its optical properties accurately.<br/>&emsp;&emsp;The `Order` parameter determines the mesh order for the material during the simulation.<br/>&emsp;&emsp;The function allows users to incorporate non-dispersion materials into the simulation, contributing to a comprehensive and precise optical analysis of the system under investigation.
 
 </div>
 
@@ -563,7 +563,7 @@ wv.add(name=waveform_name, wavelength_center=wavelength, wavelength_span=wavelen
 
 <div class="text-justify">
 
-&emsp;&emsp;The `Waveform` function is used to retrieve the waveform manager for the current project. It allows users to access and manipulate the waveform sources used in the simulation. The `name` parameter specifies the name of the waveform source. The `Wavelength_center` parameter defines the center of the wavelength range for the source. The `Wavelength_span` parameter determines the span of the wavelength range for the source. 
+&emsp;&emsp;The `Waveform` function is used to retrieve the waveform manager for the current project. It allows users to access and manipulate the waveform sources used in the simulation.<br/>&emsp;&emsp;The `name` parameter specifies the name of the waveform source.<br/>&emsp;&emsp;The `Wavelength_center` parameter defines the center of the wavelength range for the source.<br/>&emsp;&emsp;The `Wavelength_span` parameter determines the span of the wavelength range for the source. 
 
 
 </div>
@@ -625,7 +625,7 @@ src.add(name="source", type="mode_source", axis="x_forward",
 
 <div class="text-justify">
 
-&emsp;&emsp;The `Source` function is utilized to retrieve the source manager for the current project. The `type` parameter specifies the type of the source and is formatted as either `["mode_source"] or ["gaussian_source"]`. The `name` parameter represents the name assigned to the source. The `axis` parameter defines the axis of the source. The `property` parameter allows for defining specific properties associated with the source.
+&emsp;&emsp;The `Source` function is utilized to retrieve the source manager for the current project.<br/>&emsp;&emsp;The `type` parameter specifies the type of the source and is formatted as either `["mode_source"] or ["gaussian_source"]`.<br/>&emsp;&emsp;The `name` parameter represents the name assigned to the source.<br/>&emsp;&emsp;The `axis` parameter defines the axis of the source.<br/>&emsp;&emsp;The `property` parameter allows for defining specific properties associated with the source.
 
 </div>
 
@@ -660,7 +660,9 @@ src.add(name="source", type="mode_source", axis="x_forward",
 
 <div class="text-justify">
 
-&emsp;&emsp;For the global monitor, the `Monitor` function is utilized to retrieve the monitor manager for the current project, which allows users to access and manage various types of monitors used during simulation. The `name` parameter represents the name of the Global Option associated with the monitor. The `type` parameter defines the type of the Global Option and is formatted as a list containing one of several monitor types, such as `["electric_monitor"], ["current_monitor"], ["charge_monitor"], ["band_monitor"], ["profile_monitor"], ["global_monitor", "global_option"], ["time_monitor"], ["power_monitor"], or ["mode_expansion"]`. The `property` parameter is used to define and set the relevant parameters specific to the chosen monitor type. These parameters control the monitor's behavior and data collection settings during the simulation. <br/>&emsp;&emsp;The power monitor is a configuration setting that allows users to specify various simulation parameters. The `name` parameter assigns a name to the power monitor. The `type` parameter defines the type of power monitor. The `general` parameter pertains to settings related to the frequency domain and frequency-dependent behaviors of the simulation. The `geometry` parameter is used to define the geometric characteristics of the simulated structure. The `mode_expansion` parameter involves relevant settings for mode expansion simulations. Users can customize the simulation settings by utilizing these input parameters to achieve accurate and comprehensive results based on their specific simulation requirements.
+&emsp;&emsp;For the global monitor, the `Monitor` function is utilized to retrieve the monitor manager for the current project, which allows users to access and manage various types of monitors used during simulation.<br/>&emsp;&emsp;The `name` parameter represents the name of the Global Option associated with the monitor.<br/>&emsp;&emsp;The `type` parameter defines the type of the Global Option and is formatted as a list containing one of several monitor types, such as `["electric_monitor"], ["current_monitor"], ["charge_monitor"], ["band_monitor"], ["profile_monitor"], ["global_monitor", "global_option"], ["time_monitor"], ["power_monitor"], or ["mode_expansion"]`. The `property` parameter is used to define and set the relevant parameters specific to the chosen monitor type. These parameters control the monitor's behavior and data collection settings during the simulation.
+
+&emsp;&emsp;The power monitor is a configuration setting that allows users to specify various simulation parameters.<br/>&emsp;&emsp;The `name` parameter assigns a name to the power monitor.<br/>&emsp;&emsp;The `type` parameter defines the type of power monitor.<br/>&emsp;&emsp;The `general` parameter pertains to settings related to the frequency domain and frequency-dependent behaviors of the simulation.<br/>&emsp;&emsp;The `geometry` parameter is used to define the geometric characteristics of the simulated structure.<br/>&emsp;&emsp;The `mode_expansion` parameter involves relevant settings for mode expansion simulations. Users can customize the simulation settings by utilizing these input parameters to achieve accurate and comprehensive results based on their specific simulation requirements.
 
 </div>
 
@@ -685,7 +687,7 @@ src.add(name="source", type="mode_source", axis="x_forward",
 
 <div class="text-justify">
 
-&emsp;&emsp;The `Simulation` manager is critical for setting up and running simulations in the current project. The `name` parameter allows users to assign a unique name to the simulation for identification purposes. The `type` parameter defines the type of the simulation. The `simulation_time` parameter specifies the duration of the simulation. The `mesh_settings` parameter enables users to configure various settings related to the simulation mesh. The `mesh_accuracy` parameter controls the precision of the mesh used in the simulation. The `cells_per_wavelength` parameter determines the wavelength precision used in the simulation. The `minimum_mesh_step_settings` parameter sets the minimum mesh step, allowing users to define the smallest allowable size for mesh elements. Users can tailor the simulation setup to meet their requirements by utilizing these input parameters, enabling accurate and efficient electromagnetic simulations of complex optical structures.
+&emsp;&emsp;The `Simulation` manager is critical for setting up and running simulations in the current project.<br/>&emsp;&emsp;The `name` parameter allows users to assign a unique name to the simulation for identification purposes.<br/>&emsp;&emsp;The `type` parameter defines the type of the simulation.<br/>&emsp;&emsp;The `simulation_time` parameter specifies the duration of the simulation.<br/>&emsp;&emsp;The `mesh_settings` parameter enables users to configure various settings related to the simulation mesh. The `mesh_accuracy` parameter controls the precision of the mesh used in the simulation.<br/>&emsp;&emsp;The `cells_per_wavelength` parameter determines the wavelength precision used in the simulation.<br/>&emsp;&emsp;The `minimum_mesh_step_settings` parameter sets the minimum mesh step, allowing users to define the smallest allowable size for mesh elements.<br/>&emsp;&emsp;Users can tailor the simulation setup to meet their requirements by utilizing these input parameters, enabling accurate and efficient electromagnetic simulations of complex optical structures.
 
 </div>
 

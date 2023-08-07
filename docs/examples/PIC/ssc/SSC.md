@@ -3,25 +3,24 @@ import {InlineMath, BlockMath} from 'react-katex';
 
 # Spot Size Converter
 
-
-![](structure.png)
 ## Introduction:
 <div class="text-justify">
 
-&emsp;&emsp;The spot size converter is an important device connecting the silicon photonic integrated chip and the external optical fiber. The slow changing waveguide structure is used to reduce the light spot in the optical fiber to the size matching the waveguide mode field, which greatly reduces the coupling loss.
+![](structure_PS.png)
+ The spot size converter is an important device connecting the silicon photonic integrated chip and the external optical fiber. The slow changing waveguide structure is used to reduce the light spot in the optical fiber to the size matching the waveguide mode field, which greatly reduces the coupling loss.
 
 </div>
 
 
 ## Simulation:
 <div class="text-justify">
-&emsp;&emsp;The eigenmode expansion (EME) solver is very suitable for solving long-distance transmission problems such as spot size  converter, and devices can be quickly designed through length scanning.
+ The eigenmode expansion (EME) solver is very suitable for solving long-distance transmission problems such as spot size  converter, and devices can be quickly designed through length scanning.
 </div>
 
 ### step 1: Add Project
 <div class="text-justify">
 
-&emsp;&emsp;First, we need to import the software development kit and use its `Project()` to build a project.
+ First, we need to import the software development kit and use its `Project()` to build a project.
 </div>
 
 ```
@@ -34,7 +33,7 @@ pj = mo.Project(name=project_name, location="local")
 ### step 2: Add Material
 <div class="text-justify">
 
-&emsp;&emsp;Here we demonstrate `Material()` adding materials to the project and using `add_lib` to add materials from the material library.
+ Here we demonstrate `Material()` adding materials to the project and using `add_lib()` to add materials from the material library.
 </div>
 
 ```
@@ -49,7 +48,7 @@ mt.add_lib(name='Air', data=mo.Material.Air, order=2)
 ### step 3: Add Structure
 <div class="text-justify">
 
-&emsp;&emsp;The structure is composed of a substrate, a conical waveguide with high refractive index, and a cladding. Add
+ The structure is composed of a substrate, a conical waveguide with high refractive index, and a cladding. Add
 geometric structures using `Structure()` and `add_geometry()`, and select the method of importing GDS to establish the model. It is necessary to set geometric and material parameters in the property. Select simulation materials by using `mesh_order` in areas where geometry overlaps.
 
 </div>
@@ -71,7 +70,7 @@ st.add_geometry(name="cover", type="gds_file",
 ### step 4: Add Boundary
 <div class="text-justify">
 
-&emsp;&emsp;Use `OBoundary()` optical boundary to set the boundaries and boundary conditions of the geometric structure.
+ Use `OBoundary()` optical boundary to set the boundaries and boundary conditions of the geometric structure.
 </div>
 
 ```
@@ -84,26 +83,37 @@ st.OBoundary(property={"geometry": {"x": 0, "x_span": 206, "y": 0, "y_span": 5.5
 ### step 5: Add EME port
 <div class="text-justify">
 
-&emsp;&emsp;Add ports using `Port()` and `add()` in the project, and set the port type, geometric structure size, transmission mode, and quantity in the port.
+ Add ports using `Port()` and `add()` in the project, and set the port type, geometric structure size, transmission mode, and quantity in the port.
 </div>
 
 ```
 # region --- 5. Port ---
-pjp = pj.Port(property={"source_port": "left_port"})
+pjp = pj.Port()
 pjp.add(name="left_port", type="eme_port",
             property={"geometry": {"port_location": "left", "y": 0, "y_span": 5.5, "z": 0.5, "z_span": 7},
                       "eme_port": {"general": {"mode_selection": "fundamental_TE"},
-                                   "advanced": {"number_of_trial_modes": number_of_modes}}})
+                                   "advanced": {"number_of_trial_modes":  15}}})
 pjp.add(name="right_port", type="eme_port",
             property={"geometry": {"port_location": "right", "y": 0, "y_span": 5.5, "z": 0.5, "z_span": 7},
                       "eme_port": {"general": {"mode_selection": "fundamental_TE"},
-                                   "advanced": {"number_of_trial_modes": number_of_modes}}})
+                                   "advanced": {"number_of_trial_modes":  15}}})
 # endregion
 ```
+| key | value | type | description |
+|-----------| ----- | ---- | -------------------------|
+| name       | left_port     | string    | the name of port                |
+|  type |  eme_port | string | select type of port |
+|  port_location | left  | string   |          select the location of the port  |
+| y   |  0 | float | center position of port width |
+| y_span| 5.5 | float | port width |
+| y | 0.5 | float | center position of port height |
+| z_span | 7 | float | port height |
+| mode_selection | fundamental_TE | string |select the mode of port |
+| number_of_trial_modes | 15 | string | set the mode of port |
 
 
 ### step 6: Add Monitor
-&emsp;&emsp;Add a monitor using engineering's `Monitor` and `add()`, and set up  `profile_monitor` type in the monitor to view the transmittance and field distribution at both ends of the spot converter.
+ Add a monitor using engineering's `Monitor` and `add()`, and set up  `profile_monitor` type in the monitor to view the transmittance and field distribution at both ends of the spot converter.
 
 ```
 # region --- 6. Monitor ---
@@ -124,9 +134,9 @@ mn.add(name="z_normal", type="profile_monitor",
 ### step 7: Add EME solver
 <div class="text-justify">
 
-&emsp;&emsp;Add a simulation using engineering's `Simulation()` and `add()`, and select the EME simulation type. Divide the geometric structure into four regions in `cell_grop_definition`, set the number of `cell_number` in the slowly changing geometric structure, and use the `sub_cell` method.
+ Add a simulation using engineering's `Simulation()` and `add()`, and select the EME simulation type. Divide the geometric structure into four regions in `cell_grop_definition`, set the number of `cell_number` in the slowly changing geometric structure, and use the `sub_cell` method.
 
-![](EME_SSC.png)
+![](EME_SSC_PS.png)
 </div>
 
 ```
@@ -139,10 +149,10 @@ simu.add(name=simu_name, type="EME",
                 "cell_geometry": {
                     "energy_conservation": "make_passive",  # ["none","make_passive"]
                     "cell_group_definition": [
-                        {"span": 2, "cell_number": 1, "number_of_modes": number_of_modes, "sc": "none"},
-                        {"span": 1, "cell_number": 1, "number_of_modes": number_of_modes, "sc": "none"},
-                        {"span": 200, "cell_number": 30, "number_of_modes": number_of_modes, "sc": "sub_cell"},
-                        {"span": 3, "cell_number": 1, "number_of_modes": number_of_modes, "sc": "none"}]}},
+                        {"span": 2, "cell_number": 1, "number_of_modes": 15, "sc": "none"},
+                        {"span": 1, "cell_number": 1, "number_of_modes":  15, "sc": "none"},
+                        {"span": 200, "cell_number": 30, "number_of_modes":  15, "sc": "sub_cell"},
+                        {"span": 3, "cell_number": 1, "number_of_modes":  15, "sc": "none"}]}},
             "transverse_mesh_setting": {"global_mesh_uniform_grid": {"dy": grid, "dz": grid}},
             "eme_analysis": {
                 "eme_propagate": True,
@@ -152,11 +162,32 @@ simu.add(name=simu_name, type="EME",
 
 # endregion
 ```
+| key | value | type | description |
+|-----------| ----- | ---- | ----- |
+| name | simu_name | string | name of simulation |
+|  type |  EME | string | select the type of solver |
+| wavelength |  1.5 | float | wavelength of mode |
+| use_wavelength_sweep | True | bool | select to enable wavelength sweep |
+| span | 2 | float | the span of area|
+| cell_number | 1 | float | number of structural slices |
+| number_of_modes | 15 | float | number of modes in the crosss-section |
+| sc | none | string | select to enable subcell method | 
+| dy | 0.05|  float | horizontal grid of cross-section |
+|dz| 0.05 | float | Longitudinal grid of cross-section |
+| eme _propagate | True | bool | select to enable EME propagation |
+| propagation_sweep | True | bool | select to enable propagation sweep |
+| parameter | grop_span_3 | string | the area of propagation sweep |
+| start | 50 | float | starting length of sweep |
+|stop | 250 | float | stoping length of sweep |
+|number_of_points | 50 | float | number of sweep lengths |
+| phase | 0 | float | the initial phase of optical source |
+| select_mode | TE |string| mode of optical source |
+
 
 ### step 8: Run and export results
 <div class="text-justify">
 
-&emsp;&emsp;Run the EME simulation using `simu[simu_name].run()`, where `simu_name` is the name of the EME simulation.
+ Run the EME simulation using `simu[simu_name].run()`, where `simu_name` is the name of the EME simulation.
 Extract data using `extract()`, where `data` is the calculation result data, `savepath` is the storage path, `target` is the classification of the data, and `monitor_name` is the name of the monitor.
 </div>
 
@@ -181,11 +212,14 @@ for i in range(3):
 <div class="text-justify">
 
 
-&emsp;&emsp;The EME solver calculates the template converter by using multiple elements in the region of geometric changes, calculating the cross-sectional patterns of the elements, and calculating the S-matrix by comparing the matching of electromagnetic fields.To verify the accuracy of the calculation results, it is possible to gradually increase the number of transmission modes in the cross-section to determine whether the results converge.
+ The EME solver calculates the template converter by using multiple elements in the region of geometric changes, calculating the cross-sectional patterns of the elements, and calculating the S-matrix by comparing the matching of electromagnetic fields.To verify the accuracy of the calculation results, it is possible to gradually increase the number of transmission modes in the cross-section to determine whether the results converge.
 
-&emsp;&emsp;The electric field distribution at the input and output ends of the mode spot converter is shown in the figure, and it is obvious that the light spot decreases significantly after passing through the silicon waveguide.
-![](017_eme_section3.png)
-![](016_eme_section2.png)
-&emsp;&emsp;EME can quickly scan the length without calculating the mode at the cross-section, and can quickly obtain the S parameter.
-![](10_length_sweep.S21.png)
+ The electric field distribution at the input and output ends of the mode spot converter is shown in the figure, and it is obvious that the light spot decreases significantly after passing through the silicon waveguide.
+
+
+![](SSC_E.png)
+
+ EME can quickly scan the length without calculating the mode at the cross-section, and can quickly obtain the S parameter.
+
+![](S21.png)
 </div>

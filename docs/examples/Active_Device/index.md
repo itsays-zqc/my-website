@@ -3,15 +3,23 @@
 This example introduces the modeling and optoelectronic simulation of a vertical Ge-Si photodetector.
 
 
+
 ## 1. Overview
 
 This example utilizes FDTD simulation to obtain the optical field profile in the Ge absorption layer. Subsequently, the photo-induced carrier generation rate is calculated based on that, which is then imported into the OEDevice simulation to obtain the photo current. We also provide scripts for dark current, capacitance and resistance, frequency response, and saturation power. These simulations are divided into separate scripts, and they all call a unified script for modeling and material setup, making it convenient for modifications and management.
 
+
+
 ## 2. Modeling
+
 The modeling is completed by a callable function in the script file `VPD00_structure.py`.
 
+
+
 ### 2.1 Import simulation toolkit
+
 First, import `maxoptics_sdk` and other packages.
+
 ```
 [1]
 ```
@@ -25,8 +33,11 @@ from VPD_material import *
 ```
 The script file `VPD_material.py` stores some modified electronic parameters of the materials, which are referenced to override default parameters in the modeling script.
 
+
+
 ### 2.2 Set general parameters
-Set some general parameters before modeling. At the begining are those that need to be modified frequently during testing and optimization.
+
+Set some general parameters before modeling. At the beginning are those that need to be modified frequently during testing and optimization.
 
 ```
 [2]
@@ -50,6 +61,8 @@ run_mode = "local"
 simu_name = "VPD00_struc"
 ```
 Wavelength, temperature, the mesh grid size and some other parameters are defined above. They will be detailed in the subsequent settings.
+
+
 
 ```
 [3]
@@ -102,6 +115,8 @@ cathode_z_center = Si_z_span+Ge_z_span+cathode_z_span/2
 ```
 These are geometric parameters of the structures.
 
+
+
 ```
 [4]
 ```
@@ -124,6 +139,8 @@ oe_z_mean = 0.5*(oe_z_min+oe_z_max)
 oe_z_span = oe_z_max-oe_z_min
 ```
 These are geometric parameters of the electrical simulation region.
+
+
 
 ```
 [5]
@@ -169,6 +186,8 @@ n_pplus_ref = 1e16
 These are parameters for doping setup, including doping box, concentration and the diffusion junction width.
 
 
+
+
 ```
 [6]
 ```
@@ -193,6 +212,8 @@ z_span = z_max-z_min
 These are geometry parameters for the optical simulation region.
 
 
+
+
 ### 2.3 Define the function for creating a new project
 
 A function is defined to implement the functionalities of creating a project, setting materials, modeling, doping, setting boundary conditions, etc., which can be called by other simulation script files.
@@ -203,6 +224,7 @@ A function is defined to implement the functionalities of creating a project, se
 ```python
 def pd_project(project_name, run_mode, material_property):
 ```
+
 
 
 #### 2.3.1 Create a new project
@@ -220,6 +242,8 @@ Create a new simulation project.
 
 - `name`--Project name, which is also the folder name for the project files to be saved.
 - `location`--The location of the computing resources. The active device simulation only support the option of `"local"` now, which means the simulation uses the local computing resources.
+
+
 
 #### 2.3.2 Set materials
 
@@ -240,6 +264,8 @@ Create a new simulation project.
         raise
 ```
 The `elec_Si_properties` and `elec_Ge_properties` are both variables imported from `VPD_material.py`, storing the modified electronic parameters for Silicon and Germanium respectively. Besides, more physics models for Germanium are switched on in the transient simulation, with the `elec_Ge_properties_for_transient` specified for it. The `material_property` is used to determine which type of material parameters to choose. For details of the physics model and electronic parameter settings, please refer to the appendix.
+
+
 
 
 ```
@@ -272,11 +298,9 @@ When adding materials, start by using the `add_lib` function to add electrical m
 - `order`--`mesh_order` of the material, default to be 2
 - `override`--Override the default electronic parameters by custom values
 
-
-
 Then, use the `set_optical_material` function to set the optical property for the material.
 
-`set_optical_material()`参数：
+`set_optical_material()` parameters：
 
 - `data`--Optical material property，which can be one of the built-in materials in the optical material library `mo.Material`, or be from the custom optical material.
 
@@ -293,10 +317,14 @@ mt.add_nondispersion(name="mat_sio2_op", data=[(1.444, 0)], order=1)
 mt["mat_sio2"].set_optical_material(data=mt["mat_sio2_op"].passive_material)
 ```
 
+
+
 Note:
 
 1. Although the electrical and optical material properties are bound together through a two-step setting, in reality, there is no inherent connection between them. For instance, it is possible to set both the electrical properties of SiO2 and the optical properties of Si for the same material. The simulation will not generate errors or warnings in such cases, so users need to determine by themselves whether the material settings align with the physics.
 2. The FDTD simulation currently doesn't support metal materials. Therefore, the optical property of metal materials should be set to `mo.Material.PEC` and the material name should also be `"pec"`.
+
+
 
 
 #### 2.3.3 Create structures
@@ -348,13 +376,13 @@ Note:
                      "z": anode_z_center, "z_span": anode_z_span}})
 ```
 
-
-
 `add_geometry()` parameters:
 
 - `name`--Structure name
 - `type`--Structure type
 - `property`--Other properties, listed below
+
+
 
 
 `Rectangle` property list：
@@ -474,10 +502,12 @@ Note:
 - `type`--Doping type. Options are `"n"` or `"p"` for n-type, p-type doping respectively
 - `property`--Other properties
 
-
 According to the selection of `general.distribution_function`, doping is distinguished as constant doping and gaussian doping. Detailed properties are listed below.
 
-Doping properties:
+
+
+Doping property list:
+
 |                               | default | type  | notes                                              |
 | :---------------------------- | :------ | :---- | :------------------------------------------------- |
 | geometry.x                    |         | float |                                                    |
@@ -504,26 +534,22 @@ Doping properties:
 | volume.material_list          |         | list  | Available when volume_type is 'material'           |
 | volume.region_list            |         | list  | Available when volume_type is 'region'             |
 
-`geometry`参数设置掺杂的矩形区域。
-
-`general`参数设置掺杂函数类型、掺杂浓度等属性。
-
-- 当掺杂分布函数为`"constant"`，即为均匀掺杂时，只需设置掺杂浓度`concentration`
-- 当掺杂分布函数为`"gaussian"`，即为高斯掺杂时，需要设置以下参数：
-  - `concentration`--非扩散区浓度
-  - `ref_concentration`--扩散区边缘（掺杂区域边缘）浓度
-  - `junction_width`--扩散区宽度
-  - `source_face`--掺杂注入面，可设置为`"lower_x"`, `"lower_y"`, `"lower_z"`, `"upper_x"`, `"upper_y"`或`"upper_z"`，其中`"lower_x"`代表以`x=x_min`面为掺杂注入面，其余同理。注入面处无扩散区，其余掺杂区域边缘有扩散区（扩散区在掺杂区域内）。
-
-`volume`参数设置指定的掺杂区域或材料。
-
-- 当`volume_type`为`"all"`（默认值）时，掺杂将应用到所有（半导体）结构，同时受到掺杂区域限制。
-- 当`volume_type`为`"material"`时，需设置`material_list`参数，表示掺杂应用到指定的若干材料所对应的结构，同时受到掺杂区域限制。
-- 当`volume_type`为`"region"`时，需设置`region_list`参数，表示掺杂应用到指定的若干结构，同时受到掺杂区域限制。
+`geometry`--Set the geometry parameters of doping box
+`general`--Set the distribution function, concentration and so on
+- When the distribution function is `"constant"`, only `concentration` needs to be set
+- When the distribution function is `"gaussian"`:
+  - `concentration`--Concentration in the non-diffusion area
+  - `ref_concentration`--Concentration on the edge of diffusion area (edge of doping box)
+  - `junction_width`--Diffusion junction width
+  - `source_face`--The doping source face. Options are `"lower_x"`, `"lower_y"`, `"lower_z"`, `"upper_x"`, `"upper_y"` or `"upper_z"`. `"lower_x"` means the source face is `x=x_min`. Similarly for the rest. There is no diffusion area on the edge of source face. As for the other edges, there is a diffusion area within the doping box.
+  `volume`--Set a list of regions or materials to be doped
+- When `volume_type` is `"all"`(by default)，the doping is applied to all the (semiconductor) structures, restricted by the doping box
+- When `volume_type` is `"material"`, `material_list` needs to be set, which means the doping is applied to the structures with one of the specified materials and restricted by the doping box
+- When `volume_type` is `"region"`, `region_list` needs to be set, which means the doping is applied to the specified structures and restricted by the doping box
 
 
 
-*完整的掺杂设置语法示例*
+*Examples for complete doping setting syntax*
 
 ```
 [14]
@@ -546,7 +572,7 @@ st.add_doping(name="n_pplus", type="n", property={
 
 
 
-#### 2.3.5 添加表面复合
+#### 2.3.5 Add surface recombination
 
 ```
 [15]
@@ -570,13 +596,14 @@ st.add_doping(name="n_pplus", type="n", property={
 	# endregion
 ```
 
-`add_surface_recombination()`参数：
-- `name`--自定义名称
-- `property`--其它属性
+`add_surface_recombination()` parameters：
+
+- `name`--Custom name
+- `property`--Other properties
 
 
 
-表面复合属性列表：
+Surface recombination property list:
 
 |                        | default             | type   | notes                                                                                                                |
 |:-----------------------|:--------------------|:-------|:---------------------------------------------------------------------------------------------------------------------|
@@ -592,21 +619,24 @@ st.add_doping(name="n_pplus", type="n", property={
 
 其中：
 
-- `surface_type`--界面选择类型，设置为`"domain_domain"`时代表选择两个结构之间的所有交界面；设置为`"material_material"`时代表选择两种材料之间的所有交界面。
-- `interface_type`--界面接触类型，其中：
-  - `"InsulatorInterface"`--为半导体-绝缘体界面
-  - `"HomoJunction"`--为同质半导体-半导体界面
-  - `"HeteroJunction"`--为异质半导体-半导体界面
-  - `"MetalOhmicInterface"`--为半导体-金属界面
-  - `"SolderPad"`--为金属-绝缘体界面
-- `infinite_recombination`--当`interface_type`为`"MetalOhmicInterface"`可用，设置为`False`时才可设置表面复合速度
-- `velocity_hole`, `velocity_electron`--空穴、电子表面复合速度，当`interface_type`为`"MetalOhmicInterface"`或`"InsulatorInterface"`才可用
-- `domain_1`, `domain_2`--交界的两个结构的名称，当`surface_type`为`"domain_domain"`时必需设置
-- `material_1`, `material_2`--交界的两种材料类型，当`surface_type`为`"material_material"`时必需设置
+- `surface_type`--Type of selection for the surface
+  - When `surface_type` is `"domain_domain"`, the surface is the interface between two structures 
+  - When `surface_type` is "material_material"`, the surface is the interface between two materials
+
+- `interface_type`--Type of contact for the surface
+  - `"InsulatorInterface"`--Semiconductor-insulator interface
+  - `"HomoJunction"`--Homogeneous semiconductor-semiconductor interface
+  - `"HeteroJunction"`--Heterogeneous semiconductor-semiconductor interface
+  - `"MetalOhmicInterface"`--Semiconductor-conductor interface
+  - `"SolderPad"`--Conductor-insulator interface
+- `infinite_recombination`--Only available when `interface_type` is `"MetalOhmicInterface"`. The surface recombination velocity of holes and electrons will be available when `infinite_recombination` is `False`.
+- `velocity_hole`, `velocity_electron`--Surface recombination velocity of holes and electrons. Available when `interface_type` is `"MetalOhmicInterface"` or `"InsulatorInterface"`.
+- `domain_1`, `domain_2`--Names of the two structures at the interface. They must be set explicitly when `surface_type` is `"domain_domain"`.
+- `material_1`, `material_2`--The two materials at the interface. They must be set explicitly when `surface_type` is `"material_material"`.
 
 
 
-#### 2.3.6 设置光学波形
+#### 2.3.6 Set waveform
 
 ```
 [16]
@@ -618,18 +648,16 @@ st.add_doping(name="n_pplus", type="n", property={
 	# endregion
 ```
 
+`wv.add()` parameters：
 
-
-`wv.add()`参数：
-
-- `name`--波形名称
-- `wavelength_center`--中心波长
-- `wavelength_span`--波长展宽
-- `unit`--波长单位，可设置为`"um"`或`"nm"`，默认为`"um"`
+- `name`--Name of the waveform
+- `wavelength_center`--Center of wavelength
+- `wavelength_span`--Span of wavelength
+- `unit`--Unit of wavelength. Options are`"um"` and `"nm"`，default to be`"um"`
 
 
 
-#### 2.3.7 设置光学仿真边界条件
+#### 2.3.7 Set boundary conditions of optical simulation
 
 ```
 [17]
@@ -643,7 +671,7 @@ st.add_doping(name="n_pplus", type="n", property={
 
 
 
-光学仿真边界条件属性列表：
+Boundary conditions of optical simulation property list:
 
 |                                  | default   | type    | notes                                                                                     |
 |:---------------------------------|:----------|:--------|:------------------------------------------------------------------------------------------|
@@ -676,15 +704,15 @@ st.add_doping(name="n_pplus", type="n", property={
 | boundary.z_max                   |           | string  | Selections are ['PML', 'PEC', 'metal', 'PMC', 'periodic'].                                |
 | boundary.z_min                   |           | string  | Selections are ['PML', 'PEC', 'metal', 'PMC', 'symmetric', 'anti_symmetric', 'periodic']. |
 
-`geometry`设置仿真区域大小。
+`geometry`--Set the optical simulation region
 
-`boundary`设置光学仿真边界条件，所有边界默认均为`"PML"`。
+`boundary`--Set the optical boundary conditions, default to be `"PML"` for all the boundaries
 
-`general_pml`设置`pml`边界相关参数。
+`general_pml`--Set pml-related parameters
 
 
 
-#### 2.3.8 设置局部加密
+#### 2.3.8 Set local mesh
 
 ```
 [18]
@@ -716,16 +744,14 @@ st.add_doping(name="n_pplus", type="n", property={
 	# endregion
 ```
 
+`add_mesh()` set the local mesh for optical simulation, parameters:
 
-
-`add_mesh()`设置光学仿真局部加密，参数：
-
-- `name`--自定义名称
-- `property`--其它属性
+- `name`--Custom name
+- `property`--Other properties
 
 
 
-光学局部加密属性列表：
+Optical local mesh property list:
 
 |                         | default | type  | notes                         |
 | :---------------------- | :------ | :---- | :---------------------------- |
@@ -745,20 +771,20 @@ st.add_doping(name="n_pplus", type="n", property={
 | geometry.z_min          |         | float |                               |
 | geometry.z_max          |         | float |                               |
 
-`geometry`设置加密区域，当`x_span`不为0时，即代表对x方向对应范围进行加密，其余同理。
+`geometry`--Set the region of local mesh. When `x_span` doesn't vanish, the mesh setting will be applied to the range along the x axis. Similarly for the rest
 
-`general`设置对应加密方向的网格大小。
-
-
-
-`add_emesh()`设置电学仿真在一个矩形区域的局部加密，参数：
-
-- `name`--自定义名称
-- `property`--其它属性
+`general`--Set the mesh size in the corresponding direction
 
 
 
-电学矩形区域局部加密属性列表：
+`add_emesh()` set a rectangle region for local mesh of electrical simulation. Parameters:
+
+- `name`--Custom name
+- `property`--Other properties
+
+
+
+Local mesh of electrical simulation in rectangle region property list:
 
 |           | default | type  | notes                                  |
 | :-------- | :------ | :---- | :------------------------------------- |
@@ -776,20 +802,22 @@ st.add_doping(name="n_pplus", type="n", property={
 | z_max     |         | float |                                        |
 | mesh_size |         | float | max size of electrical simulation mesh |
 
-注意事项：
-
-1. 当电学仿真平面为xy平面时，则只有x, y方向的几何参数有效，z方向参数会被忽略，其余同理。
 
 
+Note:
 
-`add_emesh_along_line()`设置电学仿真沿一条线段的局部加密，参数：
-
-- `name`--自定义名称
-- `property`--其它属性
+1. When the simulation region is in the xy plane, only the parameters in the x, y direction are effective, and parameters in the z direction will be ignored. Similarly for the rest.
 
 
 
-电学仿真沿一条线段局部加密属性列表：
+`add_emesh_along_line()` set a line region for local mesh of electrical simulation. Parameters：
+
+- `name`--Custom name
+- `property`--Other properties
+
+
+
+Local mesh of electrical simulation in line region property list:
 
 |           | default | type  | notes                         |
 | :-------- | :------ | :---- | :---------------------------- |
@@ -801,13 +829,15 @@ st.add_doping(name="n_pplus", type="n", property={
 | end_z     | 1       | float | Restrained by condition: >=0. |
 | mesh_size | 0.01    | float |                               |
 
-注意事项：
-
-1. 当电学仿真平面为xy平面时，除设置`start_x`, `start_y`, `end_x`, `end_y`外，也许设置`start_z`, `end_z`，并都应与所在平面z坐标相同，其余同理。
 
 
+Note:
 
-#### 2.3.9 设置光源
+1. When the simulation region is in the xy plane, besides `start_x`, `start_y`, `end_x` and  `end_y`, it is also required to set the `start_z` and  `end_z`, which should both be the same as the z coordinate of the plane. Similarly for the rest.
+
+
+
+#### 2.3.9 Set optical sources
 
 ```
 [19]
@@ -824,16 +854,16 @@ st.add_doping(name="n_pplus", type="n", property={
 
 
 
-`src.add()`参数：
+`src.add()` parameters：
 
-- `name`--光源名称
-- `axis`--光源传播方向，`"x_forward"`代表沿x轴向坐标增大的方向传播，`"x_backward"`代表相反方向，其余同理
-- `type`--光源类型，此处为模式光源
-- `property`--其他属性
+- `name`--Name of the source
+- `axis`--Direction of the source. `"x_forward"` means light propagating along x axis and in the direction of increasing x coordinate. `"x_forward"` means the opposite direction. Similarly for the rest
+- `type`--Type of the source. It is mode source in this example
+- `property`--Other properties
 
 
 
-模式光源属性列表：
+Mode source property list:
 
 |                                     | default           | type    | notes                                                        |
 | :---------------------------------- | :---------------- | :------ | :----------------------------------------------------------- |
@@ -865,19 +895,19 @@ st.add_doping(name="n_pplus", type="n", property={
 | geometry.z_min                      |                   | float   |                                                              |
 | geometry.z_max                      |                   | float   |                                                              |
 
-`geometray`设置光源几何参数。
+`geometray`--Set geometric parameters of optical source
 
-`bent_waveguide`设置弯曲波导相关参数。
+`bent_waveguide`--Set parameters related to bent waveguide
 
-`general`设置其它参数：
+`general`：
 
-- `mode_selection`--设置选择的模式，当设置为`"user_select"`时，选择阶数为`mode_index`的模式
-- `waveform`--设置光源应用的波形
-  - `waveform_id_select`--设置具体波形
+- `mode_selection`--Set the type of selection for the eigen mode. When it is `"user_select"`, the mode of index in `mode_index` is selected
+- `waveform`--Set the waveform of the source
+  - `waveform_id_select`--Set to be a specified waveform
 
 
 
-#### 2.3.10 设置监视器
+#### 2.3.10 Set monitors
 
 ```
 [20]
@@ -910,7 +940,10 @@ st.add_doping(name="n_pplus", type="n", property={
 - `type`--监视器类型
 - `property`--监视器其它属性
 
+
+
 Power Monitor属性列表：
+
 |                                                    | default    | type    | notes                                                        |
 | :------------------------------------------------- | :--------- | :------ | :----------------------------------------------------------- |
 | general.frequency_profile.sample_spacing           | uniform    | string  | Selections are ['uniform'].                                  |

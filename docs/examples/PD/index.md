@@ -1,15 +1,16 @@
 # PD
 
-本文介绍Ge-Si VPD器件的建模与仿真。
+This example introduces the modeling and optoelectronic simulation of a vertical Ge-Si photodetector.
+
 
 ## 1. Overview
 
-本工程通过FDTD仿真得到Ge吸收层的光场分布，然后由此计算光生载流子生成率的分布，并将其导入OEDevice仿真中，得到VPD器件的光电流响应特性。我们还提供了暗电流、电容电阻、频率响应、饱和功率等特性的仿真示例。本工程将这些仿真拆分到不同的脚本进行，同时它们调用统一的建模与材料设置脚本，这样可以方便的对模型修改与管理。
+This example utilizes FDTD simulation to obtain the optical field profile in the Ge absorption layer. Subsequently, the photo-induced carrier generation rate is calculated based on that, which is then imported into the OEDevice simulation to obtain the photo current. We also provide scripts for dark current, capacitance and resistance, frequency response, and saturation power. These simulations are divided into separate scripts, and they all call a unified script for modeling and material setup, which makes it convenient for modifications and management.
 
 ## 2. Modeling
 
-### 2.1 导入仿真工具包
-首先导入`maxoptics_sdk`包以及其它所需工具。
+### 2.1 Import simulation toolkit
+First, import `maxoptics_sdk` and other packages.
 ```
 [1]
 ```
@@ -21,10 +22,10 @@ from maxoptics_sdk.helper import timed
 from pathlib import Path
 from VPD_material import *
 ```
-其中`VPD_material.py`为材料设置脚本，存储修改了参数值的材料电学参数，将在后续设置材料部分详细介绍。
+The script file `VPD_material.py` stores some modified electronic parameters of the materials, which are referenced to override default parameters in the modeling script.
 
-### 2.2 设置通用参数
-建模前首先设置一些通用参数，将在测试和优化时需要修改的参数写在前面。
+### 2.2 Set general parameters
+Set some general parameters before modeling. And at the begining are those that need to be modified frequently during testing and optimization.
 
 ```
 [2]
@@ -1061,7 +1062,9 @@ def preview():
 
 ![NetDoping Preview](./img/image01.jpg)
 
-<center>图1. 净掺杂</center>
+<!-- import image01 from "./img/image01.jpg"
+<img src={image01} width='300' height='200' align='middle' />
+<center>图1. 净掺杂</center> -->
 
 
 
@@ -1917,7 +1920,600 @@ simu.add(name="oedevice", type="OEDevice", property={
 
 - `genrate.solver_mode`设置为`"transient"`，表示进行瞬态仿真
 - `advanced.use_global_max_iterations`设置为`False`，表示初始化求解泊松方程时，与后续迭代求解漂移扩散方程及泊松方程组时，应用不同的最大迭代次数
-- `advanced.poisson_max_iterations`设置为`50`，表示初始化求解泊松方程时的最大迭代次数为50
-- `advanced.ddm_max_iterations`设置为20，表示后续迭代求解漂移扩散方程及泊松方程组时的最大迭代次数为20
+- `advanced.poisson_max_iterations`，表示初始化求解泊松方程时的最大迭代次数
+- `advanced.ddm_max_iterations`，表示后续迭代求解漂移扩散方程及泊松方程组时的最大迭代次数
 - `advanced.use_quasi_fermi`设置为`"enabled"`，表示将准费米能作为直接求解变量，而非使用载流子浓度
-- `advanded.damping`设置为`"potential"`，
+- `advanced.damping`设置为`"potential"`，表示设置非线性更新阻尼方案为依据电势判断
+- `advanced.potential_update`，表示电势阻尼的阈值，这个值越大，阻尼效应越小
+- `advanced.relative_tolerance`，表示相对收敛判据的容差
+- `advanced.tolerance_relax`，表示判断收敛时，对绝对收敛判据放宽的系数
+
+
+#### 3.6.6 运行求解器
+
+```
+[54]
+```
+
+```python
+# --- Run ---
+# check license and print version before & after simulation.
+result_device = simu["oedevice"].run()
+```
+
+#### 3.6.7 结果提取
+
+本节提取I-t曲线，由于光功率的时间函数为阶跃函数，所以此处是阶跃响应电流。
+
+```
+[55]
+```
+
+```python
+# --- Extract ---
+It_file_folder = plot_path + project_name + "I"
+result_device.extract(data="I", electrode="cathode", show=False, export_csv=True, savepath=It_file_folder)
+# result_device.extract(data="In", electrode="cathode", show=False, export_csv=True, savepath=plot_path + project_name + "In")
+# result_device.extract(data="Ip", electrode="cathode", show=False, export_csv=True, savepath=plot_path + project_name + "Ip")
+```
+
+
+
+#### 3.6.8 后处理
+
+本节通过对阶跃响应求导，得到脉冲响应。然后对脉冲响应应用傅里叶变换，得到频率响应，从而获得器件带宽。
+
+##### 获得脉冲响应
+
+```
+[56]
+```
+
+```python
+# region Calculate 3dB bandwidth
+It_file = os.path.join(It_file_folder, "0_I_Real.csv")
+for i in range(10):
+    It_file = os.path.join(It_file_folder, str(i) + "_I_Real.csv")
+    if os.path.exists(It_file):
+        break
+rawdata = np.genfromtxt(It_file, skip_header=3, delimiter=',')
+I = rawdata[:,1]
+t = rawdata[:,0]*1e-15
+
+start_idx = 2
+t = t[start_idx:]
+I = I[start_idx:]
+
+# Calculate impulse response dI/dt from step response I(t)
+# Impulse response at t[i] is the average of dI[i-1]/dt[i-1] and dI[i]/dt[i] 
+dt = np.diff(t)
+dI = np.diff(I)
+dIdt = (dI[1:] + (dt[1:]/dt[:-1])**2*dI[:-1])/(dt[1:]*(1+dt[1:]/dt[:-1]))
+delta_t = 1e-13
+th = t[1:len(t)-1]
+nt = int(np.ceil((th[-1]-th[0])/delta_t))
+t_interp = np.linspace(th[0], th[-1], nt)
+interp1d_func = scip.interp1d(th, dIdt)
+dIdt_interp = interp1d_func(t_interp)
+```
+
+先对阶跃响应求导，得到脉冲响应，之后再对时间取均匀间隔，并插值处理，方便后续应用快速傅里叶变换。
+
+
+
+##### 输出脉冲响应结果
+
+```
+[57]
+```
+
+```python
+# Output impulse response
+bandwidth_folder = str(Path(It_file_folder).parent.as_posix()) + "/3dB_bandwidth"
+if not os.path.exists(bandwidth_folder):
+    os.makedirs(bandwidth_folder)
+impulse_fig = os.path.join(bandwidth_folder, "impulse_response.jpg")
+fontsize = 20
+linewidth = 1
+plt.rcParams.update({"font.size": fontsize})
+fig, ax = plt.subplots()
+fig.set_size_inches(12, 8)
+ax.plot(t_interp*1e12, dIdt_interp/np.max(np.abs(dIdt_interp)), c='b', linewidth=linewidth, label="Impulse response")
+ax.set_ylabel("Impulse response")
+ax.set_xlabel("Time [ps]")
+ax.grid()
+plt.legend()
+plt.ticklabel_format(style='sci', scilimits=(-1,2))
+plt.savefig(impulse_fig)
+plt.close()
+```
+
+
+
+##### 获得频率响应
+
+```
+[58]
+```
+
+```python
+fresponse = scfft.rfft(dIdt_interp)
+freq = scfft.rfftfreq(len(t_interp), t_interp[1]-t_interp[0])
+fresponse = np.abs(fresponse)/np.max(np.abs(fresponse))
+
+# Calculate 3dB bandwidth by interpolation
+log_freq = np.log10(freq[1:])
+log_fresp = 20*np.log10(np.abs(fresponse[1:]))
+resp_3dB = -3
+
+log_freq_3dB = scip.interp1d(log_fresp, log_freq)(resp_3dB)
+
+bandwidth_GHz = 10**log_freq_3dB*1e-9
+```
+
+通过快速傅里叶变换得到频率响应，并通过插值得出3dB带宽。
+
+
+
+##### 输出频率响应结果
+
+```
+[59]
+```
+
+```python
+bandwidth_file = os.path.join(bandwidth_folder, "3dB_bandwidth.txt")
+bandwidth_fig = os.path.join(bandwidth_folder, "3dB_bandwidth.jpg")
+
+with open(bandwidth_file, 'w') as fp:
+    fp.write("3dB bandwidth: " + f"{bandwidth_GHz:.6f} GHz\n")
+
+fig, ax = plt.subplots()
+fig.set_size_inches(12, 8)
+ax.plot(freq[1:]*1e-9, 20*np.log10(np.abs(fresponse[1:])), 'b', linewidth=linewidth, label="Normalized response")
+ax.plot(freq[1:]*1e-9, resp_3dB*np.ones(len(freq[1:])), 'g', linewidth=linewidth)
+ax.set_xlim(left = 1, right = 300)
+ax.set_ylim(bottom = -25)
+ax.set_xscale('log')
+ax.set_ylabel('Normalized response [dB]')
+ax.set_xlabel('Frequency [GHz]')
+ax.grid(which='both', axis='both')
+plt.savefig(bandwidth_fig)
+# endregion
+
+print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - start)/60, 2)} + "\x1b[0m")
+```
+
+
+
+### 3.7 Saturation Power
+
+本节利用python特性，对输入光功率进行扫描，得到I-P曲线，从而大致判断饱和光功率。
+
+#### 3.7.1 导入仿真工具包
+
+```
+[60]
+```
+
+```python
+from VPD00_structure import *
+import time
+import os
+from pathlib import Path
+import numpy as np
+from matplotlib import pyplot as plt
+```
+
+
+
+#### 3.7.2 设置通用参数
+
+```
+[61]
+```
+
+```python
+# region --- 0. General Parameters ---
+sweep_parameter_name = "source_fraction"
+sweep_value_table = np.linspace(0.001, 0.02, 20)
+vbias = 1  # unit:Volt, voltage on cathode
+# endregion
+
+start = time.time()
+time_str = time.strftime("%Y%m%d_%H%M%S/", time.localtime())
+
+# --- set path ---
+plot_path = str(Path(__file__).parent.as_posix()) + "/plots/"
+if not os.path.exists(plot_path):
+    os.makedirs(plot_path)
+
+simu_name = "VPD04_Psat"
+material_property = "normal"
+genrate_file_folder = str(Path(__file__).parent.as_posix())
+genrate_file_path = genrate_file_folder + "/VPD01_FDTD.gfile"
+```
+
+
+
+#### 3.7.3 定义扫描函数
+
+```
+[62]
+```
+
+```python
+def sweep_simulation(sweep_value):
+```
+
+
+
+#### 3.7.4 设置扫描参数
+
+```
+[63]
+```
+
+```python
+    # ----------------------   set sweep parameter
+    if not sweep_parameter_name in globals():
+        raise Exception(f"Parameter {sweep_parameter_name} not found!")
+    exec(f"global {sweep_parameter_name}; {sweep_parameter_name} = sweep_value")
+
+```
+
+利用python特性，将后续使用的`sweep_parameter_name`对应参数`source_fraction`的值，求改为`sweep_value`的值。
+
+
+
+#### 3.7.5 创建仿真工程
+
+```
+[64]
+```
+
+```python
+    # ----------------------   set project_path
+    project_name = simu_name + "_" + run_mode + "_" + time_str + sweep_parameter_name + "_" + str(sweep_value) + "/"
+
+    # --- Project from pd_structure.py ---
+    pj = pd_project(project_name, run_mode, material_property)
+```
+
+
+
+#### 3.7.6 添加点击
+
+```
+[65]
+```
+
+```python
+    st = pj.Structure()
+
+    st.add_electrode(name="cathode", property={
+        "solid": "Cathode", "bc_mode": "steady_state",
+        "sweep_type": "single", "voltage": vbias, "apply_AC_small_signal": "none"})
+    st.add_electrode(name="anode", property={
+        "solid": "Anode", "bc_mode": "steady_state",
+        "sweep_type": "single", "voltage": 0, "apply_AC_small_signal": "none"})
+```
+
+在`"cathode"`电极施加1V偏压，进行稳态仿真。
+
+
+
+#### 3.7.7 添加求解器
+
+```
+[66]
+```
+
+```python
+    # ----------------------   set simu
+    simu = pj.Simulation()
+
+    simu.add(name="oedevice", type="OEDevice", property={
+        "geometry": {"dimension": "2d_x_normal", "x": oe_x_mean, "x_span": oe_x_span, "y": oe_y_mean, "y_span": oe_y_span, "z_min": oe_z_min, "z_max": oe_z_max},
+        "genrate": {"genrate_path": genrate_file_path, "coordinate_unit": "m", "field_length_unit": "m", "source_fraction": source_fraction},
+        "general": {"norm_length": normal_length, "solver_mode": "steady_state", "simulation_temperature": temperature},
+        "advanced": {"non_linear_solver": "Newton", "linear_solver": "MUMPS", "max_iterations": 50}})
+
+```
+
+
+
+### 3.7.8 运行求解器
+
+```
+[67]
+```
+
+```python
+    # --- Run ---
+    # check license and print version before & after simulation.
+    result_device = simu["oedevice"].run()
+```
+
+
+
+#### 3.7.9 返回电流结果
+
+```
+[68]
+```
+
+```python
+    # --- Extract ---
+    IV_file_folder = plot_path + project_name + "IV_cathode"
+    result_device.extract(data="I", electrode="cathode", export_csv=True,
+                        show=False, savepath=IV_file_folder)
+    
+    IV_file = os.path.join(IV_file_folder, "0_I_Real.csv")
+    for i in range(10):
+        IV_file = os.path.join(IV_file_folder, str(i) + "_I_Real.csv")
+        if os.path.exists(IV_file):
+            break
+    
+    data = np.genfromtxt(IV_file, skip_header=3, delimiter=',')
+
+    return data
+```
+
+
+
+#### 3.7.10 运行扫描函数并输出结果
+
+```
+[69]
+```
+
+```python
+# region --- sweep result postprocess ---
+fontsize = 20
+linewidth = 1
+sweep_parameter_label = sweep_parameter_name
+sweep_parameter_unit = ""
+
+Isweep = []
+voltages = np.zeros(0)
+for sweep_value in sweep_value_table:
+    data = sweep_simulation(sweep_value)
+    if len(data.shape) == 1:
+        data = data.reshape((1, len(data)))
+    voltages = data[:,0]
+    Isweep.append(data[:, 1])
+
+Isweep_folder = os.path.join(plot_path, simu_name + "_" + run_mode + "_" + time_str + "Isweep")
+if not os.path.exists(Isweep_folder):
+    os.makedirs(Isweep_folder)
+
+Isweep = np.array(Isweep)
+sweep_value_table = np.array(sweep_value_table)
+
+plt.rcParams.update({"font.size": fontsize})
+for i in range(len(voltages)):
+    Isweep_fig = os.path.join(Isweep_folder, "Isweep_" + str(voltages[i]) + "V.jpg")
+    Isweep_file = os.path.join(Isweep_folder, "Isweep_" + str(voltages[i]) + "V.csv")
+    Iresp = Isweep[:,i]
+
+    with open(Isweep_file, "w") as fp:
+        fp.write(f"Vbias={voltages[i]}V,\n")
+        fp.write(f"{sweep_parameter_name}" + (f"[{sweep_parameter_unit}]" if sweep_parameter_unit else "") + ",Current[A]\n")
+        for j in range(len(Iresp)):
+            fp.write(f"{sweep_value_table[j]:.15e},{Iresp[j]:.15e}\n")
+
+    fig, ax = plt.subplots()
+    fig.set_size_inches(12, 8)
+    ax.plot(sweep_value_table, Iresp, c='b', linewidth=0.5, label=f"Vbias={voltages[i]}V")
+    ax.plot(sweep_value_table, Iresp, 'bo')
+    ax.set_ylabel("I[A]")
+    ax.set_xlabel(f"{sweep_parameter_name}" + (f"[{sweep_parameter_unit}]" if sweep_parameter_unit else ""))
+    plt.legend()
+    plt.ticklabel_format(style="sci", scilimits=(-1, 2))
+    ax.grid()
+    plt.savefig(Isweep_fig)
+    plt.close()
+
+# endregion
+
+print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - start)/60, 2)} + "\x1b[0m")
+```
+
+
+
+# 4. 附录
+
+## 4.1 电学材料参数
+
+`VPD_material.py`脚本中的材料参数设置：
+
+```
+[70]
+```
+
+```python
+elec_Si_properties = {"basic": {"model": "Default",
+                                "Default": {"affinity": 4.59-1.11452/2.0, "permitti": 11.7}, "print": 1},
+                      "mobility": {"model": "Masetti",
+                                   "Masetti": {"mu_min2_h": 44.9, "mumax_e": 1471, "mumax_h": 470.5, "pc_h": 0}, "print": 1},
+                      "band": {"model": "Default",
+                               "Default": {
+                                   # DOS
+                                   "dos_formula": 2, "nc300": 3.21657e19, "nv300": 1.82868e19,
+                                   # Bandgap
+                                   "eg0": 1.16, "chi0": 4.59-1.16/2,
+                                   # Bandgap Narrowing
+                                   "bgn_model": "OldSlotboom", "e0_bgn_oldslotboom": 0.0045, "n0_bgn_oldslotboom": 1.00e17, "deg0_oldslotboom": 0,
+                                   # Auger Recombination
+                                   "augan": 2.8e-31, "augap": 9.9e-32, "augbn": 0, "augbp": 0, "augcn": 0, "augcp": 0, "aughn": 0, "aughp": 0,
+                                   # SRH Recombination
+                                   "taunmax": 1.5e-9, "taupmax": 1.5e-9, "nsrh_n": 7.1e15, "nsrh_p": 7.1e15, "nc_f": 1.5, "nv_f": 1.5,
+                                   # Radiative Recombination
+                                   "c_direct": 1.6e-14}, "print": 1}}
+elec_Ge_properties = {"model": {"high_field": False},
+                      "basic": {"model": "Default",
+                                "Default": {"affinity": 4.5-0.65969/2.0, "permitti": 16.0}, "print": 1},
+                      "mobility": {"model": "Analytic",
+                                   "Analytic": {"alphan": 0.56, "alphap": 1.0, "mun_max": 3900, "mun_min": 850, "mup_max": 1800, "mup_min": 300,
+                                                "nrefn": 2.6e17, "nrefp": 1e17, "nun": -1.66, "nup": -2.33}, "print": 1},
+                      "band": {"model": "Default",
+                               "Default": {
+                                   # DOS
+                                   "nc300": 1.0516e19, "nv300": 3.9189e+18,
+                                   # Bandgap
+                                   "eg300": 0.65969, "chi300": 4.5-0.65969/2.0,
+                                   # Bandgap Narrowing
+                                   "v0_bgn": 0,
+                                   # Auger Recombination
+                                   "augan": 1e-30, "augap": 1e-30, "augbn": 0, "augbp": 0, "augcn": 0, "augcp": 0, "aughn": 0, "aughp": 0,
+                                   # SRH Recombination
+                                   "taunmax": 1.5e-9, "taupmax": 1.5e-9, "nsrhn": 7.1e15, "nsrhp": 7.1e15,
+                                   # Radiative Recombination
+                                   "c_direct": 6.41e-14}, "print": 1}}
+elec_Ge_properties_for_transient = {"model": {"high_field": True, "mobility_force": "EQF"},
+                                    "basic": {"model": "Default",
+                                              "Default": {"affinity": 4.5-0.65969/2.0, "permitti": 16.0}, "print": 1},
+                                    "mobility": {"model": "Masetti",
+                                                 "Masetti": {"pc_e": 0, "mu_min1_e": 850, "mu_min2_e": 850, "mu1_e": 0, "mumax_e": 3900,
+                                                             "cr_e": 2.6e17, "alpha_e": 0.56, "pc_h": 0, "mu_min1_h": 300,
+                                                             "mu_min2_h": 300, "mu1_h": 0, "mumax_h": 1800, "cr_h": 1e17, "alpha_h": 1}, "print": 1},
+                                    "band": {"model": "Default",
+                                             "Default": {
+                                                 # DOS
+                                                 "nc300": 1.1372e+19, "nv300": 3.9189e+18,
+                                                 # Bandgap
+                                                 "eg300": 0.65969, "chi300": 4.5-0.65969/2.0,
+                                                 # Bandgap Narrowing
+                                                 "v0_bgn": 0,
+                                                 # Auger Recombination
+                                                 "augan": 1e-30, "augap": 1e-30, "augbn": 0, "augbp": 0, "augcn": 0, "augcp": 0, "aughn": 0, "aughp": 0,
+                                                 # SRH Recombination
+                                                 "taunmax": 1.5e-9, "taupmax": 1.5e-9, "nsrhn": 7.1e15, "nsrhp": 7.1e15,
+                                                 # Radiative Recombination
+                                                 "c_direct": 6.41e-14}, "print": 1},
+                                    "vsat": {"model": "Canali",
+                                             "Canali": {"beta0n": 2, "beta0p": 1, "betaexpn": 0, "betaexpp": 0, "alpha": 0, "vsatn0": 6e6, "vsatp0": 5.4e6,
+                                                        "vsatn_exp": 0, "vsatp_exp": 0}, "print": 1}}
+```
+
+`basic`--设置介电常数、电子亲和能
+
+`band`--设置能带、复合模型及参数
+
+`mobility`--设置迁移率模型及参数
+
+`model`--设置强场迁移率、费米统计等模型的开关
+
+`vsat`--设置速度饱和模型及参数
+
+具体的材料设置说明请参考手册`examples/active_demo/Physics_Model_in_OEDevice.pdf`。
+
+
+
+## 4.2 OEDevice设置
+
+OEDevice的属性列表：
+
+|                                          | default           | type    | notes                                                        |
+| :--------------------------------------- | :---------------- | :------ | :----------------------------------------------------------- |
+| general.norm_length                      | 1.0               | float   |                                                              |
+| general.solver_mode                      | steady_state      | string  | Selections are ['steady_state', 'transient', 'SSAC'].        |
+| general.temperature_dependence           | Isothermal        | string  | Selections are ['Isothermal'].                               |
+| general.simulation_temperature           | 300               | float   |                                                              |
+| advanced.non_linear_solver               | Newton            | string  | Selections are ['Newton'].                                   |
+| advanced.linear_solver                   | MUMPS             | string  | Selections are ['MUMPS', 'LU', 'BCGS'].                      |
+| advanced.use_quasi_fermi                 | disabled          | string  | Selections are ['disabled', 'enabled'].                      |
+| advanced.damping                         | none              | string  | Selections are ['none', 'potential'].                        |
+| advanced.potential_update                | 1.0               | float   |                                                              |
+| advanced.multi_threads                   | let_solver_choose | string  | Selections are ['let_solver_choose', 'set_thread_count'].    |
+| advanced.thread_count                    | 4                 | integer |                                                              |
+| advanced.max_iterations                  | 30                | integer |                                                              |
+| advanced.use_global_max_iterations       | true              | bool    |                                                              |
+| advanced.poisson_max_iterations          | 30                | integer |                                                              |
+| advanced.ddm_max_iterations              | 30                | integer |                                                              |
+| advanced.relative_tolerance              | 1.0e-5            | float   |                                                              |
+| advanced.tolerance_relax                 | 1.0e+5            | float   |                                                              |
+| advanced.divergence_factor               | 1.0e+25           | float   |                                                              |
+| genrate.genrate_path                     |                   | string  |                                                              |
+| genrate.source_fraction                  |                   | float   |                                                              |
+| genrate.coordinate_unit                  | m                 | string  | Selections are ['m', 'cm', 'um', 'nm'].                      |
+| genrate.field_length_unit                | m                 | string  | Selections are ['m', 'cm', 'um', 'nm'].                      |
+| geometry.dimension                       | 2d_x_normal       | string  | Selections are ['2d_x_normal', '2d_y_normal', '2d_z_normal']. |
+| geometry.x                               |                   | float   |                                                              |
+| geometry.x_span                          |                   | float   |                                                              |
+| geometry.x_min                           |                   | float   |                                                              |
+| geometry.x_max                           |                   | float   |                                                              |
+| geometry.y                               |                   | float   |                                                              |
+| geometry.y_span                          |                   | float   |                                                              |
+| geometry.y_min                           |                   | float   |                                                              |
+| geometry.y_max                           |                   | float   |                                                              |
+| geometry.z                               |                   | float   |                                                              |
+| geometry.z_span                          |                   | float   |                                                              |
+| geometry.z_min                           |                   | float   |                                                              |
+| geometry.z_max                           |                   | float   |                                                              |
+| small_signal_ac.perturbation_amplitude   | 0.001             | float   |                                                              |
+| small_signal_ac.frequency_spacing        | single            | string  | Selections are ['single', 'linear', 'log'].                  |
+| small_signal_ac.frequency                | 1.0e+6            | float   |                                                              |
+| small_signal_ac.start_frequency          | 1.0e+06           | float   |                                                              |
+| small_signal_ac.stop_frequency           | 1.0e+09           | float   |                                                              |
+| small_signal_ac.frequency_interval       | 9.9999e+10        | float   |                                                              |
+| small_signal_ac.num_frequency_points     | 2                 | integer |                                                              |
+| small_signal_ac.log_start_frequency      | 1.0e+06           | float   |                                                              |
+| small_signal_ac.log_stop_frequency       | 1.0e+10           | float   |                                                              |
+| small_signal_ac.log_num_frequency_points | 2                 | integer |                                                              |
+
+`geometry`：
+
+- `dimension`--设置仿真区域维度，目前仅支持二维仿真。当设置为`2d_x_normal`时，表示yz平面的仿真，其余同理
+
+`general`:
+
+- `norm_length`--设置器件第三维尺寸，默认为1
+- `solver_mode`--设置仿真模式，支持稳态、瞬态、小信号仿真
+- `temperature`--设置仿真温度
+- `temperature_dependence`--设置温度依赖类型，目前仅支持均匀温度
+
+`genrate`:
+
+- `genrate_path`--设置光生载流子生成率分布文件（gfile）的路径。默认为`""`，即为空，此时不导入光生载流子，`genrate`其它设置项无效；当不为空时，则导入该gfile中的光生载流子生成率。
+- `coordinate_unit`--gfile文件中坐标的单位
+- `field_length_unit`--gfile文件中生成率单位中的长度单位
+- `source_fraction`--光功率的缩放因子，求解器会先将导入的生成率乘以此因子，然后再代入载流子输运方程求解
+
+`small_signal_ac`:
+
+- `perturbation_amplitude`--小信号的电压幅值
+- `frequency_spacing`--小信号频率的间隔方式
+  - 设置为`"single"`，频率为单点
+  - 设置为`"linear"`，频率为线性均匀取点
+  - 设置为`"log"`，先对频率取对数，再均匀取点
+- `frequency`--单点频率对应的值
+- `start_frequency`--线性取点频率的起始值
+- `stop_frequency`--线性取点频率的终止值
+- `frequency_interval`--线性取点频率的间隔
+- `num_frequency_points`--线性取点频率的点数
+- `log_start_frequency`--对数取点频率的起始值
+
+- `log_stop_frequency`--对数取点频率的终止值
+
+- `log_num_frequency_points`--对数取点频率的点数
+
+`advanced`:
+
+- `non_linear_solver`--非线性求解器类型，目前仅支持牛顿法
+- `linear_solver`--线性求解器类型，可选`"MUMPS"`，`"LU"`，`"BCGS"`。其中`"MUMPS"`与`"LU"`为直接求解方法，前者支持并行计算，而后者不支持；`"BCGS"`为迭代求解方法，支持并行计算
+- `use_quasi_fermi`--是否将准费米能而非载流子浓度作为直接求解变量
+- `damping`--选择非线性更新阻尼方案
+- `potential_update`--电势阻尼的阈值，这个值越大，阻尼效应越小
+- `multi_threads`--多线程设置
+  - 设置为`"let_solver_choose"`时，由求解器自动设置线程数，默认最大线程数为4
+  - 设置为`"set_thread_count"`，由用户自定义线程数
+- `thread_count`--用户自定义线程数
+- `max_iterations`--全局最大迭代次数
+- `use_global_max_iterations`--初始化求解泊松方程时，与后续迭代求解漂移扩散方程及泊松方程组时，是否应用全局最大迭代次数
+- `poisson_max_iterations`--初始化求解泊松方程时的最大迭代次数
+- `ddm_max_iterations`--后续迭代求解漂移扩散方程及泊松方程组时的最大迭代次数
+- `relative_tolerance`--相对收敛判据的容差
+- `tolerance_relax`--判断收敛时，对绝对收敛判据放宽的系数
+- `divergence_factor`--判断发散时，对绝对收敛判据乘的系数

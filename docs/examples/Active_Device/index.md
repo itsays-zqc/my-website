@@ -932,17 +932,19 @@ Mode source property list:
 	# endregion
 ```
 
-此处监视器`"Power Monitor"`为3D类型，用于保存`"Ge"`结构内的光场分布，以便后处理计算光生载流子生成率。监视器`"y=0"`与监视器`"z=0.47"`均匀2D类型，用于直观查看特定切面的光场分布。
-
-`mn.add()`参数：
-
-- `name`--监视器名称
-- `type`--监视器类型
-- `property`--监视器其它属性
+The monitor `"Power Monitor"` is of the 3D type, set to record the optical field profile in the `"Ge"` structure, which will be used to calculate the optical generation rate. The monitors `"y=0"` and `"z=0.47"` are both of the 2D type, set to visualize the optical field profile at the specified cross-sections.
 
 
 
-Power Monitor属性列表：
+`mn.add()` parameters：
+
+- `name`--Name of the monitor
+- `type`--Type of the monitor
+- `property`--Other properties
+
+
+
+Power monitor property list:
 
 |                                                    | default    | type    | notes                                                        |
 | :------------------------------------------------- | :--------- | :------ | :----------------------------------------------------------- |
@@ -973,19 +975,28 @@ Power Monitor属性列表：
 | geometry.z_max                                     |            | float   |                                                              |
 | advanced.sampling_frequency.min_sampling_per_cycle | 2          | integer |                                                              |
 
-`geometry`设置监视器的几何参数，包含维度与区域大小。
+`geometry`--Set the geometric parameters of the monitor, including the dimension and the size
 
-`general`设置监视器监控的频点，`general.frequency_profile`中的参数：
+`general`--Set the frequency points of the monitor
 
-- `sample_spacing`--目前仅支持设置为`"uniform"`，表示频点是按波长或频率均匀取样
-- `use_wavelength_spacing`--默认为`True`，为`True`时表示按波长均匀取监控频点，为`False`时表示按频率均匀取
-- `spacing_type`--默认为`"wavelength"`，为`"wavelength"`时表示按波长设置监控的波段；为`"frequency"`时表示按频率设置监控的波段
-- `frequency_points`--为监控的频点数
+- `frequency_profile`:
+
+  - `sample_spacing`--Only support `"uniform"` currently, which means the frequency points are uniformly sampled in either wavelength or frequency
+
+  - `use_wavelength_spacing`--Default to be `True`. When it' `True`, the frequency points in sampled in wavelength, otherwise, in frequency.
+
+  - `spacing_type`--Default to be `"wavelength"`. When it's `"wavelength"`, the frequency range is set in wavelength; When it's `"frequency"`, the frequency range is set in frequency
+
+  - `frequency_points`--Number of frequency points
 
 
 
-#### 2.3.11 预览仿真结构
-##### 定义预览函数
+
+#### 2.3.11 Preview the structures
+
+
+
+##### 2.3.11.1 Define the preview function
 ```
 [21]
 ```
@@ -1002,12 +1013,16 @@ def preview():
         os.makedirs(plot_path)
 ```
 
-调用前面的创建工程函数`pd_project`得到工程`pj`，其中`simu_name`在通用参数中设置，`time_str`为开始运行函数的时间戳，将其加入工程名，从而使每次仿真时工程名不同，结果不会覆盖。
+Call the `pd_project` function defined earlier to create a new project `pj`. `simu_name` is set in the general parameters. `time_str` is the time stamp of when the function started running and is added to the project name, to make the project name different for each simulation and the simulation results not overwritten by each other.
 
-`plot_path`后续将用作结果提取保存的路径，此处设置为此脚本所在同级目录下的`plots`文件夹内，如果此路径不存在，需要先调用`os.makedirs`函数创建该路径。
+`plot_path` will be set to the save path of the result extraction. Here, it is set to the 'plots' folder located in the same directory as this script. If the path doesn't exist, `os.makedirs()` should be called to create it.
 
-##### 添加求解器
-在预览函数内添加光学、电学求解器，只有求解器存在时，才能进行相应的结构预览。
+
+
+##### 2.3.11.2 Add solvers
+
+Optical and electrical solvers are added within the preview function. The corresponding structure preview is only available when the solvers are present.
+
 ```
 [22]
 ```
@@ -1023,21 +1038,23 @@ def preview():
         "advanced": {"non_linear_solver": "Newton", "linear_solver": "MUMPS", "max_iterations": 50}})
 ```
 
+`simu.add()` parameters：
+
+- `name`--Name of the solver
+- `type`--Type of the solver. For active device simulation, the type of FDTD solver is `"AFDTD"`, and the type of carrier transport solver is `"OEDevice"`
+- `property`--Other properties
 
 
-`simu.add()`参数：
 
-- `name`--求解器名称
-- `type`--求解器类型。有源部分，FDTD求解器类型为`"AFDTD"`，载流子输运求解器类型为`"OEDevice"`
-- `property`--求解器的其它属性
+For `AFDTD`，`mesh_settings.mesh_accuracy.cells_per_wavelength` means the number of mesh cells per wavelength. The larger the number, the smaller the mesh size and the longer the simulation time.
 
-对于`AFDTD`，`mesh_settings.mesh_accuracy.cells_per_wavelength`代表每波长尺寸的网格数，此数值越大，预览结构时的网格越小，仿真时间越长。
+For `OEDevice`，the other properties are not necessary. So the `property` can be empty. Detailed parameter settings for `OEDevice` can be found in the appendix.
 
-对于`OEDevice`，预览结构时不需要设置其它属性，可以为空。`OEDevice`的详细参数设置参见附录。
 
-##### 预览掺杂
 
-通过`OEDevice`求解器的`run_doping`函数进行掺杂预览。
+##### 2.3.11.3 Preview doping profile
+
+Preview the doping profile by the `run_doping` function of the `OEDevice` solver.
 
 ```
 [23]
@@ -1050,25 +1067,23 @@ def preview():
         material_list=["Ge", "Si"], cmin=8e5, savepath=plot_path + simu_name + "_" + time_str + "doping_x_in")
 ```
 
+`run_doping()` parameters:
 
-
-`run_doping()`参数：
-
-- `name`--自定义名称
-- `norm`--设置掺杂强度图的归一化方式，默认为`"linear"`，表示直接线性归一化；还可设置为`"log"`，表示先取对数，再进行线性归一化。对于净掺杂，n型掺杂取对数后其值取为正，p型掺杂取对数后其值取为负，然后在强度图中线性归一化
-- `scale`--设置横纵轴坐标的缩放方式，默认为`"equal"`，代表横纵轴按等比例缩放；还可设置为`"auto"`，代表根据器件尺寸进行自动缩放
-- `superimpose`--设置掺杂图与结构图是否叠加显示，默认为`True`
-- `show`--设置结果图像是否弹窗显示，默认为`False`，结果图自动保存，不弹窗显示；设置为`True`时，结果图弹窗显示，但不自动保存
-- `material_list`--指定材料列表进行掺杂预览，其中每一项为对应材料的化学式。默认为空，代表所有区域均回显。
-- `region_list`--指定结构列表进行掺杂预览，其中每一项为结构名称。默认为空，代表所有区域均回显。当不为空时，会覆盖`material_list`设置
-- `cmax`--设置强度图颜色条的最大值，当浓度大于此值时，按此值回显，对净掺杂无效
-- `cmin`--设置强度图颜色条的最小值，当浓度小于此值时，按此值回显，对净掺杂无效
-- `savepath`--结果保存路径
-- `property`--其它属性
+- `name`--Custom name
+- `norm`--Set the normalization method for the intensity plot, default to be `"linear"`, which means linear normalization. It can also be set to `"log"`, which means taking the logarithm of the intensity first, and then performing linear normalization. The net doping is calculated as $N_D-N_A$, where $N_D$ denotes the donor concentration and $N_A$ denotes the acceptor concentration
+- `scale`--Set the scaling method of the vertical and horizontal axes, default to be `"equal"`, which means the two axes are scaled proportional. It can also be set to `"auto"`, which means the two axes are scaled automatically
+- `superimpose`--Set whether the structure plot and the doping plot superimpose or not, default to be `"True"`
+- `show`--Set whether the result plot should be displayed in a popup window, default to be `False`, which means not and it will be saved to the `savepath` automatically. When it is `True`, the result plot won't pop up and will not be saved unless operated manually
+- `material_list`--Specify a list of materials to preview the doping profile. And each item in the list should be the chemical formula of the material. Default to be empty, which means all the materials will be previewed
+- `region_list`--Specify a list of structures to preview the doping profile. And each item in the list is the name of the structure. Default to be empty, which means all the structures will be previewed. When it's not empty, it will override the `material_list` setting
+- `cmax`--Set the maximum of the colorbar for the intensity plot. When the concentration is greater than this value, it will be displayed as this value. It is ineffective for net doping
+- `cmin`--Set the minimum of the colorbar for the intensity plot. When the concentration is smaller than this value, it will be displayed as this value. It is ineffective for net doping
+- `savepath`--The save path for the result
+- `property`--Other properties
 
 
 
-`run_doping`属性列表：
+`run_doping` property list:
 
 |                    | default | type   | notes                                                        |
 | :----------------- | :------ | :----- | :----------------------------------------------------------- |
@@ -1086,23 +1101,23 @@ def preview():
 | geometry.z_min     |         | float  |                                                              |
 | geometry.z_max     |         | float  |                                                              |
 
-`geometry`设置掺杂预览的范围：
+`geometry`--Set the region of doping preview
 
-- `dimension`--设置掺杂预览的平面。目前电学仿真仅支持二维仿真，掺杂及其预览都是对二维平面而言。其中`"2d_x_normal"`代表yz平面，其余同理。
+- `dimension`--Set the dimension of doping preview. The electrical simulation only supports the 2D type currently, so the doping and its preview are all considered in a plane. When `dimension` is `"2d_x_normal"`, it means the preview is in the yz plane. Similarly for the rest.
 
 
 
-掺杂预览结果展示：
+*Result show of the doping preview*
 
-![NetDoping Preview](./img/image01.jpg)
+![Net doping preview](./img/image01.jpg)
 
 <!-- import image01 from "./img/image01.jpg"
 <img src={image01} width='300' height='200' align='middle' />
-<center>图1. 净掺杂</center> -->
+<center>Fig 1. Net doping</center> -->
 
 
 
-##### 预览折射率
+##### 2.3.11.4 Preview index profile
 
 通过`AFDTD`求解器的`run_index`函数进行折射率预览。
 

@@ -8,9 +8,9 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 <div class="text-justify">
 
-&emsp;&emsp;Directional couplers (DC) are an important category of optical splitters. They are typically composed of two adjacent single-mode waveguides, and the coupling coefficient is determined by both the length of the coupler and the spacing between them. This feature allows for effective control of the splitting ratio.
+Directional couplers (DC) are an important category of optical splitters. They are typically composed of two adjacent single-mode waveguides, and the coupling coefficient is determined by both the length of the coupler and the spacing between them. This feature allows for effective control of the splitting ratio.
 
-&emsp;&emsp;When it comes to directional couplers, we pay close attention to several key parameters, including **insertion loss**, **splitting ratio**, **device dimensions**, and **operating bandwidth**. 
+When it comes to directional couplers, we pay close attention to several key parameters, including **insertion loss**, **splitting ratio**, **device dimensions**, and **operating bandwidth**. 
 
 </div>
 
@@ -20,11 +20,11 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 <div class="text-justify">
 
-&emsp;&emsp;The `FDE module` can be used to calculate the symmetric and anti-symmetric mode field distributions of the directional coupler’s two arms. From these calculations, the effective index can be determined, allowing for the theoretical calculation of the coupling length required to achieve the target splitting ratio. 
+The `FDE module` can be used to calculate the symmetric and anti-symmetric mode field distributions of the directional coupler’s two arms. From these calculations, the effective index can be determined, allowing for the theoretical calculation of the coupling length required to achieve the target splitting ratio. 
 
-&emsp;&emsp;And the `FDTD module` can be used to perform precise calculations of light propagation in the DC. The light field transmission images in the monitor allow for a visual assessment,the related data of which facilitate further optimization and validation of the coupling length and spacing parameters in the DC splitter.
+And the `FDTD module` can be used to perform precise calculations of light propagation in the DC. The light field transmission images in the monitor allow for a visual assessment,the related data of which facilitate further optimization and validation of the coupling length and spacing parameters in the DC splitter.
 
-&emsp;&emsp;After data processing, it can be obtained that the splitting ratio, insertion loss, and operating bandwidth of DC. In designing high-performance directional couplers for various optical communication and integrated photonics applications, these calculations and optimization processes are instrumental.
+After data processing, it can be obtained that the splitting ratio, insertion loss, and operating bandwidth of DC. In designing high-performance directional couplers for various optical communication and integrated photonics applications, these calculations and optimization processes are instrumental.
 
 </div>
 
@@ -32,7 +32,7 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 <div class="text-justify">
 
-&emsp;&emsp;Using the `FDE module`, we will calculate symmetric and antisymmetric modes in a Directional Coupler modeled with the SDK. The input light can be considered a combination of the symmetric mode and the antisymmetric mode so that we can precisely calculate the coupling coefficient by effective index from the FDE module. Referring to the *Silicon Photonics Design* written by Lukas Chrostowski, we build the structure of the Directional coupler in the simulation.
+Using the `FDE module`, we will calculate symmetric and antisymmetric modes in a Directional Coupler modeled with the SDK. The input light can be considered a combination of the symmetric mode and the antisymmetric mode so that we can precisely calculate the coupling coefficient by effective index from the FDE module. Referring to the *Silicon Photonics Design* written by Lukas Chrostowski, we build the structure of the Directional coupler in the simulation.
 
 </div>
 
@@ -42,9 +42,9 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 <div class="text-justify">
 
-&emsp;&emsp;Once you have installed and configured the environment, import the `DC_FDE.py` SDK code and the `DC.gds` layout.
+Once you have installed and configured the environment, import the `DC_FDE.py` SDK code and the `DC.gds` layout.
 
-&emsp;&emsp;The example library and related model code are usually located in the directory `AIO_SDK/.venv_maxoptics/site-packages/maxoptics_sdk/examples`, and the GDS file is generally imported into the `AIO_SDK/.venv_maxoptics/site-packages/maxoptics_sdk/examples/examples_gds` folder.
+The example library and related model code are usually located in the directory `AIO_SDK/.venv_maxoptics/site-packages/maxoptics_sdk/examples`, and the GDS file is generally imported into the `AIO_SDK/.venv_maxoptics/site-packages/maxoptics_sdk/examples/examples_gds` folder.
 
 </div>
 
@@ -52,7 +52,7 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 <div class="text-justify">
 
-&emsp;&emsp;Create a new terminal and run the code after you import the Python and GDS files. Max-Optics SDK may take some time to initialize on the first run.
+Create a new terminal and run the code after you import the Python and GDS files. Max-Optics SDK may take some time to initialize on the first run.
 
 </div>
 
@@ -65,7 +65,7 @@ Max-Optics SDK is initializing...
 
 <div class="text-justify">
 
-&emsp;&emsp;Now let's learn the meaning of functions and parameters that correspond to the specific code.
+Now let's learn the meaning of functions and parameters that correspond to the specific code.
 
 </div>
 
@@ -73,7 +73,7 @@ Max-Optics SDK is initializing...
 
 <div class="text-justify">
 
-&emsp;&emsp;To begin, we need to use the `import` command to call the relevant functional modules.
+To begin, we need to use the `import` command to call the relevant functional modules.
 
 </div>
 
@@ -89,7 +89,7 @@ import time
 
 <div class="text-justify">
 
-&emsp;&emsp;Firstly, We define parameters and give them a default value, such as the simulation wavelength and grid accuracy. Note that we can override this value in the following code. 
+Firstly, We define parameters and give them a default value, such as the simulation wavelength and grid accuracy. Note that we can override this value in the following code. 
 
 </div>
 
@@ -99,7 +99,7 @@ def simulation(*, run_mode='local', wavelength=1.55, grid=0.02, number_of_trial_
 
 <div class="text-justify">
 
-&emsp;&emsp;The provided code contains comments that define the simulation parameters. Let's explain each of these parameters. <br/>&emsp;&emsp;The function `simulation` is used to define the simulation parameters for the program. <br/>&emsp;&emsp;The `run_mode` parameter determines the type of calculation resources to be used. <br/>&emsp;&emsp;The `wavelength` parameter specifies the wavelength of the input light in micrometers. <br/>&emsp;&emsp;The `grid` parameter represents the grid accuracy in micrometers. <br/>&emsp;&emsp;Lastly, the `number_of_trial_modes` parameter sets the number of modes to be calculated.
+The provided code contains comments that define the simulation parameters. Let's explain each of these parameters. <br/>The function `simulation()` is used to define the simulation parameters for the program. <br/>The `run_mode` parameter determines the type of calculation resources to be used. <br/>The `wavelength` parameter specifies the wavelength of the input light in micrometers. <br/>The `grid` parameter represents the grid accuracy in micrometers. <br/>Lastly, the `number_of_trial_modes` parameter sets the number of modes to be calculated.
 
 </div>
 
@@ -107,7 +107,7 @@ def simulation(*, run_mode='local', wavelength=1.55, grid=0.02, number_of_trial_
 
 <div class="text-justify">
 
-&emsp;&emsp;Define commonly used parameters in region 0, such as the width and height of the simulation boundary, the start time of the simulation, the path and name for the simulation output, the path to the imported GDS layout, and other parameters required for structural parameterized modeling.
+Define commonly used parameters in region 0, such as the width and height of the simulation boundary, the start time of the simulation, the path and name for the simulation output, the path to the imported GDS layout, and other parameters required for structural parameterized modeling.
 
 </div>
 
@@ -132,7 +132,7 @@ def simulation(*, run_mode='local', wavelength=1.55, grid=0.02, number_of_trial_
 
 <div class="text-justify">
 
-&emsp;&emsp;The code defines several parameters and variables necessary for the simulation process. The `yspan_solver` parameter represents the width of the simulation boundary specified in micrometers. Similarly, the `zspan_solver` parameter denotes the height of the simulation boundary in micrometers. The `time_str` variable is used to obtain the current time as a timestamp for the simulation.<br/>&emsp;&emsp;The `path` variable defines the file path for the simulation, while `simu_name` specifies the name of the simulation file.<br/>&emsp;&emsp;The `gds_file_root_path` variable defines the path for importing the GDS layout. <br/>&emsp;&emsp;The `project_name` variable assigns a name to the project for the simulation output. <br/>&emsp;&emsp;The `plot_path` variable determines the directory where the simulation result plots will be saved. <br/>&emsp;&emsp;The `export_options` parameter allows for the definition of options for exporting the simulation results.<br/>&emsp;&emsp;Lastly, the variables `l_bend` ,`l_beam`, and `l_input` represent the lengths of specific components within the simulation, such as the length of the z-bend, the length of the two beams, and the length of the input waveguide, respectively. <br/>&emsp;&emsp;These parameters and variables together facilitate the successful execution and organization of the simulation process.
+The code defines several parameters and variables necessary for the simulation process. The `yspan_solver` parameter represents the width of the simulation boundary specified in micrometers. Similarly, the `zspan_solver` parameter denotes the height of the simulation boundary in micrometers. The `time_str` variable is used to obtain the current time as a timestamp for the simulation.<br/>The `path` variable defines the file path for the simulation, while `simu_name` specifies the name of the simulation file.<br/>The `gds_file_root_path` variable defines the path for importing the GDS layout. <br/>The `project_name` variable assigns a name to the project for the simulation output. <br/>The `plot_path` variable determines the directory where the simulation result plots will be saved. <br/>The `export_options` parameter allows for the definition of options for exporting the simulation results.<br/>Lastly, the variables `l_bend` ,`l_beam`, and `l_input` represent the lengths of specific components within the simulation, such as the length of the z-bend, the length of the two beams, and the length of the input waveguide, respectively. <br/>These parameters and variables together facilitate the successful execution and organization of the simulation process.
 
 </div>
 
@@ -140,7 +140,7 @@ def simulation(*, run_mode='local', wavelength=1.55, grid=0.02, number_of_trial_
 
 <div class="text-justify">
 
-&emsp;&emsp;Indeed, let's proceed to the next step, where we set up the materials required for the simulation in region 2. In this case, we will directly use relevant materials from the MO library.
+Indeed, let's proceed to the next step, where we set up the materials required for the simulation in region 2. In this case, we will directly use relevant materials from the MO library.
 
 </div>
 
@@ -157,7 +157,7 @@ def simulation(*, run_mode='local', wavelength=1.55, grid=0.02, number_of_trial_
 
 <div class="text-justify">
 
-&emsp;&emsp;Next, we will create the Directional Coupler model in region 3. We have two options for modeling the structure:
+Next, we will create the Directional Coupler model in region 3. We have two options for modeling the structure:
 
 ![DC klayout](DC_gds.png 'DC klayout')
 
@@ -183,7 +183,7 @@ def simulation(*, run_mode='local', wavelength=1.55, grid=0.02, number_of_trial_
 
 <div class="text-justify">
 
-&emsp;&emsp;Here, we import the DC layout from the GDS file. we can create the DC model directly within the SDK using the `Structure` function.<br/>&emsp;&emsp;The `name` parameter defines the structure name.<br/>&emsp;&emsp;The `type` parameter specifies the structure type.<br/>&emsp;&emsp;The `path`, `cell_name`, and `layer_name` parameters point to the GDS file and specify the relevant layers and cell names used in the layout.<br/>&emsp;&emsp;The `geometry` parameter sets the structure's coordinates. <br/>&emsp;&emsp;The `material` parameter specifies the material properties <br/>&emsp;&emsp;The `mesh_order` parameter sets the mesh order for the simulation. 
+Here, we import the DC layout from the GDS file. we can create the DC model directly within the SDK using the `Structure()` function.<br/>The `name` parameter defines the structure name.<br/>The `type` parameter specifies the structure type.<br/>The `path`, `cell_name`, and `layer_name` parameters point to the GDS file and specify the relevant layers and cell names used in the layout.<br/>The `geometry` parameter sets the structure's coordinates. <br/>The `material` parameter specifies the material properties <br/>The `mesh_order` parameter sets the mesh order for the simulation. 
 
 </div>
 
@@ -191,7 +191,7 @@ def simulation(*, run_mode='local', wavelength=1.55, grid=0.02, number_of_trial_
 
 <div class="text-justify">
 
-&emsp;&emsp;After establishing the model, we can add the simulation region in region 4 and define the simulation boundary conditions. This involves specifying the geometry of the simulation region, the boundary conditions in the xyz directions, and detailed parameters.
+After establishing the model, we can add the simulation region in region 4 and define the simulation boundary conditions. This involves specifying the geometry of the simulation region, the boundary conditions in the xyz directions, and detailed parameters.
 
 </div>
 
@@ -206,7 +206,7 @@ st.OBoundary(property={'geometry': {'x': 0, 'x_span': 0, 'y': 0, 'y_span': yspan
 
 <div class="text-justify">
 
-&emsp;&emsp;In this code segment, we define simulation region using the `OBoundary` function.<br/>&emsp;&emsp;First, we define the size of the boundary with the `geometry` parameter .<br/>&emsp;&emsp;Next, we define the boundary conditions for the simulation using the `boundary` dictionary, where the x ,y and the z directions all have PML boundary conditions.<br/>&emsp;&emsp;Finally, we set detailed parameters for the PML boundary using the `general_pml` dictionary, specifying the `pml_layer`,`pml_kappa`, `pml_sigma`and `pml_polynomial`, which  specific the order of the polynomial.
+In this code segment, we define simulation region using the `OBoundary()` function.<br/>First, we define the size of the boundary with the `geometry` parameter .<br/>Next, we define the boundary conditions for the simulation using the `boundary` dictionary, where the x ,y and the z directions all have PML boundary conditions.<br/>Finally, we set detailed parameters for the PML boundary using the `general_pml` dictionary, specifying the `pml_layer`,`pml_kappa`, `pml_sigma`and `pml_polynomial`, which  specific the order of the polynomial.
 
 </div>
 
@@ -214,7 +214,7 @@ st.OBoundary(property={'geometry': {'x': 0, 'x_span': 0, 'y': 0, 'y_span': yspan
 
 <div class="text-justify">
 
-&emsp;&emsp;To achieve more accurate calculations of the model's modal fields, we can add a sub-mesh in region 5.
+To achieve more accurate calculations of the model's modal fields, we can add a sub-mesh in region 5.
 
 </div>
 
@@ -228,7 +228,7 @@ st.add_mesh(name='sub_mesh',
 
 <div class="text-justify">
 
-&emsp;&emsp;In this code segment, we use the `add_mesh` function to add a sub-mesh in region 5.<br/>&emsp;&emsp;The `name` parameter defines the name of the mesh.<br/>&emsp;&emsp;The `general` parameter specifies the grid accuracy in the xyz directions (in this case, 0.02 micrometers in each direction).<br/>&emsp;&emsp;The `geometry` parameter sets the coordinates of the sub-mesh.
+In this code segment, we use the `add_mesh()` function to add a sub-mesh in region 5.<br/>The `name` parameter defines the name of the mesh.<br/>The `general` parameter specifies the grid accuracy in the xyz directions (in this case, 0.02 micrometers in each direction).<br/>The `geometry` parameter sets the coordinates of the sub-mesh.
 
 </div>
 
@@ -236,7 +236,7 @@ st.add_mesh(name='sub_mesh',
 
 <div class="text-justify">
 
-&emsp;&emsp;In region 6, we add the FDE simulation module to support mode calculations and frequency scans.
+In region 6, we add the FDE simulation module to support mode calculations and frequency scans.
 
 </div>
 
@@ -269,7 +269,7 @@ simu.add(name=simu_name, type='FDE',
 
 <div class="text-justify">
 
-&emsp;&emsp;In this code segment, the `name` parameter defines the name of the simulation module.<br/>&emsp;&emsp;The `general` parameter specifies the type of the simulation module within the structure. It supports the following list selection`['2d_x_normal','2d_y_normal','2d_z_normal']`.<br/>&emsp;&emsp;The `mesh_settings` parameter is set to the previously defined sub_mesh.<br/>&emsp;&emsp;The `wavelength` parameter sets the wavelength-related parameters for the simulation.<br/>&emsp;&emsp;The `search` parameter specifies the mode search type. It supports the following list selection['near_n','max_index'].<br/>&emsp;&emsp;In this case, we use `max_index` to automatically search for the mode with max index in the structure. To use the ‘near_n’, we need to set the data in ‘n’.<br/>&emsp;&emsp;The `bent_waveguide` parameter can be used to set parameters for a bent waveguide.<br/>&emsp;&emsp;The `frequency_analysis` parameter allows us to set parameters for frequency scans or mode calculations with varying wavelengths.
+In this code segment, the `name` parameter defines the name of the simulation module.<br/>The `general` parameter specifies the type of the simulation module within the structure. It supports the following list selection`['2d_x_normal','2d_y_normal','2d_z_normal']`.<br/>The `mesh_settings` parameter is set to the previously defined sub_mesh.<br/>The `wavelength` parameter sets the wavelength-related parameters for the simulation.<br/>The `search` parameter specifies the mode search type. It supports the following list selection['near_n','max_index'].<br/>In this case, we use `max_index` to automatically search for the mode with max index in the structure. To use the ‘near_n’, we need to set the data in ‘n’.<br/>The `bent_waveguide` parameter can be used to set parameters for a bent waveguide.<br/>The `frequency_analysis` parameter allows us to set parameters for frequency scans or mode calculations with varying wavelengths.
 
 </div>
 
@@ -277,7 +277,7 @@ simu.add(name=simu_name, type='FDE',
 
 <div class="text-justify">
 
-&emsp;&emsp;In region 7, you can generate an image of the structure which contains the specific coordinates.
+In region 7, you can generate an image of the structure which contains the specific coordinates.
 </div>
 
 ```
@@ -289,7 +289,7 @@ simu.add(name=simu_name, type='FDE',
 
 <div class="text-justify">
 
-&emsp;&emsp;In this code segment, we use the `structure_show` function to form a picture.<br/>&emsp;&emsp;The `fig_type` specifies the type of figure. It supports the following list selection["png", "svg"].<br/>&emsp;&emsp;The `show` , which is a switch that controls whether the picture is generated or not. If you have already installed the GUI locally, you can automatically pop up the 3D structural model within the GUI using `show_with="local_gui"`. Additionally, the parameter dictionary `show_with` also supports `matplotlib`, so you can also view the image through python.
+In this code segment, we use the `structure_show()` function to form a picture.<br/>The `fig_type` specifies the type of figure. It supports the following list selection["png", "svg"].<br/>The `show` , which is a switch that controls whether the picture is generated or not. If you have already installed the GUI locally, you can automatically pop up the 3D structural model within the GUI using `show_with="local_gui"`. Additionally, the parameter dictionary `show_with` also supports `matplotlib`, so you can also view the image through python.
 
 
 
@@ -300,7 +300,7 @@ simu.add(name=simu_name, type='FDE',
 
 <div class="text-justify">
 
-&emsp;&emsp;And in region 8, you can generate a material refractive index plot for the structure in different cross-sectional directions(x,y,z).
+And in region 8, you can generate a material refractive index plot for the structure in different cross-sectional directions(x,y,z).
 
 </div>
 
@@ -324,7 +324,7 @@ if run_options.index_preview:
 
 <div class="text-justify">
 
-&emsp;&emsp;In region 9, you can run the simulation. 
+In region 9, you can run the simulation. 
 
 </div>
 
@@ -338,7 +338,7 @@ result_fde = simu[simu_name].run()
 
 <div class="text-justify">
 
-&emsp;&emsp;In region 10, you can retrieve and store the simulation results. 
+In region 10, you can retrieve and store the simulation results. 
 
 </div>
 
@@ -367,7 +367,7 @@ if run_options.extract:
 
 <div class="text-justify">
 
-&emsp;&emsp;The `extract` function allows you to extract specific simulation results and store them for further analysis.<br/>&emsp;&emsp;The `attribute` parameter specifies the type of simulation results to be extracted.<br/>&emsp;&emsp;The `mode` parameter corresponds to the index of the FDE calculation mode.<br/>&emsp;&emsp;The `real` and `imag` parameters are used to extract the real and imaginary parts of the simulation results, respectively.
+The `extract()` function allows you to extract specific simulation results and store them for further analysis.<br/>The `attribute` parameter specifies the type of simulation results to be extracted.<br/>The `mode` parameter corresponds to the index of the FDE calculation mode.<br/>The `real` and `imag` parameters are used to extract the real and imaginary parts of the simulation results, respectively.
 
 </div>
 
@@ -375,7 +375,7 @@ if run_options.extract:
 
 <div class="text-justify">
 
-&emsp;&emsp;In this section of the code, the `simulation` function is called and executed, which allows you to reset relevant parameters for more convenient parameter scanning and optimization design. We also support control switches for various functionalities at the end of the code, and you can use configuration flags(True or False). These flags can be used to turn specific functionalities on or off, making it easier to check the model and perform efficient calculations.
+In this section of the code, the `simulation()` function is called and executed, which allows you to reset relevant parameters for more convenient parameter scanning and optimization design. We also support control switches for various functionalities at the end of the code, and you can use configuration flags(True or False). These flags can be used to turn specific functionalities on or off, making it easier to check the model and perform efficient calculations.
 
 </div>
 
@@ -399,7 +399,7 @@ if __name__ == '__main__':
 
 <div class="text-justify">
 
-&emsp;&emsp;By turning on/off the relevant functionalities, you can control the simulation process and obtain the desired results. For example, the `index_preview` is to control whether to output images of the structural refractive index. `run` determines whether to run the program. `run_frequency_sweep` is used to enable frequency scanning, and `extract` is used to control data extraction. Properly utilizing these switches can help you inspect the simulation effectively.
+By turning on/off the relevant functionalities, you can control the simulation process and obtain the desired results. For example, the `index_preview` is to control whether to output images of the structural refractive index. `run` determines whether to run the program. `run_frequency_sweep` is used to enable frequency scanning, and `extract` is used to control data extraction. Properly utilizing these switches can help you inspect the simulation effectively.
 
 </div>
 
@@ -407,7 +407,7 @@ if __name__ == '__main__':
 
 <div class="text-justify">
 
-&emsp;&emsp;1. Schematic diagram of the refractive index of the device.
+1. Schematic diagram of the refractive index of the device.
 
 </div>
 
@@ -415,7 +415,7 @@ if __name__ == '__main__':
 
 <div class="text-justify">
 
-&emsp;&emsp;2. The results of the calculation mode will be stored in a CSV format file for subsequent data processing in Python and Excel.
+2. The results of the calculation mode will be stored in a CSV format file for subsequent data processing in Python and Excel.
 
 </div>
 
@@ -423,7 +423,7 @@ if __name__ == '__main__':
 
 <div class="text-justify">
 
-&emsp;&emsp;3. Image of the Ey electric field component intensity in symmetric and antisymmetric mode modes.
+3. Image of the Ey electric field component intensity in symmetric and antisymmetric mode modes.
 
 </div>
 
@@ -431,14 +431,14 @@ if __name__ == '__main__':
 
 <div class="text-justify">
 
-&emsp;&emsp;4. According to the effective refractive index of the obtained mode field, Python is used for data processing and drawing.
+4. According to the effective refractive index of the obtained mode field, Python is used for data processing and drawing.
 
 </div>
 
 
 <div class="text-justify">
 
-&emsp;&emsp;&emsp;The coupling length under the gap between two waveguides is calculated with the formula:
+&emsp;The coupling length under the gap between two waveguides is calculated with the formula:
 
 </div>
 
@@ -446,7 +446,7 @@ if __name__ == '__main__':
 
 <div class="text-justify">
 
-&emsp;&emsp;&emsp;We can also get the coupling coefficient by the formula:
+&emsp;We can also get the coupling coefficient by the formula:
 
 </div>
 
@@ -456,7 +456,7 @@ if __name__ == '__main__':
 
 <div class="text-justify">
 
-&emsp;&emsp;5.  Similarly, we can obtain the relationship between the gap (distance) between two waveguides and the coupling coefficient and the relationship between the wavelength and the coupling length.
+5.  Similarly, we can obtain the relationship between the gap (distance) between two waveguides and the coupling coefficient and the relationship between the wavelength and the coupling length.
 
 </div>
 
@@ -475,7 +475,7 @@ if __name__ == '__main__':
 
 <div class="text-justify">
 
-&emsp;&emsp;Next, we will learn how to model a Directional Coupler using the SDK and calculate the light propagation in the structure using the FDTD module.
+Next, we will learn how to model a Directional Coupler using the SDK and calculate the light propagation in the structure using the FDTD module.
 
 </div>
 
@@ -485,7 +485,7 @@ if __name__ == '__main__':
 
 <div class="text-justify">
 
-&emsp;&emsp;Similarly, after installing and configuring the environment, we import the relevant SDK code file `DC_FDTD.py` and the layout `DC.gds` for the model. The example library and related model code are typically stored in the directory `AIO_SDK/.venv_maxoptics/site-packages/maxoptics_sdk/examples`, and the GDS file is imported into the folder `../examples/examples_gds`.
+Similarly, after installing and configuring the environment, we import the relevant SDK code file `DC_FDTD.py` and the layout `DC.gds` for the model. The example library and related model code are typically stored in the directory `AIO_SDK/.venv_maxoptics/site-packages/maxoptics_sdk/examples`, and the GDS file is imported into the folder `../examples/examples_gds`.
 
 </div>
 
@@ -493,7 +493,7 @@ if __name__ == '__main__':
 
 <div class="text-justify">
 
-&emsp;&emsp;Next, we will continue to learn about the specific functionalities corresponding to the code.
+Next, we will continue to learn about the specific functionalities corresponding to the code.
 
 </div>
 
@@ -501,7 +501,7 @@ if __name__ == '__main__':
 
 <div class="text-justify">
 
-&emsp;&emsp;Like the operations with the FDE module, after configuring the simulation wavelength, grid precision, and other parameters, we need to set the relevant parameters for simulation and parameterized modeling in Region 0. This includes defining the paths and names for the simulation files and output results and specifying the path for importing the GDS layout.
+Like the operations with the FDE module, after configuring the simulation wavelength, grid precision, and other parameters, we need to set the relevant parameters for simulation and parameterized modeling in Region 0. This includes defining the paths and names for the simulation files and output results and specifying the path for importing the GDS layout.
 
 </div>
 
@@ -527,7 +527,7 @@ gds_file = gds_file_root_path + "/examples_gds/DC.gds"
 
 <div class="text-justify">
 
-&emsp;&emsp;Subsequently, in Region 2, we define the materials required for the simulation. Here, we specify the refractive indices of Si (Silicon) and SiO2 (Silicon Dioxide) materials.
+Subsequently, in Region 2, we define the materials required for the simulation. Here, we specify the refractive indices of Si (Silicon) and SiO2 (Silicon Dioxide) materials.
 
 </div>
 
@@ -542,7 +542,7 @@ mt.add_lib(name="Air", data=mo.Material.Air, order=2)
 
 <div class="text-justify">
 
-&emsp;&emsp;The `add_nondispersion` function adds a non-dispersion material to the project in the simulation. <br/>&emsp;&emsp;The `data`, is specified as a list, typically in the format [(index real, index imag)]. This list contains the complex refractive index values for the material, enabling the simulation to model its optical properties accurately.<br/>&emsp;&emsp;The `Order` parameter determines the mesh order for the material during the simulation.<br/>&emsp;&emsp;The function allows users to incorporate non-dispersion materials into the simulation, contributing to a comprehensive and precise optical analysis of the system under investigation.
+The `add_nondispersion()` function adds a non-dispersion material to the project in the simulation. <br/>The `data`, is specified as a list, typically in the format [(index real, index imag)]. This list contains the complex refractive index values for the material, enabling the simulation to model its optical properties accurately.<br/>The `Order` parameter determines the mesh order for the material during the simulation.<br/>The function allows users to incorporate non-dispersion materials into the simulation, contributing to a comprehensive and precise optical analysis of the system under investigation.
 
 </div>
 
@@ -550,7 +550,7 @@ mt.add_lib(name="Air", data=mo.Material.Air, order=2)
 
 <div class="text-justify">
 
-&emsp;&emsp;In Region 3, we define the parameters relevant to the wavelength.
+In Region 3, we define the parameters relevant to the wavelength.
 
 </div>
 
@@ -563,7 +563,7 @@ wv.add(name=waveform_name, wavelength_center=wavelength, wavelength_span=wavelen
 
 <div class="text-justify">
 
-&emsp;&emsp;The `Waveform` function is used to retrieve the waveform manager for the current project. It allows users to access and manipulate the waveform sources used in the simulation.<br/>&emsp;&emsp;The `name` parameter specifies the name of the waveform source.<br/>&emsp;&emsp;The `Wavelength_center` parameter defines the center of the wavelength range for the source.<br/>&emsp;&emsp;The `Wavelength_span` parameter determines the span of the wavelength range for the source. 
+The `Waveform()` function is used to retrieve the waveform manager for the current project. It allows users to access and manipulate the waveform sources used in the simulation.<br/>The `name` parameter specifies the name of the waveform source.<br/>The `Wavelength_center` parameter defines the center of the wavelength range for the source.<br/>The `Wavelength_span` parameter determines the span of the wavelength range for the source. 
 
 
 </div>
@@ -572,7 +572,7 @@ wv.add(name=waveform_name, wavelength_center=wavelength, wavelength_span=wavelen
 
 <div class="text-justify">
 
-&emsp;&emsp;Next, similar to the procedure in the FDE module, in Region 4, we create the model by importing the GDS layout. Subsequently, in Region 5, we establish the boundary conditions. Additionally, in Region 6, we can set the sub-mesh for improved precision.
+Next, similar to the procedure in the FDE module, in Region 4, we create the model by importing the GDS layout. Subsequently, in Region 5, we establish the boundary conditions. Additionally, in Region 6, we can set the sub-mesh for improved precision.
 
 </div>
 
@@ -610,7 +610,7 @@ wv.add(name=waveform_name, wavelength_center=wavelength, wavelength_span=wavelen
 
 <div class="text-justify">
 
-&emsp;&emsp;Then we need to establish the light source in the input waveguide, as shown in Region 7.
+Then we need to establish the light source in the input waveguide, as shown in Region 7.
 
 </div>
 
@@ -625,7 +625,7 @@ src.add(name="source", type="mode_source", axis="x_forward",
 
 <div class="text-justify">
 
-&emsp;&emsp;The `Source` function is utilized to retrieve the source manager for the current project.<br/>&emsp;&emsp;The `type` parameter specifies the type of the source and is formatted as either `["mode_source"] or ["gaussian_source"]`.<br/>&emsp;&emsp;The `name` parameter represents the name assigned to the source.<br/>&emsp;&emsp;The `axis` parameter defines the axis of the source.<br/>&emsp;&emsp;The `property` parameter allows for defining specific properties associated with the source.
+The `Source()` function is utilized to retrieve the source manager for the current project.<br/>The `type` parameter specifies the type of the source and is formatted as either `["mode_source"] or ["gaussian_source"]`.<br/>The `name` parameter represents the name assigned to the source.<br/>The `axis` parameter defines the axis of the source.<br/>The `property` parameter allows for defining specific properties associated with the source.
 
 </div>
 
@@ -633,7 +633,7 @@ src.add(name="source", type="mode_source", axis="x_forward",
 
 <div class="text-justify">
 
-&emsp;&emsp;In Region 8, we set up the monitors. 
+In Region 8, we set up the monitors. 
 
 </div>
 
@@ -660,9 +660,9 @@ src.add(name="source", type="mode_source", axis="x_forward",
 
 <div class="text-justify">
 
-&emsp;&emsp;For the global monitor, the `Monitor` function is utilized to retrieve the monitor manager for the current project, which allows users to access and manage various types of monitors used during simulation.<br/>&emsp;&emsp;The `name` parameter represents the name of the Global Option associated with the monitor.<br/>&emsp;&emsp;The `type` parameter defines the type of the Global Option and is formatted as a list containing one of several monitor types, such as `["electric_monitor"], ["current_monitor"], ["charge_monitor"], ["band_monitor"], ["profile_monitor"], ["global_monitor", "global_option"], ["time_monitor"], ["power_monitor"], or ["mode_expansion"]`. The `property` parameter is used to define and set the relevant parameters specific to the chosen monitor type. These parameters control the monitor's behavior and data collection settings during the simulation.
+For the global monitor, the `Monitor()` function is utilized to retrieve the monitor manager for the current project, which allows users to access and manage various types of monitors used during simulation.<br/>The `name` parameter represents the name of the Global Option associated with the monitor.<br/>The `type` parameter defines the type of the Global Option and is formatted as a list containing one of several monitor types, such as `["electric_monitor"], ["current_monitor"], ["charge_monitor"], ["band_monitor"], ["profile_monitor"], ["global_monitor", "global_option"], ["time_monitor"], ["power_monitor"], or ["mode_expansion"]`. The `property` parameter is used to define and set the relevant parameters specific to the chosen monitor type. These parameters control the monitor's behavior and data collection settings during the simulation.
 
-&emsp;&emsp;The power monitor is a configuration setting that allows users to specify various simulation parameters.<br/>&emsp;&emsp;The `name` parameter assigns a name to the power monitor.<br/>&emsp;&emsp;The `type` parameter defines the type of power monitor.<br/>&emsp;&emsp;The `general` parameter pertains to settings related to the frequency domain and frequency-dependent behaviors of the simulation.<br/>&emsp;&emsp;The `geometry` parameter is used to define the geometric characteristics of the simulated structure.<br/>&emsp;&emsp;The `mode_expansion` parameter involves relevant settings for mode expansion simulations. Users can customize the simulation settings by utilizing these input parameters to achieve accurate and comprehensive results based on their specific simulation requirements.
+The power monitor is a configuration setting that allows users to specify various simulation parameters.<br/>The `name` parameter assigns a name to the power monitor.<br/>The `type` parameter defines the type of power monitor.<br/>The `general` parameter pertains to settings related to the frequency domain and frequency-dependent behaviors of the simulation.<br/>The `geometry` parameter is used to define the geometric characteristics of the simulated structure.<br/>The `mode_expansion` parameter involves relevant settings for mode expansion simulations. Users can customize the simulation settings by utilizing these input parameters to achieve accurate and comprehensive results based on their specific simulation requirements.
 
 </div>
 
@@ -670,7 +670,7 @@ src.add(name="source", type="mode_source", axis="x_forward",
 
 <div class="text-justify">
 
-&emsp;&emsp;In Region 9, we add the FDTD simulation. 
+In Region 9, we add the FDTD simulation. 
 
 </div>
 
@@ -687,7 +687,7 @@ src.add(name="source", type="mode_source", axis="x_forward",
 
 <div class="text-justify">
 
-&emsp;&emsp;The `Simulation` manager is critical for setting up and running simulations in the current project.<br/>&emsp;&emsp;The `name` parameter allows users to assign a unique name to the simulation for identification purposes.<br/>&emsp;&emsp;The `type` parameter defines the type of the simulation.<br/>&emsp;&emsp;The `simulation_time` parameter specifies the duration of the simulation.<br/>&emsp;&emsp;The `mesh_settings` parameter enables users to configure various settings related to the simulation mesh. The `mesh_accuracy` parameter controls the precision of the mesh used in the simulation.<br/>&emsp;&emsp;The `cells_per_wavelength` parameter determines the wavelength precision used in the simulation.<br/>&emsp;&emsp;The `minimum_mesh_step_settings` parameter sets the minimum mesh step, allowing users to define the smallest allowable size for mesh elements.<br/>&emsp;&emsp;Users can tailor the simulation setup to meet their requirements by utilizing these input parameters, enabling accurate and efficient electromagnetic simulations of complex optical structures.
+The `Simulation()` manager is critical for setting up and running simulations in the current project.<br/>The `name` parameter allows users to assign a unique name to the simulation for identification purposes.<br/>The `type` parameter defines the type of the simulation.<br/>The `simulation_time` parameter specifies the duration of the simulation.<br/>The `mesh_settings` parameter enables users to configure various settings related to the simulation mesh. The `mesh_accuracy` parameter controls the precision of the mesh used in the simulation.<br/>The `cells_per_wavelength` parameter determines the wavelength precision used in the simulation.<br/>The `minimum_mesh_step_settings` parameter sets the minimum mesh step, allowing users to define the smallest allowable size for mesh elements.<br/>Users can tailor the simulation setup to meet their requirements by utilizing these input parameters, enabling accurate and efficient electromagnetic simulations of complex optical structures.
 
 </div>
 
@@ -695,7 +695,7 @@ src.add(name="source", type="mode_source", axis="x_forward",
 
 <div class="text-justify">
 
-&emsp;&emsp;As the same, we generate the device structure of the Directional Coupler in Region 10. 
+As the same, we generate the device structure of the Directional Coupler in Region 10. 
 
 </div>
 
@@ -708,7 +708,7 @@ src.add(name="source", type="mode_source", axis="x_forward",
 
 <div class="text-justify">
 
-&emsp;&emsp;To calculate the input mode light and save its electric field intensity data in region 11.  
+To calculate the input mode light and save its electric field intensity data in region 11.  
 
 </div>
 
@@ -727,7 +727,7 @@ if run_options.calculate_modes:
 
 <div class="text-justify">
 
-&emsp;&emsp;Then, in Region 12, we run the simulation. 
+Then, in Region 12, we run the simulation. 
 
 </div>
 
@@ -749,7 +749,7 @@ if __name__ == "__main__":
 
 <div class="text-justify">
 
-&emsp;&emsp;In Region 13, we define the desired output results. Lastly, we control the switches of various functional modules at the end of the Python file.
+In Region 13, we define the desired output results. Lastly, we control the switches of various functional modules at the end of the Python file.
 
 
 </div>
@@ -797,7 +797,7 @@ if run_options.extract and run_options.run:
 
 <div class="text-justify">
 
-&emsp;&emsp;At the end of all codes, We control the switches of various functional modules at the end of the Python file.
+At the end of all codes, We control the switches of various functional modules at the end of the Python file.
 
 </div>
 
@@ -818,9 +818,9 @@ if __name__ == "__main__":
 
 <div class="text-justify">
 
-&emsp;&emsp;After running the program, we can obtain a series of corresponding output results:
+After running the program, we can obtain a series of corresponding output results:
 
-&emsp;&emsp;1.Incident light electric field intensity, Cross output port electric field intensity, and TRU output port electric field intensity.
+1.Incident light electric field intensity, Cross output port electric field intensity, and TRU output port electric field intensity.
 
 </div>
 
@@ -828,7 +828,7 @@ if __name__ == "__main__":
 
 <div class="text-justify">
 
-&emsp;&emsp;2.DC (Directional Coupler)  Z-direction electric field intensity at different wavelengths: 1.50 *μ*m, 1.55 *μ*m, and 1.60 *μ*m.
+2.DC (Directional Coupler)  Z-direction electric field intensity at different wavelengths: 1.50 *μ*m, 1.55 *μ*m, and 1.60 *μ*m.
 
 </div>
 
@@ -836,7 +836,7 @@ if __name__ == "__main__":
 
 <div class="text-justify">
 
-&emsp;&emsp;3.Cross output port and TRU output port transmittance at different wavelengths: 1.50 *μ*m, 1.55 *μ*m, and 1.60 *μ*m.
+3.Cross output port and TRU output port transmittance at different wavelengths: 1.50 *μ*m, 1.55 *μ*m, and 1.60 *μ*m.
 
 </div>
 
@@ -844,7 +844,7 @@ if __name__ == "__main__":
 
 <div class="text-justify">
 
-&emsp;&emsp;4.TE0 mode transmittance at Cross output port and TRU output port for different wavelengths: 1.50 *μ*m, 1.55 *μ*m, and 1.60 *μ*m.
+4.TE0 mode transmittance at Cross output port and TRU output port for different wavelengths: 1.50 *μ*m, 1.55 *μ*m, and 1.60 *μ*m.
 
 </div>
 
@@ -852,7 +852,7 @@ if __name__ == "__main__":
 
 <div class="text-justify">
 
-&emsp;&emsp;Based on the information provided, we can get the following results  when propogating wavelength  is 1.55 *μ*m and the two beam length of directional couper is equal to 15 *μ*m:<br/>&emsp;&emsp;1.Insertion Loss: 0.177 dB;<br/>&emsp;&emsp;2.Power Split Ratio: 13.2 : 83.8 (or approximately 13.2% to one port and 83.8% to the other port);<br/>&emsp;&emsp;3.Dimensions: Approximately 5 *μ*m X 25 *μ*m. 
+Based on the information provided, we can get the following results  when propogating wavelength  is 1.55 *μ*m and the two beam length of directional couper is equal to 15 *μ*m: 1. Insertion Loss: 0.177 dB; 2. Power Split Ratio: 13.2 : 83.8 (or approximately 13.2% to one port and 83.8% to the other port); 3. Dimensions: Approximately 5 *μ*m X 25 *μ*m. 
    
 </div>
 
@@ -860,7 +860,7 @@ if __name__ == "__main__":
 
 <div class="text-justify">
 
-&emsp;&emsp;To view a function's definition and supported parameters or a parameter dictionary, you can right-click on its name and select "Go to Definition"  or press "Ctrl" while left-clicking on its name to view its definition, showing the available parameters and their descriptions.  
+To view a function's definition and supported parameters or a parameter dictionary, you can right-click on its name and select "Go to Definition"  or press "Ctrl" while left-clicking on its name to view its definition, showing the available parameters and their descriptions.  
 
 </div>
 

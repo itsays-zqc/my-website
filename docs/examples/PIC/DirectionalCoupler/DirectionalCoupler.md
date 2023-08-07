@@ -36,7 +36,7 @@ Using the `FDE module`, we will calculate symmetric and antisymmetric modes in a
 
 </div>
 
-###  1.Basic Operations
+###  1. Basic Operations
 
 #### 1.1 Import File
 
@@ -61,7 +61,7 @@ Version of Max-Optics sdk is 2.3.0.4.630.2000
 Max-Optics SDK is initializing...
 ```
 
-### 2.Code Description
+### 2. Code Description
 
 <div class="text-justify">
 
@@ -85,7 +85,7 @@ import os
 import time
 ```
 
-#### 2.2  Define Simulation 
+#### 2.2 Define Simulation 
 
 <div class="text-justify">
 
@@ -210,7 +210,7 @@ In this code segment, we define simulation region using the `OBoundary()` functi
 
 </div>
 
-#### 2.7  Add Sub-mesh
+#### 2.7 Add Sub-mesh
 
 <div class="text-justify">
 
@@ -232,7 +232,7 @@ In this code segment, we use the `add_mesh()` function to add a sub-mesh in regi
 
 </div>
 
-#### 2.8  FDE Simulation
+#### 2.8 FDE Simulation
 
 <div class="text-justify">
 
@@ -273,7 +273,7 @@ In this code segment, the `name` parameter defines the name of the simulation mo
 
 </div>
 
-#### 2.9  Structure Image
+#### 2.9 Structure Image
 
 <div class="text-justify">
 
@@ -296,7 +296,7 @@ In this code segment, we use the `structure_show()` function to form a picture.<
 
 </div>
 
-#### 2.10  Index Preview
+#### 2.10 Index Preview
 
 <div class="text-justify">
 
@@ -403,7 +403,7 @@ By turning on/off the relevant functionalities, you can control the simulation p
 
 </div>
 
-### 3.Output Results
+### 3. Output Results
 
 <div class="text-justify">
 
@@ -479,7 +479,7 @@ Next, we will learn how to model a Directional Coupler using the SDK and calcula
 
 </div>
 
-### 1.Basic Operations
+### 1. Basic Operations
 
 
 
@@ -489,7 +489,7 @@ Similarly, after installing and configuring the environment, we import the relev
 
 </div>
 
-### 2.Code Description
+### 2. Code Description
 
 <div class="text-justify">
 
@@ -691,7 +691,7 @@ The `Simulation()` manager is critical for setting up and running simulations in
 
 </div>
 
-#### 2.8  Schematic of Structure
+#### 2.8 Schematic of Structure
 
 <div class="text-justify">
 
@@ -704,7 +704,7 @@ As the same, we generate the device structure of the Directional Coupler in Regi
   st.structure_show(fig_type="png", show=False, savepath=plot_path + simu_name, simulation_name=simu_name)
 # endregion
 ```
-#### 2.9  Calculate Source
+#### 2.9 Calculate Source
 
 <div class="text-justify">
 
@@ -723,7 +723,7 @@ if run_options.calculate_modes:
                     mode=0, attribute="E", export_csv=True)
 # endregion
 ```
-#### 2.10  Run Simulation
+#### 2.10 Run Simulation
 
 <div class="text-justify">
 
@@ -745,7 +745,7 @@ if __name__ == "__main__":
                run_options=RunOptions(index_preview=True, calculate_modes=True, run=True, extract=True))
 # endregion
 ```
-#### 2.11  Results
+#### 2.11 Results
 
 <div class="text-justify">
 
@@ -793,7 +793,7 @@ if run_options.extract and run_options.run:
     # endregion
 ```
 
-#### 2.11  Switches
+#### 2.11 Switches
 
 <div class="text-justify">
 
@@ -814,13 +814,13 @@ if __name__ == "__main__":
                run_options=RunOptions(index_preview=True, calculate_modes=True, run=True, extract=True))
 ```
 
-### 3.Output Results
+### 3. Output Results
 
 <div class="text-justify">
 
 After running the program, we can obtain a series of corresponding output results:
 
-1.Incident light electric field intensity, Cross output port electric field intensity, and TRU output port electric field intensity.
+1. Incident light electric field intensity, Cross output port electric field intensity, and TRU output port electric field intensity.
 
 </div>
 
@@ -828,7 +828,7 @@ After running the program, we can obtain a series of corresponding output result
 
 <div class="text-justify">
 
-2.DC (Directional Coupler)  Z-direction electric field intensity at different wavelengths: 1.50 *μ*m, 1.55 *μ*m, and 1.60 *μ*m.
+2. DC (Directional Coupler)  Z-direction electric field intensity at different wavelengths: 1.50 *μ*m, 1.55 *μ*m, and 1.60 *μ*m.
 
 </div>
 
@@ -836,7 +836,7 @@ After running the program, we can obtain a series of corresponding output result
 
 <div class="text-justify">
 
-3.Cross output port and TRU output port transmittance at different wavelengths: 1.50 *μ*m, 1.55 *μ*m, and 1.60 *μ*m.
+3. Cross output port and TRU output port transmittance at different wavelengths: 1.50 *μ*m, 1.55 *μ*m, and 1.60 *μ*m.
 
 </div>
 
@@ -844,7 +844,7 @@ After running the program, we can obtain a series of corresponding output result
 
 <div class="text-justify">
 
-4.TE0 mode transmittance at Cross output port and TRU output port for different wavelengths: 1.50 *μ*m, 1.55 *μ*m, and 1.60 *μ*m.
+4. TE0 mode transmittance at Cross output port and TRU output port for different wavelengths: 1.50 *μ*m, 1.55 *μ*m, and 1.60 *μ*m.
 
 </div>
 

@@ -5,9 +5,10 @@ This example introduces the modeling and optoelectronic simulation of a vertical
 
 ## 1. Overview
 
-This example utilizes FDTD simulation to obtain the optical field profile in the Ge absorption layer. Subsequently, the photo-induced carrier generation rate is calculated based on that, which is then imported into the OEDevice simulation to obtain the photo current. We also provide scripts for dark current, capacitance and resistance, frequency response, and saturation power. These simulations are divided into separate scripts, and they all call a unified script for modeling and material setup, which makes it convenient for modifications and management.
+This example utilizes FDTD simulation to obtain the optical field profile in the Ge absorption layer. Subsequently, the photo-induced carrier generation rate is calculated based on that, which is then imported into the OEDevice simulation to obtain the photo current. We also provide scripts for dark current, capacitance and resistance, frequency response, and saturation power. These simulations are divided into separate scripts, and they all call a unified script for modeling and material setup, making it convenient for modifications and management.
 
 ## 2. Modeling
+The modeling is completed by a callable function in the script file `VPD00_structure.py`.
 
 ### 2.1 Import simulation toolkit
 First, import `maxoptics_sdk` and other packages.
@@ -25,7 +26,7 @@ from VPD_material import *
 The script file `VPD_material.py` stores some modified electronic parameters of the materials, which are referenced to override default parameters in the modeling script.
 
 ### 2.2 Set general parameters
-Set some general parameters before modeling. And at the begining are those that need to be modified frequently during testing and optimization.
+Set some general parameters before modeling. At the begining are those that need to be modified frequently during testing and optimization.
 
 ```
 [2]
@@ -48,7 +49,7 @@ Ge_SiO2_recombination_velocity = 225000    # cm/s
 run_mode = "local"
 simu_name = "VPD00_struc"
 ```
-以上定义了波长、温度、网格大小等常用参数，这些参数的具体作用将在后续的设置中详细介绍。
+Wavelength, temperature, the mesh grid size and some other parameters are defined above. They will be detailed in the subsequent settings.
 
 ```
 [3]
@@ -99,7 +100,7 @@ cathode_y_span_bottom = 2.2
 cathode_z_span = 1
 cathode_z_center = Si_z_span+Ge_z_span+cathode_z_span/2
 ```
-以上定义的结构的几何参数。
+These are geometric parameters of the structures.
 
 ```
 [4]
@@ -122,8 +123,7 @@ oe_z_max = 1.25
 oe_z_mean = 0.5*(oe_z_min+oe_z_max)
 oe_z_span = oe_z_max-oe_z_min
 ```
-以上定义电学仿真的区域边界几何参数。
-
+These are geometric parameters of the electrical simulation region.
 
 ```
 [5]
@@ -166,7 +166,8 @@ n_pplus_junction_width = 0.02
 n_pplus_con = 1e20
 n_pplus_ref = 1e16
 ```
-以上定义掺杂设置参数，包含掺杂区域、浓度、扩散区结宽等。
+These are parameters for doping setup, including doping box, concentration and the diffusion junction width.
+
 
 ```
 [6]
@@ -189,11 +190,12 @@ z_mean = 0.5*(z_min+z_max)
 z_span = z_max-z_min
 # endregion
 ```
-以上定义光学仿真的区域边界几何参数。
+These are geometry parameters for the optical simulation region.
 
-### 2.3 定义工程函数
 
-之后定义一个函数，实现创建工程、设置材料、建模、掺杂、添加边界条件等功能，方便其它仿真脚本调用。
+### 2.3 Define the function for creating a new project
+
+A function is defined to implement the functionalities of creating a project, setting materials, modeling, doping, setting boundary conditions, etc., which can be called by other simulation script files.
 
 ```
 [7]
@@ -201,11 +203,11 @@ z_span = z_max-z_min
 ```python
 def pd_project(project_name, run_mode, material_property):
 ```
-其中参数列表在后续使用时介绍。
 
-#### 2.3.1 创建工程
 
-新建一个仿真工程。
+#### 2.3.1 Create a new project
+
+Create a new simulation project.
 ```
 [8]
 ```
@@ -214,12 +216,12 @@ def pd_project(project_name, run_mode, material_property):
     pj = mo.Project(name=project_name, location=run_mode)
 	# endregion
 ```
-`mo.Project()`参数：
+`mo.Project()` parameters:
 
-- `name`--工程名，也是工程保存的文件夹名
-- `location`--算力资源位置，目前SDK内有源仿真仅支持`'local'`选项，即调用本地算力
+- `name`--Project name, which is also the folder name for the project files to be saved.
+- `location`--The location of the computing resources. The active device simulation only support the option of `"local"` now, which means the simulation uses the local computing resources.
 
-#### 2.3.2 设置材料
+#### 2.3.2 Set materials
 
 ```
 [9]
@@ -237,7 +239,9 @@ def pd_project(project_name, run_mode, material_property):
         print("material_property must be chosen from 'normal', 'transient'")
         raise
 ```
-其中`elec_Si_properties`，`elec_Ge_properties`均为从`VPD_material.py`脚本中导入的变量，分别存储Si、Ge材料修改了参数值的电学参数。另外因为Ge材料在瞬态仿真中开启了更多的物理模型，所以对应有单独的`elec_Ge_properties_for_transient`参数设置，并且通过`material_property`参数加以判断，以便后续在不同的仿真中使用相应的参数设置。电学模型及参数设置细节参见附录。
+The `elec_Si_properties` and `elec_Ge_properties` are both variables imported from `VPD_material.py`, storing the modified electronic parameters for Silicon and Germanium respectively. Besides, more physics models for Germanium are switched on in the transient simulation, with the `elec_Ge_properties_for_transient` specified for it. The `material_property` is used to determine which type of material parameters to choose. For details of the physics model and electronic parameter settings, please refer to the appendix.
+
+
 ```
 [10]
 ```
@@ -260,28 +264,25 @@ def pd_project(project_name, run_mode, material_property):
 	# endregion
 ```
 
+When adding materials, start by using the `add_lib` function to add electrical materials from the material library.
 
-
-添加材料时首先用`add_lib`函数从材料库中添加电学材料。
-
-`add_lib()`参数：
-
-- `name`--自定义材料名
-- `data`--材料数据，需要从电学材料库`mo.OE_Material`中选择内置材料
-- `order`--材料的`mesh_order`，默认为2
-- `override`--使用自定义参数值，覆盖电学材料参数的默认值，格式详见附录
+`add_lib()` parameters:
+- `name`--Custom material name
+- `data`--Material data, requiring one of the built-in materials in the electrical material library, namely `mo.OE_Material`
+- `order`--`mesh_order` of the material, default to be 2
+- `override`--Override the default electronic parameters by custom values
 
 
 
-然后用`set_optical_material`函数设置材料的光学属性。
+Then, use the `set_optical_material` function to set the optical property for the material.
 
 `set_optical_material()`参数：
 
-- `data`--光学材料属性，可以从光学材料库`mo.Material`中获取，也可以从用户自定义的光学材料中获取
+- `data`--Optical material property，which can be one of the built-in materials in the optical material library `mo.Material`, or be from the custom optical material.
 
 
 
-*使用自定义光学材料属性的语法示例*
+*Example of using custom optical material properties*
 
 ```
 [11]
@@ -292,12 +293,13 @@ mt.add_nondispersion(name="mat_sio2_op", data=[(1.444, 0)], order=1)
 mt["mat_sio2"].set_optical_material(data=mt["mat_sio2_op"].passive_material)
 ```
 
-注意事项：
+Note:
 
-1. 通过两步设置绑定到一起的电学、光学材料属性，在实际上没有必然的联系，比如可以为一种材料同时设置SiO2的电学属性和Si的光学属性，仿真时不会产生报错或警告，因此需要用户自行判断材料的设置是否符合物理。
-2. 目前FDTD仿真暂不支持金属材料，因此金属材料的光学属性需设置为`mo.Material.PEC`，并且其材料名也需设置为`"pec"`，才能顺利进行仿真。
+1. Although the electrical and optical material properties are bound together through a two-step setting, in reality, there is no inherent connection between them. For instance, it is possible to set both the electrical properties of SiO2 and the optical properties of Si for the same material. The simulation will not generate errors or warnings in such cases, so users need to determine by themselves whether the material settings align with the physics.
+2. The FDTD simulation currently doesn't support metal materials. Therefore, the optical property of metal materials should be set to `mo.Material.PEC` and the material name should also be `"pec"`.
 
-#### 2.3.3 创建结构
+
+#### 2.3.3 Create structures
 
 ```
 [12]
@@ -348,15 +350,14 @@ mt["mat_sio2"].set_optical_material(data=mt["mat_sio2_op"].passive_material)
 
 
 
-`add_geometry()`参数：
+`add_geometry()` parameters:
 
-- `name`--结构名称
-- `type`--结构类型
-- `property`--其它属性，见下方表格
+- `name`--Structure name
+- `type`--Structure type
+- `property`--Other properties, listed below
 
 
-
-`Rectangle`属性列表：
+`Rectangle` property list：
 
 |                     | default   | type     | notes                         |
 |:--------------------|:----------|:---------|:------------------------------|
@@ -380,7 +381,7 @@ mt["mat_sio2"].set_optical_material(data=mt["mat_sio2_op"].passive_material)
 
 
 
-`LinearTrapezoid`属性列表：
+`LinearTrapezoid` property list：
 
 |                     | default | type     | notes                         |
 | :------------------ | :------ | :------- | :---------------------------- |
@@ -406,7 +407,7 @@ mt["mat_sio2"].set_optical_material(data=mt["mat_sio2_op"].passive_material)
 
 
 
-`Pyramid`属性列表：
+`Pyramid` property list：
 
 |                        | default | type     | notes                         |
 | :--------------------- | :------ | :------- | :---------------------------- |
@@ -430,14 +431,14 @@ mt["mat_sio2"].set_optical_material(data=mt["mat_sio2_op"].passive_material)
 
 
 
-注意事项：
+Note:
 
-1. 结构的`mesh_order`未设置时默认与其材料的`mesh_order`相同，设置后将覆盖默认值。
-2. 结构的`mesh_order`越大，优先级越高；`mesh_order`相同时，后面创建的结构优先级大于前面创建的。结构重叠时，优先级高的结构覆盖优先级低的结构。
+1. The `mesh_order` of a structure is default to be the `mesh_order` of its material, and willed be overridden when set explicitly.
+2. The larger of the `mesh_order` of a structure, the higher of its priority. `mesh_order` being the same, the structure created later has a higher priority than the one created earlier. When structures overlap, the one with higher priority overrides the one with lower priority.
 
 
 
-#### 2.3.4 添加掺杂
+#### 2.3.4 Add doping
 
 ```
 [13]
@@ -467,16 +468,16 @@ mt["mat_sio2"].set_optical_material(data=mt["mat_sio2_op"].passive_material)
 
 
 
-`add_doping()`参数：
+`add_doping()` parameters:
 
-- `name`--掺杂名称
-- `type`--掺杂类型，设置为`"n"`或`"p"`，分别表示n型、p型掺杂
-- `property`--其它属性
+- `name`--Doping name
+- `type`--Doping type. Options are `"n"` or `"p"` for n-type, p-type doping respectively
+- `property`--Other properties
 
 
+According to the selection of `general.distribution_function`, doping is distinguished as constant doping and gaussian doping. Detailed properties are listed below.
 
-根据`property.general.distribution_function`的选择，分为均匀掺杂与高斯掺杂，详细属性见下方表格。
-
+Doping properties:
 |                               | default | type  | notes                                              |
 | :---------------------------- | :------ | :---- | :------------------------------------------------- |
 | geometry.x                    |         | float |                                                    |

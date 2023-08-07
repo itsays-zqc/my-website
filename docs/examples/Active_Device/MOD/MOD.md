@@ -1,3 +1,6 @@
+import 'katex/dist/katex.min.css';
+import { InlineMath, BlockMath } from 'react-katex';
+
 # Modulator
 
 ##  Introduction
@@ -8,19 +11,13 @@
 
 ![](../MOD/plot/MOD_structure.png)
 
-
-
-## Simulation Methods
-
-​	
-
 ## Simulation Structure
 
 ​	The present structural file provides a comprehensive guide for constructing a simulation structure and establishing a Gaussian doping distribution. Initially, one must construct the geometric structure of the device, incorporate materials and physical field models, specify the doping distribution, and simulation boundary conditions, and set the light source and simulation solver. Eventually, the simulation result data should be extracted and output. 
 
 ​	Our simulation is designed with a light source entering along the X-axis, and the primary optoelectronic characteristic analysis takes place within the three-dimensional structure on the YZ plane. Gaussian doping method is employed to enhance the bandwidth and improve the performance of high-speed devices. The FDE solver is utilized to solve the distribution of effective refractive index, and the OEedvice solver is used to solve the doping distribution of the device. Finally, we generate ad output the  distribution map iof doping and index in modulator structure.
 
-Application Library path: `:\SDK\V2.3.0.4\examples\active_demo\doping_function\MOD\MOD00_structure.py`
+   Application Library path: `:\SDK\V2.3.0.4\examples\active_demo\doping_function\MOD\MOD00_structure.py`
 
 ### 1. Basic Operations
 
@@ -124,7 +121,7 @@ simu_name = "MOD00_struc"
 | run_mode       |       | Specifies the simulate model.                                |
 | simu_name      |       | Specifies this file name to define name of output result folder. |
 
-​	since we explore two communication wavelength, you should define the wavelength, and use next code to choose  relavent parameters values, which we defines in `MOD_material.py` .
+​	Since we explore two communication wavelength, you should define the wavelength, and use next code to choose  relavent parameters values, which we defines in `MOD_material.py` .
 
 ```python
 if wavelength > 1.4:
@@ -370,7 +367,7 @@ if st_type == "normal":
 
 ##### 2.3.4 Add Doping
 
-​	You should define the basic parameters of doping module, such as  type、region and model. Then define source face、junction width peak concentration and  reference concentration in gaussian doping, or only concenteration in uniform doping.  `type` specifies the n-type or donor dopant in `"n"` , and  p-type or acceptor dopant in `"p"` , which may be used with gaussian and uniform prodile types.  `ref_concentration` specifies the .
+​	You should define the basic parameters of doping module, such as  type、region and model. Then define source face、junction width peak concentration and  reference concentration in gaussian doping, or only concentration in uniform doping.  `type` specifies the n-type or donor dopant in `"n"` , and  p-type or acceptor dopant in `"p"` , which may be used with gaussian and uniform prodile types.  `ref_concentration` specifies the diffusion boundary of Gaussian doping.
 
 ```python
 st.add_doping(name="background_doping", type="p", property={
@@ -449,7 +446,7 @@ def preview():
 
 ##### 2.3.8 Set Simulate Solver
 
- 	 Adding electrical and optical silmulation solver, is the prerequisite for output structure file. You can specify solver name and type in `name` and `type` module, and then define its other property. 
+​	Adding electrical and optical silmulation solver, is the prerequisite for output structure file. You can specify solver name and type in `name` and `type` module, and then define its other property. 
 
 ​	The type of `AFDE` is finite difference eigenmode (FDE) simulation module for active devices, which can be used to investigate the refractive index distribution of a device. This solver solves the single-frequency Maxwell's equations directly on a discretized grid of the waveguide cross-section, enabling exploration of the refractive index distribution of the device. The FDE analysis module can then be used to set the boundary conditions, define the model, mesh structure, and wavelength of the light source for calculation. 
 
@@ -492,19 +489,19 @@ simu["preview_fde"].run_index(name="index_preview_x_0", property={
 
 ​	Here, we present the device geometry as defined in the structure file, along with the P-type and N-type dopant distributions, and the overall doping distribution.
 
-Application Library path: `:\SDK\V2.3.0.4\examples\active_demo\doping\MOD\plots\MOD00_struct-time\doping` 
+​	Application Library path: `:examples\active_demo\doping\MOD\plots\MOD00_struct_time\doping` 
 
-|                     Boron Active Doping                      |                          Net Doping                          |                   Phosphorus Active Doping                   |
-| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+|                   Boron Active Doping                   |                      Net Doping                       |                   Phosphorus Active Doping                   |
+| :-----------------------------------------------------: | :---------------------------------------------------: | :----------------------------------------------------------: |
 | ![](../MOD/plot/MOD00_struc/doping/BoronActive_dop.jpg) | ![](../MOD/plot/MOD00_struc/doping/NetDoping_dop.jpg) | ![](../MOD/plot/MOD00_struc/doping/PhosphorusActive_dop.jpg) |
 
 ​	We can see the distribution of the refractive index in the radial direction of the three coordinates of the device.
 
-Application Library path: `:\SDK\V2.3.0.4\examples\active_demo\doping\MOD\plots\MOD00_struct-time` 
+​	Application Library path: `:examples\active_demo\doping\MOD\plots\MOD00_struct_time` 
 
-|                        X-axis                         |                        Y-axis                         |                        Z-axis                         |
-| :---------------------------------------------------: | :---------------------------------------------------: | :---------------------------------------------------: |
-| ![](../MOD/plot/MOD00_struc/Index.index X.png) | ![](../MOD/plot/MOD00_struc/Index.index Y.png) | ![](../MOD/plot/MOD00_struc/Index.index Z.png) |
+|                      X-axis                      |                      Y-axis                      |                      Z-axis                      |
+| :----------------------------------------------: | :----------------------------------------------: | :----------------------------------------------: |
+| ![](../MOD/plot/MOD00_struc/Index.index%20X.png) | ![](../MOD/plot/MOD00_struc/Index.index%20Y.png) | ![](../MOD/plot/MOD00_struc/Index.index%20Z.png) |
 
 ## Analytic Character
 
@@ -512,9 +509,12 @@ Application Library path: `:\SDK\V2.3.0.4\examples\active_demo\doping\MOD\plots\
 
 ​	The half-wave voltage refers to the applied voltage required by the modulator's optical signal to generate a phase difference of pi radians, directly reflecting the modulation efficiency of the modulator. Usually, the modulation efficiency of a device is represented by multiplying the half-wave voltage with a parameter that represents the length of the modulator required for phase variation. A smaller value of this parameter indicates higher modulation efficiency, resulting in a smaller required device size.
 
+​	Application Library path: `:\examples\active_demo\doping_function\MOD\MOD0A_vpi.py`
+
+
 #### 1.1 Basic Operations
 
-​	Before analyzing the characteristic parameters of the device, you need to set up the simulation environment in advance and invoke the modules into the file by  `import` .
+​	Before analyzing the characteristic parameters of the device, you need to set up the simulation environment in advance and invoke the modules into the file by  `import` . Please refer to the PD documentation for detailed instructions on specific Python commands.
 
 #### 1.2 Code Description
 
@@ -550,12 +550,12 @@ time_str = time.strftime("%Y%m%d_%H%M%S/", time.localtime())
 tcad_vmin = -0.5   
 tcad_vmax = 4      
 tcad_vstep = 0.5   
-vpi_vswing = 1.0   suggest as 2*tcad_vstep
+vpi_vswing = 1.0   
 ```
 
 ##### 1.2.3 Set Path
 
-​	You could define the project name of path, and then set the parameters for path.
+​	You could define the project name of path, and then define the parameters for path.
 
 ```python
 simu_name = "MOD0A_vpi"
@@ -573,7 +573,13 @@ vpiloss_folder = plot_path + project_name + "vpiloss"
 
 ##### 1.2.4 Confirm swing of voltage
 
+​	According to the phase change formula, we can determine that the refractive index *n* is a function of bias voltage, which means that we can change the refractive index of the material by adjusting the bias voltage. To achieve a more precise approximation curve for n-V, we set the `vpi_vswing` parameter to specify the voltage spacing before and after the voltage transitions, allowing us to make judgments based on user-defined parameters.
 
+<BlockMath math="\Delta\varphi=\frac{2\pi}{\lambda}\Delta n(V)L\\=\frac{2\pi}{\lambda}\frac{dn}{dV}\Delta VL" />
+
+​	With the following formula, when the phase difference is pi:
+
+<BlockMath math="\Delta V_\pi L=\frac{\Delta V}{\Delta n}\frac{\lambda}{2}" />
 
 ```python
 di = int(np.round(np.abs(vpi_vswing/tcad_vstep/2)))  # Count dot num between volt of vpi and neff.
@@ -583,11 +589,9 @@ if np.abs((np.abs(vpi_vswing)-np.abs(di*tcad_vstep*2))/tcad_vstep) > 0.01:
     warnings.warn("\x1b[6;30;43m" + "\n[Warning: vpi_swing is %(t)sV in program]" % {"t": di*2*tcad_vstep} + "\x1b[0m", UserWarning)
 ```
 
-
-
 ##### 1.2.5 Creat Component
 
-####  
+​	You can specify the physical attributes of an electrode. You can set the BC model and scanning method here. The bias voltage range is set for steady-state solutions, and the AC small signal switch is disabled. Detailed information about the Electrode attribute can be found in the appendix of the PD documentation.
 
 ```python
 pj = mod_project(project_name, run_mode, st_type="normal")
@@ -601,11 +605,9 @@ st.add_electrode(name="anode", property={
     "sweep_type": "single", "voltage": 0, "apply_AC_small_signal": "none"})
 ```
 
-
-
 ##### 1.2.6 Set Simulation
 
-
+​	You can add a physical model solver here.
 
 ```python
 simu = pj.Simulation()
@@ -621,20 +623,18 @@ simu.add(name="fde", type="AFDE", property={
     "other": {**Si_index_vs_doping}})
 ```
 
-
-
 ##### 1.2.7 Run
 
-
+​	It is recommended to include a module that runs the solver and initiates the simulation. The `result_device` variable stores simulation results for subsequent extraction. 
 
 ```python
 result_device = simu["oedevice"].run()
 result_fde = simu["fde"].run()
 ```
 
-
-
 ##### 1.2.8 Extract Parameters 
+
+​	You can extract and export simulation results to the plot folder.
 
 ```python
 result_fde.extract(data="effective_index", export_csv=True, operation="real", show=False, savepath=plot_path + project_name + "neffreal")
@@ -644,9 +644,13 @@ result_fde.extract(data="vpil", export_csv=True, show=False, savepath=plot_path 
 result_fde.extract(data="vpiloss", export_csv=True, show=False, savepath=plot_path + project_name + "vpiloss")
 ```
 
-
-
 ##### 1.2.9 Calculate
+
+​	This section of the program is dedicated to calculating the parameters *VpiL* and *VpiLoss*.
+
+​	You should first extract the parameters for transmission loss and the real part of effective refractive index.
+
+​	The filename `0_effective index_Real.csv` is automatically generated for the n-V data file. The initial `0`  indicates the electrode number, which changes when extracting current from different electrodes. Therefore, iterate from 0 to 9 to locate the saved n-V data files.
 
 ```python
 neff_file = os.path.join(neff_real_folder, "0_effective index_Real.csv")
@@ -670,7 +674,11 @@ volt = rawdata[:,0]
 rawdata = np.genfromtxt(loss_file, skip_header=3, delimiter=',')
 
 loss = rawdata[:,1]
+```
 
+​	Generate the relationship curve and data file for the product of half-wave voltage and effective modulation length (*VpiL*), the product of half-wave voltage and loss (*VpiLoss*), as well as VBias, and save them in the respective newly created files.
+
+```python
 vpil = []
 volt_out = []
 vpiloss = []
@@ -693,6 +701,12 @@ if not os.path.exists(vpiloss_folder):
 np.savetxt(vpil_file, np.array((volt_out, vpil)).T, fmt='%f,%.15f', header='voltage,VpiL')
 np.savetxt(vpiloss_file, np.array((volt_out, vpiloss)).T, fmt='%f,%.15f', header='voltage,VpiLoss')
 
+
+```
+
+​	You can use the following program to set up the title and style of the picture.
+
+```python
 fontsize = 20
 linewidth = 1
 plt.rcParams.update({"font.size": fontsize})
@@ -727,39 +741,46 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 
 #### 1.3 Output Result
 
+​	Application Library path: `:\examples\active_demo\doping_function\MOD\plots\MOD0A_vpi_local_time`
+
 ##### 1.3.1 Loss
 
-
-
+​	This section displays the variation of losses with bias voltage.
 ![](../MOD/plot/MOD0A_vpi_loca_time/loss/0_loss_Real.png)
-
-
 
 ##### 1.3.2 Effective Index
 
+​	These graphs depict the real and imaginary components of the refractive index as a function of bias voltage.
+
 |                    Reffective index real                     |                  Reffective index imaginary                  |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
-| ![](../MOD/plot/MOD0A_vpi_loca_time/neffreal/0_effective%20index_Real.png) | ![](../MOD/plot/MOD0A_vpi_loca_time/neffimag/0_effective index_Imaginary.png) |
+| ![](../MOD/plot/MOD0A_vpi_loca_time/neffreal/0_effective%20index_Real.png) | ![](../MOD/plot/MOD0A_vpi_loca_time/neffimag/0_effective%20index_Imaginary.png) |
 
 ##### 1.3.3 Modulation efficiency
 
-|                             VpiL                             |                           VpiLoss                            |
-| :----------------------------------------------------------: | :----------------------------------------------------------: |
+​	These graphs illustrate the relationship between two parameters that represent modulation efficiency as a function of bias voltage.
+
+|                          *VpiL*                           |                          *VpiLoss*                           |
+| :-------------------------------------------------------: | :----------------------------------------------------------: |
 | ![](../MOD/plot/MOD0A_vpi_loca_time/vpil/0_VpiL_Real.png) | ![](../MOD/plot/MOD0A_vpi_loca_time/vpiloss/0_VpiLoss_Real.png) |
 
 
 
-### 2.Capacitance And Resistance
+### 2. Capacitance And Resistance
 
 ​	Capacitance and resistance play crucial roles in determining the performance of devices. Optimal capacitance values enable the modulator to selectively allow or block signals within specific frequency ranges, facilitating signal coupling. Suitable resistance values enable adjustment of signal amplitude and modulation current determination.
 
+​	Application Library path: `:\examples\active_demo\doping_function\MOD\MOD0B_RC.py`
+
 #### 2.1 Basic Operations
 
-
+​	The simulation program for calculating capacitance and voltage exhibits numerous similarities to the program used for investigating modulation efficiency. Prior to conducting the simulation, it is necessary to import the module in order to invoke the structures and physical models defined in the `structure.py` .
 
 #### 2.2 Code Description
 
 ##### 2.2.1 Import Modules
+
+​	The necessary Python modules for the program are invoked within the process.
 
 ```python
 from MOD00_structure import *
@@ -773,6 +794,8 @@ from matplotlib import pyplot as plt
 
 ##### 2.2.2 Define Parameters
 
+​	The voltages to be applied to the electrodes of the device are specified.
+
 ```python
 tcad_vmin = -0.5  
 tcad_vmax = 4     
@@ -780,6 +803,8 @@ tcad_vstep = 0.5
 ```
 
 ##### 2.2.3 Set Path
+
+​	You can use the time module for file naming conventions and then store the files in the "plots" folder.
 
 ```python
 start = time.time()
@@ -793,6 +818,8 @@ if not os.path.exists(plot_path):
 ```
 
 ##### 2.2.4 Creat Component
+
+​	You can directly invoke the engineering function and device structure created in the `structure.py`  file, and then add the electrodes and their attributes. In this case, a bias voltage ranging from -0.5 V to 4 V with a scan step of 0.5 V is applied to the `cathode` electrode during small-signal simulation.
 
 ```python
 pj = mod_project(project_name, run_mode, st_type="normal")
@@ -809,6 +836,8 @@ st.add_electrode(name="anode", property={
 
 ##### 2.2.5 Set Simulation
 
+​	You can add a solver for the simulation and define its properties. Furthermore, the properties of the AC small-signal module are defined in this section. The frequency interval is logarithmically defined, specifying the initial frequency, final frequency, and the number of frequencies. The variable `ssac_amplitude"` represents the amplitude of the small signal. In this instance, three frequency values (1, 100, and 10000 MHz) are selected from the range of 1e6 to 1e10.
+
 ```python
 simu = pj.Simulation()
 
@@ -821,11 +850,15 @@ simu.add(name="oedevice", type="OEDevice", property={
 
 ##### 2.2.6 Run
 
+​	It is recommended to include a module to execute the solver and commence the simulation.
+
 ```python
 result_device = simu["oedevice"].run()
 ```
 
 ##### 2.2.7 Extract Parameters
+
+​	Firstly, the names of the folders used to store the extracted data for the real and imaginary components of the refractive index should be defined.
 
 ```python
 Iac_real_folder = plot_path + project_name + "Iac_real"
@@ -834,7 +867,7 @@ result_device.extract(data="Iac", electrode="cathode", operation="real", export_
 result_device.extract(data="Iac", electrode="cathode", operation="imag", export_csv=True, show=False, savepath=Iac_imag_folder)
 ```
 
-##### 2.2.8 Calculate
+​	Secondly, the following program can be used to define the output files for the real and imaginary parts of the refractive index, as well as the capacitance and resistance, while also specifying the data content within the files and ensuring proper attention to the frequency units.
 
 ```python
 Iac_real_files = []
@@ -878,6 +911,13 @@ for i in range(len(Iac_real_files)):
         Iac_real_data.reshape((1, len(Iac_real_data)))
         Iac_imag_data.reshape((1, len(Iac_imag_data)))
 
+```
+
+##### 2.2.8 Calculate
+
+​	Subsequently, the capacitance and voltage can be calculated based on the current and voltage data that have been read.
+
+```python
     Vdc = Iac_real_data[:,0]
     Vac = ssac_amplitude
     Iac_real = Iac_real_data[:,1]
@@ -886,12 +926,17 @@ for i in range(len(Iac_real_files)):
     Z = Vac/Iac
     R = np.abs(np.real(Z))
     C = np.abs(np.imag(1/Z)/(2*np.pi*frequency))
+```
 
-    np.savetxt(resistance_file, np.array((Vdc, R)).T, fmt='%f,%.15e', header='voltage,resistance')
+​	Finally, the column names in the previously defined data files can be set, with the first column representing voltage and the second column representing capacitance or resistance. Additionally, the axis titles and styles should be set for the output images.
+
+```python
+	 np.savetxt(resistance_file, np.array((Vdc, R)).T, fmt='%f,%.15e', header='voltage,resistance')
     np.savetxt(capacitance_file, np.array((Vdc, C)).T, fmt='%f,%.15e', header='voltage,capacitance')
     
     resistance_fig = os.path.splitext(resistance_file)[0] + ".jpg"
     capacitance_fig = os.path.splitext(capacitance_file)[0] + ".jpg"
+    
     fontsize = 20
     linewidth = 1
     plt.rcParams.update({"font.size": fontsize})
@@ -921,27 +966,32 @@ for i in range(len(Iac_real_files)):
 # endregion
 
 print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - start)/60, 2)} + "\x1b[0m")
-
 ```
 
 #### 2.3 Output Result
 
-##### 2.3.1 Capacitance
+​	Application Library path: `:\examples\active_demo\doping_function\MOD\plots\MOD0B_RC_local_time`
 
-different frequency 
+##### 2.3.1 Photocurrent
+
+​	This section displays the variations of the real and imaginary components of the refractive index with respect to bias voltage at different frequencies.
+
+|       | 1 MHZ                                                        | 100 MHZ                                                      | 10000 MHZ                                                    |
+| ----- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Real  | ![](../MOD/plot/MOD0B_RC_local_time/Iac_real/0_Iac_Real_1.0MHz.png) | ![](../MOD/plot/MOD0B_RC_local_time/Iac_real/0_Iac_Real_100.0MHz.png) | ![](../MOD/plot/MOD0B_RC_local_time/Iac_real/0_Iac_Real_10000.0MHz.png) |
+| Image | ![](../MOD/plot/MOD0B_RC_local_time/Iac_imag/0_Iac_Imaginary_1.0MHz.png) | ![](../MOD/plot/MOD0B_RC_local_time/Iac_imag/0_Iac_Imaginary_100.0MHz.png) | ![](../MOD/plot/MOD0B_RC_local_time/Iac_imag/0_Iac_Imaginary_10000.0MHz.png) |
+
+##### 2.3.2 Capacitance
+
+​	This section displays the variations of capacitance with respect to bias voltage at different frequencies.
 
 | 1 MHZ                                                        | 100 MHZ                                                      | 10000 MHZ                                                    |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | ![](../MOD/plot/MOD0B_RC_local_time/Capacitance/0_Capacitance_1.0MHz.jpg) | ![](../MOD/plot/MOD0B_RC_local_time/Capacitance/0_Capacitance_100.0MHz.jpg) | ![](../MOD/plot/MOD0B_RC_local_time/Capacitance/0_Capacitance_10000.0MHz.jpg) |
 
-##### 2.3.2 Photocurrent
-
-|       | 1 MHZ                                                        | 100 MHZ                                                      | 10000 MHZ                                                    |
-| ----- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Real  | ![](../MOD/plot/MOD0B_RC_local_time/Iac_real/0_Iac_Real_1.0MHz.png) | ![](../MOD/plot/MOD0B_RC_local_time/Iac_real/0_Iac_Real_100.0MHz.png) | ![](D:../MOD/plot/MOD0B_RC_local_time/Iac_real/0_Iac_Real_10000.0MHz.png) |
-| Image | ![](../MOD/plot/MOD0B_RC_local_time/Iac_imag/0_Iac_Imaginary_1.0MHz.png) | ![](../MOD/plot/MOD0B_RC_local_time/Iac_imag/0_Iac_Imaginary_100.0MHz.png) | ![](../MOD/plot/MOD0B_RC_local_time/Iac_imag/0_Iac_Imaginary_10000.0MHz.png) |
-
 ##### 2.3.3 Resistance
+
+​	This section displays the variations of resistance with respect to bias voltage at different frequencies.
 
 | 1 MHZ                                                        | 100 MHZ                                                      | 10000 MHZ                                                    |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |

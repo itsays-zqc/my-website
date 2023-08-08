@@ -3,18 +3,21 @@
 This example introduces the modeling and optoelectronic simulation of a vertical Ge-Si photodetector.
 
 
+<br/>
 
 ## 1. Overview
 
 This example utilizes FDTD simulation to obtain the optical field profile in the Ge absorption layer. Subsequently, the photo-induced carrier generation rate is calculated based on that, which is then imported into the OEDevice simulation to obtain the photo current. We also provide scripts for dark current, capacitance and resistance, frequency response, and saturation power. These simulations are divided into separate scripts, and they all call a unified script for modeling and material setup, making it convenient for modifications and management.
 
 
+<br/>
 
 ## 2. Modeling
 
 The modeling is completed by a callable function in the script file `VPD00_structure.py`.
 
 
+<br/>
 
 ### 2.1 Import simulation toolkit
 
@@ -34,6 +37,7 @@ from VPD_material import *
 The script file `VPD_material.py` stores some modified electronic parameters of the materials, which are referenced to override default parameters in the modeling script.
 
 
+<br/>
 
 ### 2.2 Set general parameters
 
@@ -61,7 +65,7 @@ run_mode = "local"
 simu_name = "VPD00_struc"
 ```
 Wavelength, temperature, the mesh grid size and some other parameters are defined above. They will be detailed in the subsequent settings.
-
+<br/>
 
 
 ```
@@ -114,7 +118,7 @@ cathode_z_span = 1
 cathode_z_center = Si_z_span+Ge_z_span+cathode_z_span/2
 ```
 These are geometric parameters of the structures.
-
+<br/>
 
 
 ```
@@ -139,7 +143,7 @@ oe_z_mean = 0.5*(oe_z_min+oe_z_max)
 oe_z_span = oe_z_max-oe_z_min
 ```
 These are geometric parameters of the electrical simulation region.
-
+<br/>
 
 
 ```
@@ -184,7 +188,7 @@ n_pplus_con = 1e20
 n_pplus_ref = 1e16
 ```
 These are parameters for doping setup, including doping box, concentration and the diffusion junction width.
-
+<br/>
 
 
 
@@ -210,7 +214,7 @@ z_span = z_max-z_min
 # endregion
 ```
 These are geometry parameters for the optical simulation region.
-
+<br/>
 
 
 
@@ -226,6 +230,7 @@ def pd_project(project_name, run_mode, material_property):
 ```
 
 
+<br/>
 
 #### 2.3.1 Create a new project
 
@@ -244,6 +249,7 @@ Create a new simulation project.
 - `location`--The location of the computing resources. The active device simulation only support the option of `"local"` now, which means the simulation uses the local computing resources.
 
 
+<br/>
 
 #### 2.3.2 Set materials
 
@@ -264,7 +270,7 @@ Create a new simulation project.
         raise
 ```
 The `elec_Si_properties` and `elec_Ge_properties` are both variables imported from `VPD_material.py`, storing the modified electronic parameters for Silicon and Germanium respectively. Besides, more physics models for Germanium are switched on in the transient simulation, with the `elec_Ge_properties_for_transient` specified for it. The `material_property` is used to determine which type of material parameters to choose. For details of the physics model and electronic parameter settings, please refer to the appendix.
-
+<br/>
 
 
 
@@ -303,7 +309,7 @@ Then, use the `set_optical_material` function to set the optical property for th
 `set_optical_material()` parameters：
 
 - `data`--Optical material property，which can be one of the built-in materials in the optical material library `mo.Material`, or be from the custom optical material.
-
+<br/>
 
 
 *Example of using custom optical material properties*
@@ -316,7 +322,7 @@ mt.add_lib(name="mat_sio2", data=mo.OE_Material.SiO2, order=1)
 mt.add_nondispersion(name="mat_sio2_op", data=[(1.444, 0)], order=1)
 mt["mat_sio2"].set_optical_material(data=mt["mat_sio2_op"].passive_material)
 ```
-
+<br/>
 
 
 Note:
@@ -326,6 +332,7 @@ Note:
 
 
 
+<br/>
 
 #### 2.3.3 Create structures
 
@@ -381,7 +388,7 @@ Note:
 - `name`--Structure name
 - `type`--Structure type
 - `property`--Other properties, listed below
-
+<br/>
 
 
 
@@ -406,7 +413,7 @@ Note:
 | geometry.rotate_z   | 0         | float    |                               |
 | material.material   |           | material |                               |
 | material.mesh_order |           | integer  | Restrained by condition: >=0. |
-
+<br/>
 
 
 `LinearTrapezoid` property list：
@@ -432,7 +439,7 @@ Note:
 | geometry.rotate_z   | 0       | float    |                               |
 | material.material   |         | material |                               |
 | material.mesh_order |         | integer  | Restrained by condition: >=0. |
-
+<br/>
 
 
 `Pyramid` property list：
@@ -456,7 +463,7 @@ Note:
 | geometry.rotate_z      | 0       | float    |                               |
 | material.material      |         | material |                               |
 | material.mesh_order    |         | integer  | Restrained by condition: >=0. |
-
+<br/>
 
 
 Note:
@@ -465,6 +472,7 @@ Note:
 2. The larger of the `mesh_order` of a structure, the higher of its priority. `mesh_order` being the same, the structure created later has a higher priority than the one created earlier. When structures overlap, the one with higher priority overrides the one with lower priority.
 
 
+<br/>
 
 #### 2.3.4 Add doping
 
@@ -503,7 +511,7 @@ Note:
 - `property`--Other properties
 
 According to the selection of `general.distribution_function`, doping is distinguished as constant doping and gaussian doping. Detailed properties are listed below.
-
+<br/>
 
 
 Doping property list:
@@ -535,18 +543,27 @@ Doping property list:
 | volume.region_list            |         | list  | Available when volume_type is 'region'             |
 
 `geometry`--Set the geometry parameters of doping box
-`general`--Set the distribution function, concentration and so on
-- When the distribution function is `"constant"`, only `concentration` needs to be set
-- When the distribution function is `"gaussian"`:
-  - `concentration`--Concentration in the non-diffusion area
-  - `ref_concentration`--Concentration on the edge of diffusion area (edge of doping box)
-  - `junction_width`--Diffusion junction width
-  - `source_face`--The doping source face. Options are `"lower_x"`, `"lower_y"`, `"lower_z"`, `"upper_x"`, `"upper_y"` or `"upper_z"`. `"lower_x"` means the source face is `x=x_min`. Similarly for the rest. There is no diffusion area on the edge of source face. As for the other edges, there is a diffusion area within the doping box.
-  `volume`--Set a list of regions or materials to be doped
-- When `volume_type` is `"all"`(by default)，the doping is applied to all the (semiconductor) structures, restricted by the doping box
-- When `volume_type` is `"material"`, `material_list` needs to be set, which means the doping is applied to the structures with one of the specified materials and restricted by the doping box
-- When `volume_type` is `"region"`, `region_list` needs to be set, which means the doping is applied to the specified structures and restricted by the doping box
 
+`general`--Set the distribution function, concentration and so on
+
+- `distribution_function`:
+  - When it's set to `"constant"`, only `concentration` needs to be set
+  - When it's set to `"gaussian"`: `concentration`, `ref_concentration`, `junction_width`, `source_face` need to be set
+- `concentration`--Concentration in the non-diffusion area
+- `ref_concentration`--Concentration on the edge of diffusion area (edge of doping box)
+- `junction_width`--Diffusion junction width
+- `source_face`--The doping source face. Options are `"lower_x"`, `"lower_y"`, `"lower_z"`, `"upper_x"`, `"upper_y"` or `"upper_z"`. `"lower_x"` means the source face is `x=x_min`. Similarly for the rest. There is no diffusion area on the edge of source face. As for the other edges, there is a diffusion area within the doping box.
+
+`volume`--Set a list of regions or materials to be doped
+
+- `volume_type`:
+
+  - When it's set to `"all"`(by default)，the doping is applied to all the (semiconductor) structures, restricted by the doping box
+
+  - When it's set to `"material"`, `material_list` needs to be set, which means the doping is applied to the structures with one of the specified materials and restricted by the doping box
+
+  - When it's set to `"region"`, `region_list` needs to be set, which means the doping is applied to the specified structures and restricted by the doping box
+<br/>
 
 
 *Examples for complete doping setting syntax*
@@ -571,6 +588,7 @@ st.add_doping(name="n_pplus", type="n", property={
 ```
 
 
+<br/>
 
 #### 2.3.5 Add surface recombination
 
@@ -600,7 +618,7 @@ st.add_doping(name="n_pplus", type="n", property={
 
 - `name`--Custom name
 - `property`--Other properties
-
+<br/>
 
 
 Surface recombination property list:
@@ -617,24 +635,28 @@ Surface recombination property list:
 | material_1             |                     | material | Available when surface_type is 'material_material'                                                                 |
 | material_2             |                     | material | Available when surface_type is 'material_material'                                                                 |
 
-其中：
 
-- `surface_type`--Type of selection for the surface
+`surface_type`--Type of selection for the surface
   - When `surface_type` is `"domain_domain"`, the surface is the interface between two structures 
   - When `surface_type` is "material_material"`, the surface is the interface between two materials
 
-- `interface_type`--Type of contact for the surface
+`interface_type`--Type of contact for the surface
   - `"InsulatorInterface"`--Semiconductor-insulator interface
   - `"HomoJunction"`--Homogeneous semiconductor-semiconductor interface
   - `"HeteroJunction"`--Heterogeneous semiconductor-semiconductor interface
   - `"MetalOhmicInterface"`--Semiconductor-conductor interface
   - `"SolderPad"`--Conductor-insulator interface
-- `infinite_recombination`--Only available when `interface_type` is `"MetalOhmicInterface"`. The surface recombination velocity of holes and electrons will be available when `infinite_recombination` is `False`.
-- `velocity_hole`, `velocity_electron`--Surface recombination velocity of holes and electrons. Available when `interface_type` is `"MetalOhmicInterface"` or `"InsulatorInterface"`.
-- `domain_1`, `domain_2`--Names of the two structures at the interface. They must be set explicitly when `surface_type` is `"domain_domain"`.
-- `material_1`, `material_2`--The two materials at the interface. They must be set explicitly when `surface_type` is `"material_material"`.
+
+`infinite_recombination`--Only available when `interface_type` is `"MetalOhmicInterface"`. The surface recombination velocity of holes and electrons will be available when `infinite_recombination` is `False`
+
+`velocity_hole`, `velocity_electron`--Surface recombination velocity of holes and electrons. Available when `interface_type` is `"MetalOhmicInterface"` or `"InsulatorInterface"`
+
+`domain_1`, `domain_2`--Names of the two structures at the interface. They must be set explicitly when `surface_type` is `"domain_domain"`
+
+`material_1`, `material_2`--The two materials at the interface. They must be set explicitly when `surface_type` is `"material_material"`
 
 
+<br/>
 
 #### 2.3.6 Set waveform
 
@@ -656,6 +678,7 @@ Surface recombination property list:
 - `unit`--Unit of wavelength. Options are`"um"` and `"nm"`，default to be`"um"`
 
 
+<br/>
 
 #### 2.3.7 Set boundary conditions of optical simulation
 
@@ -668,7 +691,7 @@ Surface recombination property list:
         "geometry": {"x": x_mean, "y": y_mean, "z": z_mean, "x_span": x_span, "y_span": y_span, "z_span": z_span}})
  	# endregion
 ```
-
+<br/>
 
 
 Boundary conditions of optical simulation property list:
@@ -711,6 +734,7 @@ Boundary conditions of optical simulation property list:
 `general_pml`--Set pml-related parameters
 
 
+<br/>
 
 #### 2.3.8 Set local mesh
 
@@ -748,7 +772,7 @@ Boundary conditions of optical simulation property list:
 
 - `name`--Custom name
 - `property`--Other properties
-
+<br/>
 
 
 Optical local mesh property list:
@@ -774,14 +798,14 @@ Optical local mesh property list:
 `geometry`--Set the region of local mesh. When `x_span` doesn't vanish, the mesh setting will be applied to the range along the x axis. Similarly for the rest
 
 `general`--Set the mesh size in the corresponding direction
-
+<br/>
 
 
 `add_emesh()` set a rectangle region for local mesh of electrical simulation. Parameters:
 
 - `name`--Custom name
 - `property`--Other properties
-
+<br/>
 
 
 Local mesh of electrical simulation in rectangle region property list:
@@ -807,14 +831,14 @@ Local mesh of electrical simulation in rectangle region property list:
 Note:
 
 1. When the simulation region is in the xy plane, only the parameters in the x, y direction are effective, and parameters in the z direction will be ignored. Similarly for the rest.
-
+<br/>
 
 
 `add_emesh_along_line()` set a line region for local mesh of electrical simulation. Parameters：
 
 - `name`--Custom name
 - `property`--Other properties
-
+<br/>
 
 
 Local mesh of electrical simulation in line region property list:
@@ -836,6 +860,7 @@ Note:
 1. When the simulation region is in the xy plane, besides `start_x`, `start_y`, `end_x` and  `end_y`, it is also required to set the `start_z` and  `end_z`, which should both be the same as the z coordinate of the plane. Similarly for the rest.
 
 
+<br/>
 
 #### 2.3.9 Set optical sources
 
@@ -860,7 +885,7 @@ Note:
 - `axis`--Direction of the source. `"x_forward"` means light propagating along x axis and in the direction of increasing x coordinate. `"x_forward"` means the opposite direction. Similarly for the rest
 - `type`--Type of the source. It is mode source in this example
 - `property`--Other properties
-
+<br/>
 
 
 Mode source property list:
@@ -906,6 +931,7 @@ Mode source property list:
   - `waveform_id_select`--Set to be a specified waveform
 
 
+<br/>
 
 #### 2.3.10 Set monitors
 
@@ -941,7 +967,7 @@ The monitor `"Power Monitor"` is of the 3D type, set to record the optical field
 - `name`--Name of the monitor
 - `type`--Type of the monitor
 - `property`--Other properties
-
+<br/>
 
 
 Power monitor property list:
@@ -991,10 +1017,12 @@ Power monitor property list:
 
 
 
+<br/>
 
 #### 2.3.11 Preview the structures
 
 
+<br/>
 
 ##### 2.3.11.1 Define the preview function
 ```
@@ -1018,6 +1046,7 @@ Call the `pd_project` function defined earlier to create a new project `pj`. `si
 `plot_path` will be set to the save path of the result extraction. Here, it is set to the 'plots' folder located in the same directory as this script. If the path doesn't exist, `os.makedirs()` should be called to create it.
 
 
+<br/>
 
 ##### 2.3.11.2 Add solvers
 
@@ -1043,7 +1072,7 @@ Optical and electrical solvers are added within the preview function. The corres
 - `name`--Name of the solver
 - `type`--Type of the solver. For active device simulation, the type of FDTD solver is `"AFDTD"`, and the type of carrier transport solver is `"OEDevice"`
 - `property`--Other properties
-
+<br/>
 
 
 For `AFDTD`，`mesh_settings.mesh_accuracy.cells_per_wavelength` means the number of mesh cells per wavelength. The larger the number, the smaller the mesh size and the longer the simulation time.
@@ -1051,6 +1080,7 @@ For `AFDTD`，`mesh_settings.mesh_accuracy.cells_per_wavelength` means the numbe
 For `OEDevice`，the other properties are not necessary. So the `property` can be empty. Detailed parameter settings for `OEDevice` can be found in the appendix.
 
 
+<br/>
 
 ##### 2.3.11.3 Preview doping profile
 
@@ -1080,7 +1110,7 @@ Preview the doping profile by the `run_doping` function of the `OEDevice` solver
 - `cmin`--Set the minimum of the colorbar for the intensity plot. When the concentration is smaller than this value, it will be displayed as this value. It is ineffective for net doping
 - `savepath`--The save path for the result
 - `property`--Other properties
-
+<br/>
 
 
 `run_doping` property list:
@@ -1104,7 +1134,7 @@ Preview the doping profile by the `run_doping` function of the `OEDevice` solver
 `geometry`--Set the region of doping preview
 
 - `dimension`--Set the dimension of doping preview. The electrical simulation only supports the 2D type currently, so the doping and its preview are all considered in a plane. When `dimension` is `"2d_x_normal"`, it means the preview is in the yz plane. Similarly for the rest.
-
+<br/>
 
 
 *Result show of the doping preview*
@@ -1116,10 +1146,11 @@ Preview the doping profile by the `run_doping` function of the `OEDevice` solver
 <center>Fig 1. Net doping</center> -->
 
 
+<br/>
 
 ##### 2.3.11.4 Preview index profile
 
-通过`AFDTD`求解器的`run_index`函数进行折射率预览。
+Preview the index profile by the `run_index` function of the `AFDTD` solver.
 
 ```
 [24]
@@ -1135,23 +1166,21 @@ Preview the doping profile by the `run_doping` function of the `OEDevice` solver
         savepath=plot_path + simu_name + "_" + time_str + "MeshView/" + "z=0.11", export_csv=False, show=False)
 ```
 
+`run_index()` parameters：
+
+- `name`--Custom name
+- `export_csv`--Whether to export csv file, default to be `False`
+- `savepath`--Save path of the result extraction
+- `show`--Whether to show the plot in a popup window, default to be `False`
+- `export_n`--Whether to export nx, ny, nz, default to be `True`
+- `export_c`--Whether to export σx, σy, σz, default to be `False`
+- `max_index`--Set the maximum of the intensity plot of index, default to be `None`
+- `max_sigma`--Set the maximum of the intensity plot of conductivity, default to be `None`
+- `property`--Other properties
+<br/>
 
 
-`run_index()`参数：
-
-- `name`--自定义名称
-- `export_csv`--是否输出csv文件，默认为`False`
-- `savepath`--结果保存路径
-- `show`--是否弹窗显示图片，默认为`False`
-- `export_n`--是否输出nx, ny, nz。默认为`True`
-- `export_c`--是否输出σx, σy, σz。默认为`False`
-- `max_index`--设置折射率强度图的最大值，默认为`None`
-- `max_sigma`--设置电导率强度图的最大值，默认为`None`
-- `property`--其他属性
-
-
-
-`run_index`属性列表：
+`run_index` property list：
 
 |                       | default | type   | notes                                                        |
 | :-------------------- | :------ | :----- | :----------------------------------------------------------- |
@@ -1169,25 +1198,32 @@ Preview the doping profile by the `run_doping` function of the `OEDevice` solver
 | geometry.z_min        |         | float  |                                                              |
 | geometry.z_max        |         | float  |                                                              |
 
-`geometry`设置折射率预览的范围。目前`run_index`只支持二维平面的折射率预览。可通过设置`x_span`为0，表示预览yz平面折射率。其余同理。
+`geometry`--Set the region of index preview. The `run_index` function currently only supports the index preview in a 2D plane. If `x_span` is set to `0`, the preview will be performed in the yz plane. Similarly for the rest.
+<br/>
 
 
-
-折射率预览结果展示：
+*Result show of the index preview*
 
 ![Index Preview](./img/image02.png)
 
-<center>图2. nx</center>
+<center>Fig 2. nx</center>
 
 
+<br/>
 
 ## 3. Simulation
 
+
+<br/>
+
 ### 3.1 Dark current
 
-本节通过在暗电流脚本中调用建模脚本的`pd_project`函数，实现器件暗电流的仿真。
+This section performs the simulation of dark current in the `VPD0B_Id.py` script by invoking the `pd_project` function.
 
-#### 3.1.1 导入仿真工具包
+
+<br/>
+
+#### 3.1.1 Import simulation toolkit
 
 ```
 [25]
@@ -1200,11 +1236,12 @@ import os
 from pathlib import Path
 ```
 
-其中从`VPD00_structure.py`脚本中导入了所有变量与函数。
+All the variables and functions from `VPD00_structure.py` are imported.
 
 
+<br/>
 
-#### 3.1.2 设置通用参数
+#### 3.1.2 Set general parameters
 
 ```
 [26]
@@ -1232,8 +1269,9 @@ if not os.path.exists(plot_path):
 ```
 
 
+<br/>
 
-#### 3.1.3 创建工程
+#### 3.1.3 Create a new project
 
 ```
 [27]
@@ -1244,8 +1282,9 @@ pj = pd_project(project_name, run_mode, material_property)
 ```
 
 
+<br/>
 
-#### 3.1.4 添加电极
+#### 3.1.4 Add electrodes
 
 ```
 [28]
@@ -1262,17 +1301,17 @@ st.add_electrode(name="anode", property={
     "sweep_type": "single", "voltage": 0, "apply_AC_small_signal": "none"})
 ```
 
-`add_electrode()`参数：
+`add_electrode()` parameters:
 
-- `name`--电极名称
-- `property`--其他属性
+- `name`--Name of the electrode
+- `property`--Other properties
 
-
-Electrode属性介绍详见附录。此处在`"cathode"`电极加0~4V偏压，扫描步长为0.5V。
-
+The detailed property list of electrode can be found in the appendix. Here a range of voltage from 0V to 4V is applied to the electrode `"cathode"`, and the step of the voltage is 0.5V.
 
 
-#### 3.1.5 添加求解器
+<br/>
+
+#### 3.1.5 Add the solver
 
 ```
 [29]
@@ -1288,14 +1327,25 @@ simu.add(name="oedevice", type="OEDevice", property={
     "advanced": {"non_linear_solver": "Newton", "linear_solver": "MUMPS", "max_iterations": 50}})
 ```
 
-OEDevice属性介绍详见附录。其中
+The detailed property list of `OEDevice` solver can be found in the appendix. Here:
 
-- `general.genrate_file_path`为`""`，即为空，表示不导入光生载流子生成率，所以仿真结果为暗电流，`genrate`内其余属性此处无效。
-- `geometry.dimension`为`"2d_x_normal"`，表示为yz平面的仿真
-- `general.norm_length`为`normal_length`，该变量值为20，表示器件第三维尺寸，即x方向长度为20um
-- `general.solver_mode`为`"steady_state"`，表示进行稳态仿真
+`genrate`--Set the properties for optical generation rate
 
-#### 3.1.6 运行求解器
+- `genrate_path`--It's set to `genrate_file_path`, which is `""`, an empty string. That means no optical generation rate is imported to the `OEDevice` solver. Therefore, the simulation is for dark current. And the rest properties in `genrate` is ineffective in this case
+
+`geometry`--Set the geometric parameters for the simulation region
+
+- `dimension`--It's set to `2d_x_normal`, which means the simulation is in the yz plane
+
+`general`:
+
+- `norm_length`--It's set to `normal_length`, which is `20`, meaning that the size of the device in the third dimension is 20μm. That is to say its length in the x-direction is 20μm
+- `solver_mode`--It's set to `"steady_state"`, which means a steady state simulation
+
+
+<br/>
+
+#### 3.1.6 Run the solver
 
 ```
 [30]
@@ -1308,11 +1358,12 @@ result_device = simu["oedevice"].run()
 
 ```
 
-`result_device`存储仿真结果信息，以便后续进行结果提取。
+`result_device` stores the information of the simulation result, which can be used to perform result extraction.
 
 
+<br/>
 
-#### 3.1.7 结果提取
+#### 3.1.7 Extract the result
 
 ```
 [31]
@@ -1324,17 +1375,26 @@ result_device.extract(data="I", electrode="cathode", export_csv=True,
                       show=False, savepath=plot_path + project_name + "IV_cathode")
 ```
 
-`result_device.extract()`参数：
+`result_device.extract()` parameters：
 
-- `data`--仿真结果类型，设置为`"I"`，提取电流结果
-- `electrode`--电极名称，表示提取对应电极的电流
-- `export_csv`--是否输出csv格式结果
-- `show`--是否弹窗展示结果图片
-- `savepath`--结果保存路径
+- `data`--Type of the result. Here it's set to `"I"` to extract the I-V curve from the simulation result
+- `electrode`--Name of an electrode, which means the current data is from the electrode
+- `export_csv`--Whether to export the csv result
+- `show`--Whether to show the plot in a popup window
+- `savepath`--The save path for the result extraction
+<br/>
 
 
+*Result show of the dark current extraction*
 
-#### 3.1.8 打印仿真时间
+![Dark Current](./img/image03.png)
+
+<center>Fig 3. Dark Current</center>
+
+
+<br/>
+
+#### 3.1.8 Print the simulation time
 
 ```
 [32]
@@ -1345,20 +1405,16 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 ```
 
 
-
-#### 3.1.9 暗电流结果展示
-
-![Dark Current](./img/image03.png)
-
-<center>图3. 暗电流</center>
-
-
+<br/>
 
 ### 3.2 Resistance
 
-本节通过在`"anode"`电极加正向偏压，仿真并提取电流结果后，通过后处理拟合得到器件电阻结果。
+This simulation applies a forward bias to the electrode `"anode"`. And then the I-V curve is extracted and fitted to obtain the resistance. The script is in the `VPD0C_Rs.py` file.
 
-#### 3.2.1 仿真并提电流
+
+<br/>
+
+#### 3.2.1 Simulate and extract the I-V curve
 
 ```
 [33]
@@ -1422,13 +1478,15 @@ result_device.extract(data="I", electrode="anode",
                       export_csv=True, show=False, savepath=IV_file_folder)
 ```
 
-在`"anode"`电极加0~1.5V偏压，扫描步长为0.25V，不导入光生载流子生成率，进行稳态仿真并提取电流结果，保存至`IV_file_folder`文件夹内。
+A range of voltage from 0V to 1.5V is applied to the electrode `"anode"`, with a step of 0.25V. No optical generation rate is applied. And a steady state simulation is performed to extract the I-V curve, which is saved to the folder `IV_file_folder`.
 
 
+<br/>
 
-#### 3.2.2 拟合器件电阻
+#### 3.2.2 Fit V-I curve to obtain resistance
+<br/>
 
-##### 读取已保存的I-V数据
+##### 3.2.2.1 Read the saved I-V data
 
 ```
 [34]
@@ -1446,11 +1504,12 @@ I = rawdata[:,1]
 V = rawdata[:,0]
 ```
 
-其中，`"0_I_Real.csv"`为系统自动生成的I-V数据文件名，开始的`"0"`表示电极编号，当提取不同电极的电流时，此编号会发生变化，所以此处从0到9遍历一次，找出已保存的I-V数据文件。
+`"0_I_Real.csv"` is filename generated automatically of the I-V result. The `"0"` in the beginning indicates the index of the electrode. When the I-V curve is from a different electrode, the index will change. Therefore, a iteration from 0 to 9 is applied to find the saved I-V data file.
 
 
+<br/>
 
-##### 拟合得到器件电阻
+##### 3.2.2.2 Fit the data to obtain resistance
 
 ```
 [35]
@@ -1463,11 +1522,12 @@ V_fit = coeffs[0]*I + coeffs[1]
 R = abs(coeffs[0])
 ```
 
-`start_idx`表示取此索引及其之后的I-V数据进行拟合，可以根据I-V曲线找出近似直线的部分，判断起始索引。然后对V-I曲线进行一阶多项式拟合，取其一次项系数，得到器件电阻。
+Fit the data after the index `start_idx`, which is the start index of the approximately linear portion of the curve. A first-order polynomial fitting is performed on the V-I data. Then the coefficient of the first-order term is the device resistance.
 
 
+<br/>
 
-##### 保存数据及图像文件
+##### 3.2.2.3 Save data and plots
 
 ```
 [36]
@@ -1503,10 +1563,11 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 ```
 
 
+<br/>
 
 ### 3.3 Capacitance
 
-本节通过小信号仿真，得到器件电容结果。
+This section performs a SSAC simulation, and extracts the capacitance. The script is in the `VPD0A_C.py` file.
 
 ```
 [37]
@@ -1569,19 +1630,38 @@ result_device.extract(data="C", electrode="cathode", export_csv=True, show=False
 print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - start)/60, 2)} + "\x1b[0m")
 ```
 
-- 求解器`general.solver_mode`设置为`"SSAC"`表示进行小信号仿真
-- 求解器`small_signal_ac`设置为单频点，频率1e8Hz的小信号分析
-- 在电极`"cathode"`加0~3V偏压，扫描步长为0.5V
-- 电极`"cathode"`中`apply_AC_small_signal`设置为`"All"`，表示对每个电压点都应用小信号分析
-- 小信号仿真结束后可提取器件电容，需在`result_device.extract()`中将`data`设置为`"C"`
+For `OEDevice` solver, the detailed properties can be found in the appendix. Here:
+
+`general`:
+
+- `solver_mode`--It's set to `"SSAC"`, which means a SSAC simulation
+- `small_signal_ac`--Set the frequency points
+  - `frequency_spacing`--It's set to `"single"`, which means a single frequency point
+  - `frequency`--Set the value of the single frequency
+<br/>
 
 
+For the electrode `"cathode"`, a range of voltage from 0V to 3V is applied to it, with a step of 0.5V.
 
-### 3.4 Optical Generation Rate
+`apply_AC_small_signal`--It's set to `All`, which means the small signal analysis is applied at each voltage step
+<br/>
 
-本节通过FDTD仿真得到`"Ge"`结构内的光场分布，通过后处理得到光生载流子生成率，并且在传光方向即x方向上对光生载流子生成率取了平均值，得到其在yz平面的分布，以便导入OEDevice仿真中。
 
-#### 3.4.1 导入仿真工具包
+For the result extraction:
+
+`data`--It's set to `"C"`, which is available after the SSAC simulation and is used to extract the capacitance
+
+
+<br/>
+
+### 3.4 Optical generation rate
+
+This section performs a FDTD simulation to obtain the optical field profile in the structure of `"Ge"`, and then calculate the photo-induced carrier generation rate. The average of the optical generation rate in the light propagating direction, which is the x-direction, is then taken to obtain the profile in the yz plane to be imported to the OEDevice simulation. The script is in the `VPD01_FDTD.py` file.
+
+
+<br/>
+
+#### 3.4.1 Import simulation toolkit
 
 ```
 [38]
@@ -1595,8 +1675,9 @@ from pathlib import Path
 ```
 
 
+<br/>
 
-#### 3.4.2 设置通用参数
+#### 3.4.2 Set general parameters
 
 ```
 [39]
@@ -1619,8 +1700,9 @@ if not os.path.exists(plot_path):
 ```
 
 
+<br/>
 
-#### 3.4.3 创建仿真工程
+#### 3.4.3 Create a new project
 
 ```
 [40]
@@ -1632,8 +1714,9 @@ pj = pd_project(project_name, run_mode, material_property)
 ```
 
 
+<br/>
 
-#### 3.4.4 添加求解器
+#### 3.4.4 Add the solver
 
 ```
 [41]
@@ -1652,11 +1735,12 @@ simu.add(name="afdtd", type="AFDTD", property={
     "mesh_settings": {"mesh_accuracy": {"cells_per_wavelength": cells_per_wavelength}}})
 ```
 
-有源AFDTD求解器可以用来提取光生载流子生成率，但不能查看光场分布；无源FDTD求解器可以查看光场分布，但不能提取光生载流子生成率。所以此处将两种求解器都添加进来，以便实现不同功能。
+The `AFDTD` solver for active device simulation can be used to extract the optical generation rate, but can't export the optical field profile. And the usage of the `FDTD` solver is exactly the opposite. Therefore, both solvers are added here to serve the different purposes.
 
 
+<br/>
 
-#### 3.4.5 运行并提取结果
+#### 3.4.5 Run and extract the result
 
 ```
 [42]
@@ -1684,36 +1768,39 @@ result_genrate.extract(data="pabs_total", export_csv=True, show=False, log=False
 print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - start)/60, 2)} + "\x1b[0m")
 ```
 
-`run_generation_rate_analysis()`参数：
+`run_generation_rate_analysis()` parameters：
 
-- `name`--自定义名称
-- `monitor`--计算光生载流子生成率所需的`power_monitor`名称，只支持3D类型
-- `average_dimension`--设置为`"x"`，表示对光生载流子生成率在x方向取平均，设置为`"y"`, `"z"`同理
-- `light_power`--光源功率，单位W，光生载流子生成率将根据此值等比缩放
-- `coordinate_unit`--光生载流子生成率分布的结果文件（gfile文件）中坐标的单位
-- `field_length_unit`--光生载流子生成率分布的结果文件（gfile文件）中生成率单位中的长度单位，设置为`"m"`，则生成率单位为`/m^3/s`
-
-
-
-`result_genrate.extract()`参数：
-
-- `data`--提取的结果类型
-- `export_csv`--是否输出csv文件
-- `show`--是否弹窗显示图片
-- `log`--强度图中是否应用对数归一化
-- `savepath`--结果保存路径
-
-当`data`设置为`"generation_rate"`时，提取光生载流子生成率结果，除图片及csv文件外，还会生成一个gfile格式文件。其中图片及csv文件中的长度单位均为um，不可更改，且不可导入OEDevice求解器中。而gfile文件中的单位受`coordinate_unit`、`field_length_unit`参数控制，且可导入OEDevice求解器中。
-
-当`data`设置为`"pabs_total"`时，提取总的光吸收功率。
+- `name`--Custom name
+- `monitor`--Name of the `power_monitor` for calculating optical generation rate. The `power_monitor` is required to be of 3D type
+- `average_dimension`--Set the direction to take the average of the optical generate rate
+- `light_power`--Set the power of the light source, measured in W. The optical generation rate will be scaled based on the power
+- `coordinate_unit`--Set the coordinate unit in the optical generation rate file (gfile)
+- `field_length_unit`--Set the length unit in the generation rate unit in the optical generation rate file (gfile).  If it's set to `"m"`, the generation rate unit in the gfile will be `/m^3/s`. Similarly for the rest
+<br/>
 
 
+`result_genrate.extract()` parameters：
 
-### 3.5 Photo Current
+- `data`--Type of the result
+  - When `data` is set to `"generation_rate"`, besides an image file and a csv file, the result files also include a text file in `.gfile` format. The coordinate unit in the csv and the image file is `um`, and the generation rate unit in the two files is `/cm^3/s`. These units can't be modified when extracting the result. However, the units in the gfile are controlled by `coordinate_unit`、`field_length_unit`. And only the gfile can be imported to the OEDevice solver
+  - When data is set to `"pabs_total"`, the total absorption power is extracted
 
-本节向OEDevice求解器中导入光生载流子生成率，仿真得到光电流结果。
+- `export_csv`--Whether to export csv file
+- `show`--Whether to show the plot in a popup window
+- `log`--Whether to apply a logarithmic normalization in the intensity plot
+- `savepath`--The save path of the result extraction
 
-#### 3.5.1 导入仿真工具包
+
+<br/>
+
+### 3.5 Photo current
+
+This section imports the optical generation rate to the `OEDevice` solver, and performs a steady state simulation to obtain the photo current. The script is in the `VPD02_Ip.py` file.
+
+
+<br/>
+
+#### 3.5.1 Import simulation toolkit
 
 ```
 [43]
@@ -1727,8 +1814,9 @@ from pathlib import Path
 ```
 
 
+<br/>
 
-#### 3.5.2 设置通用参数
+#### 3.5.2 Set general parameters
 
 ```
 [44]
@@ -1757,11 +1845,12 @@ if not os.path.exists(plot_path):
     os.makedirs(plot_path)
 ```
 
-其中`genrate_file_path`表示将导入OEDevice求解器的gfile文件的完整路径，此处设置为此脚本所在同级目录下的`VPD01_FDTD.gfile`文件路径，可更改为由AFDTD仿真并提取得到的gfile文件路径。
+`genrate_file_path` is the absolute path of the gfile to be imported to the `OEDevice` solver. Here it's set to the absolute path of `VPD01_FDTD.gfile` in the same directory. And  this can be changed to the path of the gfile extracted by the `AFDTD` simulation.
 
 
+<br/>
 
-#### 3.5.3 创建仿真工程
+#### 3.5.3 Create a new project
 
 ```
 [45]
@@ -1773,8 +1862,9 @@ pj = pd_project(project_name, run_mode, material_property)
 ```
 
 
+<br/>
 
-#### 3.5.4 添加电极
+#### 3.5.4 Add electrodes
 
 ```
 [46]
@@ -1792,8 +1882,9 @@ st.add_electrode(name="anode", property={
 ```
 
 
+<br/>
 
-#### 3.5.5 添加求解器
+#### 3.5.5 Add the solver
 
 ```
 [47]
@@ -1810,16 +1901,17 @@ simu.add(name="oedevice", type="OEDevice", property={
     "advanced": {"non_linear_solver": "Newton", "linear_solver": "MUMPS", "max_iterations": 50}})
 ```
 
+`genrate`:
+
+- `genrate_path`--Here it's not empty, meaning that the file at the path will be imported to the `OEDevice` solver
+- `coordinate_unit`--Set the coordinate unit in the gfile
+- `field_length_unit`--Set the length unit in the generation rate unit in the gfile
+- `source_fraction`--Set the scaling factor for the light power. The imported optical generation rate will be multiplied by this factor first, and then be used to solve the carrier transport
 
 
-- `genrate.genrate_path`不为空，表示导入该路径对应的gfile文件
-- `genrate.coordinate_unit`设置gfile文件中坐标的单位
-- `genrate.field_length_unit`设置gfile文件中生成率单位中的长度单位
-- `genrate.source_fraction`设置光功率的缩放因子，求解器会先将导入的生成率乘以此因子，然后再代入载流子输运方程求解
+<br/>
 
-
-
-#### 3.5.6 运行并提取结果
+#### 3.5.6 Run and extract the result
 
 ```
 [48]
@@ -1838,12 +1930,16 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 ```
 
 
+<br/>
 
 ### 3.6 Bandwidth
 
-本节通过对光生载流子生成率应用瞬态仿真，得到光电流的阶跃响应，再通过后处理得到器件的带宽结果。
+This section performs a transient simulation to extract the step response of the photo current. Then the bandwidth is obtained by postprocessing the I-t curve. The script is in the `VPD03_bw.py` file.
 
-#### 3.6.1 导入仿真工具包
+
+<br/>
+
+#### 3.6.1 Import simulation toolkit
 
 ```
 [49]
@@ -1860,8 +1956,9 @@ from matplotlib import pyplot as plt
 ```
 
 
+<br/>
 
-#### 3.6.2 设置通用参数
+#### 3.6.2 Set general parameters
 
 ```
 [50]
@@ -1890,8 +1987,9 @@ if not os.path.exists(plot_path):
 ```
 
 
+<br/>
 
-#### 3.6.3 创建仿真工程
+#### 3.6.3 Create a new project
 
 ```
 [51]
@@ -1903,8 +2001,9 @@ pj = pd_project(project_name, run_mode, material_property)
 ```
 
 
+<br/>
 
-#### 3.6.4 添加电极
+#### 3.6.4 Add electrodes
 
 ```
 [52]
@@ -1932,24 +2031,30 @@ st.add_electrode(name="anode", property={
     "sweep_type": "single", "voltage": 0, "apply_AC_small_signal": "none"})
 ```
 
-在`"cathode"`电极处：
+For the electrode `"cathode"`:
 
-- `bc_mode`设置为`"transient"`，表示在此电极应用瞬态边界条件，然后可设置光生载流子生成率随时间的变化
-- `voltage`设置为`tcad_vbias`，其值为1，即表示先在该电极施加1V偏压，并进行稳态仿真，然后在此稳态仿真的基础上再进行瞬态仿真。稳态仿真时不应用光生载流子生成率
-- `v_step_max`设置为0.5，表示从平衡态至偏压为`voltage`的稳态计算时的电压步长最大值为0.5V
-- `time_table`为光生载流子生成率随时间的变化列表：
-  - `time_start`--该时间段的起始时间点，为0时即为上述稳态结果的状态
-  - `time_stop`--该时间段的终止时间点
-  - `initial_step`--该时间段内起始时间步长
-  - `max_step`--该时间段内最大时间步长
-  - `optical`--该时间段内的光生载流子生成率的相关设置
-    - `enabled`--该时间段内是否应用光生载流子生成率，为`1`表示应用，为`0`表示不应用
-    - `envelop`--该时间段内光功率缩放因子的包络曲线，为`0`表示常数包络
-    - `source_fraction`--当`envelop`为`0`时，即表示该时间段内光功率的缩放因子
+- `bc_mode`--Here it's set to `"transient"`, which means a transient boundary condition is applied to this electrode. Then the time dependence of the optical generation rate can be set at this electrode
+- `voltage`--Here it's set to `tcad_vbias`, which is `1`, meaning that the voltage is applied to the electrode and a steady state simulation is performed first. The transient simulation is based on the steady state. The optical generation rate is not applied during the steady state simulation.
+- `v_step_max`--Set the max step of the voltage from the equilibrium state to steady state at the bias of `voltage`.
+- `time_table`--Set the time dependence of optical generation rate. It's of a list type, whose item is of a dictionary type. In each of its item:
+  - `time_start`--Set the start time point of the range. The value of `0` represents the steady state of the earlier simulation.
+  - `time_stop`--Set the stop time point of the range
+  - `initial_step`--Set the initial time step of the range
+  - `max_step`--Set the max time step of the range
+  - `optical`--Set the optical generation rate during the time range
+    - `enabled`--Whether to apply optical generation rate during the time range. The value of `1` means `True`, and `0` means `False`
+    - `envelop`--The envelop of the scaling factor of the light power during the time range. When it's set to `0`, the envelop is uniform
+    - `source_fraction`--When `envelop` is set to`0`, this value is the scaling factor of the light power during the time range
 
 
+Note:
 
-#### 3.6.5 添加求解器
+1. The dependency of scaling factor of light power on time is a step function here.
+
+
+<br/>
+
+#### 3.6.5 Add the solver
 
 ```
 [53]
@@ -1967,18 +2072,26 @@ simu.add(name="oedevice", type="OEDevice", property={
                  "use_quasi_fermi": "enabled", "damping": "potential", "potential_update": 2, "relative_tolerance": 1e-5, "tolerance_relax": 1e7}})
 ```
 
-- `genrate.solver_mode`设置为`"transient"`，表示进行瞬态仿真
-- `advanced.use_global_max_iterations`设置为`False`，表示初始化求解泊松方程时，与后续迭代求解漂移扩散方程及泊松方程组时，应用不同的最大迭代次数
-- `advanced.poisson_max_iterations`，表示初始化求解泊松方程时的最大迭代次数
-- `advanced.ddm_max_iterations`，表示后续迭代求解漂移扩散方程及泊松方程组时的最大迭代次数
-- `advanced.use_quasi_fermi`设置为`"enabled"`，表示将准费米能作为直接求解变量，而非使用载流子浓度
-- `advanced.damping`设置为`"potential"`，表示设置非线性更新阻尼方案为依据电势判断
-- `advanced.potential_update`，表示电势阻尼的阈值，这个值越大，阻尼效应越小
-- `advanced.relative_tolerance`，表示相对收敛判据的容差
-- `advanced.tolerance_relax`，表示判断收敛时，对绝对收敛判据放宽的系数
+`general`:
+
+- `solver_mode`--Here it's set to `"transient"`, which means a transient simulation
+
+`advanced`:
+
+- `use_global_max_iterations`--Whether to use global max iterations during the initialization of solving the Poisson equations and the subsequent computing for solving the drift-diffusion equations coupling with Poisson equations
+- `poisson_max_iterations`--Set the max iterations during the initialization of solving the Poisson equations, available when `use_global_max_iterations` is `False`
+- `ddm_max_iterations`--Set the max iterations during the subsequent computing for solving the drift-diffusion equations coupling with Poisson equations, available when `use_global_max_iterations` is `False`
+- `use_quasi_fermi`--Whether to directly solve for the quasi-Fermi potential instead of carrier concentration as unkowns. `"enabled"` means `True`, and `"disabled"` means `False`
+- `damping`--Set the nonlinear update damping scheme. `"potential"` means the damping is based on the potential variation
+- `potential_update`--Set the threshold potential for potential damping. The large value will reduce the strength of damping effect
+- `relative_tolerance`--Set the relative update tolerance
+- `tolerance_relax`--Set the tolerance relaxation factor for convergence on relative tolerance criteria
 
 
-#### 3.6.6 运行求解器
+
+<br/>
+
+#### 3.6.6 Run the solver
 
 ```
 [54]
@@ -1990,9 +2103,12 @@ simu.add(name="oedevice", type="OEDevice", property={
 result_device = simu["oedevice"].run()
 ```
 
-#### 3.6.7 结果提取
 
-本节提取I-t曲线，由于光功率的时间函数为阶跃函数，所以此处是阶跃响应电流。
+<br/>
+
+#### 3.6.7 Extract the result
+
+The I-t curve is extracted. Because the dependency of the light power on time is a step function, the I-t curve here represents the step response of the photo current.
 
 ```
 [55]
@@ -2007,12 +2123,16 @@ result_device.extract(data="I", electrode="cathode", show=False, export_csv=True
 ```
 
 
+<br/>
 
-#### 3.6.8 后处理
+#### 3.6.8 Postprocess
 
-本节通过对阶跃响应求导，得到脉冲响应。然后对脉冲响应应用傅里叶变换，得到频率响应，从而获得器件带宽。
+By taking the derivative of the step response, the impulse response is obtained. Then the Fast Fourier Transform is applied to the impulse response, resulting in the frequency response, which allows to determine the device bandwidth.
 
-##### 获得脉冲响应
+
+<br/>
+
+##### 3.6.8.1 Obtain the impulse response
 
 ```
 [56]
@@ -2046,11 +2166,12 @@ interp1d_func = scip.interp1d(th, dIdt)
 dIdt_interp = interp1d_func(t_interp)
 ```
 
-先对阶跃响应求导，得到脉冲响应，之后再对时间取均匀间隔，并插值处理，方便后续应用快速傅里叶变换。
+First, take the derivative of the step response to obtain the impulse response. And then uniform time intervals and perform interpolation on the impulse response to facilitate the subsequent application of the Fast Fourier Transform.
 
 
+<br/>
 
-##### 输出脉冲响应结果
+##### 3.6.8.2 Export the impulse response result
 
 ```
 [57]
@@ -2078,8 +2199,9 @@ plt.close()
 ```
 
 
+<br/>
 
-##### 获得频率响应
+##### 3.6.8.3 Obtain the frequency response
 
 ```
 [58]
@@ -2100,11 +2222,12 @@ log_freq_3dB = scip.interp1d(log_fresp, log_freq)(resp_3dB)
 bandwidth_GHz = 10**log_freq_3dB*1e-9
 ```
 
-通过快速傅里叶变换得到频率响应，并通过插值得出3dB带宽。
+Obtain the frequency response by Fast Fourier Transform. And then calculate the 3dB bandwidth by interpolation.
 
 
+<br/>
 
-##### 输出频率响应结果
+##### 3.6.8.4 Export the frequency response result
 
 ```
 [59]
@@ -2134,12 +2257,16 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 ```
 
 
+<br/>
 
-### 3.7 Saturation Power
+### 3.7 Saturation power
 
-本节利用python特性，对输入光功率进行扫描，得到I-P曲线，从而大致判断饱和光功率。
+This section scans the input light power and obtains the I-P curve, thereby roughly determining the saturation light power. The script is in the `VPD04_Psat.py` file.
 
-#### 3.7.1 导入仿真工具包
+
+<br/>
+
+#### 3.7.1 Import simulation toolkit
 
 ```
 [60]
@@ -2155,8 +2282,9 @@ from matplotlib import pyplot as plt
 ```
 
 
+<br/>
 
-#### 3.7.2 设置通用参数
+#### 3.7.2 Set general parameters
 
 ```
 [61]
@@ -2184,8 +2312,9 @@ genrate_file_path = genrate_file_folder + "/VPD01_FDTD.gfile"
 ```
 
 
+<br/>
 
-#### 3.7.3 定义扫描函数
+#### 3.7.3 Define a sweeping function
 
 ```
 [62]
@@ -2196,8 +2325,9 @@ def sweep_simulation(sweep_value):
 ```
 
 
+<br/>
 
-#### 3.7.4 设置扫描参数
+##### 3.7.3.1 Set the sweeping parameter
 
 ```
 [63]
@@ -2211,11 +2341,12 @@ def sweep_simulation(sweep_value):
 
 ```
 
-利用python特性，将后续使用的`sweep_parameter_name`对应参数`source_fraction`的值，求改为`sweep_value`的值。
+Using the features of Python, modify the value of parameter `source_fraction` corresponding to `sweep_parameter_name` to the value of `sweep_value`  which is passed from the `sweep_simulation` function.
 
 
+<br/>
 
-#### 3.7.5 创建仿真工程
+##### 3.7.3.2 Create a new project
 
 ```
 [64]
@@ -2230,8 +2361,9 @@ def sweep_simulation(sweep_value):
 ```
 
 
+<br/>
 
-#### 3.7.6 添加点击
+##### 3.7.3.3 Add electrodes
 
 ```
 [65]
@@ -2248,11 +2380,12 @@ def sweep_simulation(sweep_value):
         "sweep_type": "single", "voltage": 0, "apply_AC_small_signal": "none"})
 ```
 
-在`"cathode"`电极施加1V偏压，进行稳态仿真。
+Apply a voltage of 1V to the electrode `"cathode"` to perform a steady state simulation.
 
 
+<br/>
 
-#### 3.7.7 添加求解器
+##### 3.7.3.4 Add the solver
 
 ```
 [66]
@@ -2271,8 +2404,9 @@ def sweep_simulation(sweep_value):
 ```
 
 
+<br/>
 
-### 3.7.8 运行求解器
+##### 3.7.3.5 Run the solver
 
 ```
 [67]
@@ -2285,8 +2419,9 @@ def sweep_simulation(sweep_value):
 ```
 
 
+<br/>
 
-#### 3.7.9 返回电流结果
+##### 3.7.3.6 Extract and return the I-V result
 
 ```
 [68]
@@ -2310,8 +2445,9 @@ def sweep_simulation(sweep_value):
 ```
 
 
+<br/>
 
-#### 3.7.10 运行扫描函数并输出结果
+#### 3.7.4 Run the sweeping function and export the result
 
 ```
 [69]
@@ -2371,11 +2507,17 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 
 
 
-# 4. 附录
 
-## 4.1 电学材料参数
+<br/>
 
-`VPD_material.py`脚本中的材料参数设置：
+## 4. Appendix
+
+
+<br/>
+
+### 4.1 Electronic parameters of the materials
+
+The parameter settings in the `VPD_material.py` file:
 
 ```
 [70]
@@ -2446,23 +2588,26 @@ elec_Ge_properties_for_transient = {"model": {"high_field": True, "mobility_forc
                                                         "vsatn_exp": 0, "vsatp_exp": 0}, "print": 1}}
 ```
 
-`basic`--设置介电常数、电子亲和能
+`basic`--Set the permittivity and affinity
 
-`band`--设置能带、复合模型及参数
+`band`--Set models and parameters of the band and the recombination
 
-`mobility`--设置迁移率模型及参数
+`mobility`--Set the model and parameters of mobility
 
-`model`--设置强场迁移率、费米统计等模型的开关
+`model`--Set the switch of high field mobility model and Fermi-Dirac statistics model
 
-`vsat`--设置速度饱和模型及参数
-
-具体的材料设置说明请参考手册`examples/active_demo/Physics_Model_in_OEDevice.pdf`。
+`vsat`--Set the model and parameters of velocity saturation
 
 
 
-## 4.2 OEDevice设置
+For the detailed introduction about electronic parameters, please refer to the document `examples/active_demo/Physics_Model_in_OEDevice.pdf`.
 
-OEDevice的属性列表：
+
+<br/>
+
+### 4.2 OEDevice settings
+
+`OEDevice` property list：
 
 |                                          | default           | type    | notes                                                        |
 | :--------------------------------------- | :---------------- | :------ | :----------------------------------------------------------- |
@@ -2514,55 +2659,58 @@ OEDevice的属性列表：
 
 `geometry`：
 
-- `dimension`--设置仿真区域维度，目前仅支持二维仿真。当设置为`2d_x_normal`时，表示yz平面的仿真，其余同理
+- `dimension`--Set the dimension of the simulation region. Only 2D simulation is supportd currently. When it's set to `"2d_x_normal"`, the simulation is on the yz plane. Similarly for the rest
 
 `general`:
 
-- `norm_length`--设置器件第三维尺寸，默认为1
-- `solver_mode`--设置仿真模式，支持稳态、瞬态、小信号仿真
-- `temperature`--设置仿真温度
-- `temperature_dependence`--设置温度依赖类型，目前仅支持均匀温度
+- `norm_length`--Set the length in the third dimension, default to be 1
+- `solver_mode`--Set the simulation mode. Steady state, transient and SSAC simulations are supported
+- `temperature`--Set the simulation temperature
+- `temperature_dependence`--Set the type of the temperature dependence. Only `"Isothermal"` is supported currently 
 
 `genrate`:
 
-- `genrate_path`--设置光生载流子生成率分布文件（gfile）的路径。默认为`""`，即为空，此时不导入光生载流子，`genrate`其它设置项无效；当不为空时，则导入该gfile中的光生载流子生成率。
-- `coordinate_unit`--gfile文件中坐标的单位
-- `field_length_unit`--gfile文件中生成率单位中的长度单位
-- `source_fraction`--光功率的缩放因子，求解器会先将导入的生成率乘以此因子，然后再代入载流子输运方程求解
+- `genrate_path`--Set the absolute path of the optical generation rate file (gfile)
+  - When it's set to `""` (by default), and empty string , no optical generation rate will be applied
+  - When it's not empty, the gfile at the path will be imported to apply the optical generation rate
+
+- `coordinate_unit`--Set the coordinate unit in the gfile
+- `field_length_unit`--Set the length unit in the generation rate unit in the gfile
+- `source_fraction`--Set the scaling factor for the light power. The imported optical generation rate will be multiplied by this factor first, and then be used to solve the carrier transport
 
 `small_signal_ac`:
 
-- `perturbation_amplitude`--小信号的电压幅值
-- `frequency_spacing`--小信号频率的间隔方式
-  - 设置为`"single"`，频率为单点
-  - 设置为`"linear"`，频率为线性均匀取点
-  - 设置为`"log"`，先对频率取对数，再均匀取点
-- `frequency`--单点频率对应的值
-- `start_frequency`--线性取点频率的起始值
-- `stop_frequency`--线性取点频率的终止值
-- `frequency_interval`--线性取点频率的间隔
-- `num_frequency_points`--线性取点频率的点数
-- `log_start_frequency`--对数取点频率的起始值
+- `perturbation_amplitude`--Set the voltage amplitude of the small signal
+- `frequency_spacing`--Set the spacing type of the frequency
+  - When it's set to `"single"`, the frequency point is single
+  - When it's set to `"linear"`, the frequency points are uniformly sampled
+  - When it's set to `"log"`，the frequency points are uniformly sampled base on the logarithm of frequency
+- `frequency`--Set the value of the single frequency
+- `start_frequency`--Set the start frequency of linear spacing
+- `stop_frequency`--Set the stop frequency of linear spacing
+- `frequency_interval`--Set the frequency interval of linear spacing
+- `num_frequency_points`--Set the number of frequency points of linear spacing
+- `log_start_frequency`--Set the start frequency of logarithmic spacing
 
-- `log_stop_frequency`--对数取点频率的终止值
+- `log_stop_frequency`--Set the stop frequency of logarithmic spacing
 
-- `log_num_frequency_points`--对数取点频率的点数
+- `log_num_frequency_points`--Set the number of frequency points of logarithmic spacing
 
 `advanced`:
 
-- `non_linear_solver`--非线性求解器类型，目前仅支持牛顿法
-- `linear_solver`--线性求解器类型，可选`"MUMPS"`，`"LU"`，`"BCGS"`。其中`"MUMPS"`与`"LU"`为直接求解方法，前者支持并行计算，而后者不支持；`"BCGS"`为迭代求解方法，支持并行计算
-- `use_quasi_fermi`--是否将准费米能而非载流子浓度作为直接求解变量
-- `damping`--选择非线性更新阻尼方案
-- `potential_update`--电势阻尼的阈值，这个值越大，阻尼效应越小
-- `multi_threads`--多线程设置
-  - 设置为`"let_solver_choose"`时，由求解器自动设置线程数，默认最大线程数为4
-  - 设置为`"set_thread_count"`，由用户自定义线程数
-- `thread_count`--用户自定义线程数
-- `max_iterations`--全局最大迭代次数
-- `use_global_max_iterations`--初始化求解泊松方程时，与后续迭代求解漂移扩散方程及泊松方程组时，是否应用全局最大迭代次数
-- `poisson_max_iterations`--初始化求解泊松方程时的最大迭代次数
-- `ddm_max_iterations`--后续迭代求解漂移扩散方程及泊松方程组时的最大迭代次数
-- `relative_tolerance`--相对收敛判据的容差
-- `tolerance_relax`--判断收敛时，对绝对收敛判据放宽的系数
-- `divergence_factor`--判断发散时，对绝对收敛判据乘的系数
+- `non_linear_solver`--Set the non-linear solver, only Newton method is supported currently
+- `linear_solver`--Set the linear solver. Options are `"MUMPS"`, `"LU"`, `"BCGS"`.  `MUMPS` and `LU` are direct linear solvers which usually give the exact solution. However, `MUMPS` supports parallel computation while `LU` doesn't. ；`"BCGS"` is a Krylov subspace (KSP) iterative solver, which also supports parallel computation and is more efficient but can only give approximate results.
+- `use_quasi_fermi`--Whether to directly solve for the quasi-Fermi potential instead of carrier concentration as unkowns. `"enabled"` means `True`, and `"disabled"` means `False`
+- `damping`--Set the nonlinear update damping scheme. `"potential"` means the damping is based on the potential variation
+- `potential_update`--Set the threshold potential for potential damping. The large value will reduce the strength of damping effect
+- `multi_threads`:
+  - When it's set to `"let_solver_choose"`, the solver will determine the number of threads to use. The default maximum number of threads is 4
+  - When it's set to `"set_thread_count"`, the number of threads is set by the user to `thread_count`
+- `thread_count`--Custom number of threads
+- `max_iterations`--Set global maximum number of iterations, available when `use_global_max_iterations` is `True`
+- `use_global_max_iterations`--Whether to use global max iterations during the initialization of solving the Poisson equations and the subsequent computing for solving the drift-diffusion equations coupling with Poisson equations, default to be `True`
+- `poisson_max_iterations`--Set the max iterations during the initialization of solving the Poisson equations, available when `use_global_max_iterations` is `False`
+- `ddm_max_iterations`--Set the max iterations during the subsequent computing for solving the drift-diffusion equations coupling with Poisson equations, available when `use_global_max_iterations` is `False`
+- `relative_tolerance`--Set the relative update tolerance
+- `tolerance_relax`--Set the tolerance relaxation factor for convergence on relative tolerance criteria
+- `divergence_factor`--Nonlinear solver fault with divergence when each individual function norm exceeds the threshold as its absolute tolerance multiply by this factor

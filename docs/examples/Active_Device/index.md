@@ -23,6 +23,7 @@ First, import `maxoptics_sdk` and other packages.
 ```
 [1]
 ```
+
 ```python
 import maxoptics_sdk.all as mo
 import os
@@ -31,6 +32,7 @@ from maxoptics_sdk.helper import timed
 from pathlib import Path
 from VPD_material import *
 ```
+
 The script file `VPD_material.py` stores some modified electronic parameters of the materials, which are referenced to override default parameters in the modeling script.
 
 
@@ -42,6 +44,7 @@ Set some general parameters before modeling. At the beginning are those that nee
 ```
 [2]
 ```
+
 ```python
 # region --- 0. General Parameters ---
 wavelength_center = 1.55    # um
@@ -60,6 +63,7 @@ Ge_SiO2_recombination_velocity = 225000    # cm/s
 run_mode = "local"
 simu_name = "VPD00_struc"
 ```
+
 Wavelength, temperature, the mesh grid size and some other parameters are defined above. They will be detailed in the subsequent settings.
 
 
@@ -67,6 +71,7 @@ Wavelength, temperature, the mesh grid size and some other parameters are define
 ```
 [3]
 ```
+
 ``` python
 # --- structure geometry ---
 SiO2_x_center = 0
@@ -113,6 +118,7 @@ cathode_y_span_bottom = 2.2
 cathode_z_span = 1
 cathode_z_center = Si_z_span+Ge_z_span+cathode_z_span/2
 ```
+
 These are geometric parameters of the structures.
 
 
@@ -138,6 +144,7 @@ oe_z_max = 1.25
 oe_z_mean = 0.5*(oe_z_min+oe_z_max)
 oe_z_span = oe_z_max-oe_z_min
 ```
+
 These are geometric parameters of the electrical simulation region.
 
 
@@ -145,6 +152,7 @@ These are geometric parameters of the electrical simulation region.
 ```
 [5]
 ```
+
 ```python
 # --- doping parameters ---
 p_uniform_x_center = 10.75
@@ -183,6 +191,7 @@ n_pplus_junction_width = 0.02
 n_pplus_con = 1e20
 n_pplus_ref = 1e16
 ```
+
 These are parameters for doping setup, including doping box, concentration and the diffusion junction width.
 
 
@@ -191,6 +200,7 @@ These are parameters for doping setup, including doping box, concentration and t
 ```
 [6]
 ```
+
 ```python
 # --- optical simulation boundary  ---
 x_min = -43  # light direction
@@ -209,6 +219,7 @@ z_mean = 0.5*(z_min+z_max)
 z_span = z_max-z_min
 # endregion
 ```
+
 These are geometry parameters for the optical simulation region.
 
 
@@ -221,6 +232,7 @@ A function is defined to implement the functionalities of creating a project, se
 ```
 [7]
 ```
+
 ```python
 def pd_project(project_name, run_mode, material_property):
 ```
@@ -230,14 +242,17 @@ def pd_project(project_name, run_mode, material_property):
 #### 2.3.1 Create a new project
 
 Create a new simulation project.
+
 ```
 [8]
 ```
+
 ```python
 	# region --- 1. Project ---
     pj = mo.Project(name=project_name, location=run_mode)
 	# endregion
 ```
+
 `mo.Project()` parameters:
 
 - `name`--Project name, which is also the folder name for the project files to be saved.
@@ -250,6 +265,7 @@ Create a new simulation project.
 ```
 [9]
 ```
+
 ```python
 	# region --- 2. Material ---
     if material_property == "normal":
@@ -263,6 +279,7 @@ Create a new simulation project.
         print("material_property must be chosen from 'normal', 'transient'")
         raise
 ```
+
 The `elec_Si_properties` and `elec_Ge_properties` are both variables imported from `VPD_material.py`, storing the modified electronic parameters for Silicon and Germanium respectively. Besides, more physics models for Germanium are switched on in the transient simulation, with the `elec_Ge_properties_for_transient` specified for it. The `material_property` is used to determine which type of material parameters to choose. For details of the physics model and electronic parameter settings, please refer to the appendix.
 
 
@@ -271,6 +288,7 @@ The `elec_Si_properties` and `elec_Ge_properties` are both variables imported fr
 ```
 [10]
 ```
+
 ```python
     mt = pj.Material()
     mt.add_lib(name="mat_sio2", data=mo.OE_Material.SiO2, order=1)
@@ -293,6 +311,7 @@ The `elec_Si_properties` and `elec_Ge_properties` are both variables imported fr
 When adding materials, start by using the `add_lib` function to add electrical materials from the material library.
 
 `add_lib()` parameters:
+
 - `name`--Custom material name
 - `data`--Material data, requiring one of the built-in materials in the electrical material library, namely `mo.OE_Material`
 - `order`--`mesh_order` of the material, default to be 2
@@ -311,6 +330,7 @@ Then, use the `set_optical_material` function to set the optical property for th
 ```
 [11]
 ```
+
 ```python
 mt.add_lib(name="mat_sio2", data=mo.OE_Material.SiO2, order=1)
 mt.add_nondispersion(name="mat_sio2_op", data=[(1.444, 0)], order=1)
@@ -332,6 +352,7 @@ Note:
 ```
 [12]
 ```
+
 ```python
 # region --- 3. Structure ---
     st = pj.Structure(mesh_type="curve_mesh", mesh_factor=1.4, background_material=mt["mat_sio2"])
@@ -387,25 +408,25 @@ Note:
 
 `Rectangle` property list：
 
-|                     | default   | type     | notes                         |
-|:--------------------|:----------|:---------|:------------------------------|
-| geometry.x_span     |           | float    | Restrained by condition: >0.  |
-| geometry.x_min      |           | float    |                               |
-| geometry.x_max      |           | float    |                               |
-| geometry.y_span     |           | float    | Restrained by condition: >0.  |
-| geometry.y_min      |           | float    |                               |
-| geometry.y_max      |           | float    |                               |
-| geometry.x          |           | float    |                               |
-| geometry.y          |           | float    |                               |
-| geometry.z          |           | float    |                               |
-| geometry.z_span     |           | float    | Restrained by condition: >0.  |
-| geometry.z_min      |           | float    |                               |
-| geometry.z_max      |           | float    |                               |
-| geometry.rotate_x   | 0         | float    |                               |
-| geometry.rotate_y   | 0         | float    |                               |
-| geometry.rotate_z   | 0         | float    |                               |
-| material.material   |           | material |                               |
-| material.mesh_order |           | integer  | Restrained by condition: >=0. |
+|                     | default | type     | notes                         |
+| :------------------ | :------ | :------- | :---------------------------- |
+| geometry.x_span     |         | float    | Restrained by condition: >0.  |
+| geometry.x_min      |         | float    |                               |
+| geometry.x_max      |         | float    |                               |
+| geometry.y_span     |         | float    | Restrained by condition: >0.  |
+| geometry.y_min      |         | float    |                               |
+| geometry.y_max      |         | float    |                               |
+| geometry.x          |         | float    |                               |
+| geometry.y          |         | float    |                               |
+| geometry.z          |         | float    |                               |
+| geometry.z_span     |         | float    | Restrained by condition: >0.  |
+| geometry.z_min      |         | float    |                               |
+| geometry.z_max      |         | float    |                               |
+| geometry.rotate_x   | 0       | float    |                               |
+| geometry.rotate_y   | 0       | float    |                               |
+| geometry.rotate_z   | 0       | float    |                               |
+| material.material   |         | material |                               |
+| material.mesh_order |         | integer  | Restrained by condition: >=0. |
 
 
 
@@ -471,6 +492,7 @@ Note:
 ```
 [13]
 ```
+
 ```python
     st.add_doping(name="Uniform", type="p", property={
         "geometry": {"x": p_uniform_x_center, "x_span": p_uniform_x_span,
@@ -536,13 +558,14 @@ Doping property list:
 
 `geometry`--Set the geometry parameters of doping box
 `general`--Set the distribution function, concentration and so on
+
 - When the distribution function is `"constant"`, only `concentration` needs to be set
 - When the distribution function is `"gaussian"`:
   - `concentration`--Concentration in the non-diffusion area
   - `ref_concentration`--Concentration on the edge of diffusion area (edge of doping box)
   - `junction_width`--Diffusion junction width
   - `source_face`--The doping source face. Options are `"lower_x"`, `"lower_y"`, `"lower_z"`, `"upper_x"`, `"upper_y"` or `"upper_z"`. `"lower_x"` means the source face is `x=x_min`. Similarly for the rest. There is no diffusion area on the edge of source face. As for the other edges, there is a diffusion area within the doping box.
-  `volume`--Set a list of regions or materials to be doped
+    `volume`--Set a list of regions or materials to be doped
 - When `volume_type` is `"all"`(by default)，the doping is applied to all the (semiconductor) structures, restricted by the doping box
 - When `volume_type` is `"material"`, `material_list` needs to be set, which means the doping is applied to the structures with one of the specified materials and restricted by the doping box
 - When `volume_type` is `"region"`, `region_list` needs to be set, which means the doping is applied to the specified structures and restricted by the doping box
@@ -577,6 +600,7 @@ st.add_doping(name="n_pplus", type="n", property={
 ```
 [15]
 ```
+
 ```python
 	# surface recombination
     st.add_surface_recombination(name="Cathode_Ge", property={
@@ -605,24 +629,23 @@ st.add_doping(name="n_pplus", type="n", property={
 
 Surface recombination property list:
 
-|                        | default             | type   | notes                                                                                                                |
-|:-----------------------|:--------------------|:-------|:---------------------------------------------------------------------------------------------------------------------|
-| surface_type           | domain_domain       | string | Selections are ['domain_domain', 'material_material'].                                                               |
-| interface_type         | null                | string | Selections are ['null', 'InsulatorInterface', 'HomoJunction', 'HeteroJunction', 'MetalOhmicInterface', 'SolderPad']. |
-| infinite_recombination | true                | bool   | Available when interface_type is 'MetalOhmicInterface'                                                               |
-| velocity_hole          | 0                   | float  | Available when interface_type is 'MetalOhmicInterface'/'InsulatorInterface'                                          |
-| velocity_electron      | 0                   | float  | Available when interface_type is 'MetalOhmicInterface'/'InsulatorInterface'                                          |
-| domain_1               |                     | string | Available when surface_type is 'domain_domain'                                                                       |
-| domain_2               |                     | string | Available when surface_type is 'domain_domain'                                                                       |
-| material_1             |                     | material | Available when surface_type is 'material_material'                                                                 |
-| material_2             |                     | material | Available when surface_type is 'material_material'                                                                 |
+|                        | default       | type     | notes                                                        |
+| :--------------------- | :------------ | :------- | :----------------------------------------------------------- |
+| surface_type           | domain_domain | string   | Selections are ['domain_domain', 'material_material'].       |
+| interface_type         | null          | string   | Selections are ['null', 'InsulatorInterface', 'HomoJunction', 'HeteroJunction', 'MetalOhmicInterface', 'SolderPad']. |
+| infinite_recombination | true          | bool     | Available when interface_type is 'MetalOhmicInterface'       |
+| velocity_hole          | 0             | float    | Available when interface_type is 'MetalOhmicInterface'/'InsulatorInterface' |
+| velocity_electron      | 0             | float    | Available when interface_type is 'MetalOhmicInterface'/'InsulatorInterface' |
+| domain_1               |               | string   | Available when surface_type is 'domain_domain'               |
+| domain_2               |               | string   | Available when surface_type is 'domain_domain'               |
+| material_1             |               | material | Available when surface_type is 'material_material'           |
+| material_2             |               | material | Available when surface_type is 'material_material'           |
 
 其中：
 
 - `surface_type`--Type of selection for the surface
   - When `surface_type` is `"domain_domain"`, the surface is the interface between two structures 
   - When `surface_type` is "material_material"`, the surface is the interface between two materials
-
 - `interface_type`--Type of contact for the surface
   - `"InsulatorInterface"`--Semiconductor-insulator interface
   - `"HomoJunction"`--Homogeneous semiconductor-semiconductor interface
@@ -641,6 +664,7 @@ Surface recombination property list:
 ```
 [16]
 ```
+
 ```python
 	# region --- 4. Waveform ---
     wv = pj.Waveform()
@@ -662,6 +686,7 @@ Surface recombination property list:
 ```
 [17]
 ```
+
 ```python
 	# region --- 5. oboundary --- for FDTD simulation
     st.OBoundary(property={
@@ -673,36 +698,36 @@ Surface recombination property list:
 
 Boundary conditions of optical simulation property list:
 
-|                                  | default   | type    | notes                                                                                     |
-|:---------------------------------|:----------|:--------|:------------------------------------------------------------------------------------------|
-| general_pml.pml_same_settings    | true      | bool    |                                                                                           |
-| general_pml.pml_profile          | standard  | string  |                                                                                           |
-| general_pml.pml_layer            |           | integer |                                                                                           |
-| general_pml.pml_kappa            |           | float   |                                                                                           |
-| general_pml.pml_sigma            |           | float   |                                                                                           |
-| general_pml.pml_polynomial       |           | integer |                                                                                           |
-| general_pml.pml_alpha            |           | float   |                                                                                           |
-| general_pml.pml_alpha_polynomial |           | integer |                                                                                           |
-| general_pml.pml_min_layers       |           | integer |                                                                                           |
-| general_pml.pml_max_layers       |           | integer |                                                                                           |
-| geometry.x                       |           | float   |                                                                                           |
-| geometry.x_span                  |           | float   | Restrained by condition: >=0.                                                             |
-| geometry.x_min                   |           | float   |                                                                                           |
-| geometry.x_max                   |           | float   |                                                                                           |
-| geometry.y                       |           | float   |                                                                                           |
-| geometry.y_span                  |           | float   | Restrained by condition: >=0.                                                             |
-| geometry.y_min                   |           | float   |                                                                                           |
-| geometry.y_max                   |           | float   |                                                                                           |
-| geometry.z                       |           | float   |                                                                                           |
-| geometry.z_span                  |           | float   | Restrained by condition: >=0.                                                             |
-| geometry.z_min                   |           | float   |                                                                                           |
-| geometry.z_max                   |           | float   |                                                                                           |
-| boundary.x_max                   |           | string  | Selections are ['PML', 'PEC', 'metal', 'PMC', 'periodic'].                                |
-| boundary.x_min                   |           | string  | Selections are ['PML', 'PEC', 'metal', 'PMC', 'symmetric', 'anti_symmetric', 'periodic']. |
-| boundary.y_max                   |           | string  | Selections are ['PML', 'PEC', 'metal', 'PMC', 'periodic'].                                |
-| boundary.y_min                   |           | string  | Selections are ['PML', 'PEC', 'metal', 'PMC', 'symmetric', 'anti_symmetric', 'periodic']. |
-| boundary.z_max                   |           | string  | Selections are ['PML', 'PEC', 'metal', 'PMC', 'periodic'].                                |
-| boundary.z_min                   |           | string  | Selections are ['PML', 'PEC', 'metal', 'PMC', 'symmetric', 'anti_symmetric', 'periodic']. |
+|                                  | default  | type    | notes                                                        |
+| :------------------------------- | :------- | :------ | :----------------------------------------------------------- |
+| general_pml.pml_same_settings    | true     | bool    |                                                              |
+| general_pml.pml_profile          | standard | string  |                                                              |
+| general_pml.pml_layer            |          | integer |                                                              |
+| general_pml.pml_kappa            |          | float   |                                                              |
+| general_pml.pml_sigma            |          | float   |                                                              |
+| general_pml.pml_polynomial       |          | integer |                                                              |
+| general_pml.pml_alpha            |          | float   |                                                              |
+| general_pml.pml_alpha_polynomial |          | integer |                                                              |
+| general_pml.pml_min_layers       |          | integer |                                                              |
+| general_pml.pml_max_layers       |          | integer |                                                              |
+| geometry.x                       |          | float   |                                                              |
+| geometry.x_span                  |          | float   | Restrained by condition: >=0.                                |
+| geometry.x_min                   |          | float   |                                                              |
+| geometry.x_max                   |          | float   |                                                              |
+| geometry.y                       |          | float   |                                                              |
+| geometry.y_span                  |          | float   | Restrained by condition: >=0.                                |
+| geometry.y_min                   |          | float   |                                                              |
+| geometry.y_max                   |          | float   |                                                              |
+| geometry.z                       |          | float   |                                                              |
+| geometry.z_span                  |          | float   | Restrained by condition: >=0.                                |
+| geometry.z_min                   |          | float   |                                                              |
+| geometry.z_max                   |          | float   |                                                              |
+| boundary.x_max                   |          | string  | Selections are ['PML', 'PEC', 'metal', 'PMC', 'periodic'].   |
+| boundary.x_min                   |          | string  | Selections are ['PML', 'PEC', 'metal', 'PMC', 'symmetric', 'anti_symmetric', 'periodic']. |
+| boundary.y_max                   |          | string  | Selections are ['PML', 'PEC', 'metal', 'PMC', 'periodic'].   |
+| boundary.y_min                   |          | string  | Selections are ['PML', 'PEC', 'metal', 'PMC', 'symmetric', 'anti_symmetric', 'periodic']. |
+| boundary.z_max                   |          | string  | Selections are ['PML', 'PEC', 'metal', 'PMC', 'periodic'].   |
+| boundary.z_min                   |          | string  | Selections are ['PML', 'PEC', 'metal', 'PMC', 'symmetric', 'anti_symmetric', 'periodic']. |
 
 `geometry`--Set the optical simulation region
 
@@ -717,6 +742,7 @@ Boundary conditions of optical simulation property list:
 ```
 [18]
 ```
+
 ```python
 	# region --- 6. mesh ---
     st.add_mesh(name="OMesh_Ge", property={
@@ -753,23 +779,23 @@ Boundary conditions of optical simulation property list:
 
 Optical local mesh property list:
 
-|                         | default | type  | notes                         |
-| :---------------------- | :------ | :---- | :---------------------------- |
-| general.dx              |         | float | Restrained by condition: >0.  |
-| general.dy              |         | float | Restrained by condition: >0.  |
-| general.dz              |         | float | Restrained by condition: >0.  |
-| geometry.x              |         | float |                               |
-| geometry.x_span         |         | float | Restrained by condition: >=0. |
-| geometry.x_min          |         | float |                               |
-| geometry.x_max          |         | float |                               |
-| geometry.y              |         | float |                               |
-| geometry.y_span         |         | float | Restrained by condition: >=0. |
-| geometry.y_min          |         | float |                               |
-| geometry.y_max          |         | float |                               |
-| geometry.z              |         | float |                               |
-| geometry.z_span         |         | float | Restrained by condition: >=0. |
-| geometry.z_min          |         | float |                               |
-| geometry.z_max          |         | float |                               |
+|                 | default | type  | notes                         |
+| :-------------- | :------ | :---- | :---------------------------- |
+| general.dx      |         | float | Restrained by condition: >0.  |
+| general.dy      |         | float | Restrained by condition: >0.  |
+| general.dz      |         | float | Restrained by condition: >0.  |
+| geometry.x      |         | float |                               |
+| geometry.x_span |         | float | Restrained by condition: >=0. |
+| geometry.x_min  |         | float |                               |
+| geometry.x_max  |         | float |                               |
+| geometry.y      |         | float |                               |
+| geometry.y_span |         | float | Restrained by condition: >=0. |
+| geometry.y_min  |         | float |                               |
+| geometry.y_max  |         | float |                               |
+| geometry.z      |         | float |                               |
+| geometry.z_span |         | float | Restrained by condition: >=0. |
+| geometry.z_min  |         | float |                               |
+| geometry.z_max  |         | float |                               |
 
 `geometry`--Set the region of local mesh. When `x_span` doesn't vanish, the mesh setting will be applied to the range along the x axis. Similarly for the rest
 
@@ -912,6 +938,7 @@ Mode source property list:
 ```
 [20]
 ```
+
 ```python
 	# region ---8.monitor ---
     mn = pj.Monitor()
@@ -991,15 +1018,16 @@ Power monitor property list:
 
 
 
-
 #### 2.3.11 Preview the structures
 
 
 
 ##### 2.3.11.1 Define the preview function
+
 ```
 [21]
 ```
+
 ```python
 # -------------    preview    --------------
 time_str = time.strftime("%Y%m%d_%H%M%S/", time.localtime())
@@ -1026,6 +1054,7 @@ Optical and electrical solvers are added within the preview function. The corres
 ```
 [22]
 ```
+
 ```python
     simu = pj.Simulation()
     simu.add(name="preview_fdtd", type="AFDTD", property={
@@ -1113,13 +1142,14 @@ Preview the doping profile by the `run_doping` function of the `OEDevice` solver
 
 <!-- import image01 from "./img/image01.jpg"
 <img src={image01} width='300' height='200' align='middle' />
+
 <center>Fig 1. Net doping</center> -->
 
 
 
 ##### 2.3.11.4 Preview index profile
 
-通过`AFDTD`求解器的`run_index`函数进行折射率预览。
+Preview the index profile by the `run_index` function of the `AFDTD` solver.
 
 ```
 [24]
@@ -1135,23 +1165,21 @@ Preview the doping profile by the `run_doping` function of the `OEDevice` solver
         savepath=plot_path + simu_name + "_" + time_str + "MeshView/" + "z=0.11", export_csv=False, show=False)
 ```
 
+`run_index()` parameters：
 
-
-`run_index()`参数：
-
-- `name`--自定义名称
-- `export_csv`--是否输出csv文件，默认为`False`
-- `savepath`--结果保存路径
-- `show`--是否弹窗显示图片，默认为`False`
-- `export_n`--是否输出nx, ny, nz。默认为`True`
-- `export_c`--是否输出σx, σy, σz。默认为`False`
-- `max_index`--设置折射率强度图的最大值，默认为`None`
-- `max_sigma`--设置电导率强度图的最大值，默认为`None`
-- `property`--其他属性
+- `name`--Custom name
+- `export_csv`--Whether to export csv file, default to be `False`
+- `savepath`--Save path of the result extraction
+- `show`--Whether to show the plot in a popup window, default to be `False`
+- `export_n`--Whether to export nx, ny, nz, default to be `True`
+- `export_c`--Whether to export σx, σy, σz, default to be `False`
+- `max_index`--Set the maximum of the intensity plot of index, default to be `None`
+- `max_sigma`--Set the maximum of the intensity plot of conductivity, default to be `None`
+- `property`--Other properties
 
 
 
-`run_index`属性列表：
+`run_index` property list：
 
 |                       | default | type   | notes                                                        |
 | :-------------------- | :------ | :----- | :----------------------------------------------------------- |
@@ -1169,25 +1197,29 @@ Preview the doping profile by the `run_doping` function of the `OEDevice` solver
 | geometry.z_min        |         | float  |                                                              |
 | geometry.z_max        |         | float  |                                                              |
 
-`geometry`设置折射率预览的范围。目前`run_index`只支持二维平面的折射率预览。可通过设置`x_span`为0，表示预览yz平面折射率。其余同理。
+`geometry`--Set the region of index preview. The `run_index` function currently only supports the index preview in a 2D plane. If `x_span` is set to `0`, the preview will be performed in the yz plane. Similarly for the rest.
 
 
 
-折射率预览结果展示：
+*Result show of the index preview*
 
 ![Index Preview](./img/image02.png)
 
-<center>图2. nx</center>
+<center>Fig 2. nx</center>
 
 
 
 ## 3. Simulation
 
+
+
 ### 3.1 Dark current
 
-本节通过在暗电流脚本中调用建模脚本的`pd_project`函数，实现器件暗电流的仿真。
+This section performs the simulation of dark current in the `VPD0B_Id.py` script by invoking the `pd_project` function.
 
-#### 3.1.1 导入仿真工具包
+
+
+#### 3.1.1 Import simulation toolkit
 
 ```
 [25]
@@ -1200,11 +1232,11 @@ import os
 from pathlib import Path
 ```
 
-其中从`VPD00_structure.py`脚本中导入了所有变量与函数。
+All the variables and functions from `VPD00_structure.py` are imported.
 
 
 
-#### 3.1.2 设置通用参数
+#### 3.1.2 Set general parameters
 
 ```
 [26]
@@ -1233,7 +1265,7 @@ if not os.path.exists(plot_path):
 
 
 
-#### 3.1.3 创建工程
+#### 3.1.3 Create a new project
 
 ```
 [27]
@@ -1245,7 +1277,7 @@ pj = pd_project(project_name, run_mode, material_property)
 
 
 
-#### 3.1.4 添加电极
+#### 3.1.4 Add electrodes
 
 ```
 [28]
@@ -1262,21 +1294,21 @@ st.add_electrode(name="anode", property={
     "sweep_type": "single", "voltage": 0, "apply_AC_small_signal": "none"})
 ```
 
-`add_electrode()`参数：
+`add_electrode()` parameters:
 
-- `name`--电极名称
-- `property`--其他属性
+- `name`--Name of the electrode
+- `property`--Other properties
 
-
-Electrode属性介绍详见附录。此处在`"cathode"`电极加0~4V偏压，扫描步长为0.5V。
-
+The detailed property list of electrode can be found in the appendix. Here a range of voltage from 0V to 4V is applied to the electrode `"cathode"`, and the step of the voltage is 0.5V.
 
 
-#### 3.1.5 添加求解器
+
+#### 3.1.5 Add the solver
 
 ```
 [29]
 ```
+
 ```python
 # ----------------------   set simu
 simu = pj.Simulation()
@@ -1288,14 +1320,24 @@ simu.add(name="oedevice", type="OEDevice", property={
     "advanced": {"non_linear_solver": "Newton", "linear_solver": "MUMPS", "max_iterations": 50}})
 ```
 
-OEDevice属性介绍详见附录。其中
+The detailed property list of `OEDevice` solver can be found in the appendix. Here:
 
-- `general.genrate_file_path`为`""`，即为空，表示不导入光生载流子生成率，所以仿真结果为暗电流，`genrate`内其余属性此处无效。
-- `geometry.dimension`为`"2d_x_normal"`，表示为yz平面的仿真
-- `general.norm_length`为`normal_length`，该变量值为20，表示器件第三维尺寸，即x方向长度为20um
-- `general.solver_mode`为`"steady_state"`，表示进行稳态仿真
+`genrate`--Set the properties for optical generation rate
 
-#### 3.1.6 运行求解器
+- `genrate_path`--It's set to `genrate_file_path`, which is `""`, an empty string. That means no optical generation rate is imported to the `OEDevice` solver. Therefore, the simulation is for dark current. And the rest properties in `genrate` is ineffective in this case
+
+`geometry`--Set the geometric parameters for the simulation region
+
+- `dimension`--It's set to `2d_x_normal`, which means the simulation is in the yz plane
+
+`general`:
+
+- `norm_length`--It's set to `normal_length`, which is `20`, meaning that the size of the device in the third dimension is 20μm. That is to say its length in the x-direction is 20μm
+- `solver_mode`--It's set to `"steady_state"`, which means a steady state simulation
+
+
+
+#### 3.1.6 Run the solver
 
 ```
 [30]
@@ -1308,11 +1350,11 @@ result_device = simu["oedevice"].run()
 
 ```
 
-`result_device`存储仿真结果信息，以便后续进行结果提取。
+`result_device` stores the information of the simulation result, which can be used to perform result extraction.
 
 
 
-#### 3.1.7 结果提取
+#### 3.1.7 Extract the result
 
 ```
 [31]
@@ -1324,17 +1366,25 @@ result_device.extract(data="I", electrode="cathode", export_csv=True,
                       show=False, savepath=plot_path + project_name + "IV_cathode")
 ```
 
-`result_device.extract()`参数：
+`result_device.extract()` parameters：
 
-- `data`--仿真结果类型，设置为`"I"`，提取电流结果
-- `electrode`--电极名称，表示提取对应电极的电流
-- `export_csv`--是否输出csv格式结果
-- `show`--是否弹窗展示结果图片
-- `savepath`--结果保存路径
+- `data`--Type of the result. Here it's set to `"I"` to extract the I-V curve from the simulation result
+- `electrode`--Name of an electrode, which means the current data is from the electrode
+- `export_csv`--Whether to export the csv result
+- `show`--Whether to show the plot in a popup window
+- `savepath`--The save path for the result extraction
 
 
 
-#### 3.1.8 打印仿真时间
+*Result show of the dark current extraction*
+
+![Dark Current](./img/image03.png)
+
+<center>Fig 3. Dark Current</center>
+
+
+
+#### 3.1.8 Print the simulation time
 
 ```
 [32]
@@ -1346,19 +1396,13 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 
 
 
-#### 3.1.9 暗电流结果展示
-
-![Dark Current](./img/image03.png)
-
-<center>图3. 暗电流</center>
-
-
-
 ### 3.2 Resistance
 
-本节通过在`"anode"`电极加正向偏压，仿真并提取电流结果后，通过后处理拟合得到器件电阻结果。
+This simulation applies a forward bias to the electrode `"anode"`. And then the I-V curve is extracted and fitted to obtain the resistance. The script is in the `VPD0C_Rs.py` file.
 
-#### 3.2.1 仿真并提电流
+
+
+#### 3.2.1 Simulate and extract the I-V curve
 
 ```
 [33]
@@ -1422,13 +1466,13 @@ result_device.extract(data="I", electrode="anode",
                       export_csv=True, show=False, savepath=IV_file_folder)
 ```
 
-在`"anode"`电极加0~1.5V偏压，扫描步长为0.25V，不导入光生载流子生成率，进行稳态仿真并提取电流结果，保存至`IV_file_folder`文件夹内。
+A range of voltage from 0V to 1.5V is applied to the electrode `"anode"`, with a step of 0.25V. No optical generation rate is applied. And a steady state simulation is performed to extract the I-V curve, which is saved to the folder `IV_file_folder`.
 
 
 
-#### 3.2.2 拟合器件电阻
+#### 3.2.2 Fit V-I curve to obtain resistance
 
-##### 读取已保存的I-V数据
+##### 3.2.2.1 Read the saved I-V data
 
 ```
 [34]
@@ -1446,11 +1490,11 @@ I = rawdata[:,1]
 V = rawdata[:,0]
 ```
 
-其中，`"0_I_Real.csv"`为系统自动生成的I-V数据文件名，开始的`"0"`表示电极编号，当提取不同电极的电流时，此编号会发生变化，所以此处从0到9遍历一次，找出已保存的I-V数据文件。
+`"0_I_Real.csv"` is filename generated automatically of the I-V result. The `"0"` in the beginning indicates the index of the electrode. When the I-V curve is from a different electrode, the index will change. Therefore, a iteration from 0 to 9 is applied to find the saved I-V data file.
 
 
 
-##### 拟合得到器件电阻
+##### 3.2.2.2 Fit the data to obtain resistance
 
 ```
 [35]
@@ -1463,11 +1507,11 @@ V_fit = coeffs[0]*I + coeffs[1]
 R = abs(coeffs[0])
 ```
 
-`start_idx`表示取此索引及其之后的I-V数据进行拟合，可以根据I-V曲线找出近似直线的部分，判断起始索引。然后对V-I曲线进行一阶多项式拟合，取其一次项系数，得到器件电阻。
+Fit the data after the index `start_idx`, which is the start index of the approximately linear portion of the curve. A first-order polynomial fitting is performed on the V-I data. Then the coefficient of the first-order term is the device resistance.
 
 
 
-##### 保存数据及图像文件
+##### 3.2.2.3 Save data and plots
 
 ```
 [36]
@@ -1506,7 +1550,7 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 
 ### 3.3 Capacitance
 
-本节通过小信号仿真，得到器件电容结果。
+This section performs a SSAC simulation, and extracts the capacitance. The script is in the `VPD0A_C.py` file.
 
 ```
 [37]
@@ -1569,19 +1613,34 @@ result_device.extract(data="C", electrode="cathode", export_csv=True, show=False
 print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - start)/60, 2)} + "\x1b[0m")
 ```
 
-- 求解器`general.solver_mode`设置为`"SSAC"`表示进行小信号仿真
-- 求解器`small_signal_ac`设置为单频点，频率1e8Hz的小信号分析
-- 在电极`"cathode"`加0~3V偏压，扫描步长为0.5V
-- 电极`"cathode"`中`apply_AC_small_signal`设置为`"All"`，表示对每个电压点都应用小信号分析
-- 小信号仿真结束后可提取器件电容，需在`result_device.extract()`中将`data`设置为`"C"`
+For `OEDevice` solver, the detailed properties can be found in the appendix. Here:
+
+`general`:
+
+- `solver_mode`--It's set to `"SSAC"`, which means a SSAC simulation
+- `small_signal_ac`--Set the frequency points
+  - `frequency_spacing`--It's set to `"single"`, which means a single frequency point
+  - `frequency`--Set the value of the single frequency
 
 
 
-### 3.4 Optical Generation Rate
+For the electrode `"cathode"`, a range of voltage from 0V to 3V is applied to it, with a step of 0.5V. `apply_AC_small_signal`--It's set to `All`, which means the small signal analysis is applied at each voltage step
 
-本节通过FDTD仿真得到`"Ge"`结构内的光场分布，通过后处理得到光生载流子生成率，并且在传光方向即x方向上对光生载流子生成率取了平均值，得到其在yz平面的分布，以便导入OEDevice仿真中。
 
-#### 3.4.1 导入仿真工具包
+
+For the result extraction:
+
+`data`--It's set to `"C"`, which is available after the SSAC simulation and is used to extract the capacitance
+
+
+
+### 3.4 Optical generation rate
+
+This section performs a FDTD simulation to obtain the optical field profile in the structure of `"Ge"`, and then calculate the photo-induced carrier generation rate. The average of the optical generation rate in the light propagating direction, which is the x-direction, is then taken to obtain the profile in the yz plane to be imported to the OEDevice simulation. The script is in the `VPD01_FDTD.py` file.
+
+
+
+#### 3.4.1 Import simulation toolkit
 
 ```
 [38]
@@ -1596,7 +1655,7 @@ from pathlib import Path
 
 
 
-#### 3.4.2 设置通用参数
+#### 3.4.2 Set general parameters
 
 ```
 [39]
@@ -1620,7 +1679,7 @@ if not os.path.exists(plot_path):
 
 
 
-#### 3.4.3 创建仿真工程
+#### 3.4.3 Create a new project
 
 ```
 [40]
@@ -1633,7 +1692,7 @@ pj = pd_project(project_name, run_mode, material_property)
 
 
 
-#### 3.4.4 添加求解器
+#### 3.4.4 Add the solver
 
 ```
 [41]
@@ -1652,11 +1711,11 @@ simu.add(name="afdtd", type="AFDTD", property={
     "mesh_settings": {"mesh_accuracy": {"cells_per_wavelength": cells_per_wavelength}}})
 ```
 
-有源AFDTD求解器可以用来提取光生载流子生成率，但不能查看光场分布；无源FDTD求解器可以查看光场分布，但不能提取光生载流子生成率。所以此处将两种求解器都添加进来，以便实现不同功能。
+The `AFDTD` solver for active device simulation can be used to extract the optical generation rate, but can't export the optical field profile. And the usage of the `FDTD` solver is exactly the opposite. Therefore, both solvers are added here to serve the different purposes.
 
 
 
-#### 3.4.5 运行并提取结果
+#### 3.4.5 Simulate and extract the result
 
 ```
 [42]
@@ -1684,13 +1743,13 @@ result_genrate.extract(data="pabs_total", export_csv=True, show=False, log=False
 print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - start)/60, 2)} + "\x1b[0m")
 ```
 
-`run_generation_rate_analysis()`参数：
+`run_generation_rate_analysis()` parameters：
 
-- `name`--自定义名称
-- `monitor`--计算光生载流子生成率所需的`power_monitor`名称，只支持3D类型
-- `average_dimension`--设置为`"x"`，表示对光生载流子生成率在x方向取平均，设置为`"y"`, `"z"`同理
-- `light_power`--光源功率，单位W，光生载流子生成率将根据此值等比缩放
-- `coordinate_unit`--光生载流子生成率分布的结果文件（gfile文件）中坐标的单位
+- `name`--Custom name
+- `monitor`--Name of the `power_monitor` for calculating optical generation rate. The `power_monitor` is required to be of 3D type
+- `average_dimension`--Set the direction to take the average of the optical generate rate
+- `light_power`--Set the power of the light source, measured in W. The optical generation rate will be scaled based on the power
+- `coordinate_unit`--Set the coordinate unit in the optical generation rate file (gfile)
 - `field_length_unit`--光生载流子生成率分布的结果文件（gfile文件）中生成率单位中的长度单位，设置为`"m"`，则生成率单位为`/m^3/s`
 
 

@@ -6,7 +6,7 @@ import {InlineMath, BlockMath} from 'react-katex';
 ## Introduction:
 <div class="text-justify">
 
-![](structure_PS.png)
+![](structureps.png)
  The spot size converter is an important device connecting the silicon photonic integrated chip and the external optical fiber. The slow changing waveguide structure is used to reduce the light spot in the optical fiber to the size matching the waveguide mode field, which greatly reduces the coupling loss.
 
 </div>
@@ -136,7 +136,7 @@ mn.add(name="z_normal", type="profile_monitor",
 
  Add a simulation using engineering's `Simulation()` and `add()`, and select the EME simulation type. Divide the geometric structure into four regions in `cell_grop_definition`, set the number of `cell_number` in the slowly changing geometric structure, and use the `sub_cell` method.
 
-![](EME_SSC_PS.png)
+![](EMESSCPS.png)
 </div>
 
 ```
@@ -217,7 +217,7 @@ for i in range(3):
  The electric field distribution at the input and output ends of the mode spot converter is shown in the figure, and it is obvious that the light spot decreases significantly after passing through the silicon waveguide.
 
 
-![](SSC_E.png)
+![](SSCE.png)
 
  EME can quickly scan the length without calculating the mode at the cross-section, and can quickly obtain the S parameter.
 

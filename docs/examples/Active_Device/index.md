@@ -557,18 +557,26 @@ Doping property list:
 | volume.region_list            |         | list  | Available when volume_type is 'region'             |
 
 `geometry`--Set the geometry parameters of doping box
+
 `general`--Set the distribution function, concentration and so on
 
-- When the distribution function is `"constant"`, only `concentration` needs to be set
-- When the distribution function is `"gaussian"`:
-  - `concentration`--Concentration in the non-diffusion area
-  - `ref_concentration`--Concentration on the edge of diffusion area (edge of doping box)
-  - `junction_width`--Diffusion junction width
-  - `source_face`--The doping source face. Options are `"lower_x"`, `"lower_y"`, `"lower_z"`, `"upper_x"`, `"upper_y"` or `"upper_z"`. `"lower_x"` means the source face is `x=x_min`. Similarly for the rest. There is no diffusion area on the edge of source face. As for the other edges, there is a diffusion area within the doping box.
-    `volume`--Set a list of regions or materials to be doped
-- When `volume_type` is `"all"`(by default)，the doping is applied to all the (semiconductor) structures, restricted by the doping box
-- When `volume_type` is `"material"`, `material_list` needs to be set, which means the doping is applied to the structures with one of the specified materials and restricted by the doping box
-- When `volume_type` is `"region"`, `region_list` needs to be set, which means the doping is applied to the specified structures and restricted by the doping box
+- `distribution_function`:
+  - When it's set to `"constant"`, only `concentration` needs to be set
+  - When it's set to `"gaussian"`: `concentration`, `ref_concentration`, `junction_width`, `source_face` need to be set
+- `concentration`--Concentration in the non-diffusion area
+- `ref_concentration`--Concentration on the edge of diffusion area (edge of doping box)
+- `junction_width`--Diffusion junction width
+- `source_face`--The doping source face. Options are `"lower_x"`, `"lower_y"`, `"lower_z"`, `"upper_x"`, `"upper_y"` or `"upper_z"`. `"lower_x"` means the source face is `x=x_min`. Similarly for the rest. There is no diffusion area on the edge of source face. As for the other edges, there is a diffusion area within the doping box.
+
+`volume`--Set a list of regions or materials to be doped
+
+- `volume_type`:
+
+  - When it's set to `"all"`(by default)，the doping is applied to all the (semiconductor) structures, restricted by the doping box
+
+  - When it's set to `"material"`, `material_list` needs to be set, which means the doping is applied to the structures with one of the specified materials and restricted by the doping box
+
+  - When it's set to `"region"`, `region_list` needs to be set, which means the doping is applied to the specified structures and restricted by the doping box
 
 
 
@@ -1750,29 +1758,29 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 - `average_dimension`--Set the direction to take the average of the optical generate rate
 - `light_power`--Set the power of the light source, measured in W. The optical generation rate will be scaled based on the power
 - `coordinate_unit`--Set the coordinate unit in the optical generation rate file (gfile)
-- `field_length_unit`--光生载流子生成率分布的结果文件（gfile文件）中生成率单位中的长度单位，设置为`"m"`，则生成率单位为`/m^3/s`
+- `field_length_unit`--Set the length unit in the generation rate unit in the optical generation rate file (gfile).  If it's set to `"m"`, the generation rate unit in the gfile will be `/m^3/s`. Similarly for the rest
 
 
 
-`result_genrate.extract()`参数：
+`result_genrate.extract()` parameters：
 
-- `data`--提取的结果类型
-- `export_csv`--是否输出csv文件
-- `show`--是否弹窗显示图片
-- `log`--强度图中是否应用对数归一化
-- `savepath`--结果保存路径
-
-当`data`设置为`"generation_rate"`时，提取光生载流子生成率结果，除图片及csv文件外，还会生成一个gfile格式文件。其中图片及csv文件中的长度单位均为um，不可更改，且不可导入OEDevice求解器中。而gfile文件中的单位受`coordinate_unit`、`field_length_unit`参数控制，且可导入OEDevice求解器中。
-
-当`data`设置为`"pabs_total"`时，提取总的光吸收功率。
+- `data`--Type of the result
+  - When `data` is set to `"generation_rate"`, besides an image file and a csv file, the result files also include a text file in `.gfile` format. The coordinate unit in the csv and the image file is `um`, and the generation rate unit in the two files is `/cm^3/s`. These units can't be modified when extracting the result. However, the units in the gfile are controlled by `coordinate_unit`、`field_length_unit`. And only the gfile can be imported to the OEDevice solver
+  - When data is set to `"pabs_total"`, the total absorption power is extracted
+- `export_csv`--Whether to export csv file
+- `show`--Whether to show the plot in a popup window
+- `log`--Whether to apply a logarithmic normalization in the intensity plot
+- `savepath`--The save path of the result extraction
 
 
 
-### 3.5 Photo Current
+### 3.5 Photo current
 
-本节向OEDevice求解器中导入光生载流子生成率，仿真得到光电流结果。
+This section imports the optical generation rate to the `OEDevice` solver, and performs a steady state simulation to obtain the photo current. The script is in the `VPD02_Ip.py` file.
 
-#### 3.5.1 导入仿真工具包
+
+
+#### 3.5.1 Import simulation toolkit
 
 ```
 [43]
@@ -1787,7 +1795,7 @@ from pathlib import Path
 
 
 
-#### 3.5.2 设置通用参数
+#### 3.5.2 Set general parameters
 
 ```
 [44]
@@ -1816,11 +1824,11 @@ if not os.path.exists(plot_path):
     os.makedirs(plot_path)
 ```
 
-其中`genrate_file_path`表示将导入OEDevice求解器的gfile文件的完整路径，此处设置为此脚本所在同级目录下的`VPD01_FDTD.gfile`文件路径，可更改为由AFDTD仿真并提取得到的gfile文件路径。
+`genrate_file_path` is the absolute path of the gfile to be imported to the `OEDevice` solver. Here it's set to the absolute path of `VPD01_FDTD.gfile` in the same directory. And  this can be 可更改为由AFDTD仿真并提取得到的gfile文件路径。
 
 
 
-#### 3.5.3 创建仿真工程
+#### 3.5.3 Create a new project
 
 ```
 [45]
@@ -1833,7 +1841,7 @@ pj = pd_project(project_name, run_mode, material_property)
 
 
 
-#### 3.5.4 添加电极
+#### 3.5.4 Add electrodes
 
 ```
 [46]

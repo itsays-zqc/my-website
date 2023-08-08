@@ -1853,7 +1853,7 @@ simu.add(name="oedevice", type="OEDevice", property={
 - `genrate_path`--Here it's not empty, meaning that the file at the path will be imported to the `OEDevice` solver
 - `coordinate_unit`--Set the coordinate unit in the gfile
 - `field_length_unit`--Set the length unit in the generation rate unit in the gfile
-- `source_fraction`--Set the scaling factor for the light power. The imported optical generation rate will be multiplied by this factor first, and then be used to solve the carrier transport.
+- `source_fraction`--Set the scaling factor for the light power. The imported optical generation rate will be multiplied by this factor first, and then be used to solve the carrier transport
 
 
 
@@ -2193,9 +2193,11 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 
 ### 3.7 Saturation power
 
-本节利用python特性，对输入光功率进行扫描，得到I-P曲线，从而大致判断饱和光功率。
+This section scans the input light power and obtains the I-P curve, thereby roughly determining the saturation light power. The script is in the `VPD04_Psat.py` file.
 
-#### 3.7.1 导入仿真工具包
+
+
+#### 3.7.1 Import simulation toolkit
 
 ```
 [60]
@@ -2212,7 +2214,7 @@ from matplotlib import pyplot as plt
 
 
 
-#### 3.7.2 设置通用参数
+#### 3.7.2 Set general parameters
 
 ```
 [61]
@@ -2241,7 +2243,7 @@ genrate_file_path = genrate_file_folder + "/VPD01_FDTD.gfile"
 
 
 
-#### 3.7.3 定义扫描函数
+#### 3.7.3 Define a sweeping function
 
 ```
 [62]
@@ -2253,7 +2255,7 @@ def sweep_simulation(sweep_value):
 
 
 
-#### 3.7.4 设置扫描参数
+##### 3.7.3.1 Set the sweeping parameter
 
 ```
 [63]
@@ -2267,11 +2269,11 @@ def sweep_simulation(sweep_value):
 
 ```
 
-利用python特性，将后续使用的`sweep_parameter_name`对应参数`source_fraction`的值，求改为`sweep_value`的值。
+Using the features of Python, modify the value of parameter `source_fraction` corresponding to `sweep_parameter_name` to the value of `sweep_value`  which is passed from the `sweep_simulation` function.
 
 
 
-#### 3.7.5 创建仿真工程
+##### 3.7.3.2 Create a new project
 
 ```
 [64]
@@ -2287,7 +2289,7 @@ def sweep_simulation(sweep_value):
 
 
 
-#### 3.7.6 添加点击
+##### 3.7.3.3 Add electrodes
 
 ```
 [65]
@@ -2304,11 +2306,11 @@ def sweep_simulation(sweep_value):
         "sweep_type": "single", "voltage": 0, "apply_AC_small_signal": "none"})
 ```
 
-在`"cathode"`电极施加1V偏压，进行稳态仿真。
+Apply a voltage of 1V to the electrode `"cathode"` to perform a steady state simulation.
 
 
 
-#### 3.7.7 添加求解器
+##### 3.7.3.4 Add the solver
 
 ```
 [66]
@@ -2328,7 +2330,7 @@ def sweep_simulation(sweep_value):
 
 
 
-### 3.7.8 运行求解器
+##### 3.7.3.5 Run the solver
 
 ```
 [67]
@@ -2342,7 +2344,7 @@ def sweep_simulation(sweep_value):
 
 
 
-#### 3.7.9 返回电流结果
+##### 3.7.3.6 Extract and return the I-V result
 
 ```
 [68]
@@ -2367,7 +2369,7 @@ def sweep_simulation(sweep_value):
 
 
 
-#### 3.7.10 运行扫描函数并输出结果
+#### 3.7.4 Run the sweeping function and export the result
 
 ```
 [69]
@@ -2427,11 +2429,15 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 
 
 
-# 4. 附录
 
-## 4.1 电学材料参数
 
-`VPD_material.py`脚本中的材料参数设置：
+# 4. Appendix
+
+
+
+## 4.1 Electronic parameters of the materials
+
+The parameter settings in the `VPD_material.py` file:
 
 ```
 [70]
@@ -2502,23 +2508,25 @@ elec_Ge_properties_for_transient = {"model": {"high_field": True, "mobility_forc
                                                         "vsatn_exp": 0, "vsatp_exp": 0}, "print": 1}}
 ```
 
-`basic`--设置介电常数、电子亲和能
+`basic`--Set the permittivity and affinity
 
-`band`--设置能带、复合模型及参数
+`band`--Set models and parameters of the band and the recombination
 
-`mobility`--设置迁移率模型及参数
+`mobility`--Set the model and parameters of mobility
 
-`model`--设置强场迁移率、费米统计等模型的开关
+`model`--Set the switch of high field mobility model and Fermi-Dirac statistics model
 
-`vsat`--设置速度饱和模型及参数
-
-具体的材料设置说明请参考手册`examples/active_demo/Physics_Model_in_OEDevice.pdf`。
+`vsat`--Set the model and parameters of velocity saturation
 
 
 
-## 4.2 OEDevice设置
+For the detailed introduction about electronic parameters, please refer to the document `examples/active_demo/Physics_Model_in_OEDevice.pdf`.
 
-OEDevice的属性列表：
+
+
+## 4.2 OEDevice settings
+
+`OEDevice` property list：
 
 |                                          | default           | type    | notes                                                        |
 | :--------------------------------------- | :---------------- | :------ | :----------------------------------------------------------- |
@@ -2570,55 +2578,58 @@ OEDevice的属性列表：
 
 `geometry`：
 
-- `dimension`--设置仿真区域维度，目前仅支持二维仿真。当设置为`2d_x_normal`时，表示yz平面的仿真，其余同理
+- `dimension`--Set the dimension of the simulation region. Only 2D simulation is supportd currently. When it's set to `"2d_x_normal"`, the simulation is on the yz plane. Similarly for the rest
 
 `general`:
 
-- `norm_length`--设置器件第三维尺寸，默认为1
-- `solver_mode`--设置仿真模式，支持稳态、瞬态、小信号仿真
-- `temperature`--设置仿真温度
-- `temperature_dependence`--设置温度依赖类型，目前仅支持均匀温度
+- `norm_length`--Set the length in the third dimension, default to be 1
+- `solver_mode`--Set the simulation mode. Steady state, transient and SSAC simulations are supported
+- `temperature`--Set the simulation temperature
+- `temperature_dependence`--Set the type of the temperature dependence. Only `"Isothermal"` is supported currently 
 
 `genrate`:
 
-- `genrate_path`--设置光生载流子生成率分布文件（gfile）的路径。默认为`""`，即为空，此时不导入光生载流子，`genrate`其它设置项无效；当不为空时，则导入该gfile中的光生载流子生成率。
-- `coordinate_unit`--gfile文件中坐标的单位
-- `field_length_unit`--gfile文件中生成率单位中的长度单位
-- `source_fraction`--光功率的缩放因子，求解器会先将导入的生成率乘以此因子，然后再代入载流子输运方程求解
+- `genrate_path`--Set the absolute path of the optical generation rate file (gfile)
+  - When it's set to `""` (by default), and empty string , no optical generation rate will be applied
+  - When it's not empty, the gfile at the path will be imported to apply the optical generation rate
+
+- `coordinate_unit`--Set the coordinate unit in the gfile
+- `field_length_unit`--Set the length unit in the generation rate unit in the gfile
+- `source_fraction`--Set the scaling factor for the light power. The imported optical generation rate will be multiplied by this factor first, and then be used to solve the carrier transport
 
 `small_signal_ac`:
 
-- `perturbation_amplitude`--小信号的电压幅值
-- `frequency_spacing`--小信号频率的间隔方式
-  - 设置为`"single"`，频率为单点
-  - 设置为`"linear"`，频率为线性均匀取点
-  - 设置为`"log"`，先对频率取对数，再均匀取点
-- `frequency`--单点频率对应的值
-- `start_frequency`--线性取点频率的起始值
-- `stop_frequency`--线性取点频率的终止值
-- `frequency_interval`--线性取点频率的间隔
-- `num_frequency_points`--线性取点频率的点数
-- `log_start_frequency`--对数取点频率的起始值
+- `perturbation_amplitude`--Set the voltage amplitude of the small signal
+- `frequency_spacing`--Set the spacing type of the frequency
+  - When it's set to `"single"`, the frequency point is single
+  - When it's set to `"linear"`, the frequency points are uniformly sampled
+  - When it's set to `"log"`，the frequency points are uniformly sampled base on the logarithm of frequency
+- `frequency`--Set the value of the single frequency
+- `start_frequency`--Set the start frequency of linear spacing
+- `stop_frequency`--Set the stop frequency of linear spacing
+- `frequency_interval`--Set the frequency interval of linear spacing
+- `num_frequency_points`--Set the number of frequency points of linear spacing
+- `log_start_frequency`--Set the start frequency of logarithmic spacing
 
-- `log_stop_frequency`--对数取点频率的终止值
+- `log_stop_frequency`--Set the stop frequency of logarithmic spacing
 
-- `log_num_frequency_points`--对数取点频率的点数
+- `log_num_frequency_points`--Set the number of frequency points of logarithmic spacing
 
 `advanced`:
 
-- `non_linear_solver`--非线性求解器类型，目前仅支持牛顿法
-- `linear_solver`--线性求解器类型，可选`"MUMPS"`，`"LU"`，`"BCGS"`。其中`"MUMPS"`与`"LU"`为直接求解方法，前者支持并行计算，而后者不支持；`"BCGS"`为迭代求解方法，支持并行计算
-- `use_quasi_fermi`--是否将准费米能而非载流子浓度作为直接求解变量
-- `damping`--选择非线性更新阻尼方案
-- `potential_update`--电势阻尼的阈值，这个值越大，阻尼效应越小
-- `multi_threads`--多线程设置
-  - 设置为`"let_solver_choose"`时，由求解器自动设置线程数，默认最大线程数为4
-  - 设置为`"set_thread_count"`，由用户自定义线程数
-- `thread_count`--用户自定义线程数
-- `max_iterations`--全局最大迭代次数
-- `use_global_max_iterations`--初始化求解泊松方程时，与后续迭代求解漂移扩散方程及泊松方程组时，是否应用全局最大迭代次数
-- `poisson_max_iterations`--初始化求解泊松方程时的最大迭代次数
-- `ddm_max_iterations`--后续迭代求解漂移扩散方程及泊松方程组时的最大迭代次数
-- `relative_tolerance`--相对收敛判据的容差
-- `tolerance_relax`--判断收敛时，对绝对收敛判据放宽的系数
-- `divergence_factor`--判断发散时，对绝对收敛判据乘的系数
+- `non_linear_solver`--Set the non-linear solver, only Newton method is supported currently
+- `linear_solver`--Set the linear solver. Options are `"MUMPS"`, `"LU"`, `"BCGS"`.  `MUMPS` and `LU` are direct linear solvers which usually give the exact solution. However, `MUMPS` supports parallel computation while `LU` doesn't. ；`"BCGS"` is a Krylov subspace (KSP) iterative solver, which also supports parallel computation and is more efficient but can only give approximate results.
+- `use_quasi_fermi`--Whether to directly solve for the quasi-Fermi potential instead of carrier concentration as unkowns. `"enabled"` means `True`, and `"disabled"` means `False`
+- `damping`--Set the nonlinear update damping scheme. `"potential"` means the damping is based on the potential variation
+- `potential_update`--Set the threshold potential for potential damping. The large value will reduce the strength of damping effect
+- `multi_threads`:
+  - When it's set to `"let_solver_choose"`, the solver will determine the number of threads to use. The default maximum number of threads is 4
+  - When it's set to `"set_thread_count"`, the number of threads is set by the user to `thread_count`
+- `thread_count`--Custom number of threads
+- `max_iterations`--Set global maximum number of iterations, available when `use_global_max_iterations` is `True`
+- `use_global_max_iterations`--Whether to use global max iterations during the initialization of solving the Poisson equations and the subsequent computing for solving the drift-diffusion equations coupling with Poisson equations, default to be `True`
+- `poisson_max_iterations`--Set the max iterations during the initialization of solving the Poisson equations, available when `use_global_max_iterations` is `False`
+- `ddm_max_iterations`--Set the max iterations during the subsequent computing for solving the drift-diffusion equations coupling with Poisson equations, available when `use_global_max_iterations` is `False`
+- `relative_tolerance`--Set the relative update tolerance
+- `tolerance_relax`--Set the tolerance relaxation factor for convergence on relative tolerance criteria
+- `divergence_factor`--Nonlinear solver fault with divergence when each individual function norm exceeds the threshold as its absolute tolerance multiply by this factor

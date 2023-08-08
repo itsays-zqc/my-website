@@ -3,18 +3,21 @@
 This example introduces the modeling and optoelectronic simulation of a vertical Ge-Si photodetector.
 
 
+<br/>
 
 ## 1. Overview
 
 This example utilizes FDTD simulation to obtain the optical field profile in the Ge absorption layer. Subsequently, the photo-induced carrier generation rate is calculated based on that, which is then imported into the OEDevice simulation to obtain the photo current. We also provide scripts for dark current, capacitance and resistance, frequency response, and saturation power. These simulations are divided into separate scripts, and they all call a unified script for modeling and material setup, making it convenient for modifications and management.
 
 
+<br/>
 
 ## 2. Modeling
 
 The modeling is completed by a callable function in the script file `VPD00_structure.py`.
 
 
+<br/>
 
 ### 2.1 Import simulation toolkit
 
@@ -34,6 +37,7 @@ from VPD_material import *
 The script file `VPD_material.py` stores some modified electronic parameters of the materials, which are referenced to override default parameters in the modeling script.
 
 
+<br/>
 
 ### 2.2 Set general parameters
 
@@ -61,7 +65,7 @@ run_mode = "local"
 simu_name = "VPD00_struc"
 ```
 Wavelength, temperature, the mesh grid size and some other parameters are defined above. They will be detailed in the subsequent settings.
-
+<br/>
 
 
 ```
@@ -114,7 +118,7 @@ cathode_z_span = 1
 cathode_z_center = Si_z_span+Ge_z_span+cathode_z_span/2
 ```
 These are geometric parameters of the structures.
-
+<br/>
 
 
 ```
@@ -139,7 +143,7 @@ oe_z_mean = 0.5*(oe_z_min+oe_z_max)
 oe_z_span = oe_z_max-oe_z_min
 ```
 These are geometric parameters of the electrical simulation region.
-
+<br/>
 
 
 ```
@@ -184,7 +188,7 @@ n_pplus_con = 1e20
 n_pplus_ref = 1e16
 ```
 These are parameters for doping setup, including doping box, concentration and the diffusion junction width.
-
+<br/>
 
 
 
@@ -210,7 +214,7 @@ z_span = z_max-z_min
 # endregion
 ```
 These are geometry parameters for the optical simulation region.
-
+<br/>
 
 
 
@@ -226,6 +230,7 @@ def pd_project(project_name, run_mode, material_property):
 ```
 
 
+<br/>
 
 #### 2.3.1 Create a new project
 
@@ -244,6 +249,7 @@ Create a new simulation project.
 - `location`--The location of the computing resources. The active device simulation only support the option of `"local"` now, which means the simulation uses the local computing resources.
 
 
+<br/>
 
 #### 2.3.2 Set materials
 
@@ -264,7 +270,7 @@ Create a new simulation project.
         raise
 ```
 The `elec_Si_properties` and `elec_Ge_properties` are both variables imported from `VPD_material.py`, storing the modified electronic parameters for Silicon and Germanium respectively. Besides, more physics models for Germanium are switched on in the transient simulation, with the `elec_Ge_properties_for_transient` specified for it. The `material_property` is used to determine which type of material parameters to choose. For details of the physics model and electronic parameter settings, please refer to the appendix.
-
+<br/>
 
 
 
@@ -303,7 +309,7 @@ Then, use the `set_optical_material` function to set the optical property for th
 `set_optical_material()` parameters：
 
 - `data`--Optical material property，which can be one of the built-in materials in the optical material library `mo.Material`, or be from the custom optical material.
-
+<br/>
 
 
 *Example of using custom optical material properties*
@@ -316,7 +322,7 @@ mt.add_lib(name="mat_sio2", data=mo.OE_Material.SiO2, order=1)
 mt.add_nondispersion(name="mat_sio2_op", data=[(1.444, 0)], order=1)
 mt["mat_sio2"].set_optical_material(data=mt["mat_sio2_op"].passive_material)
 ```
-
+<br/>
 
 
 Note:
@@ -326,6 +332,7 @@ Note:
 
 
 
+<br/>
 
 #### 2.3.3 Create structures
 
@@ -381,7 +388,7 @@ Note:
 - `name`--Structure name
 - `type`--Structure type
 - `property`--Other properties, listed below
-
+<br/>
 
 
 
@@ -406,7 +413,7 @@ Note:
 | geometry.rotate_z   | 0         | float    |                               |
 | material.material   |           | material |                               |
 | material.mesh_order |           | integer  | Restrained by condition: >=0. |
-
+<br/>
 
 
 `LinearTrapezoid` property list：
@@ -432,7 +439,7 @@ Note:
 | geometry.rotate_z   | 0       | float    |                               |
 | material.material   |         | material |                               |
 | material.mesh_order |         | integer  | Restrained by condition: >=0. |
-
+<br/>
 
 
 `Pyramid` property list：
@@ -456,7 +463,7 @@ Note:
 | geometry.rotate_z      | 0       | float    |                               |
 | material.material      |         | material |                               |
 | material.mesh_order    |         | integer  | Restrained by condition: >=0. |
-
+<br/>
 
 
 Note:
@@ -465,6 +472,7 @@ Note:
 2. The larger of the `mesh_order` of a structure, the higher of its priority. `mesh_order` being the same, the structure created later has a higher priority than the one created earlier. When structures overlap, the one with higher priority overrides the one with lower priority.
 
 
+<br/>
 
 #### 2.3.4 Add doping
 
@@ -503,7 +511,7 @@ Note:
 - `property`--Other properties
 
 According to the selection of `general.distribution_function`, doping is distinguished as constant doping and gaussian doping. Detailed properties are listed below.
-
+<br/>
 
 
 Doping property list:
@@ -555,7 +563,7 @@ Doping property list:
   - When it's set to `"material"`, `material_list` needs to be set, which means the doping is applied to the structures with one of the specified materials and restricted by the doping box
 
   - When it's set to `"region"`, `region_list` needs to be set, which means the doping is applied to the specified structures and restricted by the doping box
-
+<br/>
 
 
 *Examples for complete doping setting syntax*
@@ -580,6 +588,7 @@ st.add_doping(name="n_pplus", type="n", property={
 ```
 
 
+<br/>
 
 #### 2.3.5 Add surface recombination
 
@@ -609,7 +618,7 @@ st.add_doping(name="n_pplus", type="n", property={
 
 - `name`--Custom name
 - `property`--Other properties
-
+<br/>
 
 
 Surface recombination property list:
@@ -626,24 +635,28 @@ Surface recombination property list:
 | material_1             |                     | material | Available when surface_type is 'material_material'                                                                 |
 | material_2             |                     | material | Available when surface_type is 'material_material'                                                                 |
 
-其中：
 
-- `surface_type`--Type of selection for the surface
+`surface_type`--Type of selection for the surface
   - When `surface_type` is `"domain_domain"`, the surface is the interface between two structures 
   - When `surface_type` is "material_material"`, the surface is the interface between two materials
 
-- `interface_type`--Type of contact for the surface
+`interface_type`--Type of contact for the surface
   - `"InsulatorInterface"`--Semiconductor-insulator interface
   - `"HomoJunction"`--Homogeneous semiconductor-semiconductor interface
   - `"HeteroJunction"`--Heterogeneous semiconductor-semiconductor interface
   - `"MetalOhmicInterface"`--Semiconductor-conductor interface
   - `"SolderPad"`--Conductor-insulator interface
-- `infinite_recombination`--Only available when `interface_type` is `"MetalOhmicInterface"`. The surface recombination velocity of holes and electrons will be available when `infinite_recombination` is `False`.
-- `velocity_hole`, `velocity_electron`--Surface recombination velocity of holes and electrons. Available when `interface_type` is `"MetalOhmicInterface"` or `"InsulatorInterface"`.
-- `domain_1`, `domain_2`--Names of the two structures at the interface. They must be set explicitly when `surface_type` is `"domain_domain"`.
-- `material_1`, `material_2`--The two materials at the interface. They must be set explicitly when `surface_type` is `"material_material"`.
+
+`infinite_recombination`--Only available when `interface_type` is `"MetalOhmicInterface"`. The surface recombination velocity of holes and electrons will be available when `infinite_recombination` is `False`
+
+`velocity_hole`, `velocity_electron`--Surface recombination velocity of holes and electrons. Available when `interface_type` is `"MetalOhmicInterface"` or `"InsulatorInterface"`
+
+`domain_1`, `domain_2`--Names of the two structures at the interface. They must be set explicitly when `surface_type` is `"domain_domain"`
+
+`material_1`, `material_2`--The two materials at the interface. They must be set explicitly when `surface_type` is `"material_material"`
 
 
+<br/>
 
 #### 2.3.6 Set waveform
 
@@ -665,6 +678,7 @@ Surface recombination property list:
 - `unit`--Unit of wavelength. Options are`"um"` and `"nm"`，default to be`"um"`
 
 
+<br/>
 
 #### 2.3.7 Set boundary conditions of optical simulation
 
@@ -677,7 +691,7 @@ Surface recombination property list:
         "geometry": {"x": x_mean, "y": y_mean, "z": z_mean, "x_span": x_span, "y_span": y_span, "z_span": z_span}})
  	# endregion
 ```
-
+<br/>
 
 
 Boundary conditions of optical simulation property list:
@@ -720,6 +734,7 @@ Boundary conditions of optical simulation property list:
 `general_pml`--Set pml-related parameters
 
 
+<br/>
 
 #### 2.3.8 Set local mesh
 
@@ -757,7 +772,7 @@ Boundary conditions of optical simulation property list:
 
 - `name`--Custom name
 - `property`--Other properties
-
+<br/>
 
 
 Optical local mesh property list:
@@ -783,14 +798,14 @@ Optical local mesh property list:
 `geometry`--Set the region of local mesh. When `x_span` doesn't vanish, the mesh setting will be applied to the range along the x axis. Similarly for the rest
 
 `general`--Set the mesh size in the corresponding direction
-
+<br/>
 
 
 `add_emesh()` set a rectangle region for local mesh of electrical simulation. Parameters:
 
 - `name`--Custom name
 - `property`--Other properties
-
+<br/>
 
 
 Local mesh of electrical simulation in rectangle region property list:
@@ -816,14 +831,14 @@ Local mesh of electrical simulation in rectangle region property list:
 Note:
 
 1. When the simulation region is in the xy plane, only the parameters in the x, y direction are effective, and parameters in the z direction will be ignored. Similarly for the rest.
-
+<br/>
 
 
 `add_emesh_along_line()` set a line region for local mesh of electrical simulation. Parameters：
 
 - `name`--Custom name
 - `property`--Other properties
-
+<br/>
 
 
 Local mesh of electrical simulation in line region property list:
@@ -845,6 +860,7 @@ Note:
 1. When the simulation region is in the xy plane, besides `start_x`, `start_y`, `end_x` and  `end_y`, it is also required to set the `start_z` and  `end_z`, which should both be the same as the z coordinate of the plane. Similarly for the rest.
 
 
+<br/>
 
 #### 2.3.9 Set optical sources
 
@@ -869,7 +885,7 @@ Note:
 - `axis`--Direction of the source. `"x_forward"` means light propagating along x axis and in the direction of increasing x coordinate. `"x_forward"` means the opposite direction. Similarly for the rest
 - `type`--Type of the source. It is mode source in this example
 - `property`--Other properties
-
+<br/>
 
 
 Mode source property list:
@@ -915,6 +931,7 @@ Mode source property list:
   - `waveform_id_select`--Set to be a specified waveform
 
 
+<br/>
 
 #### 2.3.10 Set monitors
 
@@ -950,7 +967,7 @@ The monitor `"Power Monitor"` is of the 3D type, set to record the optical field
 - `name`--Name of the monitor
 - `type`--Type of the monitor
 - `property`--Other properties
-
+<br/>
 
 
 Power monitor property list:
@@ -1000,10 +1017,12 @@ Power monitor property list:
 
 
 
+<br/>
 
 #### 2.3.11 Preview the structures
 
 
+<br/>
 
 ##### 2.3.11.1 Define the preview function
 ```
@@ -1027,6 +1046,7 @@ Call the `pd_project` function defined earlier to create a new project `pj`. `si
 `plot_path` will be set to the save path of the result extraction. Here, it is set to the 'plots' folder located in the same directory as this script. If the path doesn't exist, `os.makedirs()` should be called to create it.
 
 
+<br/>
 
 ##### 2.3.11.2 Add solvers
 
@@ -1052,7 +1072,7 @@ Optical and electrical solvers are added within the preview function. The corres
 - `name`--Name of the solver
 - `type`--Type of the solver. For active device simulation, the type of FDTD solver is `"AFDTD"`, and the type of carrier transport solver is `"OEDevice"`
 - `property`--Other properties
-
+<br/>
 
 
 For `AFDTD`，`mesh_settings.mesh_accuracy.cells_per_wavelength` means the number of mesh cells per wavelength. The larger the number, the smaller the mesh size and the longer the simulation time.
@@ -1060,6 +1080,7 @@ For `AFDTD`，`mesh_settings.mesh_accuracy.cells_per_wavelength` means the numbe
 For `OEDevice`，the other properties are not necessary. So the `property` can be empty. Detailed parameter settings for `OEDevice` can be found in the appendix.
 
 
+<br/>
 
 ##### 2.3.11.3 Preview doping profile
 
@@ -1089,7 +1110,7 @@ Preview the doping profile by the `run_doping` function of the `OEDevice` solver
 - `cmin`--Set the minimum of the colorbar for the intensity plot. When the concentration is smaller than this value, it will be displayed as this value. It is ineffective for net doping
 - `savepath`--The save path for the result
 - `property`--Other properties
-
+<br/>
 
 
 `run_doping` property list:
@@ -1113,7 +1134,7 @@ Preview the doping profile by the `run_doping` function of the `OEDevice` solver
 `geometry`--Set the region of doping preview
 
 - `dimension`--Set the dimension of doping preview. The electrical simulation only supports the 2D type currently, so the doping and its preview are all considered in a plane. When `dimension` is `"2d_x_normal"`, it means the preview is in the yz plane. Similarly for the rest.
-
+<br/>
 
 
 *Result show of the doping preview*
@@ -1125,6 +1146,7 @@ Preview the doping profile by the `run_doping` function of the `OEDevice` solver
 <center>Fig 1. Net doping</center> -->
 
 
+<br/>
 
 ##### 2.3.11.4 Preview index profile
 
@@ -1155,7 +1177,7 @@ Preview the index profile by the `run_index` function of the `AFDTD` solver.
 - `max_index`--Set the maximum of the intensity plot of index, default to be `None`
 - `max_sigma`--Set the maximum of the intensity plot of conductivity, default to be `None`
 - `property`--Other properties
-
+<br/>
 
 
 `run_index` property list：
@@ -1177,7 +1199,7 @@ Preview the index profile by the `run_index` function of the `AFDTD` solver.
 | geometry.z_max        |         | float  |                                                              |
 
 `geometry`--Set the region of index preview. The `run_index` function currently only supports the index preview in a 2D plane. If `x_span` is set to `0`, the preview will be performed in the yz plane. Similarly for the rest.
-
+<br/>
 
 
 *Result show of the index preview*
@@ -1187,16 +1209,19 @@ Preview the index profile by the `run_index` function of the `AFDTD` solver.
 <center>Fig 2. nx</center>
 
 
+<br/>
 
 ## 3. Simulation
 
 
+<br/>
 
 ### 3.1 Dark current
 
 This section performs the simulation of dark current in the `VPD0B_Id.py` script by invoking the `pd_project` function.
 
 
+<br/>
 
 #### 3.1.1 Import simulation toolkit
 
@@ -1214,6 +1239,7 @@ from pathlib import Path
 All the variables and functions from `VPD00_structure.py` are imported.
 
 
+<br/>
 
 #### 3.1.2 Set general parameters
 
@@ -1243,6 +1269,7 @@ if not os.path.exists(plot_path):
 ```
 
 
+<br/>
 
 #### 3.1.3 Create a new project
 
@@ -1255,6 +1282,7 @@ pj = pd_project(project_name, run_mode, material_property)
 ```
 
 
+<br/>
 
 #### 3.1.4 Add electrodes
 
@@ -1281,6 +1309,7 @@ st.add_electrode(name="anode", property={
 The detailed property list of electrode can be found in the appendix. Here a range of voltage from 0V to 4V is applied to the electrode `"cathode"`, and the step of the voltage is 0.5V.
 
 
+<br/>
 
 #### 3.1.5 Add the solver
 
@@ -1314,6 +1343,7 @@ The detailed property list of `OEDevice` solver can be found in the appendix. He
 - `solver_mode`--It's set to `"steady_state"`, which means a steady state simulation
 
 
+<br/>
 
 #### 3.1.6 Run the solver
 
@@ -1331,6 +1361,7 @@ result_device = simu["oedevice"].run()
 `result_device` stores the information of the simulation result, which can be used to perform result extraction.
 
 
+<br/>
 
 #### 3.1.7 Extract the result
 
@@ -1351,7 +1382,7 @@ result_device.extract(data="I", electrode="cathode", export_csv=True,
 - `export_csv`--Whether to export the csv result
 - `show`--Whether to show the plot in a popup window
 - `savepath`--The save path for the result extraction
-
+<br/>
 
 
 *Result show of the dark current extraction*
@@ -1361,6 +1392,7 @@ result_device.extract(data="I", electrode="cathode", export_csv=True,
 <center>Fig 3. Dark Current</center>
 
 
+<br/>
 
 #### 3.1.8 Print the simulation time
 
@@ -1373,12 +1405,14 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 ```
 
 
+<br/>
 
 ### 3.2 Resistance
 
 This simulation applies a forward bias to the electrode `"anode"`. And then the I-V curve is extracted and fitted to obtain the resistance. The script is in the `VPD0C_Rs.py` file.
 
 
+<br/>
 
 #### 3.2.1 Simulate and extract the I-V curve
 
@@ -1447,8 +1481,10 @@ result_device.extract(data="I", electrode="anode",
 A range of voltage from 0V to 1.5V is applied to the electrode `"anode"`, with a step of 0.25V. No optical generation rate is applied. And a steady state simulation is performed to extract the I-V curve, which is saved to the folder `IV_file_folder`.
 
 
+<br/>
 
 #### 3.2.2 Fit V-I curve to obtain resistance
+<br/>
 
 ##### 3.2.2.1 Read the saved I-V data
 
@@ -1471,6 +1507,7 @@ V = rawdata[:,0]
 `"0_I_Real.csv"` is filename generated automatically of the I-V result. The `"0"` in the beginning indicates the index of the electrode. When the I-V curve is from a different electrode, the index will change. Therefore, a iteration from 0 to 9 is applied to find the saved I-V data file.
 
 
+<br/>
 
 ##### 3.2.2.2 Fit the data to obtain resistance
 
@@ -1488,6 +1525,7 @@ R = abs(coeffs[0])
 Fit the data after the index `start_idx`, which is the start index of the approximately linear portion of the curve. A first-order polynomial fitting is performed on the V-I data. Then the coefficient of the first-order term is the device resistance.
 
 
+<br/>
 
 ##### 3.2.2.3 Save data and plots
 
@@ -1525,6 +1563,7 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 ```
 
 
+<br/>
 
 ### 3.3 Capacitance
 
@@ -1599,11 +1638,13 @@ For `OEDevice` solver, the detailed properties can be found in the appendix. Her
 - `small_signal_ac`--Set the frequency points
   - `frequency_spacing`--It's set to `"single"`, which means a single frequency point
   - `frequency`--Set the value of the single frequency
+<br/>
 
 
+For the electrode `"cathode"`, a range of voltage from 0V to 3V is applied to it, with a step of 0.5V.
 
-For the electrode `"cathode"`, a range of voltage from 0V to 3V is applied to it, with a step of 0.5V. `apply_AC_small_signal`--It's set to `All`, which means the small signal analysis is applied at each voltage step
-
+`apply_AC_small_signal`--It's set to `All`, which means the small signal analysis is applied at each voltage step
+<br/>
 
 
 For the result extraction:
@@ -1611,12 +1652,14 @@ For the result extraction:
 `data`--It's set to `"C"`, which is available after the SSAC simulation and is used to extract the capacitance
 
 
+<br/>
 
 ### 3.4 Optical generation rate
 
 This section performs a FDTD simulation to obtain the optical field profile in the structure of `"Ge"`, and then calculate the photo-induced carrier generation rate. The average of the optical generation rate in the light propagating direction, which is the x-direction, is then taken to obtain the profile in the yz plane to be imported to the OEDevice simulation. The script is in the `VPD01_FDTD.py` file.
 
 
+<br/>
 
 #### 3.4.1 Import simulation toolkit
 
@@ -1632,6 +1675,7 @@ from pathlib import Path
 ```
 
 
+<br/>
 
 #### 3.4.2 Set general parameters
 
@@ -1656,6 +1700,7 @@ if not os.path.exists(plot_path):
 ```
 
 
+<br/>
 
 #### 3.4.3 Create a new project
 
@@ -1669,6 +1714,7 @@ pj = pd_project(project_name, run_mode, material_property)
 ```
 
 
+<br/>
 
 #### 3.4.4 Add the solver
 
@@ -1692,6 +1738,7 @@ simu.add(name="afdtd", type="AFDTD", property={
 The `AFDTD` solver for active device simulation can be used to extract the optical generation rate, but can't export the optical field profile. And the usage of the `FDTD` solver is exactly the opposite. Therefore, both solvers are added here to serve the different purposes.
 
 
+<br/>
 
 #### 3.4.5 Run and extract the result
 
@@ -1729,7 +1776,7 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 - `light_power`--Set the power of the light source, measured in W. The optical generation rate will be scaled based on the power
 - `coordinate_unit`--Set the coordinate unit in the optical generation rate file (gfile)
 - `field_length_unit`--Set the length unit in the generation rate unit in the optical generation rate file (gfile).  If it's set to `"m"`, the generation rate unit in the gfile will be `/m^3/s`. Similarly for the rest
-
+<br/>
 
 
 `result_genrate.extract()` parameters：
@@ -1744,12 +1791,14 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 - `savepath`--The save path of the result extraction
 
 
+<br/>
 
 ### 3.5 Photo current
 
 This section imports the optical generation rate to the `OEDevice` solver, and performs a steady state simulation to obtain the photo current. The script is in the `VPD02_Ip.py` file.
 
 
+<br/>
 
 #### 3.5.1 Import simulation toolkit
 
@@ -1765,6 +1814,7 @@ from pathlib import Path
 ```
 
 
+<br/>
 
 #### 3.5.2 Set general parameters
 
@@ -1798,6 +1848,7 @@ if not os.path.exists(plot_path):
 `genrate_file_path` is the absolute path of the gfile to be imported to the `OEDevice` solver. Here it's set to the absolute path of `VPD01_FDTD.gfile` in the same directory. And  this can be changed to the path of the gfile extracted by the `AFDTD` simulation.
 
 
+<br/>
 
 #### 3.5.3 Create a new project
 
@@ -1811,6 +1862,7 @@ pj = pd_project(project_name, run_mode, material_property)
 ```
 
 
+<br/>
 
 #### 3.5.4 Add electrodes
 
@@ -1830,6 +1882,7 @@ st.add_electrode(name="anode", property={
 ```
 
 
+<br/>
 
 #### 3.5.5 Add the solver
 
@@ -1856,6 +1909,7 @@ simu.add(name="oedevice", type="OEDevice", property={
 - `source_fraction`--Set the scaling factor for the light power. The imported optical generation rate will be multiplied by this factor first, and then be used to solve the carrier transport
 
 
+<br/>
 
 #### 3.5.6 Run and extract the result
 
@@ -1876,12 +1930,14 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 ```
 
 
+<br/>
 
 ### 3.6 Bandwidth
 
 This section performs a transient simulation to extract the step response of the photo current. Then the bandwidth is obtained by postprocessing the I-t curve. The script is in the `VPD03_bw.py` file.
 
 
+<br/>
 
 #### 3.6.1 Import simulation toolkit
 
@@ -1900,6 +1956,7 @@ from matplotlib import pyplot as plt
 ```
 
 
+<br/>
 
 #### 3.6.2 Set general parameters
 
@@ -1930,6 +1987,7 @@ if not os.path.exists(plot_path):
 ```
 
 
+<br/>
 
 #### 3.6.3 Create a new project
 
@@ -1943,6 +2001,7 @@ pj = pd_project(project_name, run_mode, material_property)
 ```
 
 
+<br/>
 
 #### 3.6.4 Add electrodes
 
@@ -1993,6 +2052,7 @@ Note:
 1. The dependency of scaling factor of light power on time is a step function here.
 
 
+<br/>
 
 #### 3.6.5 Add the solver
 
@@ -2029,6 +2089,7 @@ simu.add(name="oedevice", type="OEDevice", property={
 
 
 
+<br/>
 
 #### 3.6.6 Run the solver
 
@@ -2043,6 +2104,7 @@ result_device = simu["oedevice"].run()
 ```
 
 
+<br/>
 
 #### 3.6.7 Extract the result
 
@@ -2061,12 +2123,14 @@ result_device.extract(data="I", electrode="cathode", show=False, export_csv=True
 ```
 
 
+<br/>
 
 #### 3.6.8 Postprocess
 
 By taking the derivative of the step response, the impulse response is obtained. Then the Fast Fourier Transform is applied to the impulse response, resulting in the frequency response, which allows to determine the device bandwidth.
 
 
+<br/>
 
 ##### 3.6.8.1 Obtain the impulse response
 
@@ -2105,6 +2169,7 @@ dIdt_interp = interp1d_func(t_interp)
 First, take the derivative of the step response to obtain the impulse response. And then uniform time intervals and perform interpolation on the impulse response to facilitate the subsequent application of the Fast Fourier Transform.
 
 
+<br/>
 
 ##### 3.6.8.2 Export the impulse response result
 
@@ -2134,6 +2199,7 @@ plt.close()
 ```
 
 
+<br/>
 
 ##### 3.6.8.3 Obtain the frequency response
 
@@ -2159,6 +2225,7 @@ bandwidth_GHz = 10**log_freq_3dB*1e-9
 Obtain the frequency response by Fast Fourier Transform. And then calculate the 3dB bandwidth by interpolation.
 
 
+<br/>
 
 ##### 3.6.8.4 Export the frequency response result
 
@@ -2190,12 +2257,14 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 ```
 
 
+<br/>
 
 ### 3.7 Saturation power
 
 This section scans the input light power and obtains the I-P curve, thereby roughly determining the saturation light power. The script is in the `VPD04_Psat.py` file.
 
 
+<br/>
 
 #### 3.7.1 Import simulation toolkit
 
@@ -2213,6 +2282,7 @@ from matplotlib import pyplot as plt
 ```
 
 
+<br/>
 
 #### 3.7.2 Set general parameters
 
@@ -2242,6 +2312,7 @@ genrate_file_path = genrate_file_folder + "/VPD01_FDTD.gfile"
 ```
 
 
+<br/>
 
 #### 3.7.3 Define a sweeping function
 
@@ -2254,6 +2325,7 @@ def sweep_simulation(sweep_value):
 ```
 
 
+<br/>
 
 ##### 3.7.3.1 Set the sweeping parameter
 
@@ -2272,6 +2344,7 @@ def sweep_simulation(sweep_value):
 Using the features of Python, modify the value of parameter `source_fraction` corresponding to `sweep_parameter_name` to the value of `sweep_value`  which is passed from the `sweep_simulation` function.
 
 
+<br/>
 
 ##### 3.7.3.2 Create a new project
 
@@ -2288,6 +2361,7 @@ Using the features of Python, modify the value of parameter `source_fraction` co
 ```
 
 
+<br/>
 
 ##### 3.7.3.3 Add electrodes
 
@@ -2309,6 +2383,7 @@ Using the features of Python, modify the value of parameter `source_fraction` co
 Apply a voltage of 1V to the electrode `"cathode"` to perform a steady state simulation.
 
 
+<br/>
 
 ##### 3.7.3.4 Add the solver
 
@@ -2329,6 +2404,7 @@ Apply a voltage of 1V to the electrode `"cathode"` to perform a steady state sim
 ```
 
 
+<br/>
 
 ##### 3.7.3.5 Run the solver
 
@@ -2343,6 +2419,7 @@ Apply a voltage of 1V to the electrode `"cathode"` to perform a steady state sim
 ```
 
 
+<br/>
 
 ##### 3.7.3.6 Extract and return the I-V result
 
@@ -2368,6 +2445,7 @@ Apply a voltage of 1V to the electrode `"cathode"` to perform a steady state sim
 ```
 
 
+<br/>
 
 #### 3.7.4 Run the sweeping function and export the result
 
@@ -2430,12 +2508,14 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 
 
 
+<br/>
 
-# 4. Appendix
+## 4. Appendix
 
 
+<br/>
 
-## 4.1 Electronic parameters of the materials
+### 4.1 Electronic parameters of the materials
 
 The parameter settings in the `VPD_material.py` file:
 
@@ -2523,8 +2603,9 @@ elec_Ge_properties_for_transient = {"model": {"high_field": True, "mobility_forc
 For the detailed introduction about electronic parameters, please refer to the document `examples/active_demo/Physics_Model_in_OEDevice.pdf`.
 
 
+<br/>
 
-## 4.2 OEDevice settings
+### 4.2 OEDevice settings
 
 `OEDevice` property list：
 

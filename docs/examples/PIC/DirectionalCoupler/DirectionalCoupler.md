@@ -460,7 +460,9 @@ By turning on/off the relevant functionalities, you can control the simulation p
 
 </div>
 
-| **order** | **TE ratio** | **neff_real** | **neff_imag** | **ng_real** | **ng_imag** | **wavelength(nm)** | **loss(dB/cm)** |
+
+
+| &emsp;**mode_order**&emsp; | **TE ratio** | &nbsp;**neff_real**&nbsp; | &nbsp;**neff_imag**&nbsp; | &nbsp;**ng_real**&nbsp; | &nbsp;**ng_imag**&nbsp; | **wavelength(nm)** | **loss(dB/cm)** |
 | :-------: | :----------: | :-----------: | :-----------: | :----------: | :---------: | :----------------: | :---------: |
 |     0     |   0.98686    |   2.593169    |   -4.60E-09   |      0       |      0      |        1550        |  0.001621   |
 |     1     |   0.987741   |   2.542373    |   -3.51E-09   |      0       |      0      |        1550        |  0.001236   |

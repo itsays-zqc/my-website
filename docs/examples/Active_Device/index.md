@@ -7,7 +7,7 @@ This example introduces the modeling and optoelectronic simulation of a vertical
 
 ## 1. Overview
 
-This example utilizes FDTD simulation to obtain the optical field profile in the Ge absorption layer. Subsequently, the photo-induced carrier generation rate is calculated based on that, which is then imported into the OEDevice simulation to obtain the photo current. We also provide scripts for dark current, capacitance and resistance, frequency response, and saturation power. These simulations are divided into separate scripts, and they all call a unified script for modeling and material setup, making it convenient for modifications and management.
+This example utilizes FDTD simulation to obtain the optical field profile in the Ge absorption layer. Subsequently, the photo-induced carrier generation rate is calculated based on the optical field, which is then imported into the OEDevice simulation to obtain the photo current. We also provide scripts for dark current, capacitance and resistance, frequency response, and saturation power. These simulations are divided into separate scripts, and they all call a unified script for modeling and material setup, making it convenient for modifications and management.
 
 
 <br/>
@@ -41,7 +41,7 @@ The script file `VPD_material.py` stores some modified electronic parameters of 
 
 ### 2.2 Set general parameters
 
-Set some general parameters before modeling. At the beginning are those that need to be modified frequently during testing and optimization.
+Set some general parameters before modeling. At the beginning are those that need frequent modification during testing and optimization.
 
 ```
 [2]
@@ -220,7 +220,7 @@ These are geometry parameters for the optical simulation region.
 
 ### 2.3 Define the function for creating a new project
 
-A function is defined to implement the functionalities of creating a project, setting materials, modeling, doping, setting boundary conditions, etc., which can be called by other simulation script files.
+A function is defined for creating a project, setting materials, modeling, doping, setting boundary conditions, etc., which can be called by other simulation script files.
 
 ```
 [7]
@@ -246,7 +246,7 @@ Create a new simulation project.
 `mo.Project()` parameters:
 
 - `name`--Project name, which is also the folder name for the project files to be saved.
-- `location`--The location of the computing resources. The active device simulation only support the option of `"local"` now, which means the simulation uses the local computing resources.
+- `location`--The location of the computing resources. The active device simulation only support the option of `"local"` currently, which means the simulation uses the local computing resources.
 
 
 <br/>
@@ -336,13 +336,28 @@ Note:
 
 #### 2.3.3 Create structures
 
+First, initialize an object of `pj.Structure()`.
+
 ```
 [12]
 ```
 ```python
 # region --- 3. Structure ---
     st = pj.Structure(mesh_type="curve_mesh", mesh_factor=1.4, background_material=mt["mat_sio2"])
+```
 
+`pj.Structure()` parameters:
+
+- `mesh_type`--Type of mesh refinement for optical simulation
+- `mesh_factor`--The grading factor of non-uniform grid
+- `background_material`--Background material
+<br/>
+
+
+```
+[13]
+```
+```python
     st.add_geometry(name="BOX", type="Rectangle", property={
         "material": {"material": mt["mat_sio2"]},
         "geometry": {"x": SiO2_x_center, "x_span": SiO2_x_span, "y": SiO2_y_center, "y_span": SiO2_y_span, "z_min": -SiO2_z_span/2, "z_max": SiO2_z_center}})
@@ -468,8 +483,8 @@ Note:
 
 Note:
 
-1. The `mesh_order` of a structure is default to be the `mesh_order` of its material, and willed be overridden when set explicitly.
-2. The larger of the `mesh_order` of a structure, the higher of its priority. `mesh_order` being the same, the structure created later has a higher priority than the one created earlier. When structures overlap, the one with higher priority overrides the one with lower priority.
+1. The `mesh_order` of a structure is default to be the mesh order of its material. And the default value will be overridden when `mesh_order` is set explicitly.
+2. The larger of the `mesh_order` of a structure, the higher of its priority. With `mesh_order` being the same, the structure created later has a higher priority than the one created earlier. When structures overlap, the one with higher priority overrides the one with lower priority.
 
 
 <br/>
@@ -477,7 +492,7 @@ Note:
 #### 2.3.4 Add doping
 
 ```
-[13]
+[14]
 ```
 ```python
     st.add_doping(name="Uniform", type="p", property={
@@ -510,7 +525,7 @@ Note:
 - `type`--Doping type. Options are `"n"` or `"p"` for n-type, p-type doping respectively
 - `property`--Other properties
 
-According to the selection of `general.distribution_function`, doping is distinguished as constant doping and gaussian doping. Detailed properties are listed below.
+According to the selection of `general.distribution_function`, doping is divided into constant doping and gaussian doping. Detailed properties are listed below.
 <br/>
 
 
@@ -569,7 +584,7 @@ Doping property list:
 *Examples for complete doping setting syntax*
 
 ```
-[14]
+[15]
 ```
 
 ```python
@@ -593,7 +608,7 @@ st.add_doping(name="n_pplus", type="n", property={
 #### 2.3.5 Add surface recombination
 
 ```
-[15]
+[16]
 ```
 ```python
 	# surface recombination
@@ -661,7 +676,7 @@ Surface recombination property list:
 #### 2.3.6 Set waveform
 
 ```
-[16]
+[17]
 ```
 ```python
 	# region --- 4. Waveform ---
@@ -683,7 +698,7 @@ Surface recombination property list:
 #### 2.3.7 Set boundary conditions of optical simulation
 
 ```
-[17]
+[18]
 ```
 ```python
 	# region --- 5. oboundary --- for FDTD simulation
@@ -739,7 +754,7 @@ Boundary conditions of optical simulation property list:
 #### 2.3.8 Set local mesh
 
 ```
-[18]
+[19]
 ```
 ```python
 	# region --- 6. mesh ---
@@ -865,7 +880,7 @@ Note:
 #### 2.3.9 Set optical sources
 
 ```
-[19]
+[20]
 ```
 
 ```python
@@ -936,7 +951,7 @@ Mode source property list:
 #### 2.3.10 Set monitors
 
 ```
-[20]
+[21]
 ```
 ```python
 	# region ---8.monitor ---
@@ -1026,7 +1041,7 @@ Power monitor property list:
 
 ##### 2.3.11.1 Define the preview function
 ```
-[21]
+[22]
 ```
 ```python
 # -------------    preview    --------------
@@ -1053,7 +1068,7 @@ Call the `pd_project` function defined earlier to create a new project `pj`. `si
 Optical and electrical solvers are added within the preview function. The corresponding structure preview is only available when the solvers are present.
 
 ```
-[22]
+[23]
 ```
 ```python
     simu = pj.Simulation()
@@ -1077,7 +1092,7 @@ Optical and electrical solvers are added within the preview function. The corres
 
 For `AFDTD`，`mesh_settings.mesh_accuracy.cells_per_wavelength` means the number of mesh cells per wavelength. The larger the number, the smaller the mesh size and the longer the simulation time.
 
-For `OEDevice`，the other properties are not necessary. So the `property` can be empty. Detailed parameter settings for `OEDevice` can be found in the appendix.
+For `OEDevice`，other properties are not necessary. So `property` can be empty. Detailed parameter settings for `OEDevice` can be found in the appendix.
 
 
 <br/>
@@ -1087,7 +1102,7 @@ For `OEDevice`，the other properties are not necessary. So the `property` can b
 Preview the doping profile by the `run_doping` function of the `OEDevice` solver.
 
 ```
-[23]
+[24]
 ```
 
 ```python
@@ -1154,7 +1169,7 @@ Preview the doping profile by the `run_doping` function of the `OEDevice` solver
 Preview the index profile by the `run_index` function of the `AFDTD` solver.
 
 ```
-[24]
+[25]
 ```
 
 ```python
@@ -1227,7 +1242,7 @@ This section performs the simulation of dark current in the `VPD0B_Id.py` script
 #### 3.1.1 Import simulation toolkit
 
 ```
-[25]
+[26]
 ```
 
 ```python
@@ -1245,7 +1260,7 @@ All the variables and functions from `VPD00_structure.py` are imported.
 #### 3.1.2 Set general parameters
 
 ```
-[26]
+[27]
 ```
 
 ```python
@@ -1275,7 +1290,7 @@ if not os.path.exists(plot_path):
 #### 3.1.3 Create a new project
 
 ```
-[27]
+[28]
 ```
 
 ```python
@@ -1288,7 +1303,7 @@ pj = pd_project(project_name, run_mode, material_property)
 #### 3.1.4 Add electrodes
 
 ```
-[28]
+[29]
 ```
 
 ```python
@@ -1315,7 +1330,7 @@ The detailed property list of electrode can be found in the appendix. Here a ran
 #### 3.1.5 Add the solver
 
 ```
-[29]
+[30]
 ```
 ```python
 # ----------------------   set simu
@@ -1349,7 +1364,7 @@ The detailed property list of `OEDevice` solver can be found in the appendix. He
 #### 3.1.6 Run the solver
 
 ```
-[30]
+[31]
 ```
 
 ```python
@@ -1367,7 +1382,7 @@ result_device = simu["oedevice"].run()
 #### 3.1.7 Extract the result
 
 ```
-[31]
+[32]
 ```
 
 ```python
@@ -1398,7 +1413,7 @@ result_device.extract(data="I", electrode="cathode", export_csv=True,
 #### 3.1.8 Print the simulation time
 
 ```
-[32]
+[33]
 ```
 
 ```python
@@ -1418,7 +1433,7 @@ This simulation applies a forward bias to the electrode `"anode"`. And then the 
 #### 3.2.1 Simulate and extract the I-V curve
 
 ```
-[33]
+[34]
 ```
 
 ```python
@@ -1496,7 +1511,7 @@ A range of voltage from 0V to 1.5V is applied to the electrode `"anode"`, with a
 ##### 3.2.2.1 Read the saved I-V data
 
 ```
-[34]
+[35]
 ```
 
 ```python
@@ -1519,7 +1534,7 @@ V = rawdata[:,0]
 ##### 3.2.2.2 Fit the data to obtain resistance
 
 ```
-[35]
+[36]
 ```
 
 ```python
@@ -1540,7 +1555,7 @@ Fit the data after the index `start_idx`, which is the start index of the approx
 ##### 3.2.2.3 Save data and plots
 
 ```
-[36]
+[37]
 ```
 
 ```python
@@ -1586,7 +1601,7 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 This section performs a SSAC simulation, and extracts the capacitance. The script is in the `VPD0A_C.py` file.
 
 ```
-[37]
+[38]
 ```
 
 ```python
@@ -1686,7 +1701,7 @@ This section performs a FDTD simulation to obtain the optical field profile in t
 #### 3.4.1 Import simulation toolkit
 
 ```
-[38]
+[39]
 ```
 
 ```python
@@ -1702,7 +1717,7 @@ from pathlib import Path
 #### 3.4.2 Set general parameters
 
 ```
-[39]
+[40]
 ```
 
 ```python
@@ -1727,7 +1742,7 @@ if not os.path.exists(plot_path):
 #### 3.4.3 Create a new project
 
 ```
-[40]
+[41]
 ```
 
 ```python
@@ -1741,7 +1756,7 @@ pj = pd_project(project_name, run_mode, material_property)
 #### 3.4.4 Add the solver
 
 ```
-[41]
+[42]
 ```
 
 ```python
@@ -1765,7 +1780,7 @@ The `AFDTD` solver for active device simulation can be used to extract the optic
 #### 3.4.5 Run and extract the result
 
 ```
-[42]
+[43]
 ```
 
 ```python
@@ -1832,7 +1847,7 @@ This section imports the optical generation rate to the `OEDevice` solver, and p
 #### 3.5.1 Import simulation toolkit
 
 ```
-[43]
+[44]
 ```
 
 ```python
@@ -1848,7 +1863,7 @@ from pathlib import Path
 #### 3.5.2 Set general parameters
 
 ```
-[44]
+[45]
 ```
 
 ```python
@@ -1882,7 +1897,7 @@ if not os.path.exists(plot_path):
 #### 3.5.3 Create a new project
 
 ```
-[45]
+[46]
 ```
 
 ```python
@@ -1896,7 +1911,7 @@ pj = pd_project(project_name, run_mode, material_property)
 #### 3.5.4 Add electrodes
 
 ```
-[46]
+[47]
 ```
 
 ```python
@@ -1916,7 +1931,7 @@ st.add_electrode(name="anode", property={
 #### 3.5.5 Add the solver
 
 ```
-[47]
+[48]
 ```
 
 ```python
@@ -1943,7 +1958,7 @@ simu.add(name="oedevice", type="OEDevice", property={
 #### 3.5.6 Run and extract the result
 
 ```
-[48]
+[49]
 ```
 
 ```python
@@ -1977,7 +1992,7 @@ This section performs a transient simulation to extract the step response of the
 #### 3.6.1 Import simulation toolkit
 
 ```
-[49]
+[50]
 ```
 
 ```python
@@ -1996,7 +2011,7 @@ from matplotlib import pyplot as plt
 #### 3.6.2 Set general parameters
 
 ```
-[50]
+[51]
 ```
 
 ```python
@@ -2027,7 +2042,7 @@ if not os.path.exists(plot_path):
 #### 3.6.3 Create a new project
 
 ```
-[51]
+[52]
 ```
 
 ```python
@@ -2041,7 +2056,7 @@ pj = pd_project(project_name, run_mode, material_property)
 #### 3.6.4 Add electrodes
 
 ```
-[52]
+[53]
 ```
 
 ```python
@@ -2092,7 +2107,7 @@ Note:
 #### 3.6.5 Add the solver
 
 ```
-[53]
+[54]
 ```
 
 ```python
@@ -2129,7 +2144,7 @@ simu.add(name="oedevice", type="OEDevice", property={
 #### 3.6.6 Run the solver
 
 ```
-[54]
+[55]
 ```
 
 ```python
@@ -2146,7 +2161,7 @@ result_device = simu["oedevice"].run()
 The I-t curve is extracted. Because the dependency of the light power on time is a step function, the I-t curve here represents the step response of the photo current.
 
 ```
-[55]
+[56]
 ```
 
 ```python
@@ -2177,7 +2192,7 @@ By taking the derivative of the step response, the impulse response is obtained.
 ##### 3.6.8.1 Obtain the impulse response
 
 ```
-[56]
+[57]
 ```
 
 ```python
@@ -2216,7 +2231,7 @@ First, take the derivative of the step response to obtain the impulse response. 
 ##### 3.6.8.2 Export the impulse response result
 
 ```
-[57]
+[58]
 ```
 
 ```python
@@ -2253,7 +2268,7 @@ plt.close()
 ##### 3.6.8.3 Obtain the frequency response
 
 ```
-[58]
+[59]
 ```
 
 ```python
@@ -2279,7 +2294,7 @@ Obtain the frequency response by Fast Fourier Transform. And then calculate the 
 ##### 3.6.8.4 Export the frequency response result
 
 ```
-[59]
+[60]
 ```
 
 ```python
@@ -2325,7 +2340,7 @@ This section scans the input light power and obtains the I-P curve, thereby roug
 #### 3.7.1 Import simulation toolkit
 
 ```
-[60]
+[61]
 ```
 
 ```python
@@ -2343,7 +2358,7 @@ from matplotlib import pyplot as plt
 #### 3.7.2 Set general parameters
 
 ```
-[61]
+[62]
 ```
 
 ```python
@@ -2373,7 +2388,7 @@ genrate_file_path = genrate_file_folder + "/VPD01_FDTD.gfile"
 #### 3.7.3 Define a sweeping function
 
 ```
-[62]
+[63]
 ```
 
 ```python
@@ -2386,7 +2401,7 @@ def sweep_simulation(sweep_value):
 ##### 3.7.3.1 Set the sweeping parameter
 
 ```
-[63]
+[64]
 ```
 
 ```python
@@ -2405,7 +2420,7 @@ Using the features of Python, modify the value of parameter `source_fraction` co
 ##### 3.7.3.2 Create a new project
 
 ```
-[64]
+[65]
 ```
 
 ```python
@@ -2422,7 +2437,7 @@ Using the features of Python, modify the value of parameter `source_fraction` co
 ##### 3.7.3.3 Add electrodes
 
 ```
-[65]
+[66]
 ```
 
 ```python
@@ -2444,7 +2459,7 @@ Apply a voltage of 1V to the electrode `"cathode"` to perform a steady state sim
 ##### 3.7.3.4 Add the solver
 
 ```
-[66]
+[67]
 ```
 
 ```python
@@ -2465,7 +2480,7 @@ Apply a voltage of 1V to the electrode `"cathode"` to perform a steady state sim
 ##### 3.7.3.5 Run the solver
 
 ```
-[67]
+[68]
 ```
 
 ```python
@@ -2480,7 +2495,7 @@ Apply a voltage of 1V to the electrode `"cathode"` to perform a steady state sim
 ##### 3.7.3.6 Extract and return the I-V result
 
 ```
-[68]
+[69]
 ```
 
 ```python
@@ -2507,7 +2522,7 @@ Apply a voltage of 1V to the electrode `"cathode"` to perform a steady state sim
 #### 3.7.4 Run the sweeping function and export the result
 
 ```
-[69]
+[70]
 ```
 
 ```python
@@ -2584,7 +2599,7 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 The parameter settings in the `VPD_material.py` file:
 
 ```
-[70]
+[71]
 ```
 
 ```python
@@ -2778,3 +2793,11 @@ For the detailed introduction about electronic parameters, please refer to the d
 - `relative_tolerance`--Set the relative update tolerance
 - `tolerance_relax`--Set the tolerance relaxation factor for convergence on relative tolerance criteria
 - `divergence_factor`--Nonlinear solver fault with divergence when each individual function norm exceeds the threshold as its absolute tolerance multiply by this factor
+
+<br/>
+
+
+### 4.3 Electrode settings
+
+To be continued...
+

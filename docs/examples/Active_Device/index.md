@@ -1,4 +1,4 @@
-# PD
+# Photodetector
 
 This example introduces the modeling and optoelectronic simulation of a vertical Ge-Si photodetector.
 
@@ -1139,7 +1139,8 @@ Preview the doping profile by the `run_doping` function of the `OEDevice` solver
 
 *Result show of the doping preview*
 
-![Net doping preview](./img/image01.jpg)
+![Net doping preview](./img/netdoping.jpg)
+<center>Fig 1. Net doping</center>
 
 <!-- import image01 from "./img/image01.jpg"
 <img src={image01} width='300' height='200' align='middle' />
@@ -1204,7 +1205,7 @@ Preview the index profile by the `run_index` function of the `AFDTD` solver.
 
 *Result show of the index preview*
 
-![Index Preview](./img/image02.png)
+![Index Preview](./img/nx.png)
 
 <center>Fig 2. nx</center>
 
@@ -1387,7 +1388,7 @@ result_device.extract(data="I", electrode="cathode", export_csv=True,
 
 *Result show of the dark current extraction*
 
-![Dark Current](./img/image03.png)
+![Dark Current](./img/darkcurrent.png)
 
 <center>Fig 3. Dark Current</center>
 
@@ -1483,6 +1484,12 @@ A range of voltage from 0V to 1.5V is applied to the electrode `"anode"`, with a
 
 <br/>
 
+*Result show of the I-V curve*
+![I-V curve](./img/resistanceIV.png)
+<center>Fig 4. I-V curve</center>
+<br/>
+
+
 #### 3.2.2 Fit V-I curve to obtain resistance
 <br/>
 
@@ -1527,6 +1534,9 @@ Fit the data after the index `start_idx`, which is the start index of the approx
 
 <br/>
 
+
+
+
 ##### 3.2.2.3 Save data and plots
 
 ```
@@ -1564,6 +1574,12 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 
 
 <br/>
+
+*Result show of the V-I fitting*
+![resistance](./img/resistance.jpg)
+<center>Fig 5. V-I fitting</center>
+<br/>
+
 
 ### 3.3 Capacitance
 
@@ -1653,6 +1669,12 @@ For the result extraction:
 
 
 <br/>
+
+*Result show of the capacitance*
+![Capacitance](./img/capacitance.png)
+<center>Fig 6. Capacitance</center>
+<br/>
+
 
 ### 3.4 Optical generation rate
 
@@ -1793,6 +1815,13 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 
 <br/>
 
+*Result show of the optical generation rate*
+![Optical generation rate](./img/generation.png)
+<center>Fig 7. Optical generation rate</center>
+
+<br/>
+
+
 ### 3.5 Photo current
 
 This section imports the optical generation rate to the `OEDevice` solver, and performs a steady state simulation to obtain the photo current. The script is in the `VPD02_Ip.py` file.
@@ -1931,6 +1960,12 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 
 
 <br/>
+
+*Result show of the photo current*
+![Photo current](./img/photocurrent.png)
+<center>Fig 8. Photo current</center>
+<br/>
+
 
 ### 3.6 Bandwidth
 
@@ -2125,6 +2160,13 @@ result_device.extract(data="I", electrode="cathode", show=False, export_csv=True
 
 <br/>
 
+*Result show of the step response*
+![Step response](./img/stepresponse.png)
+<center>Fig 9. Step response</center>
+
+<br/>
+
+
 #### 3.6.8 Postprocess
 
 By taking the derivative of the step response, the impulse response is obtained. Then the Fast Fourier Transform is applied to the impulse response, resulting in the frequency response, which allows to determine the device bandwidth.
@@ -2201,6 +2243,13 @@ plt.close()
 
 <br/>
 
+*Result show of the impulse response*
+![Impulse response](./img/impulseresponse.jpg)
+<center>Fig 10. Impulse response</center>
+
+<br/>
+
+
 ##### 3.6.8.3 Obtain the frequency response
 
 ```
@@ -2258,6 +2307,13 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 
 
 <br/>
+
+*Result show of the frequency response*
+![Frequency response](./img/frequencyresponse.jpg)
+<center>Fig 11. Frequency response</center>
+
+<br/>
+
 
 ### 3.7 Saturation power
 
@@ -2447,6 +2503,7 @@ Apply a voltage of 1V to the electrode `"cathode"` to perform a steady state sim
 
 <br/>
 
+
 #### 3.7.4 Run the sweeping function and export the result
 
 ```
@@ -2509,6 +2566,13 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 
 
 <br/>
+
+*Result show of the I-P curve*
+![I-P curve](./img/sweeppower.jpg)
+<center>Fig 12. I-P curve</center>
+
+<br/>
+
 
 ## 4. Appendix
 

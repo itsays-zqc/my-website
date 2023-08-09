@@ -287,8 +287,8 @@ simu.add(name=simu_name, type='FDE',
                   },
                   "frequency_analysis": {
                       "frequency_analysis": run_options.run_frequency_sweep,
-                      # "start_wavelength": 1.50, "stop_wavelength": 1.60, "number_of_points": 3,
-                      # "effective_index": 1, "detailed_dispersion_calculation": False
+                      "start_wavelength": 1.50, "stop_wavelength": 1.60, "number_of_points": 3,
+                      "effective_index": 2.67, "detailed_dispersion_calculation": False
                   }}})
 # endregion
 ```
@@ -384,22 +384,19 @@ if run_options.extract:
         for m in range(len(res)):
             k = kL[3]
             result_fde.extract(data='calculate_modes', savepath=f'{plot_path}{k}_mode{m}',
-                                attribute='Ey', mode=m, real=True, imag=False, `export_options, show=False)
+                                attribute='Ey', mode=m, real=True, imag=False, export_options, show=False)
     # endregion
 
     if run_options.run_frequency_sweep:
-        attr_selections: List[Literal["neff", "loss", "group_index", "polarization"]] = ["neff", "loss", "group_index", "polarization"]
-        for i, a in enumerate(attr_selections):
             k = kL[4]
-            result_fde.extract(data="frequency_analysis", savepath=f'{plot_path}{k}_freq_sweep_{a}',
-                                attribute=a, real=True, imag=True, export_csv=True, export_mat=True, show=False)
+            result_fde.extract(data="frequency_analysis", savepath=f'{plot_path}{k}_freq_sweep_neff',
+                                attribute="neff", real=True, imag=True, export_csv=True, export_mat=True, show=False)
 # endregion
 ```
 
 <div class="text-justify">
 
-
-The `extract` function allows you to extract specific simulation results and store them for further analysis.<br/>The `attribute` parameter specifies the type of simulation results to be extracted.<br/>The `mode` parameter corresponds to the index of the FDE calculation mode.<br/>The `real` and `imag` parameters are used to extract the real and imaginary parts of the simulation results, respectively.
+The `extract` function allows you to extract specific simulation results and store them for further analysis.<br/>The `attribute` parameter specifies the type of simulation results to be extracted.<br/>The `mode` parameter corresponds to the index of the FDE calculation mode.<br/>The `real` and `imag` parameters are used to extract the real and imaginary parts of the simulation results, respectively. <br/>If you run the frenquency sweep to calculate mode at different wavelength, you can also extract the relevant results. As an example above, we extrat the effective index. 
 
 </div>
 
@@ -425,7 +422,7 @@ if __name__ == '__main__':
             run_mode="local", wavelength=1.55, grid=0.02, number_of_trial_modes=20, 
                run_options=RunOptions(index_preview=True,
                                       run=True,
-                                      run_frequency_sweep=False,
+                                      run_frequency_sweep=True,
                                       extract=True)
                )
 ```
@@ -896,7 +893,7 @@ if run_options.extract and run_options.run:
 <div class="text-justify">
 
 
-At the end of all codes, We control the switches of various functional modules at the end of the Python file.
+At the end of all codes, We control the switches of various functional modules.
 
 </div>
 

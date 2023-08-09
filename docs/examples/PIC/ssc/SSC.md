@@ -317,4 +317,4 @@ As shown in the figure below, I conducted a length scan of 50-250 um on the coni
 
 ![](S21.png)
 
-If necessary, length can be used_ Sweep sets wavelength scanning in the EME solver. The mode and EME propagation part of the unit boundary section need to be recalculated at each wavelength.
+If necessary, length can be used_ Sweep sets wavelength scanning in the EME solver. The mode and EME propagation part of the cell boundary section need to be recalculated at each wavelength.

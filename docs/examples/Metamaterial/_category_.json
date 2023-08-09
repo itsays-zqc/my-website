@@ -1,8 +1,8 @@
 {
-  "label": "Matameterial",
+  "label": "Metamaterial",
   "position": 3,
   "link": {
     "type": "generated-index",
-    "description": "This is Matameterial examples library."
+    "description": "This is Metamaterial examples library."
   }
 }

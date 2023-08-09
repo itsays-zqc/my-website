@@ -101,7 +101,7 @@ mt.add_lib(name="Air", data=mo.Material.Air, order=2)
 
 The structure is composed of a substrate, a conical waveguide with high refractive index, and a cladding. Add
 geometric structures using `Structure` and `add_geometry`function, and select the method of importing GDS to establish the model. It is necessary to set geometric and material parameters in the property.
-Select simulation materials by using `mesh_order` in areas where geometry overlaps. The higher the number, the higher the priority of the material.
+Select simulation materials by using `mesh_order` in areas where geometry overlaps. The higher the number of mesh_order, the higher the priority of the material.
 
 </div>
 

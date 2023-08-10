@@ -12,20 +12,20 @@ import { InlineMath, BlockMath } from 'react-katex';
 import maxoptics_sdk.all as mo
 ```
 
-随后在*Region 1*中，新建一个仿真项目。其中`name`为项目名字；`location`为服务器的位置/运行模式，此时`run_mode="local"`或`run_mode="cloud"`。
+随后如下列中所示，新建一个仿真项目。其中`name`为项目名字；`location`为服务器的位置/运行模式，此时`run_mode="local"`或`run_mode="cloud"`。
 
 ```python
-# region --- 1. Project ---
+# region --- Project ---
 pj = mo.Project(name=project_name, location=run_mode)
 # endregion
 ```
 
 ## 2. 怎样在SDK仿真中添加材料?
 
-接下来，我们需要添加仿真过程中所用到的材料，代码如下*Region 2*中所示。其中其中`name`为材料名字；`data`为材料库的材料对象；`order`为材料覆盖的优先级，在不同材料的结构发生重叠时，大`order`数值的材料能覆盖小数值材料，当数值相同时，则默认后来居上。
+接下来，我们需要添加仿真过程中所用到的材料，代码如下中所示。其中其中`name`为材料名字；`data`为材料库的材料对象；`order`为材料覆盖的优先级，在不同材料的结构发生重叠时，大`order`数值的材料能覆盖小数值材料，当数值相同时，则默认后来居上。
 
 ```python
-# region --- 2. Material ---
+# region --- Material ---
 mt = pj.Material()
 mt.add_lib(name='Si', data=mo.Material.Si_Palik, order=2)
 # endregion
@@ -191,11 +191,6 @@ simu.add(name=simu_name, type='FDE',
 ### 4.2 怎样在FDE仿真中进行overlap的计算？
 
 可以通过下列代码中将如下图所示模式光和高斯光源进行overlap。
-
-| ![image-20230809145029868](C:\Users\wangjinyi\AppData\Roaming\Typora\typora-user-images\image-20230809145029868.png) | ![image-20230809145033960](C:\Users\wangjinyi\AppData\Roaming\Typora\typora-user-images\image-20230809145033960.png) |
-| :----------------------------------------------------------: | :----------------------------------------------------------: |
-
-
 
 ```python
 if run_options.run:
@@ -364,13 +359,6 @@ for port_name in ['eme_in', 'eme_out']:
                           )
 ```
 
-如图所示，为输出结果的模场图。
-
-| ![image-20230810093827258](C:\Users\wangjinyi\AppData\Roaming\Typora\typora-user-images\image-20230810093827258.png) | ![image-20230810093833919](C:\Users\wangjinyi\AppData\Roaming\Typora\typora-user-images\image-20230810093833919.png) |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-
-
-
 ### 5.6 怎样获取EME/FDTD的模场图？
 
 同样的，我们可以通过`eme_res.extract`获取仿真计算后的结果。如下案例代码所示，设置`data='eme_propagate:monitor'`确定所需获取监视器结果，`save_path`为数据保存路径，用`attribute`确定提取数据内容。`plot_x/ plot_y`为画线图或热度图的x, y轴纵坐标。`real, imag`控制输出数据：全为`False`时，结果值原样输出；全为`True`时，结果值取abs；有一个为`True`时，输出对应的实部/虚部。`show`控制是否显示图片，`export_csv `为是否保存数据为csv文件。
@@ -380,7 +368,8 @@ eme_res.extract(data="eme_propagate:monitor", savepath=plot_path + "013_eme_z_no
                 monitor_name="z_normal", attribute="E", 
                 # plot_x='y', plot_y='z', 
                 # real=True, imag=True, 
-                # export_csv=False, show=False)
+                # export_csv=False, show=False
+                )
 ```
 
 ### 5.7 怎样进行EME长度扫描？
@@ -394,8 +383,6 @@ if run_options.run_length_sweep:
 # endregion
 ```
 
-| ![image-20230810105522646](C:\Users\wangjinyi\AppData\Roaming\Typora\typora-user-images\image-20230810105522646.png) | ![image-20230810105525963](C:\Users\wangjinyi\AppData\Roaming\Typora\typora-user-images\image-20230810105525963.png) |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
 
 ### 5.8 怎样进行EME波长扫描？
 
@@ -412,7 +399,7 @@ if run_options.run_wavelength_sweep:
 
 ### 6.1 怎样设置FDTD仿真中波长？
 
-`Waveform`支持1550nm, 1310nm和可见光三种类型。`name`为waveform 的名字，`wavelength_center`为中心波长，`wavelength_span`为带宽
+`Waveform`支持1550nm, 1310nm和可见光三种类型。`name`为waveform 的名字，`wavelength_center`为中心波长，`wavelength_span`为带宽。
 
 ```python
 # region --- Waveform ---

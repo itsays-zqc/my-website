@@ -13,9 +13,9 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 ## Simulation Structure
 
-​	The present structural file provides a comprehensive guide for constructing a simulation structure and establishing a Gaussian doping distribution. Initially, one must construct the geometric structure of the device, incorporate materials and physical field models, specify the doping distribution, and simulation boundary conditions, and set the light source and simulation solver. Eventually, the simulation result data should be extracted and output. 
+​	The present structural file provides a comprehensive guide for constructing a simulation structure and establishing a Gaussian doping distribution. Initially, one must construct the geometric structure of the device, incorporate materials and physical models, specify the doping distribution, and simulation boundary conditions, and set the light source and simulation solver. Eventually, the simulation result data should be extracted and output. 
 
-​	Our simulation is designed with a light source entering along the X-axis, and the primary optoelectronic characteristic analysis takes place within the three-dimensional structure on the YZ plane. Gaussian doping method is employed to enhance the bandwidth and improve the performance of high-speed devices. The FDE solver is utilized to solve the distribution of effective refractive index, and the OEedvice solver is used to solve the doping distribution of the device. Finally, we generate ad output the  distribution map iof doping and index in modulator structure.
+​	Our simulation is designed with a light source entering along the X-axis, and the primary optoelectronic characteristic analysis takes place within the three-dimensional structure on the YZ plane. The FDE solver is utilized to preview the distribution of effective refractive index, and the OEDevice solver is used to preview the doping distribution of the device. Finally, we generate ad output the  distribution map of doping and index in modulator structure.
 
    Application Library path: `:\SDK\V2.3.0.4\examples\active_demo\doping_function\MOD\MOD00_structure.py`
 
@@ -25,7 +25,7 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 ​	Application Library path: `:\SDK\V2.3.0.4\examples\active_demo\doping_function\MOD\MOD_material.py`
 
-​	The module of `basic` specifies the electron affinity and relative dielectric permittivity of the material. It is crucial to define the mode type and parameter values, if another model is used instead of the default. The default mobility model of Silicon is `Analytic` , but we use the mobility model of `Masetti` in this modulator. The `band` module includes the model of bandgap, bandgap narrowing , and recombination of  Auger, SRH, and Radiative. 
+​	The module of `basic` specifies the electron affinity and relative dielectric permittivity of the material. It is crucial to define the model type and parameter values, if another model is used instead of the default. The default mobility model of Silicon is `Analytic` , but we use the mobility model of `Masetti` in this modulator. The `band` module includes the model of bandgap, bandgap narrowing , and recombination of  Auger, SRH, and Radiative. 
 
 ```python
 elec_Si_properties = {"basic": {"model": "Default",
@@ -78,7 +78,7 @@ matparas_1310 = {
 
 #### 2.1 Import Modules
 
-​	To begion, we need to use the `import` command to call the relevant functional modules and  parameter values of material from previously defined file.
+​	To begin, we need to use the `import` command to call the relevant functional modules and  parameter values of material from previously defined file.
 
 ```python
 import maxoptics_sdk.all as mo
@@ -111,7 +111,7 @@ simu_name = "MOD00_struc"
 | Parameter      | Units | Description                                                  |
 | -------------- | ----- | ------------------------------------------------------------ |
 | wavelength     | um    | Specifies the optical wavelength of the source beam (in the vacuum) for mono-spectral simulations. |
-| egrid_loacal   | um    | Specifies the appropriate size of mesh in the Y and Z direction for overall region of FDE simulation. |
+| egrid_loacal   | um    | Specifies the appropriate size of mesh in the Y and Z direction for overall region of OEDevice simulation. |
 | ogrid_global_y | um    | Specifies the mesh spacing in the Y direction for region of optical simulation. |
 | ogrid_global_z | um    | Specifies the mesh spacing in the Z direction for region of optical simulation. |
 | ogrid_local    | um    | Specifies the mesh spacing in the Y and Z direction for local region of optical simulation. |
@@ -273,7 +273,7 @@ z_span = z_max-z_min
 
 ​	To facilitate the calling of other simulation scripts, it is recommended to define a function that can set materials, model, dope, and add boundary conditions.
 
-##### 2.3.1 Creat Project
+##### 2.3.1 Create Project
 
 ​	Create a new simulation project.
 
@@ -284,7 +284,7 @@ def mod_project(project_name, run_mode, st_type):
 
 ##### 2.3.2 Set Material
 
-​	The electrical and optical parameters of SiO2、Aluminium and Si materials in the material library can be accessed. If the parameters defined in the Si section of `MOD_material.py`  are different from the default parameters in the material library, the former will be prioritized. In the overlapping area of the materials, the material with a higher order value will take precedence over the one with a lower value. If the values are the same, the material defined later will override the one defined earlier. It is worth noting that the material Aluminium will call the PEC material library.
+​	The electrical and optical parameters of SiO2、Al and Si materials in the material library can be accessed. If the parameters defined in the Si section of `MOD_material.py`  are different from the default parameters in the material library, the former will be prioritized. In the overlapping area of the materials, the material with a higher order value will take precedence over the one with a lower value. If the values are the same, the material defined later will override the one defined earlier. It is worth noting that the material Aluminium will call the PEC material library.
 
 ```python
 mt = pj.Material()
@@ -298,7 +298,7 @@ mt = pj.Material()
 
 ##### 2.3.3 Define structure
 
-​	To begin with, it is advisable to define the geometric region of the device structure and add materials to this region. The background material, which is usually Air or SiO2, should be added first. You can choose the geometry of structure in `type` ,  call materila library added above by `material` .
+​	To begin with, it is advisable to define the geometric region of the device structure in `geometry` and add materials to this region by `material`. The background material, which is usually Air or SiO2, should be added first.
 
 ```python
  st = pj.Structure(mesh_type="curve_mesh", mesh_factor=1.4, background_material=mt["mat_sio2"])
@@ -367,7 +367,7 @@ if st_type == "normal":
 
 ##### 2.3.4 Add Doping
 
-​	You should define the basic parameters of doping module, such as  type、region and model. Then define source face、junction width peak concentration and  reference concentration in gaussian doping, or only concentration in uniform doping.  `type` specifies the n-type or donor dopant in `"n"` , and  p-type or acceptor dopant in `"p"` , which may be used with gaussian and uniform prodile types.  `ref_concentration` specifies the diffusion boundary of Gaussian doping.
+​	You should define the basic parameters of doping module, such as  type、region and model. Then define source face、junction width、peak concentration and  reference concentration in gaussian doping, or only concentration in uniform doping.  `type` specifies the n-type or donor dopant in `"n"` , and  p-type or acceptor dopant in `"p"` , which may be used with gaussian and uniform profile types.  `ref_concentration` specifies the diffusion boundary of Gaussian doping.
 
 ```python
 st.add_doping(name="background_doping", type="p", property={
@@ -424,7 +424,7 @@ st.add_emesh(name="EMesh_Local", property={
                  "y_min": st_y_min, "y_max": st_y_max, "z_min": st_z_min, "z_max": st_z_max, "mesh_size": egrid_local})
 ```
 
-##### 2.3.7 Define Structure File
+##### 2.3.7 Structure Preview Result File
 
 ​	You should call the previous defined simulation module and define the name and path of the output file. 
 
@@ -452,7 +452,7 @@ def preview():
 
 ​	The type of `OEDevice` module can be invoked to enable the charge carrier transport solver for analyzing the optoelectronic properties of a device. Since the simulation analysis is conducted in the two-dimensional Y-Z plane that is perpendicular to the X-axis, `2d_x_normal`  is adopted to define the simulation calculation geometry.
 
-​	We utilize the `Newton` iteration method for calculation, and the `MUMPS`  direct solver is employed as the linear solver. The `max_iterations` parameter defines the maximum number of nonlinear iterations. When the number of iterations exceeds this value, the solver reports failure. Additionally, we define the length of the three-dimensional X direction and the solution mode and temperature during the composite process. For this study, we set the solver to solve the steady state of the device at room temperature.
+​	We utilize the `Newton` iteration method for calculation, and the `MUMPS`  direct solver is employed as the linear solver. The `max_iterations` parameter defines the maximum number of nonlinear iterations. When the number of iterations exceeds this value, the solver reduces the voltage step and starts a new iterative computations. Additionally, we define the length of the three-dimensional X direction and the solution mode and temperature during the composite process. For this study, we set the solver to solve the steady state of the device at room temperature.
 
 ```python
 simu = pj.Simulation()
@@ -495,7 +495,7 @@ simu["preview_fde"].run_index(name="index_preview_x_0", property={
 | :-----------------------------------------------------: | :---------------------------------------------------: | :----------------------------------------------------------: |
 | ![](../MOD/plot/MOD00_struc/doping/BoronActive_dop.jpg) | ![](../MOD/plot/MOD00_struc/doping/NetDoping_dop.jpg) | ![](../MOD/plot/MOD00_struc/doping/PhosphorusActive_dop.jpg) |
 
-​	We can see the distribution of the refractive index in the radial direction of the three coordinates of the device.
+​	We can see the distribution of the refractive index in these three directions of device.
 
 ​	Application Library path: `:examples\active_demo\doping\MOD\plots\MOD00_struct_time` 
 
@@ -520,7 +520,7 @@ simu["preview_fde"].run_index(name="index_preview_x_0", property={
 
 ##### 1.2.1 Import Modules
 
-​	To begion, we need to use the `import` command to call the relevant functional modules.
+​	To begin, we need to use the `import` command to call the relevant functional modules.
 
 ```python
 from MOD00_structure import *
@@ -589,7 +589,7 @@ if np.abs((np.abs(vpi_vswing)-np.abs(di*tcad_vstep*2))/tcad_vstep) > 0.01:
     warnings.warn("\x1b[6;30;43m" + "\n[Warning: vpi_swing is %(t)sV in program]" % {"t": di*2*tcad_vstep} + "\x1b[0m", UserWarning)
 ```
 
-##### 1.2.5 Creat Component
+##### 1.2.5 Create Component
 
 ​	You can specify the physical attributes of an electrode. You can set the BC model and scanning method here. The bias voltage range is set for steady-state solutions, and the AC small signal switch is disabled. Detailed information about the Electrode attribute can be found in the appendix of the PD documentation.
 
@@ -817,7 +817,7 @@ if not os.path.exists(plot_path):
     os.makedirs(plot_path)
 ```
 
-##### 2.2.4 Creat Component
+##### 2.2.4 Create Component
 
 ​	You can directly invoke the engineering function and device structure created in the `structure.py`  file, and then add the electrodes and their attributes. In this case, a bias voltage ranging from -0.5 V to 4 V with a scan step of 0.5 V is applied to the `cathode` electrode during small-signal simulation.
 
@@ -972,9 +972,9 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 
 ​	Application Library path: `:\examples\active_demo\doping_function\MOD\plots\MOD0B_RC_local_time`
 
-##### 2.3.1 Photocurrent
+##### 2.3.1 Small Signal AC Current
 
-​	This section displays the variations of the real and imaginary components of the refractive index with respect to bias voltage at different frequencies.
+​	This section displays the variations of the real and imaginary components of the AC current with respect to bias voltage at different frequencies.
 
 |       | 1 MHZ                                                        | 100 MHZ                                                      | 10000 MHZ                                                    |
 | ----- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |

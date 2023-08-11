@@ -14,9 +14,8 @@ If applicable, attach relevant screenshots or log files to supplement the proble
 ## List Attempted Solutions: 
 If you have already attempted some solutions without success, mention them in your request. Provide details of the steps you have taken and the outcomes. This will help the support team understand the efforts you have already made and avoid repetition.
 
-## Be Polite and Clear: 
-Maintain a polite and clear tone when writing your support request. Use professional language and appropriate etiquette to express your issue or requirement and express gratitude for the support team's assistance.
-
+## Others: 
+If you have other suggestions for designing software features or optimizing physical modules, we look forward to talking to you.
 # User Feedback
 
 Please enter your question and feedback below:

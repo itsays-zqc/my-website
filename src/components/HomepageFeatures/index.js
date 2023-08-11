@@ -16,30 +16,33 @@ const FeatureList = [
     description: (
       <>
         <div style={{ textAlign: 'left' }}>
-          <a href="/my-website/docs/faq/General">    1.What is Max-Optics? </a>
+          <a href="/my-website/docs/faq/General">    1. General </a>
         </div>
 
         <hr style={{ margin: '0.25rem 0' }}/>
 
         <div style={{ textAlign: 'left' }}>
-          <a href="/my-website/docs/faq/Installation">    2.How to install Max-Optics?</a>
-          <div id="#server-install-group-licensing-local-service" className="section">
-          </div>
+          <a href="/my-website/docs/faq/Installation">    2. Installation</a>
         </div>
 
 
         <hr style={{ margin: '0.25rem 0' }}/>
         <div style={{ textAlign: 'left' }}>
-          <a href="/my-website/docs/faq/Installation">    3.How to obtain a license? </a>
+          <a href="/my-website/docs/faq/Installation">    3. Physics </a>
         </div>
 
 
         <hr style={{ margin: '0.25rem 0' }}/>
         <div style={{ textAlign: 'left' }}>
-          <a href="/my-website/docs/faq/General" >    4.How to obtain technical service support? </a>
+          <a href="/my-website/docs/category/simulation-setup" >    4. Simulation Setup </a>
+        </div>
+        
+
+        <hr style={{ margin: '0.25rem 0' }}/>
+        <div style={{ textAlign: 'left' }}>
+          <a href="/my-website/docs/category/simulation-setup" >    5. Contact Us </a>
         </div>
         <hr style={{ margin: '0.25rem 0' }}/>
-
        
       </>
     ),

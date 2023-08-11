@@ -5,12 +5,12 @@ import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
 
 ---
-## 怎样安装 Max-Optics 的软件？
-### 1. How to install Max-Optics GUI
+
+### 怎样安装软件Max-Optics GUI？
 
 Max-Optics Studio Local Passive Software Installation
 
-(1) Open the Installation Package
+#### 1. Open the Installation Package
 
 Find the Setup.exe package, double-click to open the MOPassive-x.x.x.x+build.xxxxxxxx-setup
 installation package.
@@ -19,13 +19,13 @@ installation package.
 
 If there is a pop-up window come out, please press the “Run” button and wait to run.
 
-!['install2'](../../static/img/faq/Installation/install2.png)
+![mediul](../../static/img/faq/Installation/install2.png)
 
 Check the contents and click "I Accept The Agreement" item, then click "Next".
 
 !['install3'](../../static/img/faq/Installation/install3.png )
 
-(2) Select Destination Location
+#### 2. Select Destination Location
 
 User can custom destination location by pressing “Browse...” button , or just use the auto-default
 location, then press the “Next” button.
@@ -33,7 +33,7 @@ location, then press the “Next” button.
 !['install4'](../../static/img/faq/Installation/install4.png )
 
 
-(3) Select Start Menu Folder & Create a Shortcut
+#### 3. Select Start Menu Folder & Create a Shortcut
 
 In the "Select Start Menu Folder" window, users can either click the "Next" button directly or
 customize the location for shortcuts by clicking the "Browse..." button.
@@ -46,25 +46,25 @@ users can simply uncheck the option and click the "Next" button directly.
 
 !['install6'](../../static/img/faq/Installation/install6.png )
 
-(4) Ready to Install
+#### 4. Ready to Install
 
 In the "Ready to Install" window, click the "Install" button to proceed with the installation.
 !['install7'](../../static/img/faq/Installation/install7.png )
 
-(5) Installing
+#### 5. Installing
 
 Please wait, until installation is complete.
 
 !['install8'](../../static/img/faq/Installation/install8.png )
 
-(6) Restart
+#### 6. Restart
 
 Check either the “yes, restart the computer now” or “No, I will restart the computer later” to invoke
 the software. Then press “Finish” button.
 
 !['install9'](../../static/img/faq/Installation/install9.png )
 
-(7) Complete
+#### 7. Complete
 
 Once the installation is complete, the user can find a shortcut to the software on their desktop.
 
@@ -75,251 +75,254 @@ User can double click the shortcut to invoke the software;
 
 User also can double click a .passive file to open the software automatically
 
-### 2. How to install Max-Optics Python SDK
+### 怎样安装软件 Max-Optics SDK
 
-(1) Python Environment Prepare
+#### 1. 安装Python
 
-通过以下命令, 确保本地环境`Python`版本为`3.8.x`
+&emsp;&emsp;AIO SDK仅支持Python3.8.x，如已安装Python，请确认Python的版本。如安装了多个版本的Python，请确认环境变量中PATH里的Python版本是否为Python3.8.x。如未安装Python，请根据下面引导进行操作。
 
-```py
-python --version
-```
+①打开试用包中的"python-3.8.X-amd64.exe"；
 
-(2) Copy handover
+![](../../static/img/faq/Installation/2.png)
 
-目录结构如下
+②选择“Customize installation”；
 
-```
+③勾选“Add Python 3.8 to PATH”；
+
+![](../../static/img/faq/Installation/3.png)
+
+注意：自定义安装路径时，请确认安装路径的文件夹命名没有空格。空格会导致SDK无法找到Python路径（代码语法的原因）。建议使用的安装路径：''D:\Python\Python38''，此路径与SDK中settings.json默认设置路径一致。
+
+#### 2. 安装VScode
+
+&emsp;&emsp;Python代码环境下，使用代码编辑器利于SDK仿真脚本结果的管理。这里，我们选择免费代码编辑器Visual Studio Code（vscode）作为SDK脚本编辑器。此部分为vscode的安装引导流程及注意事项。
+
+① 安装"VSCodeUserSetup-x64-1.74.3.exe"，选择默认设置即可；
+
+![](../../static/img/faq/Installation/4.png)
+
+② 在扩展中搜索并安装python插件，使vscode更好地支持Python编译环境。
+
+![](../../static/img/faq/Installation/5.png)
+
+注意：之后SDK的安装和后续模型仿真，均在vscode的界面中完成。
+
+#### 3. 安装SDK
+SDK的目录结构：
+```python
 ├─.vscode
-│      settings.json
-│      tasks.json
+│   settings.json
+│   tasks.json
 │
 ├─ci
-│      requirements.txt
+│   requirements.txt
 │
 └─wheels
-        aiohttp-3.8.3-cp38-cp38-win_amd64.whl
-        aiosignal-1.3.1-py3-none-any.whl
-        async_timeout-4.0.2-py3-none-any.whl
-        attrs-22.1.0-py2.py3-none-any.whl
-        bidict-0.22.0-py3-none-any.whl
-        cairocffi-1.4.0.tar.gz
-        CairoSVG-2.5.2-py3-none-any.whl
-        certifi-2022.9.24-py3-none-any.whl
-        cffi-1.15.1-cp38-cp38-win_amd64.whl
-        charset_normalizer-2.0.12-py3-none-any.whl
-        colorama-0.4.6-py2.py3-none-any.whl
-        contourpy-1.0.6-cp38-cp38-win_amd64.whl
-        cssselect2-0.7.0-py3-none-any.whl
-        cycler-0.11.0-py3-none-any.whl
-        defusedxml-0.7.1-py2.py3-none-any.whl
-        drawSvg-1.8.3-py3-none-any.whl
-        fonttools-4.38.0-py3-none-any.whl
-        frozenlist-1.3.3-cp38-cp38-win_amd64.whl
-        gdspy-1.6.12-cp38-cp38-win_amd64.whl
-        idna-3.4-py3-none-any.whl
-        imageio-2.22.4-py3-none-any.whl
-        kiwisolver-1.4.4-cp38-cp38-win_amd64.whl
-        matplotlib-3.6.2-cp38-cp38-win_amd64.whl
-        max_optics_local_sdk-1.4.0.xxxx.xxxx-cp38-cp38-win_amd64.whl
-        max_optics_sdk-1.9.0.0.xxxx.xxxx-py3-none-any.whl
-        max_optics_whale-1.2.0.xxxx.xxxx-cp38-cp38-win_amd64.whl
-        multidict-6.0.2-cp38-cp38-win_amd64.whl
-        numpy-1.22.4-cp38-cp38-win_amd64.whl
-        packaging-21.3-py3-none-any.whl
-        pandas-1.4.2-cp38-cp38-win_amd64.whl
-        Pillow-9.1.1-cp38-cp38-win_amd64.whl
-        pycairo-1.21.0-cp38-cp38-win_amd64.whl
-        pycparser-2.21-py2.py3-none-any.whl
-        pyparsing-3.0.9-py3-none-any.whl
-        python_dateutil-2.8.2-py2.py3-none-any.whl
-        python_engineio-4.3.4-py3-none-any.whl
-        python_socketio-5.6.0-py3-none-any.whl
-        pytz-2022.6-py2.py3-none-any.whl
-        PyYAML-6.0-cp38-cp38-win_amd64.whl
-        requests-2.27.1-py2.py3-none-any.whl
-        scipy-1.8.1-cp38-cp38-win_amd64.whl
-        seaborn-0.11.2-py3-none-any.whl
-        setuptools-65.5.1-py3-none-any.whl
-        setuptools_scm-7.0.5-py3-none-any.whl
-        six-1.16.0-py2.py3-none-any.whl
-        tinycss2-1.2.1-py3-none-any.whl
-        toml-0.10.2-py2.py3-none-any.whl
-        tomli-2.0.1-py3-none-any.whl
-        typing_extensions-4.4.0-py3-none-any.whl
-        urllib3-1.26.12-py2.py3-none-any.whl
-        webencodings-0.5.1-py2.py3-none-any.whl
-        yarl-1.8.1-cp38-cp38-win_amd64.whl
-        zipfile36-0.1.3-py3-none-any.whl
+    SDK的依赖包.whl
 ```
+`.vscode`为使SDK支持VSCode中运行任务的配置文件；
+`ci`中的`requirements.txt`为安装SDK所需的依赖及版本信息；
+`wheels`为安装SDK所需的所有所有依赖；
+P.S.依赖为SDK实现各种功能所需的各种模块包。
 
-其中:
+3.1 存放SDK文件夹
 
-`.vscode`为支持`VSCode`中运行任务所需的配置文件
+&emsp;&emsp;将SDK文件夹放在希望管理模型脚本和仿真数据的目录中；建议放在D盘根目录。
 
-`ci`中的`requirements.txt`为安装`AIO`所需的依赖及版本信息
+3.2 使用vscode打开SDK文件夹
 
-`wheels`为安装`AIO`所需的所有所有依赖
+（1）单击vscode的"文件";
 
-(3) Check/Modify settings.json config of VSCode
+（2）在下拉框中选择“打开文件夹”；
 
-`python.defaultInterpreterPath`为本地环境中的`python`运行时地址, 请根据本地环境确认或修改
+（3）选择AIO_SDK文件夹。
 
-`python.findLinkFrom`为安装依赖包的路径, 无需修改
+3.3 配置SDK所需的vscode环境
 
-`python.analysis.typeCheckingMode`为是否开启类型开关, 默认为`basic`
+（1）在vscode的资源管理器中打开“.vscode”文件中的settings.json文件；
 
-(4) Open handover directory
+![](../../static/img/faq/Installation/6.png)
 
-!['install11'](../../static/img/faq/Installation/install11.png)
-!['install12'](../../static/img/faq/Installation/install12.png)
+（2）在编辑区将路径设为python3.8.x.exe所在路径；默认路径为"D:\\Python\\Python38\\python.exe"。详见python安装部分的说明。
 
-(5) Create PIP
+![](../../static/img/faq/Installation/7.png)
 
-若为首次安装, 即未创建`Python`虚拟环境, 则通过`Create PIP`任务进行创建
+3.4 创建Python虚拟环境的原因
 
-!['install13'](../../static/img/faq/Installation/install13.png)
-!['install14'](../../static/img/faq/Installation/install14.png)
+&emsp;&emsp;虚拟环境是独立于整个电脑操作系统的环境。在虚拟环境中安装、运行AIO_SDK，可以保证AIO_SDK调用依赖时，不与Windows环境中已存在的依赖产生冲突。依赖冲突可能导致SDK无法正常运行。
 
-VSCode会自动打开终端进行AIO SDK的安装, 安装结束后, 按任意键退出
+&emsp;&emsp;我们已配置好生成虚拟环境并安装AIO_SDK的脚本（tasks.json)，但是Windows为了保证系统安全，可能会阻止该配置脚本的运行。因此这里我们先修改Windows脚本的运行策略，保证后续的步骤能顺利进行。
 
-!['install15'](../../static/img/faq/Installation/install15.png)
+3.5 修改Windows脚本的运行策略
 
-(6) Update PIP
+(1) 以管理员身份运行“Windows PowerShell”；
 
-若收到新的安装文件, 则将安装文件`xxx.whl`保存至`wheels`文件夹, 同时修改`requirements.txt`中的版本, 然后执行`VSCode`的`Update PIP`任务
+![](../../static/img/faq/Installation/8.png)
 
-!['install16'](../../static/img/faq/Installation/install16.png)
+(2) 输入"Set-ExecutionPolicy RemoteSigned"后按回车键。如提示是否变换策略，请输入"Y"并回车。此时，Windows脚本运行安全策略已改变。
 
-(7) handbook
+![](../../static/img/faq/Installation/9.png)
 
-在`VSCode`中打开一个终端, 此时会激活`.venv_maxoptics`虚拟环境, 通过输入如下命令可进行手册查看
+3.6 通过Create PIP任务进行创建。
 
-```py
-mo.sdk doc
-```
+&emsp;&emsp;点击终端，在下拉菜单中点击运行任务；后会在vscode中弹出新的菜单；在该菜单中选择Create PIP。
 
-!['install17'](../../static/img/faq/Installation/install17.png)
+![](../../static/img/faq/Installation/10.png)
 
-!['install18'](../../static/img/faq/Installation/install18.png)
+![](../../static/img/faq/Installation/11.png)
 
-(8) Copy examples
-   
-在`VSCode`中打开一个终端, 此时会激活`.venv_maxoptics`虚拟环境, 通过输入如下命令可进行`examples`拷贝
+&emsp;&emsp;VSCode会自动打开终端进行SDK的安装, 安装结束后, 按任意键退出。
 
-```py
-mo.sdk init -n examples
-```
+![](../../static/img/faq/Installation/12.png)
 
-其中, `-n`为要拷贝的目标文件夹名称
+#### 4. 启用虚拟环境
 
-!['install19'](../../static/img/faq/Installation/install19.png)
+&emsp;&emsp;通过上面的步骤，在vscode资源管理器中应出现.venv_maxoptics的文件夹；我们需要调用安装好SDK的虚拟环境进行仿真，下面是配置步骤。
 
-此时, 会在handover文件夹下创建一份名为examples的脚本样例
+![](../../static/img/faq/Installation/13.png)
 
-!['install20'](../../static/img/faq/Installation/install20.png)
+（1）在vscode中单击F1键，弹出菜单栏，如图所示。
 
-(9) Run File
+![](../../static/img/faq/Installation/14.png)
 
-打开脚本样例中的一个`py`文件, 在终端中运行`Run File`任务可执行脚本
+(2) 单击Python：选择解释器；在新的菜单中选择如图所示的解释器。此解释器即为安装好SDK的虚拟环境。
 
-!['install21'](../../static/img/faq/Installation/install21.png)
+![](../../static/img/faq/Installation/15.png)
 
-(10) MaxOptics License Instruction
+(3) 启动新的终端，在终端栏看到出现（.venv_maxoptics）的虚拟环境标识，即成功启动虚拟环境。
 
-授权设置终端 [MaxOptics SDK__SetLocalServer.exe](../../MaxOpticsSDK__SetLocalServer.exe)
+![](../../static/img/faq/Installation/16.png)
+
+#### 5. 查看Handbook的方法
+
+&emsp;&emsp;在VSCode中打开一个终端, 此时会激活.venv_maxoptics虚拟环境, 通过输入“mo.sdk doc“命令即可查看手册。此步骤亦可作为软件正确安装的测试方法。
+
+![](../../static/img/faq/Installation/17.png)
+
+![](../../static/img/faq/Installation/18.png)
+
+#### 6. Copy Examples的方法
+
+&emsp;&emsp;在VSCode中打开一个终端, 此时会激活.venv_maxoptics虚拟环境, 通过输入”mo.sdk init -n examples”命令，可导入仿真模型案例。
+
+&emsp;&emsp;其中, -n为要拷贝的目标文件夹名称
+
+![](../../static/img/faq/Installation/19.png)
+
+&emsp;&emsp;此时, 会在AIO_SDK文件夹下创建一份名为examples的脚本样例。
+
+![](../../static/img/faq/Installation/20.png)
+
+#### 7. Run File
+
+&emsp;&emsp;在examples文件夹中，打开一个案例脚本的.py文件, 在终端中运行Run File任务，即可执行脚本，进行仿真。
+
+![](../../static/img/faq/Installation/21.png)
+
+#### 8. License配置
+
+&emsp;&emsp;注意：试用License与无源单机版相同，如已配置好无源单机版的License，无需重复配置。
+
+(1) 打开授权管理工具“MaxOpticsSDK__LicenseManager_x64.exe”；
+
+(2) 点击激活（左上第一个按钮），选择“不能连接互联网，通过离线方式激活“，确定；
+
+(3)选择“使用激活文件“，将文件类型换为*.txt，打开”ZAKT5VW6LY37KNU7-pre.txt“文件；
+
+(4)弹出授权成功对话框，并提示保存确定文件。点击确定选择任意文件夹保存“确认文件”。
 
 ## 怎样安装本地SDK许可证？
 
-### Server: Install Group Licensing Local Service
+1、获取安装包
 
-1. Unzip the Release Packages
-Local Service Installer: `bit_service.exe`
+&emsp;&emsp;首先你可以从 release 包中获取集团服务授权中⼼安装包和集团服务配置程序。
 
-    Group licensing local service.
-Extension Module: `MaxOptics SDK_.ext`
+&emsp;&emsp;其中集团服务安装程序是集团授权服务安装程序，不同产品可共⽤同⼀服务程序。
 
-    The group licensing product extension module. 
-    Users should install the Extension along with the Local Service Installer to support the product.
-    
-Group Licensing Setting Tools: `MaxOptics SDK__SetLocalServer.exe`
-    
-    The client queries/sets the group server address and port.
+&emsp;&emsp;集团服务扩展模块是集团授权服务程序扩展模块，每⼀个产品需单独下载，可随集团服务⼀起安装或单独安装。
 
-2. Installation & Activation
+&emsp;&emsp;集团服务器设置⼯具是客户端查询和设置集团服务器地址和端口.
 
-!['1'](../../static/img/how/1.jpg)
+2、安装
 
-（1） Double click `bit_service.exe` for the installation;
+![](../../static/img/faq/Installation/22.png)
 
-（2）Open http://localhost:8274/manager/product.html ;
+（1）双击 ` bit_service.exe` 进行安装。
 
-（3）Add Extension Module;
+（2）打开 http://localhost:8274/manager/product.html
 
-    !['2'](../../static/img/how/2.jpg)
+（3）添加扩展模块
 
-（4）Activate the license online [Support online and offline];
+![](../../static/img/faq/Installation/23.png)
 
-    !['3'](../../static/img/how/3.jpg)
-    !['4'](../../static/img/how/4.jpg)
+3、激活授权码
 
-（5）Search License Info via the Given URL, then enter the License Code on the User Login Page.
+（1）在线方式
 
-    !['5'](../../static/img/how/5.jpg)
+![](../../static/img/faq/Installation/24.png)
 
-### Activation Offline
+![](../../static/img/faq/Installation/25.png)
 
-1. Choose `Activation Offline`
+（2）离线方式
 
-    !['6'](../../static/img/how/6.jpg)
+① 接上面步骤，选择“不联网，手工完成激活”。
 
-2. Enter your `Authorization Code` to generate the `Request Code`
+② 输入授权码, 产生请求码。
 
-    !['7'](../../static/img/how/7.jpg)
+![](../../static/img/faq/Installation/26.png)
 
-3. Copy or Export `Request Code`
+③ 复制或导出请求码
 
-    !['8'](../../static/img/how/8.jpg)
+![](../../static/img/faq/Installation/27.png)
 
-4. Open a tab with https://user.bitanswer.cn, enter your `Authorization Code`
+④ 登录 https://user.bitanswer.cn, 输入授权码。
 
-5. Generate Update Code
+注：这里的操作，需要电脑可以访问外网，或者通过手机流量访问。
 
-    !['9'](../../static/img/how/9.jpg)
-    !['10'](../../static/img/how/10.jpg)
-    !['11'](../../static/img/how/11.jpg)
+![](../../static/img/faq/Installation/28.png)
 
-6. Copy or Download Update Code, and Import your Update Code
+⑤ 根据请求码, 获取升级码。
 
-    !['12'](../../static/img/how/12.jpg)
-    !['13'](../../static/img/how/13.jpg)
+![](../../static/img/faq/Installation/29.png)
 
-#### Module List: All License Code Features would be listed here
+![](../../static/img/faq/Installation/30.png)
 
-e.g.
+![](../../static/img/faq/Installation/31.png)
 
-!['14'](../../static/img/how/14.jpg)
+⑥ 导入升级码。
 
-#### Login List: All current running client machines using the license service would be listed here 
-e.g.
+![](../../static/img/faq/Installation/32.png)
 
-!['15'](../../static/img/how/15.jpg)
+![](../../static/img/faq/Installation/33.png)
 
-### Client: Configuration
+![](../../static/img/faq/Installation/34.png)
 
-#### Configure the Group Licensing Service IP
+4、查询所有授权码的特征项
 
-On the client machine, running `MaxOptics SDK__SetLocalServer.exe` to configure
-Group Licensing Local Service
+&emsp;&emsp;模块列表: 会列出所有授权码所包含的所有特征项的合集。
 
-It supports the two ways:
+![](../../static/img/faq/Installation/35.png)
+
+5、查询当前在运行的客户端机器
+
+&emsp;&emsp;登录列表: 列出当前正在运行的客户端
+
+![](../../static/img/faq/Installation/36.png)
+
+6、客户端配置
+
+（1）配置授权服务IP
+
+&emsp;&emsp;在客户端机器上，运行' MaxOptics SDK__SetLocalServer.exe '来配置团体授权及本地服务
+
+它支持以下两种方式:
 
     Discovery Automatically
     Configure Manually
 
-#### Create the Local Config File
+（2）创建本地配置文件
 
-Create `.sdk` dir on the User HOME
+&emsp;&emsp;在用户主页上创建`.sdk`
 
     *nix: HOME is /home/<user>
     Windows: HOME is C:\Users\<user>
@@ -331,11 +334,11 @@ touch ~/.sdk/config.yml # or ~/.sdk/config.yaml
 touch ~/.sdk/config.toml
 ```
 
-#### Configure Fields
+### 配置字段
 
-Support YAML and TOML format, please refer to the following code snippets:
+&emsp;&emsp;支持 YAML 和 TOML 两种模式，请参考以下代码片段:
 
-for YAML:
+&emsp;&emsp;对于 YAML:
 
 ```
 max_optics:
@@ -348,8 +351,7 @@ delete this line"
     port: "<group auth port>"
 ```
 
-for TOML:
-
+&emsp;&emsp;对于 TOML:
 ```
 [max_optics]
 is_group_auth = true
@@ -363,38 +365,38 @@ port = "<group auth port>"
 
 ## Create PIP时报错找不到相应版本怎么办？
 
-如果您在安装SDK的过程中Creat PIP时出现报错：
+&emsp;&emsp;如果您在安装SDK的过程中Creat PIP时出现报错：
 
 ```python
 ERROR: Could not find a version that satisfies the requirement max_optics_local_sdk~
 ```
 
-​	您需要先检查一下Python的版本号是否是3.8.*，目前我们不支持除此之外的版本。其次wheel文件夹中是否包含以下三个文件：
+&emsp;&emsp;您需要先检查一下Python的版本号是否是3.8.*，目前我们不支持除此之外的版本。其次wheel文件夹中是否包含以下三个文件：
 
 max_optics_local_sdk-1.4.0.xxxx.xxxx-cp38-cp38-win_amd64.whl
 max_optics_sdk-1.9.0.0.xxxx.xxxx-py3-none-any.whl
 max_optics_whale-1.2.0.xxxx.xxxx-cp38-cp38-win_amd64.whl
 
-​	最后再查看一下requirements.txt中的版本信息是否与以上三个文件中的版本信息相符。
+&emsp;&emsp;最后再查看一下requirements.txt中的版本信息是否与以上三个文件中的版本信息相符。
 
 ## 安装软件后首次打开时报错Tunnel Breakoff怎么办？
 
-​	您可以检查软件是否安装在中文路径下，杀毒软件是否支持或关闭（目前腾讯管家和Windows Defender支持MO软件使用），检查服务是否启动、手动是否能起得来服务。
+&emsp;&emsp;您可以检查软件是否安装在中文路径下，杀毒软件是否支持或关闭（目前腾讯管家和Windows Defender支持MO软件使用），检查服务是否启动、手动是否能起得来服务。
 
-​	然后重启电脑，重装软件检查是否装在C盘（部分用户C盘权限不够）。
+&emsp;&emsp;然后重启电脑，重装软件检查是否装在C盘（部分用户C盘权限不够）。
 
-​	最后以管理员身份运行..\\MOService\bin\Release\mol-mid-pas-console.exe（中间键服务）。
+&emsp;&emsp;最后以管理员身份运行..\\MOService\bin\Release\mol-mid-pas-console.exe（中间键服务）。
 
 ## 虚拟机版SDK运行mo.sdk init -n examples时报错找不到指定模块怎么办？
 
-​	如果虚拟机版SDK运行mo.sdk init -n examples时出现以下报错：
+&emsp;&emsp;如果虚拟机版SDK运行mo.sdk init -n examples时出现以下报错：
 
 ![](../../static/img/faq/Installation/1.png)
 
-​	您可以在进到虚拟环境前输入命令 
+&emsp;&emsp;您可以在进到虚拟环境前输入命令 
 
 ```python
 C:\Python\python.exe -m pip install msvc-runtime
 ```
 
-​	后续正常操作即可	
+&emsp;&emsp;后续正常操作即可	

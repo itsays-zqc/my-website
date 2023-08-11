@@ -1,4 +1,4 @@
-# How to Obtaining Technical Support
+# Obtain Technical Support
 
 When you need technical support or have inquiries related to using Max-Optics, you can follow these steps to obtain support and write a request for assistance:
 
@@ -28,8 +28,8 @@ Please enter your question and feedback below:
 Thank you for your feedback! We will address your question as soon as possible. If you need further assistance, please contact our customer support team.
 
 Contact Information:
-- Phone: +1234567890
-- Email: support@example.com
+- Phone: 150 6666 1688
+- Email: sales@max-optics.com
 
 
 

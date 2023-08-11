@@ -16,25 +16,27 @@ const FeatureList = [
     description: (
       <>
         <div style={{ textAlign: 'left' }}>
-          <a href="/my-website/docs/faq/">    1.What is Max-Optics? </a>
+          <a href="/my-website/docs/faq/General">    1.What is Max-Optics? </a>
         </div>
 
         <hr style={{ margin: '0.25rem 0' }}/>
 
         <div style={{ textAlign: 'left' }}>
-          <a href="/my-website/docs/faq/faq1">    2.How to install Max-Optics?</a>
+          <a href="/my-website/docs/faq/Installation">    2.How to install Max-Optics?</a>
+          <div id="#server-install-group-licensing-local-service" className="section">
+          </div>
         </div>
 
 
         <hr style={{ margin: '0.25rem 0' }}/>
         <div style={{ textAlign: 'left' }}>
-          <a href="/my-website/docs/faq/faq2">    3.How to obtain a license? </a>
+          <a href="/my-website/docs/faq/Installation">    3.How to obtain a license? </a>
         </div>
 
 
         <hr style={{ margin: '0.25rem 0' }}/>
         <div style={{ textAlign: 'left' }}>
-          <a href="/my-website/docs/faq/faq3">    4.How to obtain technical service support? </a>
+          <a href="/my-website/docs/faq/General" >    4.How to obtain technical service support? </a>
         </div>
         <hr style={{ margin: '0.25rem 0' }}/>
 
@@ -101,17 +103,13 @@ const FeatureList = [
         <hr style={{ margin: '0.25rem 0' }}/>
   
         <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/examples/Grating/">2.Grating</a>
+        <a href="/my-website/docs/category/grating">2.Grating</a>
         </div>
         <hr style={{ margin: '0.25rem 0' }}/>
 
-        <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/examples/Metamaterial/">3.Metamaterial</a>
-        </div>
-        <hr style={{ margin: '0.25rem 0' }}/>
 
         <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/examples/PD/">4.PD</a>
+        <a href="/my-website/docs/examples/Active_Device/MOD/">3.PD</a>
         </div>
         <hr style={{ margin: '0.25rem 0' }}/>
 
@@ -121,27 +119,15 @@ const FeatureList = [
         {/* <hr style={{ margin: '0.25rem 0' }}/> */}
 
         <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/examples/MOD/">5.MOD</a>
+        <a href="/my-website/docs/examples/Active_Device/MOD/">4.MOD</a>
         </div>
         <hr style={{ margin: '0.25rem 0' }}/>
-
 
         {/* <div style={{ textAlign: 'left' }}>
         <a href="/my-website/docs/tutorial/material">7.MOD(by SDK)</a>
         </div>
         <hr style={{ margin: '0.25rem 0' }}/> */}
 
-
-        <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/examples/Lasers/">6.Lasers</a>
-        </div>
-        <hr style={{ margin: '0.25rem 0' }}/>
-
-        
-        <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/examples/Optical_scattering_and_far-field_radiation/">7.Optical scattering and far-field radiation</a>
-        </div>
-        <hr style={{ margin: '0.25rem 0' }}/>
        
       </>
     ),

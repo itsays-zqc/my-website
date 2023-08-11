@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[8804],{4892:e=>{e.exports=JSON.parse('{"title":"PIC","description":"This is PIC examples library.","slug":"/category/pic","permalink":"/my-website/docs/category/pic","navigation":{"next":{"title":"Directional Coupler","permalink":"/my-website/docs/examples/PIC/DirectionalCoupler/"}}}')}}]);

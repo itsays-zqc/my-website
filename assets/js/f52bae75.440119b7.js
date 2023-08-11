@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[512],{91867:e=>{e.exports=JSON.parse('{"title":"maxoptics_sdk.all","description":"Package","slug":"/category/maxoptics_sdkall","permalink":"/my-website/docs/category/maxoptics_sdkall","navigation":{"next":{"title":"parameter","permalink":"/my-website/docs/test/all/parameter"}}}')}}]);

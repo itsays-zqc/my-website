@@ -1,1 +1,0 @@
-# Optical scattering and far-field radiation

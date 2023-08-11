@@ -160,6 +160,7 @@ MO Link 是光子芯片的链路级仿真工具，支持多模、双向、多通
 
 ​	邮箱：sales@max-optics.com
 
+
 ## 怎样获得技术支持服务？
 
 ​	When you need technical support or have inquiries related to using Max-Optics, you can follow these steps to obtain support and write a request for assistance:
@@ -280,14 +281,5 @@ Contact Information:
 path = "C:/Program files/Python/python.exe"
 ```
 
-## 无源仿真时监视器的设置位置应注意什么？
 
-​	使用FDTD 仿真某些带反射的器件时候，若将功率/模式展开监视器放置于入射端，测得的功率在某些波段大于1
 
-![](../../static/img/faq/General/10.png)
-
-​	相关仿真过程中相关原理的问题，我们会通过邮件或者短信、微信的方式告知用户。
-
-## EME仿真时，重复扫描波长是否会重新计算Overlap?
-
-​	在进行EME 计算的时候，工作流是先算好所有Cell中的Mode，Sweep的时候再计算Overlap和归一化。如果重复扫描长度，不需要重新计算overlap, 程序只会计算一次。

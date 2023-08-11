@@ -7,7 +7,7 @@ This example introduces the modeling and optoelectronic simulation of a vertical
 
 ## 1. Overview
 
-This example utilizes FDTD simulation to obtain the optical field profile in the Ge absorption layer. Subsequently, the photo-induced carrier generation rate is calculated based on the optical field, which is then imported into the OEDevice simulation to obtain the photo current. We also provide scripts for dark current, capacitance and resistance, frequency response, and saturation power. These simulations are divided into separate scripts, and they all call a unified script for modeling and material setup, making it convenient for modifications and management.
+This example utilizes FDTD simulation to obtain the optical field distribution in the Ge absorption layer. Subsequently, the photo-induced carrier generation rate is calculated based on the optical field, which is then imported into the OEDevice simulation to obtain the photo current. We also provide scripts for dark current, capacitance and resistance, frequency response, and saturation power. These simulations are divided into separate scripts, and they all call a unified script for modeling and material setup, making it convenient for modifications and management.
 
 
 <br/>
@@ -65,8 +65,8 @@ run_mode = "local"
 simu_name = "VPD00_struc"
 ```
 Wavelength, temperature, the mesh grid size and some other parameters are defined above. They will be detailed in the subsequent settings.
-<br/>
 
+<br/>
 
 ```
 [3]
@@ -118,6 +118,7 @@ cathode_z_span = 1
 cathode_z_center = Si_z_span+Ge_z_span+cathode_z_span/2
 ```
 These are geometric parameters of the structures.
+
 <br/>
 
 
@@ -143,6 +144,7 @@ oe_z_mean = 0.5*(oe_z_min+oe_z_max)
 oe_z_span = oe_z_max-oe_z_min
 ```
 These are geometric parameters of the electrical simulation region.
+
 <br/>
 
 
@@ -188,6 +190,7 @@ n_pplus_con = 1e20
 n_pplus_ref = 1e16
 ```
 These are parameters for doping setup, including doping box, concentration and the diffusion junction width.
+
 <br/>
 
 
@@ -214,6 +217,7 @@ z_span = z_max-z_min
 # endregion
 ```
 These are geometry parameters for the optical simulation region.
+
 <br/>
 
 
@@ -235,6 +239,7 @@ def pd_project(project_name, run_mode, material_property):
 #### 2.3.1 Create a new project
 
 Create a new simulation project.
+
 ```
 [8]
 ```
@@ -243,6 +248,7 @@ Create a new simulation project.
     pj = mo.Project(name=project_name, location=run_mode)
 	# endregion
 ```
+
 `mo.Project()` parameters:
 
 - `name`--Project name, which is also the folder name for the project files to be saved.
@@ -269,7 +275,9 @@ Create a new simulation project.
         print("material_property must be chosen from 'normal', 'transient'")
         raise
 ```
-The `elec_Si_properties` and `elec_Ge_properties` are both variables imported from `VPD_material.py`, storing the modified electronic parameters for Silicon and Germanium respectively. Besides, more physics models for Germanium are switched on in the transient simulation, with the `elec_Ge_properties_for_transient` specified for it. The `material_property` is used to determine which type of material parameters to choose. For details of the physics model and electronic parameter settings, please refer to the appendix.
+
+The `elec_Si_properties` and `elec_Ge_properties` are both variables imported from `VPD_material.py`, storing the modified electronic parameters for Silicon and Germanium respectively. Besides, more physics models for Germanium are applied in transient simulation, with the `elec_Ge_properties_for_transient` specified for it. The `material_property` is used to determine which type of material parameters to choose. For details of the physics model and electronic parameter settings, please refer to the appendix.
+
 <br/>
 
 
@@ -302,13 +310,16 @@ When adding materials, start by using the `add_lib` function to add electrical m
 - `name`--Custom material name
 - `data`--Material data, requiring one of the built-in materials in the electrical material library, namely `mo.OE_Material`
 - `order`--`mesh_order` of the material, default to be 2
-- `override`--Override the default electronic parameters by custom values
+- `override`--Override the default electronic parameters by custom values. It's empty by default, which means default models and parameters are applied
+
+<br/>
 
 Then, use the `set_optical_material` function to set the optical property for the material.
 
 `set_optical_material()` parameters：
 
 - `data`--Optical material property，which can be one of the built-in materials in the optical material library `mo.Material`, or be from the custom optical material.
+
 <br/>
 
 
@@ -322,14 +333,15 @@ mt.add_lib(name="mat_sio2", data=mo.OE_Material.SiO2, order=1)
 mt.add_nondispersion(name="mat_sio2_op", data=[(1.444, 0)], order=1)
 mt["mat_sio2"].set_optical_material(data=mt["mat_sio2_op"].passive_material)
 ```
+
 <br/>
 
 
 Note:
 
-1. Although the electrical and optical material properties are bound together through a two-step setting, in reality, there is no inherent connection between them. For instance, it is possible to set both the electrical properties of SiO2 and the optical properties of Si for the same material. The simulation will not generate errors or warnings in such cases, so users need to determine by themselves whether the material settings align with the physics.
-2. The FDTD simulation currently doesn't support metal materials. Therefore, the optical property of metal materials should be set to `mo.Material.PEC` and the material name should also be `"pec"`.
+1. Although the electrical and optical material properties are bound together through a two-step setting, in reality, there is no inherent connection between them. For instance, it is possible to set both the electrical properties of SiO2 and the optical properties of Si for the same material. The simulation will not generate errors or warnings in such cases, so users need to determine by themselves whether the material settings align with physics.
 
+2. The FDTD simulation currently doesn't support metal materials. Therefore, the optical property of metal materials should be set to `mo.Material.PEC` and the material name should also be `"pec"`.
 
 
 <br/>
@@ -351,6 +363,7 @@ First, initialize an object of `pj.Structure()`.
 - `mesh_type`--Type of mesh refinement for optical simulation
 - `mesh_factor`--The grading factor of non-uniform grid
 - `background_material`--Background material
+
 <br/>
 
 
@@ -403,6 +416,8 @@ First, initialize an object of `pj.Structure()`.
 - `name`--Structure name
 - `type`--Structure type
 - `property`--Other properties, listed below
+
+
 <br/>
 
 
@@ -428,6 +443,7 @@ First, initialize an object of `pj.Structure()`.
 | geometry.rotate_z   | 0         | float    |                               |
 | material.material   |           | material |                               |
 | material.mesh_order |           | integer  | Restrained by condition: >=0. |
+
 <br/>
 
 
@@ -454,6 +470,7 @@ First, initialize an object of `pj.Structure()`.
 | geometry.rotate_z   | 0       | float    |                               |
 | material.material   |         | material |                               |
 | material.mesh_order |         | integer  | Restrained by condition: >=0. |
+
 <br/>
 
 
@@ -478,13 +495,14 @@ First, initialize an object of `pj.Structure()`.
 | geometry.rotate_z      | 0       | float    |                               |
 | material.material      |         | material |                               |
 | material.mesh_order    |         | integer  | Restrained by condition: >=0. |
+
 <br/>
 
 
 Note:
 
-1. The `mesh_order` of a structure is default to be the mesh order of its material. And the default value will be overridden when `mesh_order` is set explicitly.
-2. The larger of the `mesh_order` of a structure, the higher of its priority. With `mesh_order` being the same, the structure created later has a higher priority than the one created earlier. When structures overlap, the one with higher priority overrides the one with lower priority.
+1. The `mesh_order` of a structure is default to be the mesh order of its material. And the default value will be overridden when the structure's `mesh_order` is set explicitly.
+2. The larger of the `mesh_order` of a structure, the higher of its priority. With `mesh_order` of two structures being the same, the structure created later has a higher priority than the one created earlier. When structures overlap, the one with higher priority overrides the one with lower priority.
 
 
 <br/>
@@ -526,6 +544,7 @@ Note:
 - `property`--Other properties
 
 According to the selection of `general.distribution_function`, doping is divided into constant doping and gaussian doping. Detailed properties are listed below.
+
 <br/>
 
 
@@ -557,27 +576,30 @@ Doping property list:
 | volume.material_list          |         | list  | Available when volume_type is 'material'           |
 | volume.region_list            |         | list  | Available when volume_type is 'region'             |
 
-`geometry`--Set the geometry parameters of doping box
+Description:
 
-`general`--Set the distribution function, concentration and so on
+- `geometry`--Set the geometry parameters of doping box
 
-- `distribution_function`:
-  - When it's set to `"constant"`, only `concentration` needs to be set
-  - When it's set to `"gaussian"`: `concentration`, `ref_concentration`, `junction_width`, `source_face` need to be set
-- `concentration`--Concentration in the non-diffusion area
-- `ref_concentration`--Concentration on the edge of diffusion area (edge of doping box)
-- `junction_width`--Diffusion junction width
-- `source_face`--The doping source face. Options are `"lower_x"`, `"lower_y"`, `"lower_z"`, `"upper_x"`, `"upper_y"` or `"upper_z"`. `"lower_x"` means the source face is `x=x_min`. Similarly for the rest. There is no diffusion area on the edge of source face. As for the other edges, there is a diffusion area within the doping box.
+- `general`--Set the distribution function, concentration and so on
 
-`volume`--Set a list of regions or materials to be doped
+  - `distribution_function`:
+    - When it's set to `"constant"`, only `concentration` is required
+    - When it's set to `"gaussian"`: `concentration`, `ref_concentration`, `junction_width`, `source_face` are required
+  - `concentration`--Concentration in the non-diffusion area
+  - `ref_concentration`--Concentration on the edge of diffusion area (edge of doping box)
+  - `junction_width`--Diffusion junction width
+  - `source_face`--The doping source face. Options are `"lower_x"`, `"lower_y"`, `"lower_z"`, `"upper_x"`, `"upper_y"` or `"upper_z"`. `"lower_x"` means the source face is `x=x_min`. Similarly for the rest. There is no diffusion area on the edge of source face. As for the other edges, there is a diffusion area within the doping box.
 
-- `volume_type`:
+- `volume`--Set a list of regions or materials to be doped
 
-  - When it's set to `"all"`(by default)，the doping is applied to all the (semiconductor) structures, restricted by the doping box
+  - `volume_type`:
 
-  - When it's set to `"material"`, `material_list` needs to be set, which means the doping is applied to the structures with one of the specified materials and restricted by the doping box
+    - When it's set to `"all"`(by default)，the doping is applied to all the (semiconductor) structures, restricted by the doping box
 
-  - When it's set to `"region"`, `region_list` needs to be set, which means the doping is applied to the specified structures and restricted by the doping box
+    - When it's set to `"material"`, `material_list` is required, which means the doping is applied to the structures with one of the specified materials and restricted by the doping box
+
+    - When it's set to `"region"`, `region_list` is required, which means the doping is applied to the specified structures and restricted by the doping box
+
 <br/>
 
 
@@ -633,6 +655,7 @@ st.add_doping(name="n_pplus", type="n", property={
 
 - `name`--Custom name
 - `property`--Other properties
+
 <br/>
 
 
@@ -650,25 +673,26 @@ Surface recombination property list:
 | material_1             |                     | material | Available when surface_type is 'material_material'                                                                 |
 | material_2             |                     | material | Available when surface_type is 'material_material'                                                                 |
 
+Description:
 
-`surface_type`--Type of selection for the surface
+- `surface_type`--Type of selection for the surface
   - When `surface_type` is `"domain_domain"`, the surface is the interface between two structures 
   - When `surface_type` is "material_material"`, the surface is the interface between two materials
 
-`interface_type`--Type of contact for the surface
+- `interface_type`--Type of contact for the surface
   - `"InsulatorInterface"`--Semiconductor-insulator interface
   - `"HomoJunction"`--Homogeneous semiconductor-semiconductor interface
   - `"HeteroJunction"`--Heterogeneous semiconductor-semiconductor interface
   - `"MetalOhmicInterface"`--Semiconductor-conductor interface
   - `"SolderPad"`--Conductor-insulator interface
 
-`infinite_recombination`--Only available when `interface_type` is `"MetalOhmicInterface"`. The surface recombination velocity of holes and electrons will be available when `infinite_recombination` is `False`
+- `infinite_recombination`--Only available when `interface_type` is `"MetalOhmicInterface"`. The surface recombination velocity of holes and electrons will be available when `infinite_recombination` is `False`
 
-`velocity_hole`, `velocity_electron`--Surface recombination velocity of holes and electrons. Available when `interface_type` is `"MetalOhmicInterface"` or `"InsulatorInterface"`
+- `velocity_hole`, `velocity_electron`--Surface recombination velocity of holes and electrons. Available when `interface_type` is `"MetalOhmicInterface"` or `"InsulatorInterface"`
 
-`domain_1`, `domain_2`--Names of the two structures at the interface. They must be set explicitly when `surface_type` is `"domain_domain"`
+- `domain_1`, `domain_2`--Names of the two structures at the interface. They must be set explicitly when `surface_type` is `"domain_domain"`
 
-`material_1`, `material_2`--The two materials at the interface. They must be set explicitly when `surface_type` is `"material_material"`
+- `material_1`, `material_2`--The two materials at the interface. They must be set explicitly when `surface_type` is `"material_material"`
 
 
 <br/>
@@ -742,11 +766,13 @@ Boundary conditions of optical simulation property list:
 | boundary.z_max                   |           | string  | Selections are ['PML', 'PEC', 'metal', 'PMC', 'periodic'].                                |
 | boundary.z_min                   |           | string  | Selections are ['PML', 'PEC', 'metal', 'PMC', 'symmetric', 'anti_symmetric', 'periodic']. |
 
-`geometry`--Set the optical simulation region
+Description:
 
-`boundary`--Set the optical boundary conditions, default to be `"PML"` for all the boundaries
+- `geometry`--Set the optical simulation region
 
-`general_pml`--Set pml-related parameters
+- `boundary`--Set the optical boundary conditions, default to be `"PML"` for all the boundaries
+
+- `general_pml`--Set pml-related parameters
 
 
 <br/>
@@ -787,6 +813,8 @@ Boundary conditions of optical simulation property list:
 
 - `name`--Custom name
 - `property`--Other properties
+
+
 <br/>
 
 
@@ -810,9 +838,12 @@ Optical local mesh property list:
 | geometry.z_min          |         | float |                               |
 | geometry.z_max          |         | float |                               |
 
-`geometry`--Set the region of local mesh. When `x_span` doesn't vanish, the mesh setting will be applied to the range along the x axis. Similarly for the rest
+Description:
 
-`general`--Set the mesh size in the corresponding direction
+- `geometry`--Set the region of local mesh. When `x_span` doesn't vanish, the mesh setting will be applied to the range along the x axis. Similarly for the rest
+
+- `general`--Set the mesh size in the corresponding direction
+
 <br/>
 
 
@@ -820,6 +851,7 @@ Optical local mesh property list:
 
 - `name`--Custom name
 - `property`--Other properties
+
 <br/>
 
 
@@ -846,6 +878,7 @@ Local mesh of electrical simulation in rectangle region property list:
 Note:
 
 1. When the simulation region is in the xy plane, only the parameters in the x, y direction are effective, and parameters in the z direction will be ignored. Similarly for the rest.
+
 <br/>
 
 
@@ -853,6 +886,7 @@ Note:
 
 - `name`--Custom name
 - `property`--Other properties
+
 <br/>
 
 
@@ -900,6 +934,7 @@ Note:
 - `axis`--Direction of the source. `"x_forward"` means light propagating along x axis and in the direction of increasing x coordinate. `"x_forward"` means the opposite direction. Similarly for the rest
 - `type`--Type of the source. It is mode source in this example
 - `property`--Other properties
+
 <br/>
 
 
@@ -935,15 +970,17 @@ Mode source property list:
 | geometry.z_min                      |                   | float   |                                                              |
 | geometry.z_max                      |                   | float   |                                                              |
 
-`geometray`--Set geometric parameters of optical source
+Description:
 
-`bent_waveguide`--Set parameters related to bent waveguide
+- `geometray`--Set geometric parameters of optical source
 
-`general`：
+- `bent_waveguide`--Set parameters related to bent waveguide
 
-- `mode_selection`--Set the type of selection for the eigen mode. When it is `"user_select"`, the mode of index in `mode_index` is selected
-- `waveform`--Set the waveform of the source
-  - `waveform_id_select`--Set to be a specified waveform
+- `general`：
+
+  - `mode_selection`--Set the type of selection for the eigen mode. When it is `"user_select"`, the mode of index in `mode_index` is selected
+  - `waveform`--Set the waveform of the source
+    - `waveform_id_select`--Set to be a specified waveform
 
 
 <br/>
@@ -982,6 +1019,7 @@ The monitor `"Power Monitor"` is of the 3D type, set to record the optical field
 - `name`--Name of the monitor
 - `type`--Type of the monitor
 - `property`--Other properties
+
 <br/>
 
 
@@ -1016,19 +1054,21 @@ Power monitor property list:
 | geometry.z_max                                     |            | float   |                                                              |
 | advanced.sampling_frequency.min_sampling_per_cycle | 2          | integer |                                                              |
 
-`geometry`--Set the geometric parameters of the monitor, including the dimension and the size
+Description:
 
-`general`--Set the frequency points of the monitor
+- `geometry`--Set the geometric parameters of the monitor, including the dimension and the size
 
-- `frequency_profile`:
+- `general`--Set the frequency points of the monitor
 
-  - `sample_spacing`--Only support `"uniform"` currently, which means the frequency points are uniformly sampled in either wavelength or frequency
+  - `frequency_profile`:
 
-  - `use_wavelength_spacing`--Default to be `True`. When it' `True`, the frequency points in sampled in wavelength, otherwise, in frequency.
+    - `sample_spacing`--Only support `"uniform"` currently, which means the frequency points are uniformly sampled in either wavelength or frequency
 
-  - `spacing_type`--Default to be `"wavelength"`. When it's `"wavelength"`, the frequency range is set in wavelength; When it's `"frequency"`, the frequency range is set in frequency
+    - `use_wavelength_spacing`--Default to be `True`. When it' `True`, the frequency points in sampled in wavelength, otherwise, in frequency.
 
-  - `frequency_points`--Number of frequency points
+    - `spacing_type`--Default to be `"wavelength"`. When it's `"wavelength"`, the frequency range is set in wavelength; When it's `"frequency"`, the frequency range is set in frequency
+
+    - `frequency_points`--Number of frequency points
 
 
 
@@ -1056,7 +1096,7 @@ def preview():
         os.makedirs(plot_path)
 ```
 
-Call the `pd_project` function defined earlier to create a new project `pj`. `simu_name` is set in the general parameters. `time_str` is the time stamp of when the function started running and is added to the project name, to make the project name different for each simulation and the simulation results not overwritten by each other.
+Call the `pd_project` function defined earlier to create a new project `pj`. `simu_name` is set in the general parameters. `time_str` is the time stamp when the function started running and is added to the project name, to make the project name unique for each simulation and the simulation results not overwritten by each other.
 
 `plot_path` will be set to the save path of the result extraction. Here, it is set to the 'plots' folder located in the same directory as this script. If the path doesn't exist, `os.makedirs()` should be called to create it.
 
@@ -1087,6 +1127,7 @@ Optical and electrical solvers are added within the preview function. The corres
 - `name`--Name of the solver
 - `type`--Type of the solver. For active device simulation, the type of FDTD solver is `"AFDTD"`, and the type of carrier transport solver is `"OEDevice"`
 - `property`--Other properties
+
 <br/>
 
 
@@ -1125,6 +1166,7 @@ Preview the doping profile by the `run_doping` function of the `OEDevice` solver
 - `cmin`--Set the minimum of the colorbar for the intensity plot. When the concentration is smaller than this value, it will be displayed as this value. It is ineffective for net doping
 - `savepath`--The save path for the result
 - `property`--Other properties
+
 <br/>
 
 
@@ -1146,9 +1188,12 @@ Preview the doping profile by the `run_doping` function of the `OEDevice` solver
 | geometry.z_min     |         | float  |                                                              |
 | geometry.z_max     |         | float  |                                                              |
 
-`geometry`--Set the region of doping preview
+Description:
 
-- `dimension`--Set the dimension of doping preview. The electrical simulation only supports the 2D type currently, so the doping and its preview are all considered in a plane. When `dimension` is `"2d_x_normal"`, it means the preview is in the yz plane. Similarly for the rest.
+- `geometry`--Set the region of doping preview
+
+  - `dimension`--Set the dimension of doping preview. The electrical simulation only supports the 2D type currently, so the doping and its preview are all considered in a plane. When `dimension` is `"2d_x_normal"`, it means the preview is in the yz plane. Similarly for the rest.
+
 <br/>
 
 
@@ -1193,6 +1238,7 @@ Preview the index profile by the `run_index` function of the `AFDTD` solver.
 - `max_index`--Set the maximum of the intensity plot of index, default to be `None`
 - `max_sigma`--Set the maximum of the intensity plot of conductivity, default to be `None`
 - `property`--Other properties
+
 <br/>
 
 
@@ -1214,7 +1260,10 @@ Preview the index profile by the `run_index` function of the `AFDTD` solver.
 | geometry.z_min        |         | float  |                                                              |
 | geometry.z_max        |         | float  |                                                              |
 
-`geometry`--Set the region of index preview. The `run_index` function currently only supports the index preview in a 2D plane. If `x_span` is set to `0`, the preview will be performed in the yz plane. Similarly for the rest.
+Description:
+
+- `geometry`--Set the region of index preview. The `run_index` function currently only supports the index preview in a 2D plane. If `x_span` is set to `0`, the preview will be performed in the yz plane. Similarly for the rest.
+
 <br/>
 
 
@@ -1343,20 +1392,22 @@ simu.add(name="oedevice", type="OEDevice", property={
     "advanced": {"non_linear_solver": "Newton", "linear_solver": "MUMPS", "max_iterations": 50}})
 ```
 
+Description:
+
 The detailed property list of `OEDevice` solver can be found in the appendix. Here:
 
-`genrate`--Set the properties for optical generation rate
+- `genrate`--Set the properties for optical generation rate
 
-- `genrate_path`--It's set to `genrate_file_path`, which is `""`, an empty string. That means no optical generation rate is imported to the `OEDevice` solver. Therefore, the simulation is for dark current. And the rest properties in `genrate` is ineffective in this case
+  - `genrate_path`--It's set to `genrate_file_path`, which is `""`, an empty string. That means no optical generation rate is imported to the `OEDevice` solver. Therefore, the simulation is for dark current. And the rest properties in `genrate` is ineffective in this case
 
-`geometry`--Set the geometric parameters for the simulation region
+- `geometry`--Set the geometric parameters for the simulation region
 
-- `dimension`--It's set to `2d_x_normal`, which means the simulation is in the yz plane
+  - `dimension`--It's set to `2d_x_normal`, which means the simulation is in the yz plane
 
-`general`:
+- `general`:
 
-- `norm_length`--It's set to `normal_length`, which is `20`, meaning that the size of the device in the third dimension is 20μm. That is to say its length in the x-direction is 20μm
-- `solver_mode`--It's set to `"steady_state"`, which means a steady state simulation
+  - `norm_length`--It's set to `normal_length`, which is `20`, meaning that the size of the device in the third dimension is 20μm. That is to say its length in the x-direction is 20μm
+  - `solver_mode`--It's set to `"steady_state"`, which means a steady state simulation
 
 
 <br/>
@@ -1398,6 +1449,7 @@ result_device.extract(data="I", electrode="cathode", export_csv=True,
 - `export_csv`--Whether to export the csv result
 - `show`--Whether to show the plot in a popup window
 - `savepath`--The save path for the result extraction
+
 <br/>
 
 
@@ -1502,10 +1554,12 @@ A range of voltage from 0V to 1.5V is applied to the electrode `"anode"`, with a
 *Result show of the I-V curve*
 ![I-V curve](./img/resistanceIV.png)
 <center>Fig 4. I-V curve</center>
+
 <br/>
 
 
 #### 3.2.2 Fit V-I curve to obtain resistance
+
 <br/>
 
 ##### 3.2.2.1 Read the saved I-V data
@@ -1593,6 +1647,7 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 *Result show of the V-I fitting*
 ![resistance](./img/resistance.jpg)
 <center>Fig 5. V-I fitting</center>
+
 <br/>
 
 
@@ -1661,26 +1716,33 @@ result_device.extract(data="C", electrode="cathode", export_csv=True, show=False
 print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - start)/60, 2)} + "\x1b[0m")
 ```
 
+Description:
+
 For `OEDevice` solver, the detailed properties can be found in the appendix. Here:
 
-`general`:
+- `general`:
 
-- `solver_mode`--It's set to `"SSAC"`, which means a SSAC simulation
-- `small_signal_ac`--Set the frequency points
-  - `frequency_spacing`--It's set to `"single"`, which means a single frequency point
-  - `frequency`--Set the value of the single frequency
+  - `solver_mode`--It's set to `"SSAC"`, which means a SSAC simulation
+  
+  - `small_signal_ac`--Set the frequency points
+    
+    - `frequency_spacing`--It's set to `"single"`, which means a single frequency point
+    
+    - `frequency`--Set the value of the single frequency
+
 <br/>
 
 
 For the electrode `"cathode"`, a range of voltage from 0V to 3V is applied to it, with a step of 0.5V.
 
-`apply_AC_small_signal`--It's set to `All`, which means the small signal analysis is applied at each voltage step
+- `apply_AC_small_signal`--It's set to `All`, which means the small signal analysis is applied at each voltage step
+
 <br/>
 
 
 For the result extraction:
 
-`data`--It's set to `"C"`, which is available after the SSAC simulation and is used to extract the capacitance
+- `data`--It's set to `"C"`, which is available after the SSAC simulation and is used to extract the capacitance
 
 
 <br/>
@@ -1688,6 +1750,7 @@ For the result extraction:
 *Result show of the capacitance*
 ![Capacitance](./img/capacitance.png)
 <center>Fig 6. Capacitance</center>
+
 <br/>
 
 
@@ -1813,6 +1876,7 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 - `light_power`--Set the power of the light source, measured in W. The optical generation rate will be scaled based on the power
 - `coordinate_unit`--Set the coordinate unit in the optical generation rate file (gfile)
 - `field_length_unit`--Set the length unit in the generation rate unit in the optical generation rate file (gfile).  If it's set to `"m"`, the generation rate unit in the gfile will be `/m^3/s`. Similarly for the rest
+
 <br/>
 
 
@@ -1945,12 +2009,14 @@ simu.add(name="oedevice", type="OEDevice", property={
     "advanced": {"non_linear_solver": "Newton", "linear_solver": "MUMPS", "max_iterations": 50}})
 ```
 
-`genrate`:
+Description:
 
-- `genrate_path`--Here it's not empty, meaning that the file at the path will be imported to the `OEDevice` solver
-- `coordinate_unit`--Set the coordinate unit in the gfile
-- `field_length_unit`--Set the length unit in the generation rate unit in the gfile
-- `source_fraction`--Set the scaling factor for the light power. The imported optical generation rate will be multiplied by this factor first, and then be used to solve the carrier transport
+- `genrate`:
+
+  - `genrate_path`--Here it's not empty, meaning that the file at the path will be imported to the `OEDevice` solver
+  - `coordinate_unit`--Set the coordinate unit in the gfile
+  - `field_length_unit`--Set the length unit in the generation rate unit in the gfile
+  - `source_fraction`--Set the scaling factor for the light power. The imported optical generation rate will be multiplied by this factor first, and then be used to solve the carrier transport
 
 
 <br/>
@@ -2081,10 +2147,12 @@ st.add_electrode(name="anode", property={
     "sweep_type": "single", "voltage": 0, "apply_AC_small_signal": "none"})
 ```
 
+Description:
+
 For the electrode `"cathode"`:
 
 - `bc_mode`--Here it's set to `"transient"`, which means a transient boundary condition is applied to this electrode. Then the time dependence of the optical generation rate can be set at this electrode
-- `voltage`--Here it's set to `tcad_vbias`, which is `1`, meaning that the voltage is applied to the electrode and a steady state simulation is performed first. The transient simulation is based on the steady state. The optical generation rate is not applied during the steady state simulation.
+- `voltage`--Here it's set to `tcad_vbias`, which is `1`, meaning that the voltage is applied to the electrode and a steady state simulation is performed first. The transient simulation is based on the steady state result. The optical generation rate is not applied during the steady state simulation.
 - `v_step_max`--Set the max step of the voltage from the equilibrium state to steady state at the bias of `voltage`.
 - `time_table`--Set the time dependence of optical generation rate. It's of a list type, whose item is of a dictionary type. In each of its item:
   - `time_start`--Set the start time point of the range. The value of `0` represents the steady state of the earlier simulation.
@@ -2122,20 +2190,22 @@ simu.add(name="oedevice", type="OEDevice", property={
                  "use_quasi_fermi": "enabled", "damping": "potential", "potential_update": 2, "relative_tolerance": 1e-5, "tolerance_relax": 1e7}})
 ```
 
-`general`:
+Description:
 
-- `solver_mode`--Here it's set to `"transient"`, which means a transient simulation
+- `general`:
 
-`advanced`:
+  - `solver_mode`--Here it's set to `"transient"`, which means a transient simulation
 
-- `use_global_max_iterations`--Whether to use global max iterations during the initialization of solving the Poisson equations and the subsequent computing for solving the drift-diffusion equations coupling with Poisson equations
-- `poisson_max_iterations`--Set the max iterations during the initialization of solving the Poisson equations, available when `use_global_max_iterations` is `False`
-- `ddm_max_iterations`--Set the max iterations during the subsequent computing for solving the drift-diffusion equations coupling with Poisson equations, available when `use_global_max_iterations` is `False`
-- `use_quasi_fermi`--Whether to directly solve for the quasi-Fermi potential instead of carrier concentration as unkowns. `"enabled"` means `True`, and `"disabled"` means `False`
-- `damping`--Set the nonlinear update damping scheme. `"potential"` means the damping is based on the potential variation
-- `potential_update`--Set the threshold potential for potential damping. The large value will reduce the strength of damping effect
-- `relative_tolerance`--Set the relative update tolerance
-- `tolerance_relax`--Set the tolerance relaxation factor for convergence on relative tolerance criteria
+- `advanced`:
+
+  - `use_global_max_iterations`--Whether to use global max iterations during the initialization of solving the Poisson equations and the subsequent computing for solving the drift-diffusion equations coupling with Poisson equations
+  - `poisson_max_iterations`--Set the max iterations during the initialization of solving the Poisson equations, available when `use_global_max_iterations` is `False`
+  - `ddm_max_iterations`--Set the max iterations during the subsequent computing for solving the drift-diffusion equations coupling with Poisson equations, available when `use_global_max_iterations` is `False`
+  - `use_quasi_fermi`--Whether to directly solve for the quasi-Fermi potential instead of carrier concentration as unkowns. `"enabled"` means `True`, and `"disabled"` means `False`
+  - `damping`--Set the nonlinear update damping scheme. `"potential"` means the damping is based on the potential variation
+  - `potential_update`--Set the threshold potential for potential damping. The large value will reduce the strength of damping effect
+  - `relative_tolerance`--Set the relative update tolerance
+  - `tolerance_relax`--Set the tolerance relaxation factor for convergence on relative tolerance criteria
 
 
 
@@ -2667,15 +2737,17 @@ elec_Ge_properties_for_transient = {"model": {"high_field": True, "mobility_forc
                                                         "vsatn_exp": 0, "vsatp_exp": 0}, "print": 1}}
 ```
 
-`basic`--Set the permittivity and affinity
+Description:
 
-`band`--Set models and parameters of the band and the recombination
+- `basic`--Set the permittivity and affinity
 
-`mobility`--Set the model and parameters of mobility
+- `band`--Set models and parameters of the band and the recombination
 
-`model`--Set the switch of high field mobility model and Fermi-Dirac statistics model
+- `mobility`--Set the model and parameters of mobility
 
-`vsat`--Set the model and parameters of velocity saturation
+- `model`--Set the switch of high field mobility model and Fermi-Dirac statistics model
+
+- `vsat`--Set the model and parameters of velocity saturation
 
 
 
@@ -2736,68 +2808,234 @@ For the detailed introduction about electronic parameters, please refer to the d
 | small_signal_ac.log_stop_frequency       | 1.0e+10           | float   |                                                              |
 | small_signal_ac.log_num_frequency_points | 2                 | integer |                                                              |
 
-`geometry`：
+Description:
 
-- `dimension`--Set the dimension of the simulation region. Only 2D simulation is supportd currently. When it's set to `"2d_x_normal"`, the simulation is on the yz plane. Similarly for the rest
+- `geometry`：
 
-`general`:
+  - `dimension`--Set the dimension of the simulation region. Only 2D simulation is supportd currently. When it's set to `"2d_x_normal"`, the simulation is on the yz plane. Similarly for the rest
 
-- `norm_length`--Set the length in the third dimension, default to be 1
-- `solver_mode`--Set the simulation mode. Steady state, transient and SSAC simulations are supported
-- `temperature`--Set the simulation temperature
-- `temperature_dependence`--Set the type of the temperature dependence. Only `"Isothermal"` is supported currently 
+- `general`:
 
-`genrate`:
+  - `norm_length`--Set the length in the third dimension, default to be 1
+  - `solver_mode`--Set the simulation mode. Steady state, transient and SSAC simulations are supported
+  - `temperature`--Set the simulation temperature
+  - `temperature_dependence`--Set the type of the temperature dependence. Only `"Isothermal"` is supported currently 
 
-- `genrate_path`--Set the absolute path of the optical generation rate file (gfile)
-  - When it's set to `""` (by default), and empty string , no optical generation rate will be applied
-  - When it's not empty, the gfile at the path will be imported to apply the optical generation rate
+- `genrate`:
 
-- `coordinate_unit`--Set the coordinate unit in the gfile
-- `field_length_unit`--Set the length unit in the generation rate unit in the gfile
-- `source_fraction`--Set the scaling factor for the light power. The imported optical generation rate will be multiplied by this factor first, and then be used to solve the carrier transport
+  - `genrate_path`--Set the absolute path of the optical generation rate file (gfile)
+    - When it's set to `""` (by default), and empty string , no optical generation rate will be applied
+    - When it's not empty, the gfile at the path will be imported to apply the optical generation rate
 
-`small_signal_ac`:
+  - `coordinate_unit`--Set the coordinate unit in the gfile
+  - `field_length_unit`--Set the length unit in the generation rate unit in the gfile
+  - `source_fraction`--Set the scaling factor for the light power. The imported optical generation rate will be multiplied by this factor first, and then be used to solve the carrier transport
 
-- `perturbation_amplitude`--Set the voltage amplitude of the small signal
-- `frequency_spacing`--Set the spacing type of the frequency
-  - When it's set to `"single"`, the frequency point is single
-  - When it's set to `"linear"`, the frequency points are uniformly sampled
-  - When it's set to `"log"`，the frequency points are uniformly sampled base on the logarithm of frequency
-- `frequency`--Set the value of the single frequency
-- `start_frequency`--Set the start frequency of linear spacing
-- `stop_frequency`--Set the stop frequency of linear spacing
-- `frequency_interval`--Set the frequency interval of linear spacing
-- `num_frequency_points`--Set the number of frequency points of linear spacing
-- `log_start_frequency`--Set the start frequency of logarithmic spacing
+- `small_signal_ac`:
 
-- `log_stop_frequency`--Set the stop frequency of logarithmic spacing
+  - `perturbation_amplitude`--Set the voltage amplitude of the small signal
+  - `frequency_spacing`--Set the spacing type of the frequency
+    - When it's set to `"single"`, the frequency point is single
+    - When it's set to `"linear"`, the frequency points are uniformly sampled
+    - When it's set to `"log"`，the frequency points are uniformly sampled base on the logarithm of frequency
+  - `frequency`--Set the value of the single frequency
+  - `start_frequency`--Set the start frequency of linear spacing
+  - `stop_frequency`--Set the stop frequency of linear spacing
+  - `frequency_interval`--Set the frequency interval of linear spacing
+  - `num_frequency_points`--Set the number of frequency points of linear spacing
+  - `log_start_frequency`--Set the start frequency of logarithmic spacing
 
-- `log_num_frequency_points`--Set the number of frequency points of logarithmic spacing
+  - `log_stop_frequency`--Set the stop frequency of logarithmic spacing
 
-`advanced`:
+  - `log_num_frequency_points`--Set the number of frequency points of logarithmic spacing
 
-- `non_linear_solver`--Set the non-linear solver, only Newton method is supported currently
-- `linear_solver`--Set the linear solver. Options are `"MUMPS"`, `"LU"`, `"BCGS"`.  `MUMPS` and `LU` are direct linear solvers which usually give the exact solution. However, `MUMPS` supports parallel computation while `LU` doesn't. ；`"BCGS"` is a Krylov subspace (KSP) iterative solver, which also supports parallel computation and is more efficient but can only give approximate results.
-- `use_quasi_fermi`--Whether to directly solve for the quasi-Fermi potential instead of carrier concentration as unkowns. `"enabled"` means `True`, and `"disabled"` means `False`
-- `damping`--Set the nonlinear update damping scheme. `"potential"` means the damping is based on the potential variation
-- `potential_update`--Set the threshold potential for potential damping. The large value will reduce the strength of damping effect
-- `multi_threads`:
-  - When it's set to `"let_solver_choose"`, the solver will determine the number of threads to use. The default maximum number of threads is 4
-  - When it's set to `"set_thread_count"`, the number of threads is set by the user to `thread_count`
-- `thread_count`--Custom number of threads
-- `max_iterations`--Set global maximum number of iterations, available when `use_global_max_iterations` is `True`
-- `use_global_max_iterations`--Whether to use global max iterations during the initialization of solving the Poisson equations and the subsequent computing for solving the drift-diffusion equations coupling with Poisson equations, default to be `True`
-- `poisson_max_iterations`--Set the max iterations during the initialization of solving the Poisson equations, available when `use_global_max_iterations` is `False`
-- `ddm_max_iterations`--Set the max iterations during the subsequent computing for solving the drift-diffusion equations coupling with Poisson equations, available when `use_global_max_iterations` is `False`
-- `relative_tolerance`--Set the relative update tolerance
-- `tolerance_relax`--Set the tolerance relaxation factor for convergence on relative tolerance criteria
-- `divergence_factor`--Nonlinear solver fault with divergence when each individual function norm exceeds the threshold as its absolute tolerance multiply by this factor
+- `advanced`:
+
+  - `non_linear_solver`--Set the non-linear solver, only Newton method is supported currently
+  - `linear_solver`--Set the linear solver. Options are `"MUMPS"`, `"LU"`, `"BCGS"`.  `MUMPS` and `LU` are direct linear solvers which usually give the exact solution. However, `MUMPS` supports parallel computation while `LU` doesn't. ；`"BCGS"` is a Krylov subspace (KSP) iterative solver, which also supports parallel computation and is more efficient but can only give approximate results.
+  - `use_quasi_fermi`--Whether to directly solve for the quasi-Fermi potential instead of carrier concentration as unkowns. `"enabled"` means `True`, and `"disabled"` means `False`
+  - `damping`--Set the nonlinear update damping scheme. `"potential"` means the damping is based on the potential variation
+  - `potential_update`--Set the threshold potential for potential damping. The large value will reduce the strength of damping effect
+  - `multi_threads`:
+    - When it's set to `"let_solver_choose"`, the solver will determine the number of threads to use. The default maximum number of threads is 4
+    - When it's set to `"set_thread_count"`, the number of threads is set by the user to `thread_count`
+  - `thread_count`--Custom number of threads
+  - `max_iterations`--Set global maximum number of iterations, available when `use_global_max_iterations` is `True`
+  - `use_global_max_iterations`--Whether to use global max iterations during the initialization of solving the Poisson equations and the subsequent computing for solving the drift-diffusion equations coupling with Poisson equations, default to be `True`
+  - `poisson_max_iterations`--Set the max iterations during the initialization of solving the Poisson equations, available when `use_global_max_iterations` is `False`
+  - `ddm_max_iterations`--Set the max iterations during the subsequent computing for solving the drift-diffusion equations coupling with Poisson equations, available when `use_global_max_iterations` is `False`
+  - `relative_tolerance`--Set the relative update tolerance
+  - `tolerance_relax`--Set the tolerance relaxation factor for convergence on relative tolerance criteria
+  - `divergence_factor`--Nonlinear solver fault with divergence when each individual function norm exceeds the threshold as its absolute tolerance multiply by this factor
 
 <br/>
 
 
 ### 4.3 Electrode settings
 
-To be continued...
+Electrodes are added and set up through the `add_electrode` function. The format of the function is
+
+```
+[72]
+```
+```python
+st.add_electrode(name, property)
+```
+
+`add_electrode()` parameters:
+
+- `name`--Electrode name
+- `property`--Other properties
+
+<br/>
+
+There are two different type of electrical boundary conditions, which are `"steady_state"`and `"transient"`, specified by the property `bc_mode`.
+
+<br/>
+
+#### 4.3.1 Steady state boundary condition
+
+When the property `bc_mode` is set to `"steady_state"`, the steady state boundary condition is applied.
+
+<br/>
+
+Property list of steady state boundary condition:
+
+|                               | default      | type    | notes                                            |
+|:------------------------------|:-------------|:--------|:-------------------------------------------------|
+| force_ohmic                   | true         | bool    |                                                  |
+| bc_mode                       | steady_state | string  | Selections are ['steady_state'].                 |
+| apply_AC_small_signal         | none         | string  | Selections are ['none', 'All'].                         |
+| sweep_type                    | single       | string  | Selections are ['single', 'range', 'value'].     |
+| voltage                       | 0            | float   | Available when sweep_type is 'single'            |
+| range_start                   | 0            | float   | Available when sweep_type is 'range'             |
+| range_stop                    | 1            | float   | Available when sweep_type is 'range'             |
+| range_interval                | 1            | float   | Available when sweep_type is 'range'             |
+| range_num_points              | 2            | integer | Available when sweep_type is 'range'             |
+| []sweep_value_table.index     |              | integer | Available when sweep_type is 'value'.            |
+| []sweep_value_table.number    |              | float   | Available when sweep_type is 'value'.            |
+| surface_type                  | solid        | string  | Selections are ['solid'].                        |
+| solid                         |              | string  |                                                  |
+
+Description:
+
+- `surface_type`--Type of the surface to be set as an electrode. Currently only `"solid"` is supported, meaning that all the surfaces of a structure are selected
+- `solid`--Name of the structure to be set as an electrode. Available when `surface_type` is set to `"solid"`
+- `force_ohmic`--Whether the electrode is ohmic, default to be `True`. Currently only ohmic contact is supported, so `force_ohmic` can't be set to `False`
+- `bc_mode`--Set to `"steady_state"` for steady state boundary condition
+- `apply_AC_small_signal`:
+  - When it's set to `"none"` (as default), no AC small signal is applied at each sweeping voltage
+  - When it's set to "All", the AC small signal is applied after steady state simulation at each sweeping voltage
+
+- `sweep_type`--Type of sweeping voltage. Options are `"single"`, `"range"` and `"value"`
+  - When it's set to `"single"`, `voltage` is required
+  - When it's set to `"range"`, `range_start`, `range_stop`, and `range_interval` or `range_num_points` are required
+  - When it's set to `"value"`, `sweep_value_table` is required
+- `voltage`--Set the value of the single voltage
+- `range_start`--Set the start value of the voltage range
+- `range_stop`--Set the stop value of the voltage range
+- `range_interval`--Set the voltage interval of the voltage range
+- `range_num_points`--Set the number of points of the voltage range
+- `sweep_value_table`--Table of voltage values. It's a list, whose item is a dictionay. In each of its item:
+  - `index`--Set the index of the voltage value
+  - `number`--Set the value of the voltage
+
+<br/>
+
+*Example for single voltage*
+
+```
+[73]
+```
+```python
+st.add_electrode(name="anode", property={
+    "solid": "Anode", "bc_mode": "steady_state", "sweep_type": "single",
+    "voltage": 0, "apply_AC_small_signal": "none"})
+```
+
+<br/>
+
+*Example for voltage range*
+
+```
+[74]
+```
+```python
+st.add_electrode(name="anode", property={
+    "solid": "Anode", "bc_mode": "steady_state", "sweep_type": "range",
+    "range_start": 0, "range_stop": 1, "range_interval": 0.5, "apply_AC_small_signal": "none"})
+```
+
+<br/>
+
+*Example for voltage table*
+
+```
+[75]
+```
+```python
+st.add_electrode(name="anode", property={
+    "solid": "Anode", "bc_mode": "steady_state", "sweep_type": "value",
+    "sweep_value_table": [{"index": 0, "number": 0}, {"index": 1, "number": 0.5}, {"index": 2, "number": 1}]})
+```
+
+<br/>
+
+#### 4.3.2 Transient boundary condition
+
+When the property `bc_mode` is set to `"transient"`, the transient boundary condition is applied.
+
+<br/>
+
+Property list of transient boundary condition:
+
+|                                      | default      | type    | notes                                            |
+|:-------------------------------------|:-------------|:--------|:-------------------------------------------------|
+| force_ohmic                          | true         | bool    |                                                  |
+| bc_mode                              |              | string  | Selections are ['transient'].                    |
+| voltage                              | 0            | float   |                                                  |
+| []time_table.time_start              |              | float   |                                                  |
+| []time_table.time_stop               |              | float   |                                                  |
+| []time_table.initial_step            |              | float   |                                                  |
+| []time_table.max_step                |              | float   |                                                  |
+| []time_table.optical.enabled         | 0            | integer | Selections are [0, 1]                            |
+| []time_table.optical.envelop         |              | integer | Selections are [0]                               |
+| []time_table.optical.source_fraction |              | float   |                                                  |
+| surface_type                         | solid        | string  | Selections are ['solid'].                        |
+| solid                                |              | string  |                                                  |
+
+Description:
+
+- `surface_type`, `solid`, `force_ohmic`--The same as the one in steady state condition
+- `bc_mode`--Set to `"transient"` for transient boundary condition. Then the time dependence of the optical generation rate can be set at this electrode
+- `voltage`--Set the voltage that  is applied to the electrode and a steady state simulation is performed first. The transient simulation is based on the steady state result. The optical generation rate is not applied during the steady state simulation.
+- `v_step_max`--Set the max step of the voltage from the equilibrium state to steady state at the bias of `voltage`.
+- `time_table`--Set the time dependence of optical generation rate. It's a list, whose item is a dictionary. In each of its item:
+  - `time_start`--Set the start time point of the range. The value of `0` represents the steady state of the earlier simulation.
+  - `time_stop`--Set the stop time point of the range
+  - `initial_step`--Set the initial time step of the range
+  - `max_step`--Set the max time step of the range
+  - `optical`--Set the optical generation rate during the time range
+    - `enabled`--Whether to apply optical generation rate during the time range. The value of `1` means `True`, and `0` means `False`
+    - `envelop`--The envelop of the scaling factor of the light power during the time range. When it's set to `0`, the envelop is uniform
+    - `source_fraction`--When `envelop` is set to`0`, this value is the scaling factor of the light power during the time range
+
+<br/>
+
+*Example for transient boundary condition*
+
+```
+[76]
+```
+```python
+st.add_electrode(name="cathode", property={
+    "solid": "Cathode", "bc_mode": "transient", "voltage": 1, "v_step_max": 0.5,
+    "time_table": [{"time_start": 0, "time_stop": 2e-12, "initial_step": 1e-12, "max_step": 5e-12},
+                   {"time_start": 2e-12, "time_stop": 50e-12, "initial_step": 1e-15, "max_step": 1e-12,
+                    "optical": {"enabled": 1, "envelop": 0, "source_fraction": 1e-3}},
+                   {"time_start": 50e-12, "time_stop": 600e-12, "initial_step": 1e-12, "max_step": 10e-12,
+                    "optical": {"enabled": 1, "envelop": 0, "source_fraction": 1e-3}}]})
+```
+
+<br/>
 

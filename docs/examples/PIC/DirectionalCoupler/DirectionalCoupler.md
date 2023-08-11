@@ -48,12 +48,7 @@ Using the `FDE module`, we will calculate symmetric and antisymmetric modes in a
 <div class="text-justify">
 
 
-Once you have installed and configured the environment, import the python code and the GDS layout. 
-
-
-The example library and related model code are usually located in the directory :`.venv_maxoptics/site-packages/maxoptics_sdk/examples`
-
-The GDS file is generally imported into the path:`.venv_maxoptics/site-packages/maxoptics_sdk/examples/examples_gds`
+Once you have installed and configured the environment, import the python code and the GDS layout.<br/>The example library and related model code are usually located in the directory : `.venv_maxoptics/site-packages/maxoptics_sdk/examples`.<br/>The GDS file is generally imported into the path : `.venv_maxoptics/site-packages/maxoptics_sdk/examples/examples_gds`
 
 </div>
 
@@ -144,7 +139,7 @@ Define commonly used parameters in region 0, such as the width and height of the
   kL = [f'0{k}' for k in range(5)]
   export_options = {"export_csv": True, "export_mat": True, "export_zbf": True}
   l_bend=5.6 # the length of z bend
-  l_beam=15 # the length of 2 beams 
+  l_arm=15 # the length of 2 arms 
   l_input=2.5 # the length of input wg 
 # endregion
 ```
@@ -152,7 +147,7 @@ Define commonly used parameters in region 0, such as the width and height of the
 <div class="text-justify">
 
 
-The code defines several parameters and variables necessary for the simulation process. The `yspan_solver` parameter represents the width of the simulation boundary specified in micrometers. Similarly, the `zspan_solver` parameter denotes the height of the simulation boundary in micrometers. The `time_str` variable is used to obtain the current time as a timestamp for the simulation.<br/>The `path` variable defines the file path for the simulation, while `simu_name` specifies the name of the simulation file.<br/>The `gds_file_root_path` variable defines the path for importing the GDS layout. <br/>The `project_name` variable assigns a name to the project for the simulation output. <br/>The `plot_path` variable determines the directory where the simulation result plots will be saved. <br/>The `export_options` parameter allows for the definition of options for exporting the simulation results.<br/>Lastly, the variables `l_bend` ,`l_beam`, and `l_input` represent the lengths of specific components within the simulation, such as the length of the z-bend, the length of the two beams, and the length of the input waveguide, respectively. <br/>These parameters and variables together facilitate the successful execution and organization of the simulation process.
+The code defines several parameters and variables necessary for the simulation process. The `yspan_solver` parameter represents the width of the simulation boundary specified in micrometers. Similarly, the `zspan_solver` parameter denotes the height of the simulation boundary in micrometers. The `time_str` variable is used to obtain the current time as a timestamp for the simulation.<br/>The `path` variable defines the file path for the simulation, while `simu_name` specifies the name of the simulation file.<br/>The `gds_file_root_path` variable defines the path for importing the GDS layout. <br/>The `project_name` variable assigns a name to the project for the simulation output. <br/>The `plot_path` variable determines the directory where the simulation result plots will be saved. <br/>The `export_options` parameter allows for the definition of options for exporting the simulation results.<br/>Lastly, the variables `l_bend` ,`l_arm`, and `l_input` represent the lengths of specific components within the simulation, such as the length of the z-bend, the length of the two arms, and the length of the input waveguide, respectively. <br/>These parameters and variables together facilitate the successful execution and organization of the simulation process.
 
 </div>
 
@@ -198,7 +193,7 @@ Next, we will create the Directional Coupler model in region 3. We have two opti
                               "geometry": {"x": 0, "y": 0, "z": 0.11, "z_span": 0.22},
                               "material": {"material": mt["Si"], "mesh_order": 2}})
     st.add_geometry(name='slab', type='Rectangle',
-                    property={'geometry': {'x_min': -l_input-l_bend-l_beam/2-3, 'x_max':l_input+l_bend+l_beam/2+3, 'y': 0, 'y_span': 8, 'z': 0.045, 'z_span': 0.09},
+                    property={'geometry': {'x_min': -l_input-l_bend-l_arm/2-3, 'x_max':l_input+l_bend+l_arm/2+3, 'y': 0, 'y_span': 8, 'z': 0.045, 'z_span': 0.09},
                               'material': {'material': mt['Si'], 'mesh_order': 2}} )
 # endregion
 ```
@@ -585,7 +580,7 @@ Like the operations with the FDE module, after configuring the simulation wavele
 ```python
 # region --- 0. General Parameters ---
 l_bend=5.6 # the length of z bend
-l_beam=15 # the length of 2 beams 
+l_arm=15 # the length of 2 arms 
 l_input=2.5 # the length of input wg 
 monitor_w = 3.0
 monitor_h = 2.0
@@ -605,15 +600,17 @@ gds_file = gds_file_root_path + "/examples_gds/DC.gds"
 <div class="text-justify">
 
 
-Subsequently, in Region 2, we define the materials required for the simulation. Here, we specify the refractive indices of Si (Silicon) and SiO2 (Silicon Dioxide) materials.
+Subsequently, in Region 2, we ues the materials required for the simulation. We also support users to specify the refractive indices of Si (Silicon) and SiO2 (Silicon Dioxide) materials.
 
 </div>
 
 ```python
 # region --- 2. Material ---
 mt = pj.Material()
-mt.add_nondispersion(name="Si", data=[(3.472, 0)], order=2)
-mt.add_nondispersion(name="SiO2", data=[(1.444, 0)], order=2)
+mt.add_lib(name='Si', data=mo.Material.Si_Palik, order=2)
+mt.add_lib(name='SiO2', data=mo.Material.SiO2_Palik, order=2)
+# mt.add_nondispersion(name="Si", data=[(3.472, 0)], order=2)
+# mt.add_nondispersion(name="SiO2", data=[(1.444, 0)], order=2)
 mt.add_lib(name="Air", data=mo.Material.Air, order=2)
 # endregion
 ```
@@ -671,12 +668,12 @@ Next, similar to the procedure in the FDE module, in Region 4, we create the mod
                               "geometry": {"x": 0, "y": 0, "z": 0.11, "z_span": 0.22},
                               "material": {"material": mt["Si"], "mesh_order": 2}})
     st.add_geometry(name='slab', type='Rectangle',
-                    property={'geometry': {'x_min': -l_input-l_bend-l_beam/2-3, 'x_max':l_input+l_bend+l_beam/2+3, 'y': 0, 'y_span': 8, 'z': 0.045, 'z_span': 0.09},
+                    property={'geometry': {'x_min': -l_input-l_bend-l_arm/2-3, 'x_max':l_input+l_bend+l_arm/2+3, 'y': 0, 'y_span': 8, 'z': 0.045, 'z_span': 0.09},
                               'material': {'material': mt['Si'], 'mesh_order': 2}} )
     # endregion
 
     # region --- 5. Boundary ---
-    st.OBoundary(property={"geometry": {"x": 0, "x_span": 2*(l_input+l_bend+l_beam/2-0.5), "y": 0, "y_span": 6, "z": 0.11, "z_span": monitor_h},
+    st.OBoundary(property={"geometry": {"x": 0, "x_span": 2*(l_input+l_bend+l_arm/2-0.5), "y": 0, "y_span": 6, "z": 0.11, "z_span": monitor_h},
                            "boundary": {"x_min": "PML", "x_max": "PML", "y_min": "PML", "y_max": "PML", "z_min": "PML", "z_max": "PML"},
                            "general_pml": {"pml_same_settings": True, "pml_kappa": 2, "pml_sigma": 0.8, "pml_layer": 8, "pml_polynomial": 3}})
     # endregion
@@ -684,7 +681,7 @@ Next, similar to the procedure in the FDE module, in Region 4, we create the mod
     # region --- 6. Sub Mesh ---
     st.add_mesh(name="sub_mesh",
                 property={"general": {"dx": 0.05, "dy": 0.02, "dz": 0.02},
-                          "geometry": {"x": 0, "x_span": 2*(l_input+l_bend+l_beam/2-0.5), "y": 0, "y_span": 6, "z": 0.11, "z_span": monitor_h}})
+                          "geometry": {"x": 0, "x_span": 2*(l_input+l_bend+l_arm/2-0.5), "y": 0, "y_span": 6, "z": 0.11, "z_span": monitor_h}})
     # endregion
 ```
 
@@ -708,7 +705,7 @@ Then we need to establish the light source in the input waveguide, as shown in R
 src = pj.Source()
 src.add(name="source", type="mode_source", axis="x_forward",
         property={"general": {"mode_selection": "user_select", "waveform": {"waveform_id_select": wv[waveform_name]}},
-                  "geometry": {"x": -l_input-l_beam/2-l_bend+2, "x_span": 0, "y": 1.35, "y_span": monitor_w, "z": 0.11, "z_span": monitor_h}})
+                  "geometry": {"x": -l_input-l_arm/2-l_bend+2, "x_span": 0, "y": 1.35, "y_span": monitor_w, "z": 0.11, "z_span": monitor_h}})
 # endregion
 ```
 
@@ -742,7 +739,7 @@ In Region 8, we set up the monitors.
     type="power_monitor",
     name="input_reflect",
     property={"general": {"frequency_profile": {"wavelength_center": wavelength, "wavelength_span": 0.1, "frequency_points": 3}},
-              "geometry": {"monitor_type": "2d_x_normal", "x": -l_input-l_beam/2-l_bend+1.5, "x_span": 0, "y": 1.35, "y_span": monitor_w, "z": 0.11, "z_span": monitor_h},
+              "geometry": {"monitor_type": "2d_x_normal", "x": -l_input-l_arm/2-l_bend+1.5, "x_span": 0, "y": 1.35, "y_span": monitor_w, "z": 0.11, "z_span": monitor_h},
               'mode_expansion': {"enable": True, 'direction': 'positive',
                                   'mode_calculation': {'mode_selection': 'user_select', 'mode_index': [0]}}})
   # endregion
@@ -965,7 +962,7 @@ After running the program, we can obtain a series of corresponding output result
 <div class="text-justify">
 
 
-Based on the information provided, we can get the following results  when propogating wavelength  is 1.55 *μ*m and the two beam length of directional couper is equal to 15 *μ*m: 1. Insertion Loss: 0.177 dB; 2. Power Split Ratio: 13.2 : 83.8 (or approximately 13.2% to one port and 83.8% to the other port); 3. Dimensions: Approximately 5 *μ*m X 25 *μ*m. 
+Based on the information provided, we can get the following results  when propogating wavelength  is 1.55 *μ*m and the two arm length of directional couper is equal to 15 *μ*m: 1. Insertion Loss: 0.177 dB; 2. Power Split Ratio: 13.2 : 83.8 (or approximately 13.2% to one port and 83.8% to the other port); 3. Dimensions: Approximately 5 *μ*m X 25 *μ*m. 
 
 </div>
 

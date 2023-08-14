@@ -10,7 +10,10 @@ The Finite Difference Eigenmode (FDE )is a numerical solution algorithm that dis
 * The calculation cost is relatively low.
 
 The mode profile of the waveguide using FDE is shown in the following figure.
+
+
 ![](FDE_yz.png)
+
 
 ## EME
 

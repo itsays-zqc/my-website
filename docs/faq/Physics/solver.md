@@ -4,7 +4,7 @@
 The Finite Difference Eigenmode (FDE )is a numerical solution algorithm that discretizes the Maxwell equation and solves the constructed feature matrix.The solution process for FDE is as follows.
 
 
-<!-- ![](FDE_process.png) -->
+![](FDE_process.png)
 
 * Calculate the propagation of electromagnetic waves and the field distribution of harmonic modes with high accuracy.
 * The calculation cost is relatively low.

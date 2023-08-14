@@ -1,7 +1,7 @@
 import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
 
-# Mesh 
+# How to set mesh?
 
 ## 1 Mesh type
 
@@ -37,7 +37,7 @@ The mesh accuracy represents the size of the mesh, and the commonly used grid ac
 
 | Mesh Accuracy of "Gloden" |1|2|3|4|5|
 |---------------------------|--|--|--|--|--|
-|cells per wavelength of "Max-optics"|6|10|14|18|22|
+|&emsp;&emsp;cells per wavelength of "Max-optics" &emsp;&emsp;&emsp;&emsp;|&emsp;&emsp;6&emsp;&emsp;|&emsp;&emsp;10&emsp;&emsp;|&emsp;&emsp;14&emsp;&emsp;|&emsp;&emsp;18&emsp;&emsp;|&emsp;&emsp;22&emsp;&emsp;|
 
 
 1. To meet the accuracy requirements of the calculation, it is recommended to set "cells per wavelength" to 14 or above.

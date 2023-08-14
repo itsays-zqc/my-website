@@ -2,7 +2,7 @@
 
 ## EME length sweep
 
-EME has great advantages in scanning calculation in the length direction, as it does not need to repeatedly calculate the modes at the interface of the divided units, and can quickly obtain the transmitted s matrix.
+EME has great advantages in scanning calculation in the length direction, it does not need to repeatedly calculate the modes at the interface of the divided units, and can quickly obtain the transmitted s matrix.
 
 Open the "length sweep" in the EME solver, select the length range of the scanning area, the number of scanning points, and the mode of the light source to obtain the s matrix transmitted by this mode.
 

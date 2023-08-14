@@ -15,6 +15,5 @@ At the beginning of the simulation, a maximum simulation time will be estimated 
                                
                                step = elapsed_time/(elapsed_time + remain_time)
 
-
 ![](early_shutoff.png)     
                          

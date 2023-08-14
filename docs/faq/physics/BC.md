@@ -19,7 +19,7 @@ The conductivity  of PEC is infinite and the penetration depth is almost zero, u
 The main application scenario of the EME algorithm is transmission problems. In FDE/EME simulation, the default boundary condition is PEC, and it can greatly reduce simulation time.
 
 ## 3.Symmetric
-
+When there is a symmetry plane in the structure, certain field components must be zero on the symmetry plane. By forcing the field component to be zero, the simulation time can be reduced by half.
 
 ## 4.Anti-Symmetric
 

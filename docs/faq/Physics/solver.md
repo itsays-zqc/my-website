@@ -5,6 +5,7 @@ The Finite Difference Eigenmode (FDE )is a numerical solution algorithm that dis
 
 
 ![](FDE_process.png)
+
 * Calculate the propagation of electromagnetic waves and the field distribution of harmonic modes with high accuracy.
 * The calculation cost is relatively low.
 

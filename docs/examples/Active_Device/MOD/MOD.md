@@ -5,27 +5,27 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 ##  Introduction
 
-​	We have developed an electro-optic modulator based on carrier-depletion mechanism in silicon to simulate carrier and index distribution in a global structure. The drift and diffusion of carriers result in depletion at the PN junction. Applying a reverse bias voltage at the cathode broadens the depletion region, altering the carrier concentration and modulating the material's refractive index. Gaussian doping was employed in this model. Modulation efficiency, capacitance, and resistance were calculated to analyze the electro-optic characteristics of the modulator.
+​We have developed an electro-optic modulator based on carrier-depletion mechanism in silicon to simulate carrier and index distribution in a global structure. The drift and diffusion of carriers result in depletion at the PN junction. Applying a reverse bias voltage at the cathode broadens the depletion region, altering the carrier concentration and modulating the material's refractive index. Gaussian doping was employed in this model. Modulation efficiency, capacitance, and resistance were calculated to analyze the electro-optic characteristics of the modulator.
 
-​	The figure below illustrates the device structure we constructed, wherein the aluminum electrode is applied to the silicon modulator, and the entire device is encapsulated with silicon dioxide material.
+​The figure below illustrates the device structure we constructed, wherein the aluminum electrode is applied to the silicon modulator, and the entire device is encapsulated with silicon dioxide material.
 
 ![](../MOD/plot/MOD_structure.png)
 
 ## Simulation Structure
 
-​	The present structural file provides a comprehensive guide for constructing a simulation structure and establishing a Gaussian doping distribution. Initially, one must construct the geometric structure of the device, incorporate materials and physical models, specify the doping distribution, and simulation boundary conditions, and set the light source and simulation solver. Eventually, the simulation result data should be extracted and output. 
+​The present structural file provides a comprehensive guide for constructing a simulation structure and establishing a Gaussian doping distribution. Initially, one must construct the geometric structure of the device, incorporate materials and physical models, specify the doping distribution, and simulation boundary conditions, and set the light source and simulation solver. Eventually, the simulation result data should be extracted and output. 
 
-​	Our simulation is designed with a light source entering along the X-axis, and the primary optoelectronic characteristic analysis takes place within the three-dimensional structure on the YZ plane. The FDE solver is utilized to preview the distribution of effective refractive index, and the OEDevice solver is used to preview the doping distribution of the device. Finally, we generate ad output the  distribution map of doping and index in modulator structure.
+​Our simulation is designed with a light source entering along the X-axis, and the primary optoelectronic characteristic analysis takes place within the three-dimensional structure on the YZ plane. The FDE solver is utilized to preview the distribution of effective refractive index, and the OEDevice solver is used to preview the doping distribution of the device. Finally, we generate ad output the  distribution map of doping and index in modulator structure.
 
-   Application Library path: `:\SDK\V2.3.0.4\examples\active_demo\doping_function\MOD\MOD00_structure.py`
+Application Library path: `:\SDK\V2.3.0.4\examples\active_demo\doping_function\MOD\MOD00_structure.py`
 
 ### 1. Basic Operations
 
-​	It is essential to incorporate materials for structure. Although module of `maxoptics_sdk.all` provides default values for standard semiconductors, these values can be customized in `MOD_material.py` . 
+It is essential to incorporate materials for structure. Although module of `maxoptics_sdk.all` provides default values for standard semiconductors, these values can be customized in `MOD_material.py` . 
 
-​	Application Library path: `:\SDK\V2.3.0.4\examples\active_demo\doping_function\MOD\MOD_material.py`
+Application Library path: `:\SDK\V2.3.0.4\examples\active_demo\doping_function\MOD\MOD_material.py`
 
-​	The module of `basic` specifies the electron affinity and relative dielectric permittivity of the material. It is crucial to define the model type and parameter values, if another model is used instead of the default. The default mobility model of Silicon is `Analytic` , but we use the mobility model of `Masetti` in this modulator. The `band` module includes the model of bandgap, bandgap narrowing , and recombination of  Auger, SRH, and Radiative. 
+The module of `basic` specifies the electron affinity and relative dielectric permittivity of the material. It is crucial to define the model type and parameter values, if another model is used instead of the default. The default mobility model of Silicon is `Analytic` , but we use the mobility model of `Masetti` in this modulator. The `band` module includes the model of bandgap, bandgap narrowing , and recombination of  Auger, SRH, and Radiative. 
 
 ```python
 elec_Si_properties = {"basic": {"model": "Default",
@@ -48,7 +48,7 @@ elec_Si_properties = {"basic": {"model": "Default",
                                    "c_direct": 1.6e-14,}, "print": 1}}
 ```
 
-​	The parameter values of `matparas_1550` and `matparas_1310` are used for converting carrier distribution to a change in refractive index.
+The parameter values of `matparas_1550` and `matparas_1310` are used for converting carrier distribution to a change in refractive index.
 
 ```python
 matparas_1550 = {
@@ -78,7 +78,7 @@ matparas_1310 = {
 
 #### 2.1 Import Modules
 
-​	To begin, we need to use the `import` command to call the relevant functional modules and  parameter values of material from previously defined file.
+To begin, we need to use the `import` command to call the relevant functional modules and  parameter values of material from previously defined file.
 
 ```python
 import maxoptics_sdk.all as mo
@@ -93,7 +93,7 @@ from MOD_material import matparas_1550, matparas_1310, elec_Si_properties
 
 ##### 2.2.1 General Parameters
 
-​	We define these parameters for entire simulation process.
+We define these parameters for entire simulation process.
 
 ```python
 wavelength = 1.31   
@@ -121,7 +121,7 @@ simu_name = "MOD00_struc"
 | run_mode       |       | Specifies the simulate model.                                |
 | simu_name      |       | Specifies this file name to define name of output result folder. |
 
-​	Since we explore two communication wavelength, you should define the wavelength, and use next code to choose  relavent parameters values, which we defines in `MOD_material.py` .
+Since we explore two communication wavelength, you should define the wavelength, and use next code to choose  relavent parameters values, which we defines in `MOD_material.py` .
 
 ```python
 if wavelength > 1.4:
@@ -132,7 +132,7 @@ else:
 
 ##### 2.2.2 Structure Geometry
 
-​	You should define the location of material in X, Y and Z direction about the modulator structure.
+You should define the location of material in X, Y and Z direction about the modulator structure.
 
 ```python
 st_x_min = -0.3
@@ -165,7 +165,7 @@ elec_width = 1.2
 
 ##### 2.2.3 Electrical Simulation Boundary
 
-​	Specifies the  boundary of electrical simulation for `OEDevice` solver in 3D direction.
+Specifies the  boundary of electrical simulation for `OEDevice` solver in 3D direction.
 
 ```python
 oe_x_min = -0.3
@@ -184,7 +184,7 @@ oe_z_mean = 0.5*(oe_z_min+oe_z_max)
 oe_z_span = oe_z_max-oe_z_min
 ```
 
-​	Specifies the  concentration of uniform doping by `constant_con` and its boundary throuth `center` and `span` in Y-Z plane.
+Specifies the  concentration of uniform doping by `constant_con` and its boundary throuth `center` and `span` in Y-Z plane.
 
 ```python
 constant_y_center = 0
@@ -194,7 +194,7 @@ constant_z_span = 0.3
 constant_con = 1e15
 ```
 
-​	Specifies the  junction width and peak concentration of gaussian doping by`_jw` and  `_con` , its boundary throuth `center` and `span` in Y-Z plane of slab.
+Specifies the  junction width and peak concentration of gaussian doping by`_jw` and  `_con` , its boundary throuth `center` and `span` in Y-Z plane of slab.
 
 ```python
 p_slab_y_center = -2.575
@@ -212,7 +212,7 @@ n_slab_jw = 0.1
 n_slab_con = 5e17
 ```
 
-​	Specifies the doping region of high concentration in slab layer, including boundary、junction width and peak concentration.
+Specifies the doping region of high concentration in slab layer, including boundary、junction width and peak concentration.
 
 ```py
 p_plus_y_center = -3.5
@@ -230,7 +230,7 @@ n_plus_jw = 0.1
 n_plus_con = 1e19
 ```
 
-​	Specifies the doping region of high concentration in waveguide structure, including boundary、junction width and peak concentration.
+Specifies the doping region of high concentration in waveguide structure, including boundary、junction width and peak concentration.
 
 ```py
 p_wg_y_center = -0.12
@@ -250,7 +250,7 @@ n_wg_con = 7e17
 
 ##### 2.2.4 Optical simulation Boundary
 
-​	Specifies the boundary of optical simulation  for `FDE` solver in 3D direction. We only consider optical characteristic of Y-Z plane, since the light travels along X-axis.
+Specifies the boundary of optical simulation  for `FDE` solver in 3D direction. We only consider optical characteristic of Y-Z plane, since the light travels along X-axis.
 
 ```python
 x_min = 0
@@ -271,11 +271,11 @@ z_span = z_max-z_min
 
 #### 2.3 Define Engineering Function
 
-​	To facilitate the calling of other simulation scripts, it is recommended to define a function that can set materials, model, dope, and add boundary conditions.
+To facilitate the calling of other simulation scripts, it is recommended to define a function that can set materials, model, dope, and add boundary conditions.
 
 ##### 2.3.1 Create Project
 
-​	Create a new simulation project.
+Create a new simulation project.
 
 ```python
 def mod_project(project_name, run_mode, st_type):
@@ -284,7 +284,7 @@ def mod_project(project_name, run_mode, st_type):
 
 ##### 2.3.2 Set Material
 
-​	The electrical and optical parameters of SiO2、Al and Si materials in the material library can be accessed. If the parameters defined in the Si section of `MOD_material.py`  are different from the default parameters in the material library, the former will be prioritized. In the overlapping area of the materials, the material with a higher order value will take precedence over the one with a lower value. If the values are the same, the material defined later will override the one defined earlier. It is worth noting that the material Aluminium will call the PEC material library.
+The electrical and optical parameters of SiO2、Al and Si materials in the material library can be accessed. If the parameters defined in the Si section of `MOD_material.py`  are different from the default parameters in the material library, the former will be prioritized. In the overlapping area of the materials, the material with a higher order value will take precedence over the one with a lower value. If the values are the same, the material defined later will override the one defined earlier. It is worth noting that the material Aluminium will call the PEC material library.
 
 ```python
 mt = pj.Material()
@@ -298,7 +298,7 @@ mt = pj.Material()
 
 ##### 2.3.3 Define structure
 
-​	To begin with, it is advisable to define the geometric region of the device structure in `geometry` and add materials to this region by `material`. The background material, which is usually Air or SiO2, should be added first.
+To begin with, it is advisable to define the geometric region of the device structure in `geometry` and add materials to this region by `material`. The background material, which is usually Air or SiO2, should be added first.
 
 ```python
  st = pj.Structure(mesh_type="curve_mesh", mesh_factor=1.4, background_material=mt["mat_sio2"])
@@ -327,7 +327,7 @@ mt = pj.Material()
 | type      |       | Specifies the  geometry of specified region.                 |
 | geometry  |       | Specifies the boundary of specified region in 3D direction   |
 
-​	We offer several alternative electrode region for establishing the electrical simulation area.
+We offer several alternative electrode region for establishing the electrical simulation area.
 
 ```python
 if st_type == "normal":
@@ -367,7 +367,7 @@ if st_type == "normal":
 
 ##### 2.3.4 Add Doping
 
-​	You should define the basic parameters of doping module, such as  type、region and model. Then define source face、junction width、peak concentration and  reference concentration in gaussian doping, or only concentration in uniform doping.  `type` specifies the n-type or donor dopant in `"n"` , and  p-type or acceptor dopant in `"p"` , which may be used with gaussian and uniform profile types.  `ref_concentration` specifies the diffusion boundary of Gaussian doping.
+You should define the basic parameters of doping module, such as  type、region and model. Then define source face、junction width、peak concentration and  reference concentration in gaussian doping, or only concentration in uniform doping.  `type` specifies the n-type or donor dopant in `"n"` , and  p-type or acceptor dopant in `"p"` , which may be used with gaussian and uniform profile types.  `ref_concentration` specifies the diffusion boundary of Gaussian doping.
 
 ```python
 st.add_doping(name="background_doping", type="p", property={
@@ -402,7 +402,7 @@ st.add_doping(name="background_doping", type="p", property={
 
 ##### 2.3.5 Set Optical Simulate Boundry
 
-​	You should set the boundry of optical simulation for `FDE` solver.
+You should set the boundry of optical simulation for `FDE` solver.
 
 ```python
 st.OBoundary(property={
@@ -412,9 +412,9 @@ st.OBoundary(property={
 
 ##### 2.3.6 Add Mesh
 
-​	When specifying meshes, a balance should be struck between accuracy and numerical efficiency. The accuracy, convergence, and program memory of the subsequent computation are all affected by the quality and size of the elements in the mesh, making mesh partitioning crucial in this module. Achieving accuracy requires a fine mesh that can resolve all significant features of the solution, while numerical efficiency requires a coarse mesh that minimizes the total number of grid points.  
+When specifying meshes, a balance should be struck between accuracy and numerical efficiency. The accuracy, convergence, and program memory of the subsequent computation are all affected by the quality and size of the elements in the mesh, making mesh partitioning crucial in this module. Achieving accuracy requires a fine mesh that can resolve all significant features of the solution, while numerical efficiency requires a coarse mesh that minimizes the total number of grid points.  
 
-​	Due to the relatively simple structure of this modulator, a rough initial mesh can be established for electrical and optical simulation of the entire device. In order to obtain more accurate calculation results and better convergence, the `emesh`  module is employed to refine the mesh of the regions with significant electrical characteristics.
+Due to the relatively simple structure of this modulator, a rough initial mesh can be established for electrical and optical simulation of the entire device. In order to obtain more accurate calculation results and better convergence, the `emesh`  module is employed to refine the mesh of the regions with significant electrical characteristics.
 
 ```python
 st.add_mesh(name="OMesh_Local", property={
@@ -426,9 +426,9 @@ st.add_emesh(name="EMesh_Local", property={
 
 ##### 2.3.7 Structure Preview Result File
 
-​	You should call the previous defined simulation module and define the name and path of the output file. 
+You should call the previous defined simulation module and define the name and path of the output file. 
 
-​	Through invoking the `time` module and adding it to the file name, the output file of each simulation can be unique, which facilitates accurate file retrieval after multiple simulations. The `plot_path` will be used as the path for saving extracted results and is set here to the plots folder in the same directory as the script. If this path does not exist, the `os.makedirs`  function needs to be called to create the path.
+Through invoking the `time` module and adding it to the file name, the output file of each simulation can be unique, which facilitates accurate file retrieval after multiple simulations. The `plot_path` will be used as the path for saving extracted results and is set here to the plots folder in the same directory as the script. If this path does not exist, the `os.makedirs`  function needs to be called to create the path.
 
 ```python
 return pj
@@ -446,13 +446,13 @@ def preview():
 
 ##### 2.3.8 Set Simulate Solver
 
-​	Adding electrical and optical silmulation solver, is the prerequisite for output structure file. You can specify solver name and type in `name` and `type` module, and then define its other property. 
+Adding electrical and optical silmulation solver, is the prerequisite for output structure file. You can specify solver name and type in `name` and `type` module, and then define its other property. 
 
-​	The type of `AFDE` is finite difference eigenmode (FDE) simulation module for active devices, which can be used to investigate the refractive index distribution of a device. This solver solves the single-frequency Maxwell's equations directly on a discretized grid of the waveguide cross-section, enabling exploration of the refractive index distribution of the device. The FDE analysis module can then be used to set the boundary conditions, define the model, mesh structure, and wavelength of the light source for calculation. 
+The type of `AFDE` is finite difference eigenmode (FDE) simulation module for active devices, which can be used to investigate the refractive index distribution of a device. This solver solves the single-frequency Maxwell's equations directly on a discretized grid of the waveguide cross-section, enabling exploration of the refractive index distribution of the device. The FDE analysis module can then be used to set the boundary conditions, define the model, mesh structure, and wavelength of the light source for calculation. 
 
-​	The type of `OEDevice` module can be invoked to enable the charge carrier transport solver for analyzing the optoelectronic properties of a device. Since the simulation analysis is conducted in the two-dimensional Y-Z plane that is perpendicular to the X-axis, `2d_x_normal`  is adopted to define the simulation calculation geometry.
+The type of `OEDevice` module can be invoked to enable the charge carrier transport solver for analyzing the optoelectronic properties of a device. Since the simulation analysis is conducted in the two-dimensional Y-Z plane that is perpendicular to the X-axis, `2d_x_normal`  is adopted to define the simulation calculation geometry.
 
-​	We utilize the `Newton` iteration method for calculation, and the `MUMPS`  direct solver is employed as the linear solver. The `max_iterations` parameter defines the maximum number of nonlinear iterations. When the number of iterations exceeds this value, the solver reduces the voltage step and starts a new iterative computations. Additionally, we define the length of the three-dimensional X direction and the solution mode and temperature during the composite process. For this study, we set the solver to solve the steady state of the device at room temperature.
+We utilize the `Newton` iteration method for calculation, and the `MUMPS`  direct solver is employed as the linear solver. The `max_iterations` parameter defines the maximum number of nonlinear iterations. When the number of iterations exceeds this value, the solver reduces the voltage step and starts a new iterative computations. Additionally, we define the length of the three-dimensional X direction and the solution mode and temperature during the composite process. For this study, we set the solver to solve the steady state of the device at room temperature.
 
 ```python
 simu = pj.Simulation()
@@ -470,9 +470,9 @@ simu.add(name="preview_oedevice", type="OEDevice", property={
 
 ```
 
-​	You can invoke the `FDE`  module to analyze the refractive index distribution of the device. To define the region of the refractive index distribution to be extracted in `geometry` , which is the coordinate in the two-dimensional Y-Z plane at X-axis equal to 0. Then, define the file name of the result image and save it to the "plot" folder.
+You can invoke the `FDE`  module to analyze the refractive index distribution of the device. To define the region of the refractive index distribution to be extracted in `geometry` , which is the coordinate in the two-dimensional Y-Z plane at X-axis equal to 0. Then, define the file name of the result image and save it to the "plot" folder.
 
-​	To analyze the doping distribution of the device, the `OEDevice`  module can be invoked. First, define the region from which to extract the refractive index distribution, which is the coordinate in the two-dimensional Y-Z plane where the X-axis equals 0. Then, define the file name for the resulting image and save it to the "plot" folder. Additionally, save the simulation process to the "log" folder in the "project" directory.
+​To analyze the doping distribution of the device, the `OEDevice`  module can be invoked. First, define the region from which to extract the refractive index distribution, which is the coordinate in the two-dimensional Y-Z plane where the X-axis equals 0. Then, define the file name for the resulting image and save it to the "plot" folder. Additionally, save the simulation process to the "log" folder in the "project" directory.
 
 ```python
 simu["preview_oedevice"].run_doping(name="x_in", property={
@@ -487,9 +487,9 @@ simu["preview_fde"].run_index(name="index_preview_x_0", property={
 
 ### 3. Output Result
 
-​	Here, we present the device geometry as defined in the structure file, along with the P-type and N-type dopant distributions, and the overall doping distribution.
+​Here, we present the device geometry as defined in the structure file, along with the P-type and N-type dopant distributions, and the overall doping distribution.
 
-​	Application Library path: `:examples\active_demo\doping\MOD\plots\MOD00_struct_time\doping` 
+​Application Library path: `:examples\active_demo\doping\MOD\plots\MOD00_struct_time\doping` 
 
 |                   Boron Active Doping                   |                      Net Doping                       |                   Phosphorus Active Doping                   |
 | :-----------------------------------------------------: | :---------------------------------------------------: | :----------------------------------------------------------: |
@@ -507,20 +507,20 @@ simu["preview_fde"].run_index(name="index_preview_x_0", property={
 
 ### 1.Modulation efficiency
 
-​	The half-wave voltage refers to the applied voltage required by the modulator's optical signal to generate a phase difference of pi radians, directly reflecting the modulation efficiency of the modulator. Usually, the modulation efficiency of a device is represented by multiplying the half-wave voltage with a parameter that represents the length of the modulator required for phase variation. A smaller value of this parameter indicates higher modulation efficiency, resulting in a smaller required device size.
+​The half-wave voltage refers to the applied voltage required by the modulator's optical signal to generate a phase difference of pi radians, directly reflecting the modulation efficiency of the modulator. Usually, the modulation efficiency of a device is represented by multiplying the half-wave voltage with a parameter that represents the length of the modulator required for phase variation. A smaller value of this parameter indicates higher modulation efficiency, resulting in a smaller required device size.
 
-​	Application Library path: `:\examples\active_demo\doping_function\MOD\MOD0A_vpi.py`
+​Application Library path: `:\examples\active_demo\doping_function\MOD\MOD0A_vpi.py`
 
 
 #### 1.1 Basic Operations
 
-​	Before analyzing the characteristic parameters of the device, you need to set up the simulation environment in advance and invoke the modules into the file by  `import` . Please refer to the PD documentation for detailed instructions on specific Python commands.
+​Before analyzing the characteristic parameters of the device, you need to set up the simulation environment in advance and invoke the modules into the file by  `import` . Please refer to the PD documentation for detailed instructions on specific Python commands.
 
 #### 1.2 Code Description
 
 ##### 1.2.1 Import Modules
 
-​	To begin, we need to use the `import` command to call the relevant functional modules.
+​To begin, we need to use the `import` command to call the relevant functional modules.
 
 ```python
 from MOD00_structure import *
@@ -533,9 +533,9 @@ from matplotlib import pyplot as plt
 import warnings
 ```
 
-​	For specific instructions, see the description document of PD device.
+​For specific instructions, see the description document of PD device.
 
-​	By adding the runtime function module to the file name, you can ensure the orderly storage of simulation results without data overlay or overwriting during multiple simulation runs.
+​By adding the runtime function module to the file name, you can ensure the orderly storage of simulation results without data overlay or overwriting during multiple simulation runs.
 
 ```python
 start = time.time()
@@ -544,7 +544,7 @@ time_str = time.strftime("%Y%m%d_%H%M%S/", time.localtime())
 
 ##### 1.2.2 Define Parameters
 
-​	The operational mechanism of the device we simulated in this study primarily revolves around the application of a reverse voltage to modify the width of the depletion region, thereby effectively modifying the carrier concentration and subsequently modulating the refractive index. Hence, it is necessary to specify the voltage of initial、termination and step, with both parameters expressed in volts. It is important to note that  `vpi_vswing` is twice the value of `tcad_vstep`  .
+​The operational mechanism of the device we simulated in this study primarily revolves around the application of a reverse voltage to modify the width of the depletion region, thereby effectively modifying the carrier concentration and subsequently modulating the refractive index. Hence, it is necessary to specify the voltage of initial、termination and step, with both parameters expressed in volts. It is important to note that  `vpi_vswing` is twice the value of `tcad_vstep`  .
 
 ```python
 tcad_vmin = -0.5   
@@ -555,7 +555,7 @@ vpi_vswing = 1.0
 
 ##### 1.2.3 Set Path
 
-​	You could define the project name of path, and then define the parameters for path.
+​You could define the project name of path, and then define the parameters for path.
 
 ```python
 simu_name = "MOD0A_vpi"
@@ -573,11 +573,11 @@ vpiloss_folder = plot_path + project_name + "vpiloss"
 
 ##### 1.2.4 Confirm swing of voltage
 
-​	According to the phase change formula, we can determine that the refractive index *n* is a function of bias voltage, which means that we can change the refractive index of the material by adjusting the bias voltage. To achieve a more precise approximation curve for n-V, we set the `vpi_vswing` parameter to specify the voltage spacing before and after the voltage transitions, allowing us to make judgments based on user-defined parameters.
+​According to the phase change formula, we can determine that the refractive index *n* is a function of bias voltage, which means that we can change the refractive index of the material by adjusting the bias voltage. To achieve a more precise approximation curve for n-V, we set the `vpi_vswing` parameter to specify the voltage spacing before and after the voltage transitions, allowing us to make judgments based on user-defined parameters.
 
 <BlockMath math="\Delta\varphi=\frac{2\pi}{\lambda}\Delta n(V)L\\=\frac{2\pi}{\lambda}\frac{dn}{dV}\Delta VL" />
 
-​	With the following formula, when the phase difference is pi:
+​With the following formula, when the phase difference is pi:
 
 <BlockMath math="\Delta V_\pi L=\frac{\Delta V}{\Delta n}\frac{\lambda}{2}" />
 
@@ -591,7 +591,7 @@ if np.abs((np.abs(vpi_vswing)-np.abs(di*tcad_vstep*2))/tcad_vstep) > 0.01:
 
 ##### 1.2.5 Create Component
 
-​	You can specify the physical attributes of an electrode. You can set the BC model and scanning method here. The bias voltage range is set for steady-state solutions, and the AC small signal switch is disabled. Detailed information about the Electrode attribute can be found in the appendix of the PD documentation.
+​You can specify the physical attributes of an electrode. You can set the BC model and scanning method here. The bias voltage range is set for steady-state solutions, and the AC small signal switch is disabled. Detailed information about the Electrode attribute can be found in the appendix of the PD documentation.
 
 ```python
 pj = mod_project(project_name, run_mode, st_type="normal")
@@ -607,7 +607,7 @@ st.add_electrode(name="anode", property={
 
 ##### 1.2.6 Set Simulation
 
-​	You can add a physical model solver here.
+​You can add a physical model solver here.
 
 ```python
 simu = pj.Simulation()
@@ -625,7 +625,7 @@ simu.add(name="fde", type="AFDE", property={
 
 ##### 1.2.7 Run
 
-​	It is recommended to include a module that runs the solver and initiates the simulation. The `result_device` variable stores simulation results for subsequent extraction. 
+​It is recommended to include a module that runs the solver and initiates the simulation. The `result_device` variable stores simulation results for subsequent extraction. 
 
 ```python
 result_device = simu["oedevice"].run()
@@ -634,7 +634,7 @@ result_fde = simu["fde"].run()
 
 ##### 1.2.8 Extract Parameters 
 
-​	You can extract and export simulation results to the plot folder.
+​You can extract and export simulation results to the plot folder.
 
 ```python
 result_fde.extract(data="effective_index", export_csv=True, operation="real", show=False, savepath=plot_path + project_name + "neffreal")
@@ -646,11 +646,11 @@ result_fde.extract(data="vpiloss", export_csv=True, show=False, savepath=plot_pa
 
 ##### 1.2.9 Calculate
 
-​	This section of the program is dedicated to calculating the parameters *VpiL* and *VpiLoss*.
+​This section of the program is dedicated to calculating the parameters *VpiL* and *VpiLoss*.
 
-​	You should first extract the parameters for transmission loss and the real part of effective refractive index.
+​You should first extract the parameters for transmission loss and the real part of effective refractive index.
 
-​	The filename `0_effective index_Real.csv` is automatically generated for the n-V data file. The initial `0`  indicates the electrode number, which changes when extracting current from different electrodes. Therefore, iterate from 0 to 9 to locate the saved n-V data files.
+​The filename `0_effective index_Real.csv` is automatically generated for the n-V data file. The initial `0`  indicates the electrode number, which changes when extracting current from different electrodes. Therefore, iterate from 0 to 9 to locate the saved n-V data files.
 
 ```python
 neff_file = os.path.join(neff_real_folder, "0_effective index_Real.csv")
@@ -676,7 +676,7 @@ rawdata = np.genfromtxt(loss_file, skip_header=3, delimiter=',')
 loss = rawdata[:,1]
 ```
 
-​	Generate the relationship curve and data file for the product of half-wave voltage and effective modulation length (*VpiL*), the product of half-wave voltage and loss (*VpiLoss*), as well as VBias, and save them in the respective newly created files.
+​Generate the relationship curve and data file for the product of half-wave voltage and effective modulation length (*VpiL*), the product of half-wave voltage and loss (*VpiLoss*), as well as VBias, and save them in the respective newly created files.
 
 ```python
 vpil = []
@@ -704,7 +704,7 @@ np.savetxt(vpiloss_file, np.array((volt_out, vpiloss)).T, fmt='%f,%.15f', header
 
 ```
 
-​	You can use the following program to set up the title and style of the picture.
+​You can use the following program to set up the title and style of the picture.
 
 ```python
 fontsize = 20
@@ -741,16 +741,16 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 
 #### 1.3 Output Result
 
-​	Application Library path: `:\examples\active_demo\doping_function\MOD\plots\MOD0A_vpi_local_time`
+​Application Library path: `:\examples\active_demo\doping_function\MOD\plots\MOD0A_vpi_local_time`
 
 ##### 1.3.1 Loss
 
-​	This section displays the variation of losses with bias voltage.
+​This section displays the variation of losses with bias voltage.
 ![](../MOD/plot/MOD0A_vpi_loca_time/loss/0_loss_Real.png)
 
 ##### 1.3.2 Effective Index
 
-​	These graphs depict the real and imaginary components of the refractive index as a function of bias voltage.
+​These graphs depict the real and imaginary components of the refractive index as a function of bias voltage.
 
 |                    Reffective index real                     |                  Reffective index imaginary                  |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
@@ -768,19 +768,19 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 
 ### 2. Capacitance And Resistance
 
-​	Capacitance and resistance play crucial roles in determining the performance of devices. Optimal capacitance values enable the modulator to selectively allow or block signals within specific frequency ranges, facilitating signal coupling. Suitable resistance values enable adjustment of signal amplitude and modulation current determination.
+​Capacitance and resistance play crucial roles in determining the performance of devices. Optimal capacitance values enable the modulator to selectively allow or block signals within specific frequency ranges, facilitating signal coupling. Suitable resistance values enable adjustment of signal amplitude and modulation current determination.
 
-​	Application Library path: `:\examples\active_demo\doping_function\MOD\MOD0B_RC.py`
+​Application Library path: `:\examples\active_demo\doping_function\MOD\MOD0B_RC.py`
 
 #### 2.1 Basic Operations
 
-​	The simulation program for calculating capacitance and voltage exhibits numerous similarities to the program used for investigating modulation efficiency. Prior to conducting the simulation, it is necessary to import the module in order to invoke the structures and physical models defined in the `structure.py` .
+​The simulation program for calculating capacitance and voltage exhibits numerous similarities to the program used for investigating modulation efficiency. Prior to conducting the simulation, it is necessary to import the module in order to invoke the structures and physical models defined in the `structure.py` .
 
 #### 2.2 Code Description
 
 ##### 2.2.1 Import Modules
 
-​	The necessary Python modules for the program are invoked within the process.
+​The necessary Python modules for the program are invoked within the process.
 
 ```python
 from MOD00_structure import *
@@ -794,7 +794,7 @@ from matplotlib import pyplot as plt
 
 ##### 2.2.2 Define Parameters
 
-​	The voltages to be applied to the electrodes of the device are specified.
+​The voltages to be applied to the electrodes of the device are specified.
 
 ```python
 tcad_vmin = -0.5  
@@ -804,7 +804,7 @@ tcad_vstep = 0.5
 
 ##### 2.2.3 Set Path
 
-​	You can use the time module for file naming conventions and then store the files in the "plots" folder.
+​You can use the time module for file naming conventions and then store the files in the "plots" folder.
 
 ```python
 start = time.time()
@@ -819,7 +819,7 @@ if not os.path.exists(plot_path):
 
 ##### 2.2.4 Create Component
 
-​	You can directly invoke the engineering function and device structure created in the `structure.py`  file, and then add the electrodes and their attributes. In this case, a bias voltage ranging from -0.5 V to 4 V with a scan step of 0.5 V is applied to the `cathode` electrode during small-signal simulation.
+​You can directly invoke the engineering function and device structure created in the `structure.py`  file, and then add the electrodes and their attributes. In this case, a bias voltage ranging from -0.5 V to 4 V with a scan step of 0.5 V is applied to the `cathode` electrode during small-signal simulation.
 
 ```python
 pj = mod_project(project_name, run_mode, st_type="normal")
@@ -836,7 +836,7 @@ st.add_electrode(name="anode", property={
 
 ##### 2.2.5 Set Simulation
 
-​	You can add a solver for the simulation and define its properties. Furthermore, the properties of the AC small-signal module are defined in this section. The frequency interval is logarithmically defined, specifying the initial frequency, final frequency, and the number of frequencies. The variable `ssac_amplitude"` represents the amplitude of the small signal. In this instance, three frequency values (1, 100, and 10000 MHz) are selected from the range of 1e6 to 1e10.
+​You can add a solver for the simulation and define its properties. Furthermore, the properties of the AC small-signal module are defined in this section. The frequency interval is logarithmically defined, specifying the initial frequency, final frequency, and the number of frequencies. The variable `ssac_amplitude"` represents the amplitude of the small signal. In this instance, three frequency values (1, 100, and 10000 MHz) are selected from the range of 1e6 to 1e10.
 
 ```python
 simu = pj.Simulation()
@@ -850,7 +850,7 @@ simu.add(name="oedevice", type="OEDevice", property={
 
 ##### 2.2.6 Run
 
-​	It is recommended to include a module to execute the solver and commence the simulation.
+​It is recommended to include a module to execute the solver and commence the simulation.
 
 ```python
 result_device = simu["oedevice"].run()
@@ -858,7 +858,7 @@ result_device = simu["oedevice"].run()
 
 ##### 2.2.7 Extract Parameters
 
-​	Firstly, the names of the folders used to store the extracted data for the real and imaginary components of the refractive index should be defined.
+​Firstly, the names of the folders used to store the extracted data for the real and imaginary components of the refractive index should be defined.
 
 ```python
 Iac_real_folder = plot_path + project_name + "Iac_real"
@@ -867,7 +867,7 @@ result_device.extract(data="Iac", electrode="cathode", operation="real", export_
 result_device.extract(data="Iac", electrode="cathode", operation="imag", export_csv=True, show=False, savepath=Iac_imag_folder)
 ```
 
-​	Secondly, the following program can be used to define the output files for the real and imaginary parts of the refractive index, as well as the capacitance and resistance, while also specifying the data content within the files and ensuring proper attention to the frequency units.
+​Secondly, the following program can be used to define the output files for the real and imaginary parts of the refractive index, as well as the capacitance and resistance, while also specifying the data content within the files and ensuring proper attention to the frequency units.
 
 ```python
 Iac_real_files = []
@@ -915,7 +915,7 @@ for i in range(len(Iac_real_files)):
 
 ##### 2.2.8 Calculate
 
-​	Subsequently, the capacitance and voltage can be calculated based on the current and voltage data that have been read.
+​Subsequently, the capacitance and voltage can be calculated based on the current and voltage data that have been read.
 
 ```python
     Vdc = Iac_real_data[:,0]
@@ -928,7 +928,7 @@ for i in range(len(Iac_real_files)):
     C = np.abs(np.imag(1/Z)/(2*np.pi*frequency))
 ```
 
-​	Finally, the column names in the previously defined data files can be set, with the first column representing voltage and the second column representing capacitance or resistance. Additionally, the axis titles and styles should be set for the output images.
+​Finally, the column names in the previously defined data files can be set, with the first column representing voltage and the second column representing capacitance or resistance. Additionally, the axis titles and styles should be set for the output images.
 
 ```python
 	 np.savetxt(resistance_file, np.array((Vdc, R)).T, fmt='%f,%.15e', header='voltage,resistance')
@@ -970,11 +970,11 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 
 #### 2.3 Output Result
 
-​	Application Library path: `:\examples\active_demo\doping_function\MOD\plots\MOD0B_RC_local_time`
+​Application Library path: `:\examples\active_demo\doping_function\MOD\plots\MOD0B_RC_local_time`
 
 ##### 2.3.1 Small Signal AC Current
 
-​	This section displays the variations of the real and imaginary components of the AC current with respect to bias voltage at different frequencies.
+​This section displays the variations of the real and imaginary components of the AC current with respect to bias voltage at different frequencies.
 
 |       | 1 MHZ                                                        | 100 MHZ                                                      | 10000 MHZ                                                    |
 | ----- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -983,7 +983,7 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 
 ##### 2.3.2 Capacitance
 
-​	This section displays the variations of capacitance with respect to bias voltage at different frequencies.
+​This section displays the variations of capacitance with respect to bias voltage at different frequencies.
 
 | 1 MHZ                                                        | 100 MHZ                                                      | 10000 MHZ                                                    |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -991,7 +991,7 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 
 ##### 2.3.3 Resistance
 
-​	This section displays the variations of resistance with respect to bias voltage at different frequencies.
+​This section displays the variations of resistance with respect to bias voltage at different frequencies.
 
 | 1 MHZ                                                        | 100 MHZ                                                      | 10000 MHZ                                                    |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |

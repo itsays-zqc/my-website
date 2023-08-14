@@ -8,8 +8,9 @@ The Finite Difference Eigenmode (FDE )is a numerical solution algorithm that dis
 * Calculate the propagation of electromagnetic waves and the field distribution of harmonic modes with high accuracy.
 * The calculation cost is relatively low.
 
-The mode profile of the waveguide using FDE is shown in the following figure.a
+The mode profile of the waveguide using FDE is shown in the following figure.
 ![](FDE_yz.png)
+
 ## EME
 
 The Eigenmode Expansion Method (EME) calculates the bidirectional transmission of interface modes in partitioned units to obtain the transfer matrix, which has significant advantages over FDTD in simulating length scanning photonic devices.

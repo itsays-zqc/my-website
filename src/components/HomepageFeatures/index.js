@@ -40,7 +40,7 @@ const FeatureList = [
 
         <hr style={{ margin: '0.25rem 0' }}/>
         <div style={{ textAlign: 'left' }}>
-          <a href="/my-website/docs/category/simulation-setup" >    5. Contact Us </a>
+          <a href="/my-website/docs/faq/ObtainTechnicalSupport" >    5. Contact Us </a>
         </div>
         <hr style={{ margin: '0.25rem 0' }}/>
        

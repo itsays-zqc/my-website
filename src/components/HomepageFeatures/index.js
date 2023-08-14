@@ -28,7 +28,7 @@ const FeatureList = [
 
         <hr style={{ margin: '0.25rem 0' }}/>
         <div style={{ textAlign: 'left' }}>
-          <a href="/my-website/docs/faq/Installation">    3. Physics </a>
+          <a href="/my-website/docs/faq/Physics">    3. Physics </a>
         </div>
 
 

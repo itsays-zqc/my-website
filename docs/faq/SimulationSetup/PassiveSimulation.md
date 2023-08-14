@@ -61,7 +61,7 @@ mt.add_anisotropy(name="LN", fitting=None,
 
 ## 3. 怎样在SDK仿真中添加几何结构？
 
-&emsp; 下面我们学习如何在SDK中新建一个几何结构，如*Region 3*中所示。
+&emsp; 下面我们学习如何在SDK中新建一个几何结构。
 
 ### 3.1 怎样添加背景折射率？
 
@@ -151,7 +151,9 @@ st.add_geometry(name="box", type="gds_file",
 
 ### 4.1 怎样设置FDE仿真中各个参数？
 
-&emsp;&emsp;下面我们学习在SDK中通过`Simulation`添加一个FDE仿真并设置其仿真参数。<br/>&emsp;&emsp;首先，需要通过`OBoundary`设置边界条件，`geometry`为边界几何参数，`boundary`为截面仿真边界参数。<br/>&emsp;&emsp;随后，在`simu.add`下分别设置仿真名称`name`，仿真类型`type`，以及仿真的各项参数`property`。`property`中通过`general`设置仿真求解器的类型，默认值为`2d_x_normal`；在`mesh_settings`下设置网格参数，通过`global_mesh_uniform_grid`设置各方向上的网格大小；`calculate_modes`确定是否计算模式； `mesh_structure`确定是否计算折射率轮廓；`wavelength`为 频域波长；通过`wavelength_offset`计算群折射率的波长偏移；`number_of_trial_modes`为FDE计算的模式数；通过`search` 寻找模式折射率，可选用`[‘max_index’, ‘near n’]`两种方式，默认为`‘max_index’`；`calculate_group_index` 确定 是否计算群折射率；`bent_waveguide`为是否计算弯曲波导的模式；`radius`为波导的弯曲半径；`orientation`确定波导管弯曲的方向。<br/>&emsp;&emsp;可以通过`frequency_analysis`计算各个波长下模式，`start_wavelength`，`stop_wavelength`，`number_of_points`，分别为起始扫描波长，结束扫描波长和扫描取点个数。
+&emsp;&emsp;下面我们学习在SDK中通过`Simulation`添加一个FDE仿真并设置其仿真参数。
+
+&emsp;&emsp;首先，需要通过`OBoundary`设置边界条件，`geometry`为边界几何参数，`boundary`为截面仿真边界参数。<br/>&emsp;&emsp;随后，在`simu.add`下分别设置仿真名称`name`，仿真类型`type`，以及仿真的各项参数`property`。`property`中通过`general`设置仿真求解器的类型，默认值为`2d_x_normal`；在`mesh_settings`下设置网格参数，通过`global_mesh_uniform_grid`设置各方向上的网格大小。<br/>&emsp;&emsp; `calculate_modes`确定是否计算模式； `mesh_structure`确定是否计算折射率轮廓；`wavelength`为 频域波长；通过`wavelength_offset`计算群折射率的波长偏移；`number_of_trial_modes`为FDE计算的模式数；通过`search` 寻找模式折射率，可选用`[‘max_index’, ‘near n’]`两种方式；`calculate_group_index` 确定 是否计算群折射率；`bent_waveguide`为是否计算弯曲波导的模式；`radius`为波导的弯曲半径；`orientation`确定波导管弯曲的方向。<br/>&emsp;&emsp;可以通过`frequency_analysis`计算各个频率下的模式，其中`start_wavelength`，`stop_wavelength`，`number_of_points`，分别为起始扫描波长，结束扫描波长和扫描取点个数。
 
 ```python
 # region --- Boundary ---
@@ -226,7 +228,7 @@ simu[simu_name].run_index(name=f'{simu_name}_x_0', savepath=f'{plot_path}{k}Inde
 
 ### 4.4 怎样在SDK中的FDE模块中获取仿真数据？
 
-&emsp;&emsp;首先通过`result_fde.extract`下的`data='calculate_modes'`来获取仿真模场并保存在`savepath`路径下，通过`export_csv`确定是否导出模场数据的csv格式文件；设置`attribute`，`mode`，`real`，`imag`来提取所需要模式相关数据。当使用FDE模块中频率扫描功能时，通过`data=’frequency_analysis’`提取数据。如代码中所示，可以提取`"neff", "loss", "group_index", "polarization"`等等各个分量。
+&emsp;&emsp;首先通过`result_fde.extract`下的`data='calculate_modes'`来获取仿真模场并保存在`savepath`路径下，通过`export_csv`确定是否导出模场数据的csv格式文件；设置`attribute`，`mode`，`real`，`imag`来提取所需要模式相关数据。当使用FDE模块中频率扫描功能时，通过`data='frequency_analysis'`提取数据。如代码中所示，可以提取`"neff", "loss", "group_index", "polarization"`等等各个分量。
 
 ```python
 # region --- See Results ---
@@ -256,7 +258,7 @@ if run_options.extract:
 
 ### 5.1 怎样设置EME仿真中添加边界条件和端口？
 
-&emsp;&emsp;首先需要通过`OBoundary`对边界条件进行设置，再用`geometry`，`boundary`分别对边界的几何尺寸和各个维度的边界参数进行设置。<br/>随后需要通过`Port`对EME的端口进行设置，`pj.Port.add`能够添加一个新端口。`port_location`为端口的位置；可通过`mode_selection`选择该端口的模式，如`fundamental_TE`或者`fundamental_TM`；此外，还支持`user_select`自定义端口的模式，通过`mode_index`选定端口模式的阶数，需要保证是正整数；`use_full_simulation_span` 为是否使用全仿真区域；`offset`为端口相对仿真边界的偏移；`number_of_trial_modes` 为EME求解模式。
+&emsp;&emsp;首先需要通过`OBoundary`对边界条件进行设置，再用`geometry`，`boundary`分别对边界的几何尺寸和各个维度的边界参数进行设置。<br/>&emsp;&emsp;随后需要通过`Port`对EME的端口进行设置，`add`能够添加一个新端口。`port_location`为端口的位置；可通过`mode_selection`选择该端口的模式，如`fundamental_TE`或者`fundamental_TM`；此外，还支持`user_select`自定义端口的模式，通过`mode_index`选定端口模式的阶数，需要保证是正整数；`use_full_simulation_span` 为是否使用全仿真区域；`offset`为端口相对仿真边界的偏移；`number_of_trial_modes` 为EME求解模式。
 
 ```python
 # region --- Boundary ---
@@ -296,7 +298,7 @@ pjp.add(name='eme_out', type='eme_port',
 
 ### 5.2 怎样在EME仿真中添加一个profile monitor？
 
-&emsp;&emsp;如下方代码所示，首先需要通过`add`添加一个新的监视器，再用`type='profile_monitor'`调用不同种类的监视器。在`property`中对监视器各个参数进行设置，如`monitor_type`设置监视器的方向；`x/y/z`以及`x_span/y_span/z_span`确定监视器的坐标和尺寸且监视器法向span宽度需要为零。<br/>此外，还需要注意的是，监视器的区域需要小于等于仿真区域的大小，对于XY平面的profile monitor，一般令其监视区域尺寸与仿真区域相同。FDTD的profile monitor设置与此相同。
+&emsp;&emsp;如下方代码所示，首先需要通过`add`添加一个新的监视器，再用`type='profile_monitor'`调用不同种类的监视器。在`property`中对监视器各个参数进行设置，如`monitor_type`设置监视器的方向；`x/y/z`以及`x_span/y_span/z_span`确定监视器的坐标和尺寸且监视器法向span宽度需要为零。<br/>&emsp;&emsp;此外，还需要注意的是，监视器的区域需要小于等于仿真区域的大小，对于XY平面的profile monitor，一般令其监视区域尺寸与仿真区域相同。FDTD的profile monitor设置与此相同。
 
 ```python
 # region --- Monitor ---

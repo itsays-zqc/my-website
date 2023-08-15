@@ -43,6 +43,7 @@ In the case of multiple materials in the grid, the equivalent refractive index w
 
 ![](./img/mesh_type.png)
 
+
 * The refractive index of different materials in the "staircase" type of mesh varies directly at the interface, while the interface of the "curve mesh" material is gradient.
 * Under the same grid size, using a "curve mesh" type of grid is more accurate in characterizing the structure, and the accuracy of the calculation results is significantly improved. From the following example, it can be seen that using a grid size of "cells per wavelength" of 15 for the "curve mesh" type mesh is equivalent to using a grid size of "cells per wavelength" of 22 for the "staircase" type mesh, but the simulation time is saved by four times.
 * The “curve mesh” is applicable to FDE, EME, and FDTD solvers.

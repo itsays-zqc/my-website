@@ -3,8 +3,9 @@ The boundary conditions include perfectly matched layers (PML), perfect electric
 
 ## 1.PML
 
-<div class="text-justify">
+
 The intensity of the light field after entering the PML layer will decay, which can be used to absorb the electromagnetic field at the boundary.You can set the absorption of PML through the following parameters.
+
 
 * Number of layers of PML.
 * Kappa Alpha and Sigma are the orders of polynomials.
@@ -13,8 +14,10 @@ The intensity of the light field after entering the PML layer will decay, which 
 * Increasing the value of Alpha/Sigma improves the stability of absorption, but the absorption effect will decrease.
 * Increasing Alpha/Sigma increases stability and reduces absorption capacity.
 
-For the EME solver,Max Optics optimized PML to improve mode orthogonality, which resulted in reduced absorption of guided modes.General PML parameters of FDTD is {"pml_layer":8,"pml_kappa:2,"pml_sigma":0.8,"pml_polynomial":3,"pml_alpha":0,"pml_alpha_polynomial":1}.
-</div>
+
+For the EME solver,Max Optics optimized PML to improve mode orthogonality, which resulted in reduced absorption of guided modes.General PML parameters of FDTD: {"pml_layer":8,"pml_kappa:2,"pml_sigma":0.8,"pml_polynomial":3,"pml_alpha":0,"pml_alpha_polynomial":1}.
+
+
 
 ## 2.PEC
 

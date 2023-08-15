@@ -8,10 +8,12 @@ When either the maximum simulation time is reached or the energy in the simulati
 # Relationship between structural dimensions and simulation time
 
 <div class="text-justify">
+
 1. The estimated time required for simulating and calculating non resonant devices is:L𝑛_𝑔/c;
 2. For SOI devices with a 100 micron length and a group refractive index of 4.23, the simulation time should be at least 1410 fs;
 3. For SiN devices with a 100 micron length and a group refractive index of 2.01, the simulation time is at least 670fs.
 4. In general, we need the light field energy in the simulation to converge below 1e-4. In order to ensure that the energy at the end of the simulation is less than 1e-4, the simulation time should be set sufficiently large.
+
 </div>
 
 # What is the relationship between the 'step. 0.39%' printed during the simulation process and the simulation time?

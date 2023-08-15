@@ -5,7 +5,7 @@ import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
 
 ---
-## Waht is Max-Optics?
+## What is Max-Optics?
 
 ![mologo](../../static/img/mo_logo.jpg)
 ### 公司简介：
@@ -271,7 +271,7 @@ Contact Information:
 
 ![](../../static/img/faq/General/9.png)
 
-## Pyton安装路径中有空格怎么办？
+## Python安装路径中有空格怎么办？
 
 ​	如果Python安装路径中有空格，在安装AIO的第一步创建虚拟环境的时候就会报错，系统会把空格前的路径错误识别为一个命令。这种情况下如果不能修改python安装路径怎么办？
 

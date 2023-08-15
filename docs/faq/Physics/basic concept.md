@@ -1,7 +1,7 @@
 import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
 
-# What is the meaning of basic concept?
+# About the basic concept
 
 ## Mode
 

@@ -63,7 +63,7 @@ The mesh accuracy represents the size of the mesh, and the commonly used grid ac
 
 1. To meet the accuracy requirements of the calculation, it is recommended to set "cells per wavelength" to 14 or above.
 2. If we only focus on the transmission rate, it is not necessary to set "cells per wavelength" above 22. Generally, the transmission rate set to 18 is within ±0.01 of the transmission rate error for higher grid accuracy.
-3. If more accurate reflectivity (-60dB) is required, "cells per wavelength" should be set to be greater than 26.
+3. If more accurate reflectivity (-60 dB) is required, "cells per wavelength" should be set to be greater than 26.
 
 </div>
 

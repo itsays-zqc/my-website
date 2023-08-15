@@ -2,7 +2,9 @@
 
 ## FDE 
 The Finite Difference Eigenmode (FDE )is a numerical solution algorithm that discretizes the Maxwell equation and solves the constructed feature matrix.The solution process for FDE is as follows.
+
 ![](FDE_Process.png)
+
 * Calculate the propagation of electromagnetic waves and the field distribution of harmonic modes with high accuracy.
 * The calculation cost is relatively low.
 
@@ -15,11 +17,14 @@ The mode profile of the waveguide using FDE is shown in the following figure.
 ## EME
 
 The Eigenmode Expansion Method (EME) calculates the bidirectional transmission of interface modes in partitioned units to obtain the transfer matrix, which has significant advantages over FDTD in simulating length scanning photonic devices.
+
 ![](EME_process.png)
+
 * Calculate the transmission characteristics of the device and quickly scan and optimize the device.
 * Compared to FDTD methods, the treatment of nonlinearity and dispersion equivalence has certain disadvantages.
 
 Calculate the electric field distribution of silicon waveguide and silicon nitride waveguide using EME, as shown in the following figure.
+
 ![](EME_xy.png)
 
 ## FDTD

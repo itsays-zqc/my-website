@@ -3,7 +3,7 @@
 The pattern expansion monitor, as a sub attribute of the power monitor, inherits the position, size, wavelength range, and frequency points of the power monitor.
 # The meaning of each option in mode selection?
 
-In the user selection feature, the mode index starts from 0, and users can customize the number of monitoring modes by entering a list [0, 1, 2, 3,...]
+In the user selection feature, the mode index starts from 0, and users can customize the number of monitoring modes by entering a list [0, 1, 2, 3,...].
 
 "Fundamental Mode" represents the selection of the first given mode, "Fundamental TE Mode" represents the selection of the first TE mode, which is usually TE0 mode in the 2D waveguide section, "Fundamental TM Mode" represents the selection of the first TM mode, which is usually TM0 in the 2D waveguide section, and "User Select" represents user-defined ".
 

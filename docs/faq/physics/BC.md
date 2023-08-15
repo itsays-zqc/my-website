@@ -1,5 +1,5 @@
 # How to set boundary condition?
-The boundary conditions include perfectly matched layers (PML), perfect electric conductors (PEC), symmetric and antisymmetric boundary conditions
+The boundary conditions include perfectly matched layers (PML), perfect electric conductors (PEC), symmetric and antisymmetric boundary conditions.
 
 ## 1.PML
 The intensity of the light field after entering the PML layer will decay, which can be used to absorb the electromagnetic field at the boundary.You can set the absorption of PML through the following parameters.

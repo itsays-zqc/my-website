@@ -26,7 +26,7 @@ According to the different ways in which the refractive index of materials is fi
 When multiple materials appear in a grid, one of them will be selected as the filling material for the grid. The size of the divided grid is too large, which can easily create a stepped shape in curved structures. As shown in the figure below, the refractive index distribution of the structure is observed, and a stepped shape appears at the boundary of the curved waveguide.
 ### 2.2 Curve mesh
 In the case of multiple materials in the grid, the equivalent refractive index within the grid is calculated based on the electromagnetic field equation at the boundary, and then filled into the grid. Using "curve mesh" can significantly improve the accuracy of calculations with the same grid accuracy.
-![](mesh_type.png)
+![](./img/mesh_type.png)
 * The refractive index of different materials in the "staircase" type of mesh varies directly at the interface, while the interface of the "curve mesh" material is gradient.
 * Under the same grid size, using a "curve mesh" type of grid is more accurate in characterizing the structure, and the accuracy of the calculation results is significantly improved. From the following example, it can be seen that using a grid size of "cells per wavelength" of 15 for the "curve mesh" type mesh is equivalent to using a grid size of "cells per wavelength" of 22 for the "staircase" type mesh, but the simulation time is saved by four times.
 * The “curve mesh” is applicable to FDE, EME, and FDTD solvers.
@@ -50,4 +50,4 @@ In the area where the global mesh and local mesh are connected, the gradient tre
 
 The mesh factor cannot be too small. If the mesh factor is 1, the grid will be evenly distributed throughout the entire space without any changes in size, and the number of meshs will increase significantly.
 
-![](mesh_factor.png)
+![](./img/mesh_factor.png)

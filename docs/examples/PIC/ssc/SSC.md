@@ -7,9 +7,9 @@ import {InlineMath, BlockMath} from 'react-katex';
 <div class="text-justify">
 
 ![](structure_ps.png)
-The spot size converter (SSC) is an important device for connecting silicon photonic integrated chips and external optical fibers, which can couple the light transmitted in silicon waveguides with low loss into the waveguide. As shown in the figure, SSC has a tapered silicon waveguide with gradually thinning ends and a low refractive index waveguide covered with SiON, and the entire waveguide device is placed in a silicon dioxide environment [1]. The light emitted from the low refractive index waveguide is similar in size to the mode field in the fiber, so it can effectively couple the light from the waveguide into the fiber.
+The spot size converter (SSC) is an important device for connecting silicon photonic integrated chips and external optical fibers, which can couple the light transmitted in silicon waveguides with low loss into the waveguide. As shown in the figure, SSC has a tapered silicon waveguide with gradually thinning ends and a low refractive index waveguide covered with SiON, and the entire waveguide device is placed in a silicon dioxide environment [1]. The mode field size in a low refractive index waveguide is similar to that in a fiber, so it can effectively couple light from the waveguide into the fiber.
 
-Eigenmode expansion (EME) method has great advantages in calculating long conical waveguides. By dividing the structure into multiple units, calculating the mode and bidirectional transmission at the unit boundary, the S-matrix of the entire device can be obtained. And when using length sweep, only the bidirectional transmission part needs to be calculated to obtain the S parameter of length sweep
+Eigenmode expansion (EME) method has great advantages in calculating long tapered waveguide. By dividing multiple elements in the cross-sectional variation area, and then calculating the modes at the interface of the elements and the bidirectional transmission of the modes, the s-matrix of the conical waveguide transmission can be quickly obtained. When using length sweep, only the bidirectional transmission part needs to be calculated to obtain the S parameter of length sweep.
 </div>
 
 ## Simulation Structure
@@ -17,7 +17,7 @@ Eigenmode expansion (EME) method has great advantages in calculating long conica
 #### 1.1 Import Toolkit
 <div class="text-justify">
 
-First, we need to import `maxoptics_sdk` and Python's function packages.The import module for EME simulation is as follows.
+First, we need to import `maxoptics_sdk` and Python's third-party package. The import module for EME simulation is shown below.
 </div>
 
 ```python
@@ -30,7 +30,7 @@ from typing import NamedTuple
 
 #### 1.2 Define Simulation Function 
 <div class="text-justify">
-We can define functions to encapsulate the entire simulation project and facilitate parameter assignment.
+To facilitate parameter changes, we can define function to encapsulate the entire simulation project.
 
 </div>
 
@@ -46,7 +46,7 @@ The `run_mode` variable parameter is used to define the location of the simulati
 
 #### 1.3 Define Parameters
 
-Before starting the simulation, we can define parameters to facilitate modeling and parameterization sweep.The defined parameters are as follows.
+Before starting the simulation, we can define parameters to facilitate modeling and parameterization sweep. The defined parameters are as follows.
 ```python
 # region --- 0. General Parameters ---
 path = kwargs["path"]
@@ -66,7 +66,7 @@ The `path` variable is used to store the path of this Python file.<br/>The `simu
 </div>
 
 #### 1.4 Create project
-Create a new project using the `Project` function of Max's software development toolkit.
+You can create a new project using the `Project` function of Max's software development toolkit.
 ```python
 # region --- 1. Project ---
 pj = mo.Project(name=project_name, location=run_mode,)
@@ -99,7 +99,7 @@ The `name` is used to define the name of the added material.<br/>The `data` is u
 #### 1.6 Add Structure
 <div class="text-justify">
 
-The structure is composed of Silicon dioxide substrate, tapered silicon waveguide and polymer covered waveguide. Create a structure using `Structure`, where `mesh_type` is the type of grid, `mesh_factor` is the growth factor of the grid, and `background_material` is the background material of the structure. Use the `add_geometry` function to add geometric structures and select "gds_file" in `type` to establish the model by importing the GDS file. The properties of GDS modeling are shown in the table below.
+The structure is composed of silicon dioxide substrate, tapered silicon waveguide and polymer covered waveguide. We use `Structure` to create structure , where `mesh_type` is the type of mesh, `mesh_factor` is the growth factor of the mesh, and `background_material` is the background material of the structure. Use the `add_geometry` function to add geometric structures and select "gds_file" in `type` to establish the model by importing the GDS file. The properties of GDS modeling are shown in the table below.
 
 </div>
 
@@ -123,23 +123,23 @@ st.add_geometry(name="cover", type="gds_file",
 |Key| Value |type|Description|
 |-----|------|---------------|-----|
 |name|sub|string|name the added geometry|
-|type|gds_file|string|select the type of structure to add|
-|path|gds_file|string|file path of gds file|
-|cell_name|SSC|string| name of the gds cell |
-|layer_name|(1,0)|list|name of the layer |
-|x&emsp;&emsp;&emsp;&emsp;|0&emsp;&emsp;&emsp;&emsp;|float&emsp;&emsp;&emsp;&emsp;|The center position in the x-direction of the geometric structure.&nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
-|y|0||center position in the y-direction of the geometric structure|
-|z|-1.5|3|center position in the z-direction of the geometric structure|
-|z_span|3|float| length of the geometric structure in the z-direction.|
-|material|mt["Si"]|material | Select the material in Material|
-|mesh_order|2|integer|Set the priority of the grid.
+|type|gds_file|string|select the type of structure |
+|path|gds_file|string|file path of GDS file|
+|cell_name|SSC|string| name of the GDS cell |
+|layer_name|(1,0)|list|name of the GDS layer |
+|x&emsp;&emsp;&emsp;&emsp;|0&emsp;&emsp;&emsp;&emsp;|float&emsp;&emsp;&emsp;&emsp;|center position in the x-direction of the geometric structure &nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
+|y|0|float|center position in the y-direction of the geometric structure|
+|z|-1.5|float|center position in the z-direction of the geometric structure|
+|z_span|3|float| length of the geometric structure in the z-direction|
+|material|mt["Si"]|material | select the material in Material|
+|mesh_order|2|integer|set the priority of the mesh|
 
-Select simulation materials by using `mesh_order` in areas where geometry overlaps. The higher the number of `mesh_order`, the higher the priority of the material.
+Select simulation material by using `mesh_order` in areas where geometry overlaps, the higher the number of `mesh_order`, the higher the priority of the material.
 
 #### 1.7 Set Boundary
 <div class="text-justify">
 
- Set the boundary size of the simulation structure using optical boundary condition `OBoundary`.
+Set the boundary size of the simulation structure using optical boundary condition `OBoundary`. The properties are shown below.
 </div>
 
 ```python
@@ -151,7 +151,7 @@ st.OBoundary(property={"geometry": {"x": 0, "x_span": 206, "y": 0, "y_span": 5.5
 #### 1.8 Add Sub Mesh
 <div class="text-justify">
 
-After light passes through tapered silicon waveguide gradually becoming smaller, the mode field is strongly limited to a very small range. Therefore, it is necessary to use `add_mesh` to add a transverse grid to accurately calculate the limited light field.
+After light passes through tapered silicon waveguide gradually becoming smaller, the mode field is strongly limited to a very small range. Therefore, it is necessary to use `add_mesh` to add a transverse grid to accurately calculate the limited light field. Add local mesh as shown below.
 </div>
 
 ```python
@@ -161,12 +161,13 @@ st.add_mesh(
          property={"general": {"dx": grid, "dy": grid, "dz": grid},
                    "geometry": {"x": 0, "x_span": 206, "y": 0, "y_span": 5.5, "z": 0.5, "z_span": 7}})
 # endregion
-```
+``` 
+The `dx`,`dy`,`dz` are the mesh sizes in the x, y, and z directions, respectively.
 
 #### 1.9 Add EME port
 <div class="text-justify">
 
-Use the `Port` function to create port and select the location of the `source_port`, which is the input for calculating the S parameter.You can use the `add` function to add ports and the properties of port are shown in the table below.
+You can use the `port` function to create a port and use the "source_port" property to set the location of the source port. You can use the `add` function to add ports and the properties of port are shown in the table below.
 </div>
 
 ```python
@@ -192,12 +193,12 @@ pjp.add(name="right_port", type="eme_port",
 | y | 0.5 | float | center position of port height |
 | z_span | 7 | float | port height |
 | mode_selection | fundamental_TE | string |select the mode of port |
-| number_of_trial_modes&emsp;&emsp;&emsp;&emsp; | 15&emsp;&emsp;| string&emsp;&emsp;| set the mode of port &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
+| number_of_trial_modes&emsp;&emsp;&emsp;&emsp; | 15&emsp;&emsp;| string&emsp;&emsp;| set the mode of port &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
 
 
 #### 1.10 Add Monitor
 
-In the simulation, `Monitor`function is used to create  monitor and `add` function is used to add a monitor. Select profile_monitor `type` monitor from the added monitors to view the mode field distribution and transmittance of the port.
+In the simulation, `Monitor`function is used to create monitor and `add` function is used to add a monitor. Select profile_monitor `type` monitor from the added monitors to view the mode field distribution.
 ```python
 # region --- 7. Monitor ---
 mn = pj.Monitor()
@@ -233,13 +234,13 @@ simu.add(name=simu_name, type="EME",
                     "cell_group_definition": [
                         {"span": 2, "cell_number": 1, "number_of_modes": 15, "sc": "none"},
                         {"span": 1, "cell_number": 1, "number_of_modes":  15, "sc": "none"},
-                        {"span": 200, "cell_number": 30, "number_of_modes":  15, "sc": "sub_cell"},
+                        {"span": 200, "cell_number": 50, "number_of_modes":  15, "sc": "sub_cell"},
                         {"span": 3, "cell_number": 1, "number_of_modes":  15, "sc": "none"}]}},
             "transverse_mesh_setting": {"global_mesh_uniform_grid": {"dy": grid, "dz": grid}},
             "eme_analysis": {
                 "eme_propagate": run,
                 "propagation_sweep": {"propagation_sweep": run_length_sweep,
-                                        "parameter": "group_span_3", "start": 50, "stop": 250, "number_of_points": 5},
+                                        "parameter": "group_span_3", "start": 50, "stop": 250, "number_of_points": 100},
                 "select_source": {"phase": 0, "select_mode": "TE"}}})
 
 # endregion
@@ -250,24 +251,28 @@ simu.add(name=simu_name, type="EME",
 |  type |  EME | string | select the type of solver |
 | wavelength |  1.5 | float | wavelength of mode |
 | use_wavelength_sweep | True | bool | select to enable wavelength sweep |
-| span | 2 | float | the span of area|
-| cell_number | 1 | float | number of structural slices |
-| number_of_modes| 15| float| number of modes in the crosss-section|
+| span | 2 | float | the span of cell group |
+| cell_number | 1 | float | number of cell in the cell group |
+| number_of_modes| 15| float| Calculate the number of modes per cell |
 | sc | none | string | select to enable subcell method | 
-| dy | 0.05|  float | horizontal grid of cross-section |
-|dz| 0.05 | float | Longitudinal grid of cross-section |
+| dy | 0.05|  float | horizontal mesh of cross-section |
+|dz| 0.05 | float | Longitudinal mesh of cross-section |
 | eme _propagate | True | bool | select to enable EME propagation |
-| propagation_sweep &emsp;| True | bool | select to enable propagation sweep |
-| parameter | grop_span_3 | string | the area of propagation sweep |
+| propagation_sweep &emsp;| True | bool | select to enable length sweep |
+| parameter | grop_span_3 | string | the area of length sweep |
 | start | 50 | float | starting length of sweep |
 |stop | 250 | float | stoping length of sweep |
 |number_of_points | 50 | float | number of sweep lengths |
 | phase | 0 | float | the initial phase of optical source |
 | select_mode| TE|string| mode of optical source|
 
-According to different structures and materials, the SSC is divided into four cell groups using `cell_group_definition`. Set the length of the cell group in `span`, use `cell_number` to set the number of cell. The divided cell structure is shown in the following figure. To set the number of modes in the inter unit interface using `number_of_modes`, it is necessary to set a sufficient number of modes to obtain the correct results.
+<div class="text-justify">
+
+According to different structures and materials, the SSC is divided into four cell groups using `cell_group_definition`. Set the length of the cell group in `span`, use `cell_number` to set the number of cell. The divided cell structure is shown in the following figure. Use `number_of_modes` to set the number of modes calculated at the interface of adjacent units, and it is necessary to set a sufficient number of modes to obtain the correct results.
 
 The area where the structure has not changed, the number of `cell_number` is set to 1, and `sc` is set to "none". In the area of structural changes, multiple cell number need to be used to characterize the structure and the "sub_cell" method is used to reduce the staircase effect caused by discrete changes in the cross-section.
+
+</div>
 
 ![](EME_SSC.png)
 
@@ -287,7 +292,7 @@ The `celldisplay` control whether to display the boundaries of the divided cells
 
 #### 1.13 Calculate Mode
 
-Create a new simulation using `simu.add` function and run the simulation using `simu.add` function.The `type` of simulation needs to be selected as "mode_selection:user_select",and its properties are shown in the table below. Before running EME simulation calculations, we can calculate the mode field distribution of the port by setting the type of mode selection to True and other simulations to False.
+You can create a new simulation using `simu.add` function and run the simulation using `simu.add` function. The `type` of simulation needs to be selected as "mode_selection:user_select", and its properties are shown in the table below. Before running EME simulation calculations, we can calculate the mode field distribution of the port by setting the type of mode selection to True and other simulations to False.
 
 ```python
 # region --- 10. Calculate Mode ---
@@ -307,15 +312,15 @@ if run_options.calculate_modes:
 |  key  |   Value   |   Type  |   Description  |
 |-------| --------- | ------- |   ----------- |
 | mesh_structure | True  |  bool  | select to view the refractive index distribution of the port |
-| calculate_modes &emsp;&emsp; | True &emsp;&emsp; | bool &emsp;&emsp;|  select to calculate the mode of cross-section&nbsp;&nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
-| Wavelength | wavelength |  float |  Calculate the wavelength of the mode |
-|  number_of_trial_modes | number_of_modes | float  |  Number of calculation modes|
-| search | "max_index"  |float | Method of calculating mode |
+| calculate_modes &emsp;&emsp; | True &emsp;&emsp; | bool &emsp;&emsp;|  select to calculate the mode of cross-section&nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
+| Wavelength | wavelength |  float |  calculate the wavelength of the mode |
+|  number_of_trial_modes | number_of_modes | float  |  number of calculation modes|
+| search | "max_index"  |float | method of calculating mode |
 | calculate_group_index | True | bool | select to calculate group refractive index |
-| bent_waveguide | False |bool|  Select to enable bent waveguide in calculation mode|
-| radius | 1 | float | Set the radius of the bent waveguide |
-|orientation | 0 | float | Set the direction of the bent waveguide|
-|location |"simulation_center"|string| Set the position of the bent waveguide|
+| bent_waveguide | False |bool|  select to enable bent waveguide in calculation mode|
+| radius | 1 | float | set the radius of the bent waveguide |
+|orientation | 0 | float | set the bending direction of the waveguide|
+|location |"simulation_center"|string| set the position of the bent waveguide|
 
 #### 1.14 Run
 
@@ -351,12 +356,13 @@ if run_options.run_length_sweep:
     eme_res.extract(data="propagation_sweep:sweep", savepath=plot_path + "10_length_sweep", export_csv=True)
 
 # endregion
-
-The "eme_propagate:facet_data" stores the result of the mode at the interface of the computing unit.
-The "eme_propagate:smatrix" stores the s-matrix after bidirectional transmission of the calculation port mode.
-The "propagation_sweep:sweep" stores the s matrix corresponding to each length after sweeping.
-
 ```
+
+The "eme_propagate:facet_data" stores the calculation mode of cells and ports and the total S-matrix.
+The "eme_propagate:smatrix" stores the S-matrix after bidirectional transmission of the calculation port mode.
+The "propagation_sweep:sweep" stores the S-matrix corresponding to each length after sweeping.
+
+
 
 #### 1.16 Control Switch
 
@@ -379,8 +385,7 @@ if __name__ == "__main__":
 
 We extracted the first two modes of the input port, and the mode field distribution is shown in the following figure.
 ![](fde.png)
-After the propagation calculation is completed, the extracted results can be viewed in the storage path, and the extraction of the results can only be set before the program runs. The electric field distribution at the input and output terminals observed in the monitor is shown in the following figure, and it is evident that the outgoing spot is much smaller than the incoming spot.
-
+After the propagation calculation is completed, the extracted results can be viewed in the storage path, and the extraction of the results can only be set before the program runs. As shown in the following figure, it is clearly observed in the monitor that the incident mode field is larger than the emitted mode field.
 ![](SSC_E.png)
 
 
@@ -393,19 +398,21 @@ After bidirectional transmission calculation of mode, the electric field distrib
 
 ![](SSC_xy.png) 
 
-The propagation result will obtain the S matrix of the entire device, and only the S matrix of the port mode will be returned. As shown in the figure below, the S matrix is a 2 * 2 matrix, where S21 represents the transmission coefficient of one port input and two ports output. Due to the symmetry of the transmission behavior, S12=S21.
+The EME propagation calculation all modes, but only returns the S-matrix of the port mode. As shown in the figure below, the S-matrix is a 2∙2 matrix, where S21 represents the absolute value of the transmission coefficient from port 1 input to port 2 output. Due to the symmetry of the transmission behavior, S12=S21.
 
 ![](S_matrix.png)
 </div>
 
 ## Analysis and Discuss
-When calculating the area of structural change in EME, it is necessary to divide the structure into multiple cells, and the calculated mode is located at the boundary of the cells. The more cells divided, the more accurate the characterization of the structure. In the long conical waveguide region, the number of cells divided is too small, and the calculated cross-sectional area varies greatly, resulting in a strong staircase effect.
+When calculating the area of structural change in EME, it is necessary to divide the structure into multiple cells, and the calculated mode is located at interface between adjacent units. The more cells divided, the more accurate the characterization of the structure. In the long tapered waveguide region, the number of cells divided is too small, and the calculated cross-sectional area varies greatly, resulting in a strong staircase effect. Therefore, before calculating EME, it is necessary to divide the structure into enough cells to ensure the accuracy of the results.
 
-We set "run_length_sweep" to True and conducted a length sweep of 50-250 um on the tapered silicon waveguide area. As shown in the following figure. The number of units divided in the region where the silicon waveguide changes is 50. When the sweeping length is greater than 100 um, the transmission coefficient S21 will fluctuate with the increase of length. When we increase the number of tapered silicon waveguides to 150, the transmission coefficient curve between the sweeping length of 50-250 um becomes smooth. Therefore, in EME simulation in addition to ensuring the number of modes in the unit cross-section, there should also be a sufficient number of units.
+It should be noted that when calculating the EME transmission of conical waveguides, we need to use the "sub_cell" method, which can reduce the non physical reflection caused by the step change of the unit cross-section. Within the range of input and output straight waveguides, the cross-section of the waveguide remains unchanged, and the "none" method is used to calculate the transmission.
+
+We set "run_length_sweep" to True and conducted a length sweep of 50-250 um on the tapered silicon waveguide area. The number of cells divided in the region where the silicon waveguide changes is 50. As shown in the following figure. When the sweeping length is greater than 100 um, the transmission coefficient S21 will fluctuate with the increase of length. When we increase the number of tapered silicon waveguides to 150, the transmission coefficient curve between the sweeping length of 50-250 um becomes smooth. Therefore, in addition to ensuring the number of modes in the unit cross-section, the EME simulation should also have sufficient number of cells.
 
 ![](S21.png)
 
-If you need to sweep the wavelength, you can use "leng_sweep" to turn on length sweep. Similar to length sweep, it is necessary to input the starting and ending wavelengths and the number of wavelength points in the EME simulation. At each wavelength, it is also necessary to calculate the mode and EME propagation part at the all cell interface.
+If you need to sweep the wavelength, you can use "wavelength_sweep" to turn on wavelength sweep. Similar to length sweep, it is necessary to input the starting and ending wavelength and the number of wavelength points in the EME simulation. At each frequency point, the modes of all cell interfaces and EME propagation parts are also calculated. Therefore, wavelength sweep will take longer than length sweep.
 
 ## References
 

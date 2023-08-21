@@ -198,7 +198,7 @@ pjp.add(name="right_port", type="eme_port",
 
 #### 1.10 Add Monitor
 
-In the simulation, `Monitor`function is used to create monitor and `add` function is used to add a monitor. Select profile_monitor `type` monitor from the added monitors to view the mode field distribution and.
+In the simulation, `Monitor`function is used to create monitor and `add` function is used to add a monitor. Select profile_monitor `type` monitor from the added monitors to view the mode field distribution.
 ```python
 # region --- 7. Monitor ---
 mn = pj.Monitor()

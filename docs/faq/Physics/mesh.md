@@ -14,7 +14,7 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 
 ### 1.1 Uniform
-The grid is evenly distributed in the x, y, and z directions, and the step size of the grid is set by the user.
+The uniform type of grid is evenly distributed in the x, y, and z directions, and the step size of the grid is set by the user.
 
 ### 1.2 Auto non-uniform
 
@@ -72,7 +72,7 @@ The mesh accuracy represents the size of the mesh, and the commonly used grid ac
 <div class="text-justify">
 The grid growth factor is only applicable to non-uniform grids and is used to control the rate of grid size change at the junction of different sizes of grids.To ensure the accuracy of the calculation results, the change rate of the grid should not be too large, and the default value of mesh factor is 1.2.
 
-In the area where the global mesh and local mesh are connected, the gradient trend of grid size with different growth factors is as follows. It is obvious that the larger the growth factor, the faster the grid change rate in the connected areas, and the corresponding number of meshs is smaller. If the size of the local area network grid is a, the size of the global grid is b, and the grid factor is, then there will be a grid gradient process of a, a ∙ m, a ∙ m^2, a ∙ m^3, '''b in the connected areas.
+In the area where the global mesh and local mesh are connected, the gradient trend of grid size with different growth factors is as follows. It is obvious that the larger the growth factor, the faster the grid change rate in the connected areas, and the corresponding number of meshs is smaller. If the size of the local area network grid is a, the size of the global grid is b, and the grid factor is m, then there will be a grid gradient process of a, a∙m, a∙m^2, a∙m^3, ...b in the connected areas.
 
 The mesh factor cannot be too small. If the mesh factor is 1, the grid will be evenly distributed throughout the entire space without any changes in size, and the number of meshs will increase significantly.
 

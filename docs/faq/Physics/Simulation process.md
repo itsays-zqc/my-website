@@ -3,7 +3,7 @@
 ## FDE 
 
 <div class="text-justify">
-The Finite Difference Eigenmode (FDE )is a numerical solution algorithm that discretizes the Maxwell equation and solves the constructed feature matrix.The solution process for FDE is as follows.
+The Finite Difference Eigenmode (FDE ) is a numerical solution algorithm that discretizes the Maxwell equations and solves the constructed feature matrix. The solution process for FDE is as follows.
 
 ![](./img/FDE_process.png)
 * Calculate the propagation of electromagnetic waves and the field distribution of harmonic modes with high accuracy.
@@ -42,6 +42,7 @@ Finite Difference Time Domain (FDTD) represents the solution of a partial differ
 * Obtain the broadband response of the device through a single calculation in the time domain.
 
 Using FDTD to calculate light field transmission, the electric field distribution in the power monitor is shown in the following figure.
+
 ![](./img/FDTD.png)
 
 </div>

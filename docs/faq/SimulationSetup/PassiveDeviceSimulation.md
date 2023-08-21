@@ -1,7 +1,7 @@
 import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
 
-# Passive Simulation
+# Passive  Device Simulation
 
 ## 1. 怎样新建一个SDK仿真项目？
 
@@ -311,7 +311,7 @@ mn.add(name='x_normal', type='profile_monitor',
 
 ### 5.3 怎样设置EME仿真的参数？
 
-&emsp;&emsp;接下来我们学习如何在EME仿真模块中设置相应的参数，代码如下所示。其中`general`参数列表下的`wavelength`为EME仿真波长。随后在通过`cell_group_definition`进行对EME仿真cell的定义，其中`span`为cell的长度，`cell_number`确定该长度均分为多少个cell， `number_of_modes`为计算时求解的模式数，`sub_cell_method`确定了计算cell之间S矩阵的方法。在`transverse_mesh_setting`中进行横向网格设置。在`eme_analysis`下，`eme_propagate`确定是否计算eme传播图像，`propagation_sweep`为是否进行eme长度扫描，`wavelength_sweep`为是否进行eme波长扫描。
+&emsp;&emsp;接下来我们学习如何在EME仿真模块中设置相应的参数，代码如下所示。其中`general`参数列表下的`wavelength`为EME仿真波长。随后在通过`cell_group_definition`进行对EME仿真cell的定义，其中`span`为cell的长度，`cell_number`确定该长度均分为多少个cell， `number_of_modes`为计算时求解的模式数，`sub_cell_method`确定了计算cell之间S矩阵的方法。在`transverse_mesh_setting`中进行横向网格设置。在`eme_analysis`下，`eme_propagate`确定是否计算eme传播，`propagation_sweep`为是否进行eme长度扫描，`wavelength_sweep`为是否进行eme波长扫描。
 
 ```python
 # region --- Simulation ---
@@ -348,7 +348,7 @@ st.structure_show(fig_type='png', show=False, savepath=f'{plot_path}{kL[0]}{simu
 
 ### 5.5 怎样获取EME端口的模式结果？
 
-&emsp;&emsp;通过`eme_res.extract`获取仿真计算后的结果。如下案例代码所示，从结果中提取端口模式，其中设置`data='eme_propagate:port_mode_info'`确定所需获取结果为EME端口模式，`save_path`为数据保存路径，用`attribute`确定提取数据内容。`plot_x/ plot_y`为画线图或热度图的x, y轴纵坐标。`real, imag`控制输出数据：全为`False`时，结果值原样输出；全为`True`时，结果值取abs；有一个为`True`时，输出对应的实部/虚部。`show`控制是否显示图片，`export_csv `为是否保存数据为csv文件。
+&emsp;&emsp;通过`eme_res.extract`获取仿真计算后的结果。如下案例代码所示，从结果中提取端口模式，其中设置`data='eme_propagate:port_mode_info'`确定所需获取结果为EME端口模式，`save_path`为数据保存路径，用`attribute`确定提取数据内容。`plot_x/ plot_y`为画线图或热度图的x, y轴纵坐标。`real, imag`控制输出数据：全为`False`时，运行程序将报错`"real and imag are both false"`，无法输出结果；全为`True`时，结果值取abs；有一个为`True`时，输出对应的实部/虚部。`show`控制是否显示图片，`export_csv `为是否保存数据为csv文件。
 
 ```python
 for port_name in ['eme_in', 'eme_out']:
@@ -362,7 +362,7 @@ for port_name in ['eme_in', 'eme_out']:
 
 ### 5.6 怎样获取EME/FDTD的模场图？
 
-&emsp;&emsp;同样的，我们可以通过`eme_res.extract`获取仿真计算后的结果。如下案例代码所示，设置`data='eme_propagate:monitor'`确定所需获取监视器结果，`save_path`为数据保存路径，用`attribute`确定提取数据内容。`plot_x/ plot_y`为画线图或热度图的x, y轴纵坐标。`real, imag`控制输出数据：全为`False`时，结果值原样输出；全为`True`时，结果值取abs；有一个为`True`时，输出对应的实部/虚部。`show`控制是否显示图片，`export_csv `为是否保存数据为csv文件。
+&emsp;&emsp;同样的，我们可以通过`eme_res.extract`获取仿真计算后的结果。如下案例代码所示，设置`data='eme_propagate:monitor'`确定所需获取监视器结果，`save_path`为数据保存路径，用`attribute`确定提取数据内容。`plot_x/ plot_y`为画线图或热度图的x, y轴纵坐标。`real, imag`控制输出数据：全为`False`时，运行程序将报错`"real and imag are both false"`，无法输出结果；全为`True`时，结果值取abs；有一个为`True`时，输出对应的实部/虚部。`show`控制是否显示图片，`export_csv `为是否保存数据为csv文件。
 
 ```python
 eme_res.extract(data="eme_propagate:monitor", savepath=plot_path + "013_eme_z_normal",
@@ -405,7 +405,7 @@ if run_options.run_wavelength_sweep:
 
 ### 6.1 怎样设置FDTD仿真中波长？
 
-&emsp;&emsp;`Waveform`支持1550nm, 1310nm和可见光三种类型。`name`为waveform 的名字，`wavelength_center`为中心波长，`wavelength_span`为带宽。
+&emsp;&emsp;`Waveform`支持定义波长、波长跨度等相关参数，并提供常见的1550nm、1310nm通信波段以及可见光波段。`name`为waveform 的名字，`wavelength_center`为中心波长，`wavelength_span`为带宽。
 
 ```python
 # region --- Waveform ---

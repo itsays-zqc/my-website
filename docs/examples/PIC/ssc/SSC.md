@@ -7,7 +7,7 @@ import {InlineMath, BlockMath} from 'react-katex';
 <div class="text-justify">
 
 ![](structure_ps.png)
-The spot size converter (SSC) is an important device for connecting silicon photonic integrated chips and external optical fibers, which can couple the light transmitted in silicon waveguides with low loss into the waveguide. As shown in the figure, SSC has a tapered silicon waveguide with gradually thinning ends and a low refractive index waveguide covered with SiON, and the entire waveguide device is placed in a silicon dioxide environment [1]. The light emitted from the low refractive index waveguide is similar in size to the mode field in the fiber, so it can effectively couple the light from the waveguide into the fiber.
+The spot size converter (SSC) is an important device for connecting silicon photonic integrated chips and external optical fibers, which can couple the light transmitted in silicon waveguides with low loss into the waveguide. As shown in the figure, SSC has a tapered silicon waveguide with gradually thinning ends and a low refractive index waveguide covered with SiON, and the entire waveguide device is placed in a silicon dioxide environment [1]. The mode field size in a low refractive index waveguide is similar to that in a fiber, so it can effectively couple light from the waveguide into the fiber.
 
 Eigenmode expansion (EME) method has great advantages in calculating long tapered waveguide. By dividing multiple elements in the cross-sectional variation area, and then calculating the modes at the interface of the elements and the bidirectional transmission of the modes, the s-matrix of the conical waveguide transmission can be quickly obtained. When using length sweep, only the bidirectional transmission part needs to be calculated to obtain the S parameter of length sweep.
 </div>
@@ -17,7 +17,7 @@ Eigenmode expansion (EME) method has great advantages in calculating long tapere
 #### 1.1 Import Toolkit
 <div class="text-justify">
 
-First, we need to import `maxoptics_sdk` and Python's function packages. The import module for EME simulation is shown below.
+First, we need to import `maxoptics_sdk` and Python's third-party package. The import module for EME simulation is shown below.
 </div>
 
 ```python
@@ -167,7 +167,7 @@ The `dx`,`dy`,`dz` are the mesh sizes in the x, y, and z directions, respectivel
 #### 1.9 Add EME port
 <div class="text-justify">
 
-You can use the `Port` function to create port and select the location of the `source_port`, which is the input for calculating the S parameter. You can use the `add` function to add ports and the properties of port are shown in the table below.
+You can use the `port` function to create a port and use the "source_port" property to set the location of the source port. You can use the `add` function to add ports and the properties of port are shown in the table below.
 </div>
 
 ```python
@@ -198,7 +198,7 @@ pjp.add(name="right_port", type="eme_port",
 
 #### 1.10 Add Monitor
 
-In the simulation, `Monitor`function is used to create monitor and `add` function is used to add a monitor. Select profile_monitor `type` monitor from the added monitors to view the mode field distribution and transmittance of the port.
+In the simulation, `Monitor`function is used to create monitor and `add` function is used to add a monitor. Select profile_monitor `type` monitor from the added monitors to view the mode field distribution and.
 ```python
 # region --- 7. Monitor ---
 mn = pj.Monitor()

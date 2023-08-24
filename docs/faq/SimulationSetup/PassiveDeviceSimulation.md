@@ -441,7 +441,7 @@ mn.add(name='Global Option', type='global_option',
        property={'frequency_power': {  # 'sample_spacing': 'uniform', 'use_wavelength_spacing': True,
            # ['min_max','center_span']
            'spacing_type': 'wavelength', 'spacing_limit': 'center_span',
-           'wavelength_center': wavelength, 'wavelength_span': 0.1, 
+           'wavelength_center': wavelength, 'wavelength_span': 0.1, }})
 ```
 
 &emsp;&emsp;如下列代码所示，通过代码`type='power_monitor'`设置FDTD仿真中功率监视器和模式展开监视器。其中`name`为监视器名称。在`property`中设置监视器的各个参数，如波长相关参数`wavelength_center`、`wavelength_span`以及`frequency_points`；通过`geometry`下`monitor_type`、`x/y/z`、`x_span/y_span/z_span`的设置监视器的朝向、位置以及尺寸。
@@ -516,3 +516,38 @@ smatrix_res.extract(data='smatrix_sweep', savepath=f'{plot_path}{kL[8]}_smatrix_
 ### 6.6 为什么FDTD的Smatrix会出现大于1的情况？
 
 &emsp;&emsp;当FDTD仿真区域存在光源时，会导致Smatrix矩阵会出现错误结果，例如某些端口响应大于1。在进行Smatrix的计算时，需要保证仿真区域中不存在光源。
+
+
+
+### 
+
+
+
+
+|                               | default   | type   | notes                                                       |
+|:------------------------------|:----------|:-------|:------------------------------------------------------------|
+| geometry.x                    |           |  float |                                                             |
+| geometry.x_span               |           |  float |                                                             |
+| geometry.y                    |           |  float |                                                             |
+| geometry.y_span               |           |  float |                                                             |
+| geometry.z                    |           |  float |                                                             |
+| geometry.z_span               |           |  float |                                                             |
+| geometry.rotate_x             |           |  float |                                                             |
+| geometry.rotate_y             |           |  float |                                                             |
+| geometry.rotate_z             |           |  float |                                                             |
+| geometry.x_min                |           |  float |                                                             |
+| geometry.x_max                |           |  float |                                                             |
+| geometry.y_min                |           |  float |                                                             |
+| geometry.y_max                |           |  float |                                                             |
+| geometry.z_min                |           |  float |                                                             |
+| geometry.z_max                |           |  float |                                                             |
+| general.distribution_function |           |  str   | Selections are ['constant', 'gaussian']                     |
+| general.concentration         |           |  float |                                                             |
+| general.source_face           |           |  str   | Available when distribution_function is 'gaussian'          |
+| general.junction_width        |           |  float | Available when distribution_function is 'gaussian'          |
+| general.ref_concentration     |           |  float | Available when distribution_function is 'gaussian'          |
+| volume.volume_type            | 'all'     |  str   | Selections are ['all', 'material', 'region']                |
+| volume.material_list          |           |  list  | Available when volume_type is 'material'                    |
+| volume.region_list            |           |  list  | Available when volume_type is 'region'                      |
+
+

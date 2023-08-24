@@ -519,35 +519,11 @@ smatrix_res.extract(data='smatrix_sweep', savepath=f'{plot_path}{kL[8]}_smatrix_
 
 
 
-### 
 
 
 
 
-|                               | default   | type   | notes                                                       |
-|:------------------------------|:----------|:-------|:------------------------------------------------------------|
-| geometry.x                    |           |  float |                                                             |
-| geometry.x_span               |           |  float |                                                             |
-| geometry.y                    |           |  float |                                                             |
-| geometry.y_span               |           |  float |                                                             |
-| geometry.z                    |           |  float |                                                             |
-| geometry.z_span               |           |  float |                                                             |
-| geometry.rotate_x             |           |  float |                                                             |
-| geometry.rotate_y             |           |  float |                                                             |
-| geometry.rotate_z             |           |  float |                                                             |
-| geometry.x_min                |           |  float |                                                             |
-| geometry.x_max                |           |  float |                                                             |
-| geometry.y_min                |           |  float |                                                             |
-| geometry.y_max                |           |  float |                                                             |
-| geometry.z_min                |           |  float |                                                             |
-| geometry.z_max                |           |  float |                                                             |
-| general.distribution_function |           |  str   | Selections are ['constant', 'gaussian']                     |
-| general.concentration         |           |  float |                                                             |
-| general.source_face           |           |  str   | Available when distribution_function is 'gaussian'          |
-| general.junction_width        |           |  float | Available when distribution_function is 'gaussian'          |
-| general.ref_concentration     |           |  float | Available when distribution_function is 'gaussian'          |
-| volume.volume_type            | 'all'     |  str   | Selections are ['all', 'material', 'region']                |
-| volume.material_list          |           |  list  | Available when volume_type is 'material'                    |
-| volume.region_list            |           |  list  | Available when volume_type is 'region'                      |
+
+
 
 

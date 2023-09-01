@@ -1,8 +1,11 @@
 # Preview
 
+In this section, we currently offer the capability to provide an advanced preview of structural models, refractive index and doping profile.
+
+This preview serves to validate the structues before initiating the formal simulation, thereby assisting in verifying the accuracy of the structures. Consequently, it leads to reduced simulation time and an overall enhancement of simulation efficiency.
 ## 7.1 Run index
 
-We can use the code below to preview the index of structure. 
+The code contained in this module enables a preview of the refractive index images with various structures.
 
 ```python
 run_index(
@@ -60,7 +63,8 @@ simu[simu_name].run_index(name=f'{simu_name}_x_0', savepath=f'{plot_path}{k}Inde
 
 ## 7.2 Structure show and show 3D
 
-Show structure. If there are Pyramid or Arc-Waveguide 3D type geometry in current structure manager, this method is invalid.
+
+This portion of the code is primarily intended for show structure. Please note that this method becomes invalid if the current structure manager contains Pyramid or Arc-Waveguide 3D type geometries.
 
 ```python
 structure_show(
@@ -104,7 +108,7 @@ structure_show(
 Show 3D structure in a pop up windows.
 
 ```python
-show3d(self, show_with: Literal["webviewer", "matplotlib"] = "webviewer")
+show3d(self, show_with: Literal["webviewer", "matplotlib"，"local_gui"] = "webviewer")
 ```
 
 | **Parameters** |                         Description                          |
@@ -121,9 +125,9 @@ simu[simu_name].show3d(show_with="local_gui")
 
 
 
-## 7.3 Run_doping
+## 7.3 Run doping
 
-Run doping.
+The code within this module enables the preview of doping results for the respective structures.
 
 ```python
 run_doping(

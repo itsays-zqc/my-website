@@ -1,6 +1,6 @@
 # Extract result
 
-In this section, we will explore how to use code to extract simulation result data, exporting data results in various formats, enabling more effective data processing.
+In this section, we support to extract simulation result data, exporting data results in various formats, facilitating more efficient data processing.
 
 We support the atrributes to extract as below:
 
@@ -28,7 +28,8 @@ We support the atrributes to extract as below:
 
 ## 8.1 FDE
 
-To extract the data of FDE module. 
+In this section, we will provide examples for extracting simulation result data from FDE simulation, along with a description table of parameters.
+
 
 ### 8.1.1 Calculate mode result
 
@@ -553,7 +554,7 @@ fdtd_res.extract(data='fdtd:mode_expansion_mode_info', savepath=f'{plot_path}{kL
 
 To extract the relevant data of sweep function. 
 
-### 8.4.1 sweep
+### 8.4.1 parameter sweep
 
 Get the result of sweep data.
 

@@ -1,12 +1,12 @@
 # Source/Port
 
-The following code will demonstrate how to add light source and  port in a simulation project.  
+The subsequent code will exemplify the process of incorporating a light source and port within a simulation project.
 
-Currently, for the source module it supports the addition of modal sources and Gaussian sources. And we support to add ports in EME simulation and FDTD simulation. 
+As of now, the source module accommodates the inclusion of mode source and Gaussian source. Furthermore, our platform extends support for ports into both EME and FDTD simulations.  
 
 ## 4.1 Mode source
 
-Add a mode source into the project using code `type="mode_source"`.
+Incorporate a model source into the project by utilizing the provided code with the attribute `type="mode_source"`.
 
 ```python
 add(
@@ -19,7 +19,7 @@ add(
     )
 ```
 
-| **Parameters** |      Description      |
+| Parameters |      Description      |
 | :------------: | :-------------------: |
 |      name      |   Mode source name.   |
 |      type      |     Source type.      |
@@ -39,7 +39,7 @@ src.add(name='source', type='mode_source', axis='x_forward',
                                  'z': 0, 'z_span': monitor_h}})
 ```
 
-|           **Parameters**            |  Default  |  Type   |                            Notes                             |
+|           Parameters            |  Default  |  Type   |                            Notes                             |
 | :---------------------------------: | :-------: | :-----: | :----------------------------------------------------------: |
 |         general.inject_axis         |  x_axis   | string  | Selections are ['x_axis', 'y_axis', 'z_axis', 'x', 'y', 'z']. |
 |          general.direction          |  forward  | string  |           Selections are ['forward', 'backward'].            |
@@ -72,7 +72,9 @@ src.add(name='source', type='mode_source', axis='x_forward',
 
 ## 4.2 Gaussian source
 
-Add a Gaussian source into the project using code `type="mode_source"`.
+Integrate a Gaussian source into the project by applying the code `type="Gaussian_source"`.
+
+
 
 ```python
 add(
@@ -136,7 +138,7 @@ so.add(name='source', type='gaussian_source', axis='z_backward',
 
 ## 4.3 FDTD port
 
-Add a port to current project.
+Incorporate a port into the current FDTD simulation project. 
 
 ```python
 add(
@@ -201,7 +203,7 @@ pt.add(name='port_left', type='fdtd_port',
 
 ## 4.4 EME port
 
-Add a port to current project.
+Incorporate a port into the current EME simulation project.
 
 ```python
 add(

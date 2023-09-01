@@ -1,8 +1,9 @@
 # Simulation
 
-In the upcoming code section, we will present the examples of  simulation module, along with its parameter list. This will assist you in achieving a more comprehensive model simulation.
+In the forthcoming code segment, we will showcase examples of simulation, accompanied by their parameter lists. This will aid you in achieving a simulation project.
 
-We will provide support for multiple simulation modules, including optical and electrical aspects, such as FDE, FDTD, OEDevice, and more.
+Our platform will offer support for a variety of simulation modules, encompassing both optical and electrical simulation. These may include FDE, FDTD, OEDevice modules, ensuring an expansive electro-optical simulation capabilities.
+
 
 ```python
 add(
@@ -25,7 +26,7 @@ add(
 
 ## 6.1 FDE
 
-Add a FDE solver to current project with the code `type='FDE'`. 
+Incorporate an FDE solver into the current project using the code `type='FDE'`.
 
 ```python
 add(
@@ -108,7 +109,7 @@ simu.add(name=simu_name, type='FDE',
 
 ### 6.1.1 Mode selection
 
-Add a mode selection to current project . 
+Integrate a mode selection into the current project.
 
 ```python
 add(
@@ -162,9 +163,9 @@ simu.add(name=simu_name+'_cal_mode', simulation_name=simu_name, source_name='sou
 
 ### 6.1.2 Beam overlap
 
-To calculate the beam overlap in FDE module. 
+Calculating beam overlap within the FDE module involves a two-step process.
 
-Firstly, we need to get the results of FDE beam and extract it.
+Firstly, it's necessary to acquire the FDE beam results and  extract the relevant data.
 
 ```python
 run_fde_beam_and_extract(self, *, property, export_csv=False, show=False, savepath="")
@@ -177,7 +178,7 @@ run_fde_beam_and_extract(self, *, property, export_csv=False, show=False, savepa
 |      show      |    Show figure or not, defaults as False     |
 |    savepath    | Save path of heatmap and csv, defaults to "" |
 
-Then we can run FDE overlap function and extract result.
+Subsequently, we can execute the FDE overlap function and extract the result.
 
 ```python
 run_fde_overlap_and_extract(self, *, property, savepath="a", export_csv=False)
@@ -207,9 +208,9 @@ beam_res = simu[simu_name].run_fde_beam_and_extract(
 
 
 
-### 6.1.3 Bent Waveguide
+### 6.1.3 Bent Waveguide FDE simulation
 
-To calculate the bent waveguide mode in FDE module. 
+Calculating the mode of a bent waveguide within the FDE module.
 
 ```python
 simu = pj.Simulation()
@@ -226,6 +227,8 @@ simu = pj.Simulation()
 
 
 ### 6.1.4 Far field
+
+To compute the far-field pattern within the FDE module.
 
 ```python
 simu = pj.Simulation()
@@ -245,7 +248,7 @@ simu.add(name=simu_name, type='FDE',
 
 ## 6.2 EME
 
-Add a EME solver to current project with the code `type='EME'`. 
+Incorporate an EME solver into the current project using the code `type='EME'`.
 
 ```python
 add(
@@ -320,7 +323,7 @@ simu.add(name=simu_name, type="EME",
 
 ## 6.2.1 EME CellGroup Custom Setting
 
-To set a customized EME cell group. 
+This section provides guidance on configuring a customized EME cell group according to your specifications.
 
 ```python
 simu = pj.Simulation()
@@ -346,7 +349,7 @@ simu.add(name=simu_name, type="EME",
 
 ### 6.2.2 EME Periodic Structure
 
-To set an EME Periodic Structure.
+This section can guide you in configuring an EME periodic structure.
 
 ```python
 simu = pj.Simulation()
@@ -377,7 +380,7 @@ simu.add(name=simu_name, type='EME',
 
 ## 6.3 FDTD
 
-Add a FDTD solver to current project with the code `type='FDTD'`. 
+Incorporate an FDTD solver into the current project using the code `type='FDTD'`.
 
 ```python
 add(
@@ -429,7 +432,7 @@ simu.add(name=simu_name, type='FDTD',
 
 ### 6.3.1 Far field
 
-To calculate the far field in FDTD module. 
+This section can assist you in computing the far-field pattern within the FDTD module.
 
 ```python
 fdtd_res = simu[simu_name].run()
@@ -447,7 +450,7 @@ fdtd_res = simu[simu_name].run()
 
 ## 6.4 Sweep:FDTD/FDE/EME
 
-Add a sweep module to current project. 
+Integrate a sweep module into the current project
 
 ```python
 add(
@@ -480,7 +483,7 @@ simu.add(type='FDTD:sweep', name='FDTDSweep', property={
 })
 ```
 
-An example of FDE sweep is illustrated in the following code.
+A FDE sweep is provided in the subsequent code example.
 
 ```python
 simu = pj.Simulation()
@@ -495,7 +498,7 @@ simu.add(type="FDE:sweep", name="FDESweep", property={
     })
 ```
 
-An example of EME sweep is illustrated in the following code.
+An example of EME sweep is presented in the following code.
 
 ```python
 simu = pj.Simulation()
@@ -533,7 +536,7 @@ simu.add(
 
 ## 6.5 AFDTD
 
-Add an AFDTD solver to current project with the code `type='AFDTD'`. 
+Incorporate an AFDTD solver into the current project using the code `type='AFDTD'`.
 
 ```python
 add(
@@ -576,10 +579,10 @@ simu.add(name="preview_fdtd", type="AFDTD", property={
 |                    thread_setting.thread                     |        4         | integer |                                                 |
 
 
-
+（解释各个标题，以及将OED放在最前面，AFDE属于OED）
 ## 6.6 AFDE
 
-Add an AFDE solver to current project with the code `type='AFDE'`. 
+Integrate an AFDE solver into the current project using the code `type='AFDE'`.
 
 ```python
 add(
@@ -646,7 +649,7 @@ simu.add(name="preview_fde", type="AFDE", property={
 
 ## 6.7 OEDevice
 
-Add an OEDevice solver to current project with the code `type='AFDE'`. 
+Incorporate an OEDevice solver into the current project using the code `type='OEDevice'`.
 
 ```python
 add(

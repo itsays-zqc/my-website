@@ -1,7 +1,7 @@
 
 # Structure
 
-The code within the "Structure" section is designed to assist you in incorporating the necessary structures and doping characteristics during the simulation process. 
+The code within the "Structure" section is designed to assist you in incorporating the necessary structures during the EO(Electro-Optic) simulation process. 
 
 ```python
 st = pj.Structure(mesh_type, 
@@ -10,230 +10,19 @@ st = pj.Structure(mesh_type,
                  )
 ```
 
-|   **Parameters**    |  Default   |   Type   |                    Notes                    |
+|   &emsp;&emsp;&emsp;&emsp;**Parameters**&emsp;&emsp;&emsp;&emsp;    |  &emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;   |   &emsp;&emsp;&ensp;Type&ensp;&emsp;&emsp;   |                    &emsp;&emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;&emsp;                   |
 | :-----------------: | :--------: | :------: | :-----------------------------------------: |
 |      mesh_type      | curve_mesh |  string  | Selections are ['curve_mesh', 'staircase']. |
 |     mesh_factor     |    1.2     |  float   |   Restrained by condition: >=1.05,<=1.6.    |
 | background_material |            | material |                                             |
 
-You can create models using GDS format files and also utilize various methods such as Bézier curves, tapering, and circular rings for structural modeling.
+You can choose to create models using GDS files. Meanwhile, you can also utilize various methods in this "Structure" module such as Bézier curves, tapering, and circular rings for your simulation project.
 
 
 
-## 2.1 Add doping
+## 2.1 Add geometry
 
-Add a project doping property. We provide support for importing doping data from files and customizing doping regions.
-
-```python
-add_doping(
-            self,
-            *,
-            name: str,
-            type: "StructureDopingTypeSelection",
-            property: "StructureDopingPropertyDict"
-			)
-```
-
-| **Parameters** |   Description   |
-| :------------: | :-------------: |
-|      name      |   Doping name   |
-|      type      |   Doping type   |
-|    property    | Doping property |
-
-For instance, the code for importing doping from a file is demonstrated as follows.
-
-```python
-st.add_doping(name="import_n", type="file", property={
-    "general": {"format": "DOP", "file_path": n_dop_file, "species": "n"}})
-```
-
-You can configure parameters related to importing doping files by adjusting settings under the `property.general` sections.
-
-|    **Parameters**    | Default | Type |                    Notes                     |
-| :------------------: | :-----: | :--: | :------------------------------------------: |
-|    general.format    |         | str  |            Selections are ['DOP']            |
-|  general.file_path   |         | str  |                                              |
-|   general.species    |         | str  |          Selections are ['n', 'p']           |
-|  volume.volume_type  |  'all'  | str  | Selections are ['all', 'material', 'region'] |
-| volume.material_list |         | list |   Available when volume_type is 'material'   |
-|  volume.region_list  |         | list |    Available when volume_type is 'region'    |
-
-The code for utilizing custom region doping is provided below.
-
-```python
-st.add_doping(name="Uniform", type="p", property={
-    "geometry": {"x": p_uniform_x_center, "x_span": p_uniform_x_span,
-                 "y": p_uniform_y_center, "y_span": p_uniform_y_span,
-                 "z": p_uniform_z_center, "z_span": p_uniform_z_span},
-    "general": {"distribution_function": "constant", "concentration": p_uniform_con},
-    "volume": {"volume_type": "material", "material_list": [mt["mat_si"]]}})
-```
-
-|        **Parameters**         | Default | Type  |                       Notes                        |
-| :---------------------------: | :-----: | :---: | :------------------------------------------------: |
-|          geometry.x           |         | float |                                                    |
-|        geometry.x_span        |         | float |                                                    |
-|          geometry.y           |         | float |                                                    |
-|        geometry.y_span        |         | float |                                                    |
-|          geometry.z           |         | float |                                                    |
-|        geometry.z_span        |         | float |                                                    |
-|       geometry.rotate_x       |         | float |                                                    |
-|       geometry.rotate_y       |         | float |                                                    |
-|       geometry.rotate_z       |         | float |                                                    |
-|        geometry.x_min         |         | float |                                                    |
-|        geometry.x_max         |         | float |                                                    |
-|        geometry.y_min         |         | float |                                                    |
-|        geometry.y_max         |         | float |                                                    |
-|        geometry.z_min         |         | float |                                                    |
-|        geometry.z_max         |         | float |                                                    |
-| general.distribution_function |         |  str  |      Selections are ['constant', 'gaussian']       |
-|     general.concentration     |         | float |                                                    |
-|      general.source_face      |         |  str  | Available when distribution_function is 'gaussian' |
-|    general.junction_width     |         | float | Available when distribution_function is 'gaussian' |
-|   general.ref_concentration   |         | float | Available when distribution_function is 'gaussian' |
-|      volume.volume_type       |  'all'  |  str  |    Selections are ['all', 'material', 'region']    |
-|     volume.material_list      |         | list  |      Available when volume_type is 'material'      |
-|      volume.region_list       |         | list  |       Available when volume_type is 'region'       |
-
-
-
-## 2.2 Add electrode
-
-Add an electrode to current project.
-
-```python
-add_electrode(
-            self,
-            *,
-            name: str,
-            property: StructureElectrodeProperty,
-    )
-```
-
-| **Parameters** |              Description              |
-| :------------: | :-----------------------------------: |
-|      name      |   Electric boundary condition name.   |
-|    property    | Electric boundary condition property. |
-
-### **2.2.1 Example: steady state **
-
-```python
-st = pj.Structure()
-st.add_electrode(name="anode", property={
-    "solid": "Anode", "bc_mode": "steady_state", "sweep_type": "range",
-    "range_start": tcad_vmin, "range_stop": tcad_vmax, "range_interval": tcad_vstep, "apply_AC_small_signal": "none"})
-st.add_electrode(name="cathode", property={
-    "solid": "Cathode", "bc_mode": "steady_state",
-    "sweep_type": "single", "voltage": 0, "apply_AC_small_signal": "none"})
-```
-
-|       **Parameters**       |   Default    |  Type   |                    Notes                     |
-| :------------------------: | :----------: | :-----: | :------------------------------------------: |
-|        force_ohmic         |     true     |  bool   |                                              |
-|          bc_mode           | steady_state | string  |       Selections are ['steady_state'].       |
-|   apply_AC_small_signal    |     none     | string  |           Selections are ['none'].           |
-|         sweep_type         |    single    | string  | Selections are ['single', 'range', 'value']. |
-|         v_step_max         |     0.5      |  float  |                                              |
-|          voltage           |      0       |  float  |    Available when sweep_type is 'single'     |
-|        range_start         |      0       |  float  |     Available when sweep_type is 'range'     |
-|         range_stop         |      1       |  float  |     Available when sweep_type is 'range'     |
-|       range_interval       |      1       |  float  |     Available when sweep_type is 'range'     |
-|      range_num_points      |      2       | integer |     Available when sweep_type is 'range'     |
-| []sweep_value_table.index  |              | integer |    Available when sweep_type is 'value'.     |
-| []sweep_value_table.number |              |  float  |    Available when sweep_type is 'value'.     |
-|        surface_type        |    solid     | string  |          Selections are ['solid'].           |
-|           solid            |              | string  |                                              |
-
-
-
-### **2.2.2 Example: transient **
-
-```python
-st = pj.Structure()
-st.add_electrode(name="cathode", property={
-    "solid": "Cathode", "bc_mode": "transient", "voltage": tcad_vbias, "v_step_max": 0.5,
-    "time_table": [{"time_start": 0, "time_stop": 2e-12, "initial_step": 1e-12, "max_step": 5e-12},
-                   {"time_start": 2e-12, "time_stop": 2.001e-12, "initial_step": 30e-18, "max_step": 30e-18,
-                    "optical": {"enabled": 1, "envelop": 0, "source_fraction": source_fraction}},
-                   {"time_start": 2.001e-12, "time_stop": 2.01e-12, "initial_step": 30e-18, "max_step": 60e-18,
-                    "optical": {"enabled": 1, "envelop": 0, "source_fraction": source_fraction}},
-                   {"time_start": 2.01e-12, "time_stop": 2.03e-12, "initial_step": 60e-18, "max_step": 2e-15,
-                    "optical": {"enabled": 1, "envelop": 0, "source_fraction": source_fraction}},
-                   {"time_start": 2.03e-12, "time_stop": 10e-12, "initial_step": 2e-15, "max_step": 50e-15,
-                    "optical": {"enabled": 1, "envelop": 0, "source_fraction": source_fraction}},
-                   {"time_start": 10e-12, "time_stop": 500e-12, "initial_step": 50e-15, "max_step": 10e-12,
-                    "optical": {"enabled": 1, "envelop": 0, "source_fraction": source_fraction}}]})
-
-st.add_electrode(name="anode", property={
-    "solid": "Anode", "bc_mode": "steady_state",
-    "sweep_type": "single", "voltage": 0, "apply_AC_small_signal": "none"})
-
-```
-
-|            **Parameters**            | Default |  Type   |             Notes             |
-| :----------------------------------: | :-----: | :-----: | :---------------------------: |
-|             force_ohmic              |  true   |  bool   |                               |
-|               bc_mode                |         | string  | Selections are ['transient']. |
-|               voltage                |    0    |  float  |                               |
-|       []time_table.time_start        |         |  float  |                               |
-|        []time_table.time_stop        |         |  float  |                               |
-|      []time_table.initial_step       |         |  float  |                               |
-|        []time_table.max_step         |         |  float  |                               |
-|     []time_table.optical.enabled     |    0    | integer |     Selections are [0, 1]     |
-|     []time_table.optical.envelop     |         | integer |      Selections are [0]       |
-| []time_table.optical.source_fraction |         |  float  |                               |
-|             surface_type             |  solid  | string  |   Selections are ['solid'].   |
-|                solid                 |         | string  |                               |
-
-
-
-
-
-
-
-## 2.3 Add surface recombination
-
-Add surface recombination.
-
-```python
-add_surface_recombination(
-            self,
-            *,
-            name: str,
-            property: AddSurfaceRecombination,
-    )
-```
-
-| **Parameters** |           Description           |
-| :------------: | :-----------------------------: |
-|      name      |   Surface recombination name.   |
-|    property    | Surface recombination property. |
-
-**Example:**
-
-```python
-st.add_surface_recombination(name="Cathode_Si", property={
-        "surface_type": "domain_domain", "interface_type": "MetalOhmicInterface",
-        "domain_1": "Cathode", "domain_2": "Si_base", "infinite_recombination": False, "velocity_electron": 1e7, "velocity_hole": 1e7})
-```
-
-|     **Parameters**     |    Default    |   Type   |                            Notes                             |
-| :--------------------: | :-----------: | :------: | :----------------------------------------------------------: |
-|      surface_type      | domain_domain |  string  |    Selections are ['domain_domain', 'material_material'].    |
-|     interface_type     |     null      |  string  | Selections are ['null', 'InsulatorInterface', 'HomoJunction', 'HeteroJunction', 'MetalOhmicInterface', 'SolderPad']. |
-| infinite_recombination |     true      |   bool   |    Available when interface_type is 'MetalOhmicInterface'    |
-|     velocity_hole      |       0       |  float   | Available when interface_type is 'MetalOhmicInterface'/'InsulatorInterface' |
-|   velocity_electron    |       0       |  float   | Available when interface_type is 'MetalOhmicInterface'/'InsulatorInterface' |
-|        domain_1        |               |  string  |        Available when surface_type is 'domain_domain'        |
-|        domain_2        |               |  string  |        Available when surface_type is 'domain_domain'        |
-|       material_1       |               | material |      Available when surface_type is 'material_material'      |
-|       material_2       |               | material |      Available when surface_type is 'material_material'      |
-
-
-
-## 2.4 Add geometry
-
-Add a geometry(structure) to current project.
+Add a geometry structure to current project.
 
 ```python
 add_geometry(
@@ -244,15 +33,15 @@ add_geometry(
     )
 ```
 
-| **Parameters** |    Description     |
+| &ensp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;Parameters&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;|    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Description&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;     |
 | :------------: | :----------------: |
 |      name      |   Geometry name.   |
 |      type      |   Geometry type.   |
 |    property    | Geometry property. |
 
-### 2.2.1 GDS file/GDS file3D
+### 2.1.1 GDS file/GDS file3D
 
-The following code supports the import of GDS layout files.
+The following codes can import the structure in Max-Optics SDK from GDS layout files.
 
 **Example:**
 
@@ -263,7 +52,7 @@ st.add_geometry(name="gds_file", type="gds_file", property={
     "general": {"path": gds_file, "cell_name": "EXTEND_1", "layer_name": (3, 0)}})
 ```
 
-|   **Parameters**    | Default |   Type   |             Notes             |
+|   &emsp;&emsp;&emsp;&emsp;**Parameters**&emsp;&emsp;&emsp;&emsp;    | &emsp;&emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;&emsp; |   &emsp;&emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;&emsp;   |             &emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;             |
 | :-----------------: | :-----: | :------: | :---------------------------: |
 |     geometry.x      |    0    |  float   |                               |
 |     geometry.y      |    0    |  float   |                               |
@@ -277,7 +66,7 @@ st.add_geometry(name="gds_file", type="gds_file", property={
 |  general.cell_name  |         |  string  |                               |
 | general.layer_name  |         |   list   |                               |
 
-Meanwhile, we also offer support for basic operations on GDS layout modeling using `type="gds_file3D"`. The code for this is provided below:
+Meanwhile, we also offer support for basic operations to GDS layout modeling using `type="gds_file3D"`. The code for this function is provided below:
 
 ```python
 st.add_geometry(name="gds_file_3D", type="gds_file3D", property={
@@ -313,9 +102,9 @@ st.add_geometry(name="gds_file_3D", type="gds_file3D", property={
 
 
 
-### 2.2.2 Arc waveguide/Arc waveguide 3D
+### 2.1.2 Arc waveguide/Arc waveguide 3D
 
-To create an arc waveguide within the project using code  `type="ArcWaveguide"`.
+To establish an arc waveguide within the project, utilize the code `type="ArcWaveguide"`.
 
 **Example:**
 
@@ -326,7 +115,7 @@ st.add_geometry(name="arc", type="ArcWaveguide", property={
                  "x": 0, "y": 0, "z": 0, "z_span": wg_height, "rotate_x": 0, "rotate_y": 0, "rotate_z": 0}})
 ```
 
-|    **Parameters**     | Default |   Type   |             Notes             |
+|    &emsp;&emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;&emsp;     | &emsp;&emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;&emsp; |   &emsp;&emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;&emsp;   |             &emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;             |
 | :-------------------: | :-----: | :------: | :---------------------------: |
 | geometry.inner_radius |         |  float   | Restrained by condition: >0.  |
 | geometry.outer_radius |         |  float   | Restrained by condition: >0.  |
@@ -353,7 +142,7 @@ st.add_geometry(name="arc_3d", type="ArcWaveguide3D", property={
                  "x": space, "y": 0, "z": 0, "rotate_x": 0, "rotate_y": 0, "rotate_z": 0}})
 ```
 
-|    **Parameters**     | Default |   Type   |               Notes                |
+|    &emsp;&emsp;&emsp;&emsp;**Parameters**&emsp;&emsp;&emsp;&emsp;     | &ensp;&emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;&ensp; |   &emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;   |               &emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;                |
 | :-------------------: | :-----: | :------: | :--------------------------------: |
 |    geometry.radius    |         |  float   |    Restrained by condition: >0.    |
 |    geometry.angle     |         |  float   | Restrained by condition: >0,<=360. |
@@ -371,9 +160,9 @@ st.add_geometry(name="arc_3d", type="ArcWaveguide3D", property={
 |   material.material   |         | material |                                    |
 |  material.mesh_order  |         | integer  |   Restrained by condition: >=0.    |
 
-### 2.2.3 Bézier curve/ Bézier curve 3D
+### 2.1.3 Bézier curve/ Bézier curve 3D
 
-In the project, add a Bézier curve structure using code `type="BezierCurve"`.
+Within the project, we can incorporate a Bézier curve structure by employing the code `type="BezierCurve"`.
 
 **Example:**
 
@@ -386,7 +175,7 @@ st.add_geometry(name="bezier", type="BezierCurve", property={
                  "point_3_x": size, "point_3_y": size/2, "point_4_x": size, "point_4_y": size}})
 ```
 
-|   **Parameters**    | Default |   Type   |             Notes             |
+|   &emsp;&emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;&emsp;    | &emsp;&emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;&emsp; |   &emsp;&emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;&emsp;   |             &emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;             |
 | :-----------------: | :-----: | :------: | :---------------------------: |
 | geometry.point_1_x  |         |  float   |                               |
 | geometry.point_1_y  |         |  float   |                               |
@@ -420,7 +209,7 @@ st.add_geometry(name="bezier_3d", type="BezierCurve3D", property={
                      [{"x": 0, "y": 0}, {"x": 0, "y": size/2}, {"x": size, "y": size/2}, {"x": size, "y": size}]}})
 ```
 
-|       **Parameters**        | Default |   Type   |             Notes             |
+|       &emsp;&emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;&emsp;        | &emsp;&emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;&emsp; |   &emsp;&emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;&emsp;   |             &emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;             |
 | :-------------------------: | :-----: | :------: | :---------------------------: |
 |    geometry.base_height     |         |  float   | Restrained by condition: >0.  |
 |     geometry.top_width      |         |  float   | Restrained by condition: >0.  |
@@ -440,9 +229,10 @@ st.add_geometry(name="bezier_3d", type="BezierCurve3D", property={
 
 
 
-### 2.2.4 Circle
+### 2.1.4 Circle
 
-Add a circular structure into the simulation project with `type="Circle"` .
+Integrate a circular structure into the simulation project by employing the code `type="Circle"`.
+
 
 **Example:**
 
@@ -453,7 +243,7 @@ st.add_geometry(name="circle", type="Circle", property={
                  "radius": size, "x": 4*space, "y": 0, "z": 0, "z_span": wg_height}})
 ```
 
-|   **Parameters**    | Default |   Type   |             Notes             |
+|   &emsp;&emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;&emsp;    | &emsp;&emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;&emsp; |   &emsp;&emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;&emsp;   |             &emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;             |
 | :-----------------: | :-----: | :------: | :---------------------------: |
 |   geometry.radius   |         |  float   | Restrained by condition: >0.  |
 |     geometry.x      |         |  float   |                               |
@@ -470,9 +260,9 @@ st.add_geometry(name="circle", type="Circle", property={
 
 
 
-### 2.2.5 Custom polygon
+### 2.1.5 Custom polygon
 
-With the code `type="CustomPolygon"` , we can add a custom polygon to the project.
+By utilizing the code `type="CustomPolygon"`, it becomes possible to incorporate a custiomized polygon into the project.
 
 **Example:**
 
@@ -484,7 +274,7 @@ st.add_geometry(name="custom_polygon", type="CustomPolygon", property={
                  "rotate_x": 0, "rotate_y": 0, "rotate_z": 0}})
 ```
 
-|   **Parameters**    | Default |   Type   |             Notes             |
+|   &emsp;&emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;&emsp;    | &emsp;&emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;&emsp; |   &emsp;&emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;&emsp;   |             &emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;             |
 | :-----------------: | :-----: | :------: | :---------------------------: |
 |    geometry.size    |         |  float   | Restrained by condition: >0.  |
 |   geometry.sides    |         | integer  | Restrained by condition: >=3. |
@@ -502,9 +292,9 @@ st.add_geometry(name="custom_polygon", type="CustomPolygon", property={
 
 
 
-### 2.2.6 Ellipse
+### 2.1.6 Ellipse
 
-Add an ellipse into the project using code `type="Ellipse"`.
+Incorporate an ellipse into the project by implementing the code `type="Ellipse"`.
 
 **Example:**
 
@@ -516,7 +306,7 @@ st.add_geometry(name="ellipse", type="Ellipse", property={
                  "rotate_x": 0, "rotate_y": 0, "rotate_z": 0}})
 ```
 
-|   **Parameters**    | Default |   Type   |             Notes             |
+|   &emsp;&emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;&emsp;    | &emsp;&emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;&emsp; |   &emsp;&emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;&emsp;   |           &emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;             |
 | :-----------------: | :-----: | :------: | :---------------------------: |
 |  geometry.x_radius  |         |  float   | Restrained by condition: >0.  |
 |  geometry.y_radius  |         |  float   | Restrained by condition: >0.  |
@@ -534,9 +324,9 @@ st.add_geometry(name="ellipse", type="Ellipse", property={
 
 
 
-### 2.2.7 Linear trapezoid
+### 2.1.7 Linear trapezoid
 
-Add a linear trapezoid into the project using code `type="LinearTrapezoid"`.
+Integrate a linear trapezoid shape into the project using the code `type="LinearTrapezoid"`.
 
 **Example:**
 
@@ -549,7 +339,7 @@ st.add_geometry(name="linear_trapezoid", type="LinearTrapezoid", property={
                  "rotate_x": 0, "rotate_y": 0, "rotate_z": 0}})
 ```
 
-|   **Parameters**    | Default |   Type   |             Notes             |
+|   &emsp;&emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;&emsp;    | &emsp;&emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;&emsp; |   &emsp;&emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;&emsp;   |             &emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;             |
 | :-----------------: | :-----: | :------: | :---------------------------: |
 | geometry.point_1_x  |         |  float   |                               |
 | geometry.point_1_y  |         |  float   |                               |
@@ -573,9 +363,9 @@ st.add_geometry(name="linear_trapezoid", type="LinearTrapezoid", property={
 
 
 
-### 2.2.8 Pyramid
+### 2.1.8 Pyramid
 
-Add a pyramid into the project using code `type="Pyramid"`.
+Incorporate a pyramid structure into the project by employing the code `type="Pyramid"`.
 
 **Example:**
 
@@ -587,7 +377,7 @@ st.add_geometry(name="pyramid", type="Pyramid", property={
                  "x_span_bottom": 2*size, "x_span_top": size, "y_span_bottom": 2*size, "y_span_top": size}})
 ```
 
-|     **Parameters**     | Default |   Type   |             Notes             |
+|     &emsp;&emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;&emsp;     | &emsp;&emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;&emsp; |   &emsp;&emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;&emsp;   |             &emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;             |
 | :--------------------: | :-----: | :------: | :---------------------------: |
 | geometry.x_span_bottom |         |  float   | Restrained by condition: >=0. |
 | geometry.y_span_bottom |         |  float   | Restrained by condition: >=0. |
@@ -609,9 +399,9 @@ st.add_geometry(name="pyramid", type="Pyramid", property={
 
 
 
-### 2.2.9 Analytical waveguide 
+### 2.1.9 Analytical waveguide 
 
-Add an analytical waveguide  into the project using code `type='AnalyticalWaveguide'`.
+Integrate an analytical waveguide structure into the project by implementing the code `type='AnalyticalWaveguide'`.
 
 **Example:**
 
@@ -623,7 +413,7 @@ st.add_geometry(name='taper_symmetric_test', type='AnalyticalWaveguide',
                           'material': {'material': mt['Si'], 'mesh_order': 2}})
 ```
 
-|     **Parameters**     | Default |   Type   |                            Notes                             |
+|Parameters|Default|Type|Notes|                            |
 | :--------------------: | :-----: | :------: | :----------------------------------------------------------: |
 |    geometry.x_span     |         |  float   |                 Restrained by condition: >0.                 |
 |     geometry.x_min     |         |  float   |                                                              |
@@ -652,9 +442,9 @@ st.add_geometry(name='taper_symmetric_test', type='AnalyticalWaveguide',
 
 
 
-### 2.2.10 Rectangle
+### 2.1.10 Rectangle
 
-Add a rectangle into the project using code `type="Rectangle"`.
+Incorporate a rectangle structure into the project by utilizing the code `type="Rectangle"`.
 
 **Example:**
 
@@ -665,7 +455,7 @@ st.add_geometry(name="rectangle", type="Rectangle", property={
                  "x": 0, "x_span": size, "y": space, "y_span": wg_width, "z": 0, "z_span": wg_height, }})
 ```
 
-|   **Parameters**    | Default |   Type   |             Notes             |
+|   &emsp;&emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;&emsp;    | &emsp;&emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;&emsp; |   &emsp;&emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;&emsp;   |             &emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;             |
 | :-----------------: | :-----: | :------: | :---------------------------: |
 |   geometry.x_span   |         |  float   | Restrained by condition: >0.  |
 |   geometry.x_min    |         |  float   |                               |
@@ -687,9 +477,9 @@ st.add_geometry(name="rectangle", type="Rectangle", property={
 
 
 
-### 2.2.11 Ring
+### 2.1.11 Ring
 
-Add a ring into the project using code `type="Ring"`.
+Integrate a ring structure into the project by implementing the code `type="Ring" `. 
 
 **Example:**
 
@@ -701,7 +491,7 @@ st.add_geometry(name="ring", type="Ring", property={
                  "inner_radius": size-wg_width/2, "outer_radius": size+wg_width/2,}})
 ```
 
-|    **Parameters**     | Default |   Type   |             Notes             |
+|    &emsp;&emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;&emsp;     | &emsp;&emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;&emsp; |   &emsp;&emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;&emsp;   |             &emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;             |
 | :-------------------: | :-----: | :------: | :---------------------------: |
 | geometry.inner_radius |         |  float   | Restrained by condition: >0.  |
 | geometry.outer_radius |         |  float   | Restrained by condition: >0.  |
@@ -719,9 +509,9 @@ st.add_geometry(name="ring", type="Ring", property={
 
 
 
-### 2.2.12 Sector
+### 2.1.12 Sector
 
-Add a sector into the project using code `type="Sector"`.
+Incorporate a sector structure into the project by employing the code `type="Sector"`.
 
 **Example:**
 
@@ -733,7 +523,7 @@ st.add_geometry(name="sector", type="Sector", property={
                  "x": space, "y": 2*space, "z": 0, "z_span": wg_height}})
 ```
 
-|   **Parameters**    | Default |   Type   |             Notes             |
+|   &emsp;&emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;&emsp;    | &emsp;&emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;&emsp; |   &emsp;&emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;&emsp;   |             &emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;             |
 | :-----------------: | :-----: | :------: | :---------------------------: |
 |   geometry.radius   |         |  float   | Restrained by condition: >0.  |
 |   geometry.angle    |         |  float   |                               |
@@ -751,9 +541,9 @@ st.add_geometry(name="sector", type="Sector", property={
 
 
 
-### 2.2.13 Triangle
+### 2.1.13 Triangle
 
-Add a triangle into the project using code `type="Triangle"`.
+Integrate a triangle structure into the project by implementing the code `type="Triangle"`.
 
 **Example:**
 
@@ -766,7 +556,7 @@ st.add_geometry(name="triangle", type="Triangle", property={
                  "rotate_x": 0, "rotate_y": 0, "rotate_z": 0}})
 ```
 
-|   **Parameters**    | Default |   Type   |             Notes             |
+|   &emsp;&emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;&emsp;    | &emsp;&emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;&emsp; |   &emsp;&emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;&emsp;   |             &emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;             |
 | :-----------------: | :-----: | :------: | :---------------------------: |
 | geometry.point_1_x  |         |  float   |                               |
 | geometry.point_1_y  |         |  float   |                               |
@@ -785,4 +575,223 @@ st.add_geometry(name="triangle", type="Triangle", property={
 |  geometry.rotate_z  |    0    |  float   |                               |
 |  material.material  |         | material |                               |
 | material.mesh_order |         | integer  | Restrained by condition: >=0. |
+
+
+## 2.2 Add doping
+
+When participating in optoelectronic simulation, you have the option to utilize the provided code for introducing doping into the simulation structure. 
+
+Our platform offers assistance in importing doping data from  files and also allows for the customization of doping regions according to your requirements.
+
+```python
+add_doping(
+            self,
+            *,
+            name: str,
+            type: "StructureDopingTypeSelection",
+            property: "StructureDopingPropertyDict"
+			)
+```
+
+| &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp; |   &ensp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Description&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;   |
+| :------------: | :-------------: |
+|      name      |   Doping name   |
+|      type      |   Doping type   |
+|    property    | Doping property |
+
+For instance, the code for importing doping from a file is demonstrated as follows.
+
+**Example:**
+
+```python
+st.add_doping(name="import_n", type="file", property={
+    "general": {"format": "DOP", "file_path": n_dop_file, "species": "n"}})
+```
+
+You can configure parameters related to importing doping files by adjusting settings under the `property.general` sections.
+
+|    &emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;    | &emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp; | &ensp;&emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;&ensp; |                    &emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;                     |
+| :------------------: | :-----: | :--: | :------------------------------------------: |
+|    general.format    |         | str  |            Selections are ['DOP']            |
+|  general.file_path   |         | str  |                                              |
+|   general.species    |         | str  |          Selections are ['n', 'p']           |
+|  volume.volume_type  |  'all'  | str  | Selections are ['all', 'material', 'region'] |
+| volume.material_list |         | list |   Available when volume_type is 'material'   |
+|  volume.region_list  |         | list |    Available when volume_type is 'region'    |
+
+The code for utilizing custom region doping is provided below.
+
+**Example:**
+
+```python
+st.add_doping(name="Uniform", type="p", property={
+    "geometry": {"x": p_uniform_x_center, "x_span": p_uniform_x_span,
+                 "y": p_uniform_y_center, "y_span": p_uniform_y_span,
+                 "z": p_uniform_z_center, "z_span": p_uniform_z_span},
+    "general": {"distribution_function": "constant", "concentration": p_uniform_con},
+    "volume": {"volume_type": "material", "material_list": [mt["mat_si"]]}})
+```
+
+|&emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;| &emsp;Default&emsp; | &emsp;&emsp;Type&emsp;&emsp;&ensp;  |&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;|
+| :---------------------------: | :-----: | :---: | :------------------------------------------------: |
+|          geometry.x           |         | float |                                                    |
+|        geometry.x_span        |         | float |                                                    |
+|          geometry.y           |         | float |                                                    |
+|        geometry.y_span        |         | float |                                                    |
+|          geometry.z           |         | float |                                                    |
+|        geometry.z_span        |         | float |                                                    |
+|       geometry.rotate_x       |         | float |                                                    |
+|       geometry.rotate_y       |         | float |                                                    |
+|       geometry.rotate_z       |         | float |                                                    |
+|        geometry.x_min         |         | float |                                                    |
+|        geometry.x_max         |         | float |                                                    |
+|        geometry.y_min         |         | float |                                                    |
+|        geometry.y_max         |         | float |                                                    |
+|        geometry.z_min         |         | float |                                                    |
+|        geometry.z_max         |         | float |                                                    |
+| general.distribution_function |         |  str  |      Selections are ['constant', 'gaussian']       |
+|     general.concentration     |         | float |                                                    |
+|      general.source_face      |         |  str  | Available when distribution_function is 'gaussian' |
+|    general.junction_width     |         | float | Available when distribution_function is 'gaussian' |
+|   general.ref_concentration   |         | float | Available when distribution_function is 'gaussian' |
+|      volume.volume_type       |  'all'  |  str  |    Selections are ['all', 'material', 'region']    |
+|     volume.material_list      |         | list  |      Available when volume_type is 'material'      |
+|      volume.region_list       |         | list  |       Available when volume_type is 'region'       |
+
+
+
+## 2.3 Add electrode
+
+In this section, we will demonstrate how to integrate electrode structures into optoelectronic simulations using the provided code. Currently, the platform allows configuring both steady-state and transient voltages for the electrodes. 
+
+Detailed code descriptions and specific examples are provided below for reference.
+
+```python
+add_electrode(
+            self,
+            *,
+            name: str,
+            property: StructureElectrodeProperty,
+    )
+```
+
+| &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp; |             &ensp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Description&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;              |
+| :------------: | :-----------------------------------: |
+|      name      |   Electric boundary condition name.   |
+|    property    | Electric boundary condition property. |
+
+**Example: steady state**
+
+```python
+st = pj.Structure()
+st.add_electrode(name="anode", property={
+    "solid": "Anode", "bc_mode": "steady_state", "sweep_type": "range",
+    "range_start": tcad_vmin, "range_stop": tcad_vmax, "range_interval": tcad_vstep, "apply_AC_small_signal": "none"})
+st.add_electrode(name="cathode", property={
+    "solid": "Cathode", "bc_mode": "steady_state",
+    "sweep_type": "single", "voltage": 0, "apply_AC_small_signal": "none"})
+```
+
+|       &emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;       |   &emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;    |  &emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;   |                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;                     |
+| :------------------------: | :----------: | :-----: | :------------------------------------------: |
+|        force_ohmic         |     true     |  bool   |                                              |
+|          bc_mode           | steady_state | string  |       Selections are ['steady_state'].       |
+|   apply_AC_small_signal    |     none     | string  |           Selections are ['none'].           |
+|         sweep_type         |    single    | string  | Selections are ['single', 'range', 'value']. |
+|         v_step_max         |     0.5      |  float  |                                              |
+|          voltage           |      0       |  float  |    Available when sweep_type is 'single'     |
+|        range_start         |      0       |  float  |     Available when sweep_type is 'range'     |
+|         range_stop         |      1       |  float  |     Available when sweep_type is 'range'     |
+|       range_interval       |      1       |  float  |     Available when sweep_type is 'range'     |
+|      range_num_points      |      2       | integer |     Available when sweep_type is 'range'     |
+| []sweep_value_table.index  |              | integer |    Available when sweep_type is 'value'.     |
+| []sweep_value_table.number |              |  float  |    Available when sweep_type is 'value'.     |
+|        surface_type        |    solid     | string  |          Selections are ['solid'].           |
+|           solid            |              | string  |                                              |
+
+
+
+**Example: transient**
+
+```python
+st = pj.Structure()
+st.add_electrode(name="cathode", property={
+    "solid": "Cathode", "bc_mode": "transient", "voltage": tcad_vbias, "v_step_max": 0.5,
+    "time_table": [{"time_start": 0, "time_stop": 2e-12, "initial_step": 1e-12, "max_step": 5e-12},
+                   {"time_start": 2e-12, "time_stop": 2.001e-12, "initial_step": 30e-18, "max_step": 30e-18,
+                    "optical": {"enabled": 1, "envelop": 0, "source_fraction": source_fraction}},
+                   {"time_start": 2.001e-12, "time_stop": 2.01e-12, "initial_step": 30e-18, "max_step": 60e-18,
+                    "optical": {"enabled": 1, "envelop": 0, "source_fraction": source_fraction}},
+                   {"time_start": 2.01e-12, "time_stop": 2.03e-12, "initial_step": 60e-18, "max_step": 2e-15,
+                    "optical": {"enabled": 1, "envelop": 0, "source_fraction": source_fraction}},
+                   {"time_start": 2.03e-12, "time_stop": 10e-12, "initial_step": 2e-15, "max_step": 50e-15,
+                    "optical": {"enabled": 1, "envelop": 0, "source_fraction": source_fraction}},
+                   {"time_start": 10e-12, "time_stop": 500e-12, "initial_step": 50e-15, "max_step": 10e-12,
+                    "optical": {"enabled": 1, "envelop": 0, "source_fraction": source_fraction}}]})
+
+st.add_electrode(name="anode", property={
+    "solid": "Anode", "bc_mode": "steady_state",
+    "sweep_type": "single", "voltage": 0, "apply_AC_small_signal": "none"})
+
+```
+
+|            &emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;            | &emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp; |  &emsp;&emsp;&emsp;type&emsp;&emsp;&emsp;   |             &ensp;&emsp;&emsp; &emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp; &emsp;&emsp;&ensp;&ensp;             |
+| :----------------------------------: | :-----: | :-----: | :---------------------------: |
+|             force_ohmic              |  true   |  bool   |                               |
+|               bc_mode                |         | string  | Selections are ['transient']. |
+|               voltage                |    0    |  float  |                               |
+|       []time_table.time_start        |         |  float  |                               |
+|        []time_table.time_stop        |         |  float  |                               |
+|      []time_table.initial_step       |         |  float  |                               |
+|        []time_table.max_step         |         |  float  |                               |
+|     []time_table.optical.enabled     |    0    | integer |     Selections are [0, 1]     |
+|     []time_table.optical.envelop     |         | integer |      Selections are [0]       |
+| []time_table.optical.source_fraction |         |  float  |                               |
+|             surface_type             |  solid  | string  |   Selections are ['solid'].   |
+|                solid                 |         | string  |                               |
+
+
+
+
+
+
+
+## 2.4 Add surface recombination
+
+While conducting optoelectronic simulations, you can incorporate surface recombination into the simulation structure using the following code.
+
+```python
+add_surface_recombination(
+            self,
+            *,
+            name: str,
+            property: AddSurfaceRecombination,
+    )
+```
+
+| Parameters |           Description           |
+| :------------: | :-----------------------------: |
+|      name      |   Surface recombination name.   |
+|    property    | Surface recombination property. |
+
+**Example:**
+
+```python
+st.add_surface_recombination(name="Cathode_Si", property={
+        "surface_type": "domain_domain", "interface_type": "MetalOhmicInterface",
+        "domain_1": "Cathode", "domain_2": "Si_base", "infinite_recombination": False, "velocity_electron": 1e7, "velocity_hole": 1e7})
+```
+
+|     **Parameters**     |    Default    |   Type   |                            Notes                             |
+| :--------------------: | :-----------: | :------: | :----------------------------------------------------------: |
+|      surface_type      | domain_domain |  string  |    Selections are ['domain_domain', 'material_material'].    |
+|     interface_type     |     null      |  string  | Selections are ['null', 'InsulatorInterface', 'HomoJunction', 'HeteroJunction', 'MetalOhmicInterface', 'SolderPad']. |
+| infinite_recombination |     true      |   bool   |    Available when interface_type is 'MetalOhmicInterface'    |
+|     velocity_hole      |       0       |  float   | Available when interface_type is 'MetalOhmicInterface'/'InsulatorInterface' |
+|   velocity_electron    |       0       |  float   | Available when interface_type is 'MetalOhmicInterface'/'InsulatorInterface' |
+|        domain_1        |               |  string  |        Available when surface_type is 'domain_domain'        |
+|        domain_2        |               |  string  |        Available when surface_type is 'domain_domain'        |
+|       material_1       |               | material |      Available when surface_type is 'material_material'      |
+|       material_2       |               | material |      Available when surface_type is 'material_material'      |
+
 

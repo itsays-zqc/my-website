@@ -1,9 +1,10 @@
 
 # Boundary/Mesh
 
+The code provided in this section can be utilized to incorporate  boundary and mesh into the current project.
 ## 3.1 Boundary
 
-You can use the code in this section to add a set of default optical boundary's property to current project.
+The following content comprises code explanations and specific examples of boundary conditions in optical simulation.
 
 ```python
 OBoundary(
@@ -24,10 +25,10 @@ As demonstrated in the following examples, we also provide support for customizi
 **Example:**
 
 ```python
-st.OBoundary(property={'geometry': {'x': 0, 'x_span': 0, 'y': 0, 'y_span': yspan_solver, 'z': 0, 'z_span': zspan_solver},
-                       'boundary': {'y_min': 'PML', 'y_max': 'PML', 'z_min': 'PML', 'z_max': 'PML'},
-                       'general_pml': {'pml_layer': 12, 'pml_kappa': 1, 'pml_sigma': 15, 'pml_polynomial': 3}
-                       })
+st.OBoundary(property={"geometry": {"x": 0, "x_span": 2*(l_input+l_bend+l_beam/2-0.5), "y": 0, "y_span": 6, "z": 0.11, "z_span": monitor_h},
+                        "boundary": {"x_min": "PML", "x_max": "PML", "y_min": "PML", "y_max": "PML", "z_min": "PML", "z_max": "PML"},
+                        "general_pml": {"pml_same_settings": True, "pml_kappa": 2, "pml_sigma": 0.8, "pml_layer": 8, "pml_polynomial": 3}})
+ 
 ```
 
 |          **Parameters**          | Default  |  Type   |                            Notes                             |
@@ -61,6 +62,7 @@ st.OBoundary(property={'geometry': {'x': 0, 'x_span': 0, 'y': 0, 'y_span': yspan
 |          boundary.z_max          |          | string  |  Selections are ['PML', 'PEC', 'metal', 'PMC', 'periodic'].  |
 |          boundary.z_min          |          | string  | Selections are ['PML', 'PEC', 'metal', 'PMC', 'symmetric', 'anti_symmetric', 'periodic']. |
 
+If you need to customize the boundary conditions for simulation requirements, you can also refer to the table below for modifying boundary conditions in different directions. 
 
 
 |              **Parameters**               | Default  |  Type   |                            Notes                             |
@@ -143,9 +145,11 @@ st.OBoundary(property={'geometry': {'x': 0, 'x_span': 0, 'y': 0, 'y_span': yspan
 
 ## 3.2 Mesh
 
-### 3.2.1 add_mesh
+In this section, we will discuss how to add meshing to the simulation. This step is crucial to ensure the precision and dependability of the simulation outcomes. 
 
-Add sub mesh.
+### 3.2.1 Add mesh
+
+Add sub mesh to the simulation project with the code below.
 
 ```python
 add_mesh(
@@ -194,7 +198,7 @@ st.add_mesh(name='sub_mesh',
 
 ### 3.2.2 add_emesh
 
-Add electric mesh.
+In the context of optoelectronic simulation, we present guidelines on how to incorporate meshing to ensure the precision and dependability of the simulation outcomes. The code explanations and a practical example provided below.
 
 ```python
 add_emesh(

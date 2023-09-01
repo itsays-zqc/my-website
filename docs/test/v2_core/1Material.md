@@ -8,9 +8,9 @@ These instructions enable you to incorporate dispersion/non-dispersion materials
 
 
 
-## 1.1 add_anisotropy
+## 1.1 Add anisotropy material
 
-Add a project non-dispersion material.
+Add non-dispersion material to a project.
 
 ```python
 add_anisotropy(
@@ -36,7 +36,7 @@ add_anisotropy(
 |    fitting     |                    Material fitting mode.                    |
 |     order      |                     Material mesh order.                     |
 
-**Example:**
+**Example:** 
 
 ```python
 mt = pj.Material()
@@ -47,9 +47,9 @@ mt.add_anisotropy(name="LN", fitting=None,
 
 
 
-## 1.2 add_dispersion
+## 1.2 Add dispersion material
 
-Add a project dispersion material.
+Add dispersion material to a project.
 
 ```python
 add_dispersion(
@@ -66,7 +66,7 @@ add_dispersion(
 			)
 ```
 
-| **Parameters** |                         Description                          |
+| &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;**Parameters**&emsp;&emsp;&emsp;&emsp; &emsp;&emsp;|               &emsp;&emsp; &emsp;&emsp;&emsp;&emsp;         Description    &emsp;&emsp; &emsp;&emsp; &emsp;&emsp;                    |
 | :------------: | :----------------------------------------------------------: |
 |      name      |                        Material name.                        |
 |      data      | Material data. Format is [(wavelength, index real, index imag), …]. |
@@ -85,9 +85,9 @@ mt.add_dispersion(name="SiO2",
 
 
 
-## 1.3 add_lib
+## 1.3 Add material in Max-Optics material library
 
-Add a project material with existing material in library.
+Add material in the Max-Optics material library to a project.
 
 ```python
 add_lib(
@@ -102,7 +102,7 @@ add_lib(
             )
 ```
 
-| **Parameters** |                         Description                          |
+|  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;**Parameters**&emsp;&emsp; &emsp;&emsp;&emsp;&emsp; |                       &emsp;&emsp; &emsp;&emsp;&emsp;&emsp;  Description &emsp;&emsp; &emsp;&emsp;&emsp;&emsp;                         |
 | :------------: | :----------------------------------------------------------: |
 |      name      |                        Material name.                        |
 |      data      |               A existing material in library.                |
@@ -119,9 +119,9 @@ mt.add_lib(name="Air", data=mo.Material.Air, order=2)
 
 
 
-## 1.4 add_nondispersion
+## 1.4 Add nondispersion material
 
-Add a project non-dispersion material.
+Add non-dispersion material to a project.
 
 ```python
 add_nondispersion(
@@ -135,7 +135,7 @@ add_nondispersion(
 		)
 ```
 
-| **Parameters** |                         Description                          |
+| &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;**Parameters**&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; |                         &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Description&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;                          |
 | :------------: | :----------------------------------------------------------: |
 |    **name**    |                        Material name.                        |
 |    **data**    |     Material data. Format is [(index real, index imag)].     |

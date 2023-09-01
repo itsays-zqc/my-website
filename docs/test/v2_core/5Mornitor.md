@@ -1,11 +1,11 @@
 
 # Monitor
 
-This section will help you to add the monitor to one simulation project. We offer a range of monitors to assist you in obtaining simulation data more intuitively. The following will be presented in sequence to provide an introduction.
+This section provides guidance on adding a monitor to your simulation project. We offer a variety of monitors designed to enhance your ability to gather simulation data. The subsequent content will be presented below, offering an introduction to each monitor.
 
 ## 5.1 Profile monitor
 
-Add a profile monitor to current project.
+Incorporate a profile monitor into the current project.
 
 ```python
 add(
@@ -53,7 +53,7 @@ mn.add(name="y_normal", type="profile_monitor",
 
 ## 5.2 Global monitor/Global option
 
-Add a global monitor to current project.
+Integrate a global monitor into the current project.
 
 ```python
 add(
@@ -103,7 +103,7 @@ mn.add(name='Global Option', type='global_option',
 
 ## 5.3 Time monitor
 
-Add a time monitor to current project.
+Incorporate a time monitor into the current project.
 
 ```python
 add(
@@ -155,9 +155,9 @@ mn.add(name='time_monitor1', type='time_monitor',
 
 
 
-## 5.4 Power monitor/Mode expansion
+## 5.4 Power monitor and its Mode expansion
 
-Add a power monitor to current project. Meanwhile, We can use  `'mode_expansion'` to calculate the mode expansion for its relative  power monitor.  
+Incorporate a power monitor into the current project. Additionally, you can utilize the `'mode_expansion'` to compute the mode expansion associated with its corresponding relative power monitor.
 
 ```python
 add(
@@ -241,7 +241,7 @@ mn.add(name='through', type='power_monitor',
 
 ## 5.6 Band monitor
 
-Add a band monitor to current project.
+Integrate a band monitor into the current project.
 
 ```python
 add(
@@ -296,7 +296,7 @@ mn.add(name="band_line", type="band_monitor", property={
 
 ## 5.7 Charge monitor
 
-Add a charge monitor to current project.
+Incorporate a charge monitor into the current project.
 
 ```python
 add(
@@ -347,7 +347,7 @@ mn.add(name="np_line_080nm", type="charge_monitor", property={
 
 ## 5.8 Electric monitor
 
-Add a electric monitor to current project.
+Integrate an electric monitor into the current project.
 
 ```python
 add(

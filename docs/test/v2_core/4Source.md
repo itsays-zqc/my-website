@@ -144,9 +144,9 @@ Incorporate a port into the current FDTD simulation project.
 add(
             self,
             *,
-            type: Literal["eme_port"],
+            type: Literal["fdtd_port"],
             name: str,
-            property: PostProcessEmePort,
+            property: PostProcessFdtdPort,
     )
 ```
 

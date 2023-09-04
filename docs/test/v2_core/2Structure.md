@@ -10,11 +10,33 @@ st = pj.Structure(mesh_type,
                  )
 ```
 
-|   &emsp;&emsp;&emsp;&emsp;**Parameters**&emsp;&emsp;&emsp;&emsp;    |  &emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;   |   &emsp;&emsp;&ensp;Type&ensp;&emsp;&emsp;   |                    &emsp;&emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;&emsp;                   |
-| :-----------------: | :--------: | :------: | :-----------------------------------------: |
-|      mesh_type      | curve_mesh |  string  | Selections are ['curve_mesh', 'staircase']. |
-|     mesh_factor     |    1.2     |  float   |   Restrained by condition: >=1.05,<=1.6.    |
-| background_material |            | material |                                             |
+<table class="custom-table ">
+  <tr>
+    <th>Parameters</th>
+    <th>Default</th>
+    <th>Type</th>
+    <th>Notes</th>
+  </tr>
+  <tr>
+    <td align="center">mesh_type</td>
+    <td align="center">curve_mesh</td>
+    <td align="center">string</td>
+    <td align="center">Selections are ['curve_mesh', 'staircase'].</td>
+  </tr>
+  <tr>
+    <td align="center">mesh_factor</td>
+    <td align="center">1.2</td>
+    <td align="center">float</td>
+    <td align="center">Restrained by condition: &ge;1.05, &le;1.6.</td>
+  </tr>
+  <tr>
+    <td align="center">background_material</td>
+    <td align="center"></td>
+    <td align="center">material</td>
+    <td></td>
+  </tr>
+</table>
+
 
 You can choose to create models using GDS files. Meanwhile, you can also utilize various methods in this "Structure" module such as Bézier curves, tapering, and circular rings for your simulation project.
 
@@ -33,7 +55,32 @@ add_geometry(
     )
 ```
 
-| &ensp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;Parameters&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;|    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Description&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;     |
+<table class="custom-table">
+  <thead>
+    <tr>
+      <th align="center">Parameters</th>
+      <th align="center">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">name</td>
+      <td align="center">Geometry name.</td>
+    </tr>
+    <tr>
+      <td align="center">type</td>
+      <td align="center">Geometry type.</td>
+    </tr>
+    <tr>
+      <td align="center">property</td>
+      <td align="center">Geometry property.</td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+|           Parameters         |              Description               |
 | :------------: | :----------------: |
 |      name      |   Geometry name.   |
 |      type      |   Geometry type.   |
@@ -52,7 +99,7 @@ st.add_geometry(name="gds_file", type="gds_file", property={
     "general": {"path": gds_file, "cell_name": "EXTEND_1", "layer_name": (3, 0)}})
 ```
 
-|   &emsp;&emsp;&emsp;&emsp;**Parameters**&emsp;&emsp;&emsp;&emsp;    | &emsp;&emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;&emsp; |   &emsp;&emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;&emsp;   |             &emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;             |
+|       **Parameters**        |     Default     |       Type       |                 Notes                 |
 | :-----------------: | :-----: | :------: | :---------------------------: |
 |     geometry.x      |    0    |  float   |                               |
 |     geometry.y      |    0    |  float   |                               |
@@ -115,7 +162,7 @@ st.add_geometry(name="arc", type="ArcWaveguide", property={
                  "x": 0, "y": 0, "z": 0, "z_span": wg_height, "rotate_x": 0, "rotate_y": 0, "rotate_z": 0}})
 ```
 
-|    &emsp;&emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;&emsp;     | &emsp;&emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;&emsp; |   &emsp;&emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;&emsp;   |             &emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;             |
+|        Parameters         |     Default     |       Type       |                 Notes                 |
 | :-------------------: | :-----: | :------: | :---------------------------: |
 | geometry.inner_radius |         |  float   | Restrained by condition: >0.  |
 | geometry.outer_radius |         |  float   | Restrained by condition: >0.  |
@@ -142,7 +189,7 @@ st.add_geometry(name="arc_3d", type="ArcWaveguide3D", property={
                  "x": space, "y": 0, "z": 0, "rotate_x": 0, "rotate_y": 0, "rotate_z": 0}})
 ```
 
-|    &emsp;&emsp;&emsp;&emsp;**Parameters**&emsp;&emsp;&emsp;&emsp;     | &ensp;&emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;&ensp; |   &emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;   |               &emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;                |
+|        **Parameters**         | &ensp;   Default   &ensp; |      Type      |                   Notes                    |
 | :-------------------: | :-----: | :------: | :--------------------------------: |
 |    geometry.radius    |         |  float   |    Restrained by condition: >0.    |
 |    geometry.angle     |         |  float   | Restrained by condition: >0,<=360. |
@@ -160,9 +207,9 @@ st.add_geometry(name="arc_3d", type="ArcWaveguide3D", property={
 |   material.material   |         | material |                                    |
 |  material.mesh_order  |         | integer  |   Restrained by condition: >=0.    |
 
-### 2.1.3 Bézier curve/ Bézier curve 3D
+### 2.1.3 Bezier curve/ Bezier curve 3D
 
-Within the project, we can incorporate a Bézier curve structure by employing the code `type="BezierCurve"`.
+Within the project, we can incorporate a Bezier curve structure by employing the code `type="BezierCurve"`.
 
 **Example:**
 
@@ -175,7 +222,7 @@ st.add_geometry(name="bezier", type="BezierCurve", property={
                  "point_3_x": size, "point_3_y": size/2, "point_4_x": size, "point_4_y": size}})
 ```
 
-|   &emsp;&emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;&emsp;    | &emsp;&emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;&emsp; |   &emsp;&emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;&emsp;   |             &emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;             |
+|       Parameters        |     Default     |       Type       |                 Notes                 |
 | :-----------------: | :-----: | :------: | :---------------------------: |
 | geometry.point_1_x  |         |  float   |                               |
 | geometry.point_1_y  |         |  float   |                               |
@@ -209,7 +256,7 @@ st.add_geometry(name="bezier_3d", type="BezierCurve3D", property={
                      [{"x": 0, "y": 0}, {"x": 0, "y": size/2}, {"x": size, "y": size/2}, {"x": size, "y": size}]}})
 ```
 
-|       &emsp;&emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;&emsp;        | &emsp;&emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;&emsp; |   &emsp;&emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;&emsp;   |             &emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;             |
+|           Parameters            |     Default     |       Type       |                 Notes                 |
 | :-------------------------: | :-----: | :------: | :---------------------------: |
 |    geometry.base_height     |         |  float   | Restrained by condition: >0.  |
 |     geometry.top_width      |         |  float   | Restrained by condition: >0.  |
@@ -243,7 +290,7 @@ st.add_geometry(name="circle", type="Circle", property={
                  "radius": size, "x": 4*space, "y": 0, "z": 0, "z_span": wg_height}})
 ```
 
-|   &emsp;&emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;&emsp;    | &emsp;&emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;&emsp; |   &emsp;&emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;&emsp;   |             &emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;             |
+|       Parameters        |     Default     |       Type       |                 Notes                 |
 | :-----------------: | :-----: | :------: | :---------------------------: |
 |   geometry.radius   |         |  float   | Restrained by condition: >0.  |
 |     geometry.x      |         |  float   |                               |
@@ -274,7 +321,7 @@ st.add_geometry(name="custom_polygon", type="CustomPolygon", property={
                  "rotate_x": 0, "rotate_y": 0, "rotate_z": 0}})
 ```
 
-|   &emsp;&emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;&emsp;    | &emsp;&emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;&emsp; |   &emsp;&emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;&emsp;   |             &emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;             |
+|       Parameters        |     Default     |       Type       |                 Notes                 |
 | :-----------------: | :-----: | :------: | :---------------------------: |
 |    geometry.size    |         |  float   | Restrained by condition: >0.  |
 |   geometry.sides    |         | integer  | Restrained by condition: >=3. |
@@ -306,7 +353,7 @@ st.add_geometry(name="ellipse", type="Ellipse", property={
                  "rotate_x": 0, "rotate_y": 0, "rotate_z": 0}})
 ```
 
-|   &emsp;&emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;&emsp;    | &emsp;&emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;&emsp; |   &emsp;&emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;&emsp;   |           &emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;             |
+|       Parameters        |     Default     |       Type       |               Notes                 |
 | :-----------------: | :-----: | :------: | :---------------------------: |
 |  geometry.x_radius  |         |  float   | Restrained by condition: >0.  |
 |  geometry.y_radius  |         |  float   | Restrained by condition: >0.  |
@@ -339,7 +386,7 @@ st.add_geometry(name="linear_trapezoid", type="LinearTrapezoid", property={
                  "rotate_x": 0, "rotate_y": 0, "rotate_z": 0}})
 ```
 
-|   &emsp;&emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;&emsp;    | &emsp;&emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;&emsp; |   &emsp;&emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;&emsp;   |             &emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;             |
+|       Parameters        |     Default     |       Type       |                 Notes                 |
 | :-----------------: | :-----: | :------: | :---------------------------: |
 | geometry.point_1_x  |         |  float   |                               |
 | geometry.point_1_y  |         |  float   |                               |
@@ -377,7 +424,7 @@ st.add_geometry(name="pyramid", type="Pyramid", property={
                  "x_span_bottom": 2*size, "x_span_top": size, "y_span_bottom": 2*size, "y_span_top": size}})
 ```
 
-|     &emsp;&emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;&emsp;     | &emsp;&emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;&emsp; |   &emsp;&emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;&emsp;   |             &emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;             |
+|         Parameters         |     Default     |       Type       |                 Notes                 |
 | :--------------------: | :-----: | :------: | :---------------------------: |
 | geometry.x_span_bottom |         |  float   | Restrained by condition: >=0. |
 | geometry.y_span_bottom |         |  float   | Restrained by condition: >=0. |
@@ -455,7 +502,7 @@ st.add_geometry(name="rectangle", type="Rectangle", property={
                  "x": 0, "x_span": size, "y": space, "y_span": wg_width, "z": 0, "z_span": wg_height, }})
 ```
 
-|   &emsp;&emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;&emsp;    | &emsp;&emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;&emsp; |   &emsp;&emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;&emsp;   |             &emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;             |
+|       Parameters        |     Default     |       Type       |                 Notes                 |
 | :-----------------: | :-----: | :------: | :---------------------------: |
 |   geometry.x_span   |         |  float   | Restrained by condition: >0.  |
 |   geometry.x_min    |         |  float   |                               |
@@ -491,7 +538,7 @@ st.add_geometry(name="ring", type="Ring", property={
                  "inner_radius": size-wg_width/2, "outer_radius": size+wg_width/2,}})
 ```
 
-|    &emsp;&emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;&emsp;     | &emsp;&emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;&emsp; |   &emsp;&emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;&emsp;   |             &emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;             |
+|        Parameters         |     Default     |       Type       |                 Notes                 |
 | :-------------------: | :-----: | :------: | :---------------------------: |
 | geometry.inner_radius |         |  float   | Restrained by condition: >0.  |
 | geometry.outer_radius |         |  float   | Restrained by condition: >0.  |
@@ -523,7 +570,7 @@ st.add_geometry(name="sector", type="Sector", property={
                  "x": space, "y": 2*space, "z": 0, "z_span": wg_height}})
 ```
 
-|   &emsp;&emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;&emsp;    | &emsp;&emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;&emsp; |   &emsp;&emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;&emsp;   |             &emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;             |
+|       Parameters        |     Default     |       Type       |                 Notes                 |
 | :-----------------: | :-----: | :------: | :---------------------------: |
 |   geometry.radius   |         |  float   | Restrained by condition: >0.  |
 |   geometry.angle    |         |  float   |                               |
@@ -556,7 +603,7 @@ st.add_geometry(name="triangle", type="Triangle", property={
                  "rotate_x": 0, "rotate_y": 0, "rotate_z": 0}})
 ```
 
-|   &emsp;&emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;&emsp;    | &emsp;&emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;&emsp; |   &emsp;&emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;&emsp;   |             &emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;             |
+|       Parameters        |     Default     |       Type       |                 Notes                 |
 | :-----------------: | :-----: | :------: | :---------------------------: |
 | geometry.point_1_x  |         |  float   |                               |
 | geometry.point_1_y  |         |  float   |                               |
@@ -593,7 +640,7 @@ add_doping(
 			)
 ```
 
-| &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp; |   &ensp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Description&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;   |
+|            Parameters         &ensp; |   &ensp;          Description          &ensp;   |
 | :------------: | :-------------: |
 |      name      |   Doping name   |
 |      type      |   Doping type   |
@@ -610,7 +657,7 @@ st.add_doping(name="import_n", type="file", property={
 
 You can configure parameters related to importing doping files by adjusting settings under the `property.general` sections.
 
-|    &emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;    | &emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp; | &ensp;&emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;&ensp; |                    &emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;                     |
+|       Parameters       |    Default    | &ensp;   Type   &ensp; |                        Notes                         |
 | :------------------: | :-----: | :--: | :------------------------------------------: |
 |    general.format    |         | str  |            Selections are ['DOP']            |
 |  general.file_path   |         | str  |                                              |
@@ -632,7 +679,7 @@ st.add_doping(name="Uniform", type="p", property={
     "volume": {"volume_type": "material", "material_list": [mt["mat_si"]]}})
 ```
 
-|&emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;| &emsp;Default&emsp; | &emsp;&emsp;Type&emsp;&emsp;&ensp;  |&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;|
+|   Parameters   |  Default  |   Type  &ensp;  |   Notes   |
 | :---------------------------: | :-----: | :---: | :------------------------------------------------: |
 |          geometry.x           |         | float |                                                    |
 |        geometry.x_span        |         | float |                                                    |
@@ -675,12 +722,12 @@ add_electrode(
     )
 ```
 
-| &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp; |             &ensp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Description&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;              |
+|          Parameters         &ensp; |             &ensp;           Description           &ensp;              |
 | :------------: | :-----------------------------------: |
 |      name      |   Electric boundary condition name.   |
 |    property    | Electric boundary condition property. |
 
-**Example: steady state**
+### 2.3.1 Steady state
 
 ```python
 st = pj.Structure()
@@ -692,7 +739,7 @@ st.add_electrode(name="cathode", property={
     "sweep_type": "single", "voltage": 0, "apply_AC_small_signal": "none"})
 ```
 
-|       &emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;       |   &emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp;    |  &emsp;&emsp;&emsp;Type&emsp;&emsp;&emsp;   |                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;                     |
+|          Parameters          |      Default       |     Type      |                          Notes                           |
 | :------------------------: | :----------: | :-----: | :------------------------------------------: |
 |        force_ohmic         |     true     |  bool   |                                              |
 |          bc_mode           | steady_state | string  |       Selections are ['steady_state'].       |
@@ -709,9 +756,31 @@ st.add_electrode(name="cathode", property={
 |        surface_type        |    solid     | string  |          Selections are ['solid'].           |
 |           solid            |              | string  |                                              |
 
+### 2.3.2 SSAC (Small signal alternating current)
 
+```python
+st.add_electrode(name="cathode", property={
+    "solid": "Cathode", "bc_mode": "steady_state",
+    "sweep_type": "range", "range_start": tcad_vmin, "range_stop": tcad_vmax, "range_interval": tcad_vstep, "apply_AC_small_signal": "All"})
+```
+|         Parameters         |   default    |  type   |                    notes                     |
+| :------------------------: | :----------: | :-----: | :------------------------------------------: |
+|        force_ohmic         |     true     |  bool   |                                              |
+|          bc_mode           | steady_state | string  |       Selections are ['steady_state'].       |
+|   apply_AC_small_signal    |     none     | string  |       Selections are ['none', 'All'].        |
+|         sweep_type         |    single    | string  | Selections are ['single', 'range', 'value']. |
+|         v_step_max         |     0.5      |  float  |                                              |
+|          voltage           |      0       |  float  |    Available when sweep_type is 'single'     |
+|        range_start         |      0       |  float  |     Available when sweep_type is 'range'     |
+|         range_stop         |      1       |  float  |     Available when sweep_type is 'range'     |
+|       range_interval       |      1       |  float  |     Available when sweep_type is 'range'     |
+|      range_num_points      |      2       | integer |     Available when sweep_type is 'range'     |
+| []sweep_value_table.index  |              | integer |    Available when sweep_type is 'value'.     |
+| []sweep_value_table.number |              |  float  |    Available when sweep_type is 'value'.     |
+|        surface_type        |    solid     | string  |          Selections are ['solid'].           |
+|           solid            |              | string  |                                              |
 
-**Example: transient**
+### 2.3.3 Transient
 
 ```python
 st = pj.Structure()
@@ -728,14 +797,9 @@ st.add_electrode(name="cathode", property={
                     "optical": {"enabled": 1, "envelop": 0, "source_fraction": source_fraction}},
                    {"time_start": 10e-12, "time_stop": 500e-12, "initial_step": 50e-15, "max_step": 10e-12,
                     "optical": {"enabled": 1, "envelop": 0, "source_fraction": source_fraction}}]})
-
-st.add_electrode(name="anode", property={
-    "solid": "Anode", "bc_mode": "steady_state",
-    "sweep_type": "single", "voltage": 0, "apply_AC_small_signal": "none"})
-
 ```
 
-|            &emsp;&emsp;&emsp;Parameters&emsp;&emsp;&emsp;            | &emsp;&emsp;&emsp;Default&emsp;&emsp;&emsp; |  &emsp;&emsp;&emsp;type&emsp;&emsp;&emsp;   |             &ensp;&emsp;&emsp; &emsp;&emsp;&emsp;Notes&emsp;&emsp;&emsp; &emsp;&emsp;&ensp;&ensp;             |
+|               Parameters               |    Default    |     type      |             &ensp;      Notes      &ensp;&ensp;             |
 | :----------------------------------: | :-----: | :-----: | :---------------------------: |
 |             force_ohmic              |  true   |  bool   |                               |
 |               bc_mode                |         | string  | Selections are ['transient']. |

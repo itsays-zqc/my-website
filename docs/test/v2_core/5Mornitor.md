@@ -5,7 +5,7 @@ This section provides guidance on adding a monitor to your simulation project. W
 
 ## 5.1 Profile monitor
 
-Incorporate a profile monitor into the current project.
+Incorporate a profile monitor into the current project. The profile monitor is solely used for simulations in EME.
 
 ```python
 add(
@@ -155,7 +155,7 @@ mn.add(name='time_monitor1', type='time_monitor',
 
 
 
-## 5.4 Power monitor and its Mode expansion
+## 5.4 Power monitor 
 
 Incorporate a power monitor into the current project. Additionally, you can utilize the `'mode_expansion'` to compute the mode expansion associated with its corresponding relative power monitor.
 
@@ -167,7 +167,6 @@ add(
             name: str,
             property: PostProcessPowerMonitor,
     )
-
 ```
 
 | **Parameters** |    Description    |
@@ -176,10 +175,21 @@ add(
 |      type      |   Monitor type.   |
 |    property    | Monitor property. |
 
-**Example:**
+### 5.4.1 Power monitor
+
+As demonstrated in the following code, add a power monitor to the current project.
 
 ```python
 mn = pj.Monitor()
+mn.add(name="z_normal", type="power_monitor",
+        property={"geometry": {"monitor_type": "2d_z_normal","x": 0, "x_span": 2*(l_input+l_bend+l_beam/2-0.5), "y": 0, "y_span": 5, "z": 0.11, "z_span": 0}})
+```
+
+### 5.4.2 Mode expansion
+
+As demonstrated code below, add a mode expansion for the related power monitor.
+
+```python
 mn.add(name='through', type='power_monitor',
            property={'general': {'frequency_profile': {'wavelength_center': wavelength, 'wavelength_span': 0.1,
                                                        'frequency_points': 11}, },

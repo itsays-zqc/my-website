@@ -149,7 +149,7 @@ In this section, we will discuss how to add meshing to the simulation. This step
 
 ### 3.2.1 Add mesh
 
-Add sub mesh to the simulation project with the code below.
+Add sub mesh to the simulation project with the code below (for optical simulation).
 
 ```python
 add_mesh(
@@ -196,9 +196,9 @@ st.add_mesh(name='sub_mesh',
 
 
 
-### 3.2.2 add_emesh
+### 3.2.2 Add emesh
 
-In the context of optoelectronic simulation, we present guidelines on how to incorporate meshing to ensure the precision and dependability of the simulation outcomes. The code explanations and a practical example provided below.
+In the context of electrical simulation, we present guidelines on how to incorporate meshing to ensure the precision and dependability of the simulation outcomes. The code explanations and a practical example provided below.
 
 ```python
 add_emesh(
@@ -239,9 +239,9 @@ st.add_emesh(name="EMesh_Local", property={
 
 
 
-### 3.2.3 add_emesh_along_line
+### 3.2.3 Add emesh along line
 
-Add electric mesh along line.
+By implementing an electric mesh along line, you can accurately capture intricate electrical phenomena and variations, enhancing the comprehensiveness of your simulation results.
 
 ```python
 add_emesh_along_line(

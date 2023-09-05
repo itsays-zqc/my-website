@@ -34,7 +34,7 @@ add_anisotropy(
   </tr>
   <tr>
     <td align="center">name</td>
-    <td align="center">           Material name.         </td>
+    <td align="center">The name of material.</td>
   </tr>
   <tr>
     <td align="center">data</td>
@@ -50,7 +50,7 @@ add_anisotropy(
   </tr>
   <tr>
     <td align="center">order</td>
-    <td align="center">Material mesh order.</td>
+    <td align="center">The oreder of material coverage when creating a geometric structure.</td>
   </tr>
 </table>
 
@@ -90,7 +90,7 @@ add_dispersion(
   </tr>
   <tr>
     <td align="center">name</td>
-    <td align="center">Material name.</td>
+    <td align="center">The name of material.</td>
   </tr>
   <tr>
     <td align="center">data</td>
@@ -106,7 +106,7 @@ add_dispersion(
   </tr>
   <tr>
     <td align="center">order</td>
-    <td align="center">Material mesh order.</td>
+    <td align="center">The oreder of material coverage when creating a geometric structure.</td>
   </tr>
 </table>
 
@@ -145,7 +145,7 @@ add_lib(
   </tr>
   <tr>
     <td align="center">name</td>
-    <td align="center">Material name.</td>
+    <td align="center">The name of material.</td>
   </tr>
   <tr>
     <td align="center">data</td>
@@ -161,7 +161,7 @@ add_lib(
   </tr>
   <tr>
     <td align="center">order</td>
-    <td align="center">Material mesh order.</td>
+    <td align="center">The oreder of material coverage when creating a geometric structure.</td>
   </tr>
 </table>
 
@@ -196,7 +196,7 @@ add_nondispersion(
   </tr>
   <tr>
     <td align="center"><strong>name</strong></td>
-    <td align="center">Material name.</td>
+    <td align="center">The name of material.</td>
   </tr>
   <tr>
     <td align="center"><strong>data</strong></td>
@@ -208,7 +208,7 @@ add_nondispersion(
   </tr>
   <tr>
     <td align="center"><strong>order</strong></td>
-    <td align="center">Material mesh order.</td>
+    <td align="center">The oreder of material coverage when creating a geometric structure.</td>
   </tr>
 </table>
 

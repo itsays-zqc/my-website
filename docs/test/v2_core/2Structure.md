@@ -10,7 +10,7 @@ st = pj.Structure(mesh_type,
                  )
 ```
 
-<table class="custom-table ">
+ <table align="center">
   <tr>
     <th>Parameters</th>
     <th>Default</th>
@@ -21,19 +21,19 @@ st = pj.Structure(mesh_type,
     <td align="center">mesh_type</td>
     <td align="center">curve_mesh</td>
     <td align="center">string</td>
-    <td align="center">Selections are ['curve_mesh', 'staircase'].</td>
+    <td align="center">Different mesh types for iterative calculations, Selections are ['curve_mesh', 'staircase'].</td>
   </tr>
   <tr>
     <td align="center">mesh_factor</td>
     <td align="center">1.2</td>
     <td align="center">float</td>
-    <td align="center">Restrained by condition: &ge;1.05, &le;1.6.</td>
+    <td align="center">Maximum rate when the mesh changes. Restrained by condition: &ge;1.05, &le;1.6.</td>
   </tr>
   <tr>
     <td align="center">background_material</td>
     <td align="center"></td>
     <td align="center">material</td>
-    <td></td>
+    <td align="center">Background material</td>
   </tr>
 </table>
 
@@ -55,7 +55,7 @@ add_geometry(
     )
 ```
 
-<table class="custom-table">
+ <table align="center">
   <thead>
     <tr>
       <th align="center">Parameters</th>
@@ -65,26 +65,21 @@ add_geometry(
   <tbody>
     <tr>
       <td align="center">name</td>
-      <td align="center">Geometry name.</td>
+      <td align="center">The name of a specific geometric structure.</td>
     </tr>
     <tr>
       <td align="center">type</td>
-      <td align="center">Geometry type.</td>
+      <td align="center">The type of a specific geometric structure.</td>
     </tr>
     <tr>
       <td align="center">property</td>
-      <td align="center">Geometry property.</td>
+      <td align="center">The property of a specific geometric structure, including the materials, geometric dimensions, and so on.</td>
     </tr>
   </tbody>
 </table>
 
 
 
-|           Parameters         |              Description               |
-| :------------: | :----------------: |
-|      name      |   Geometry name.   |
-|      type      |   Geometry type.   |
-|    property    | Geometry property. |
 
 ### 2.1.1 GDS file/GDS file3D
 
@@ -95,23 +90,23 @@ The following codes can import the structure in Max-Optics SDK from GDS layout f
 ```python
 st.add_geometry(name="gds_file", type="gds_file", property={
     "material": {"material": mt["Si"], "mesh_order": 2},
-    "geometry": {"x": 3 * space, "y": 2 * space, "z": 0, "z_span": wg_height},
+    "geometry": { "z": 0, "z_span": wg_height},
     "general": {"path": gds_file, "cell_name": "EXTEND_1", "layer_name": (3, 0)}})
 ```
 
-|       **Parameters**        |     Default     |       Type       |                 Notes                 |
+|       Parameters        |     Default     |       Type       |                 Notes                 |
 | :-----------------: | :-----: | :------: | :---------------------------: |
-|     geometry.x      |    0    |  float   |                               |
-|     geometry.y      |    0    |  float   |                               |
-|     geometry.z      |         |  float   |                               |
-|   geometry.z_span   |         |  float   | Restrained by condition: >0.  |
-|   geometry.z_min    |         |  float   |                               |
-|   geometry.z_max    |         |  float   |                               |
-|  material.material  |         | material |                               |
-| material.mesh_order |         | integer  | Restrained by condition: >=0. |
-|    general.path     |         |  string  |                               |
-|  general.cell_name  |         |  string  |                               |
-| general.layer_name  |         |   list   |                               |
+|     geometry.x      |    0    |  float   |    The x-coordinate of the center point position of structures in the imported GDS file.          |
+|     geometry.y      |    0    |  float   |    The y-coordinate of the center point position of structures in the imported GDS file.      |
+|     geometry.z      |         |  float   | The z-coordinate of the center point position of structures in the imported GDS file. |
+|   geometry.z_span   |         |  float   | Setting the thickness of structures in the imported GDS file. Restrained by condition: >0.  |
+|   geometry.z_min    |         |  float   |   The z-coordinate of the bottom position of the thickness of structures in the imported GDS file.      |
+|   geometry.z_max    |         |  float   |   The z-coordinate of the top position of the thickness of structures in the imported GDS file.    |
+|  material.material  |         | material |     Material of the geometric structure.         |
+| material.mesh_order |         | integer  | The oreder of material coverage when creating a geometric structure.Restrained by condition: >=0. |
+|    general.path     |         |  string  |    The path of the imported GDS file.   |
+|  general.cell_name  |         |  string  |  The cell name of imported GDS file.  |
+| general.layer_name  |         |   list   |   The layer name of imported GDS file.     |
 
 Meanwhile, we also offer support for basic operations to GDS layout modeling using `type="gds_file3D"`. The code for this function is provided below:
 
@@ -126,25 +121,14 @@ st.add_geometry(name="gds_file_3D", type="gds_file3D", property={
 
 |      **Parameters**      | Default |   Type   |                            Notes                             |
 | :----------------------: | :-----: | :------: | :----------------------------------------------------------: |
-|        geometry.x        |    0    |  float   |                                                              |
-|        geometry.y        |    0    |  float   |                                                              |
-|        geometry.z        |         |  float   |                                                              |
-|     geometry.z_span      |         |  float   |                 Restrained by condition: >0.                 |
-|      geometry.z_min      |         |  float   |                                                              |
-|      geometry.z_max      |         |  float   |                                                              |
 |   geometry.tilt_angle    |   90    |  float   |                                                              |
 |  geometry.tilt_location  |   top   |  string  | Selections are ['top', 'TOP', 'Top', 'bottom', 'BOTTOM', 'Bottom', 'middle', 'MIDDLE', 'Middle', 'user_defined']. |
 |  geometry.user_defined   |    1    |  float   |                                                              |
-| geometry.mirror_normal_z |    0    |  float   |                                                              |
-| geometry.mirror_plane_z0 |    0    |  float   |                                                              |
-|    geometry.rotate_x     |    0    |  float   |                                                              |
-|    geometry.rotate_y     |    0    |  float   |                                                              |
-|    geometry.rotate_z     |    0    |  float   |                                                              |
-|    material.material     |         | material |                                                              |
-|   material.mesh_order    |         | integer  |                Restrained by condition: >=0.                 |
-|       general.path       |         |  string  |                                                              |
-|    general.cell_name     |         |  string  |                                                              |
-|    general.layer_name    |         |   list   |                                                              |
+| geometry.mirror_normal_z |    0    |  float   | The z-normal plane of mirror symmetry.                                      |
+| geometry.mirror_plane_z0 |    0    |  float   |       The center point position of z normal palne.                                                       |
+|    geometry.rotate_x     |    0    |  float   | The angle of the x-axe in the rotation operation.                                  |
+|    geometry.rotate_y     |    0    |  float   |  The angle of the y-axe in the rotation operation.                                        |
+|    geometry.rotate_z     |    0    |  float   | The angle of the z-axe in the rotation operation.                                      |
 | general.construct_method |         |  string  |            Selections are ['method1', 'method2']             |
 
 
@@ -164,20 +148,20 @@ st.add_geometry(name="arc", type="ArcWaveguide", property={
 
 |        Parameters         |     Default     |       Type       |                 Notes                 |
 | :-------------------: | :-----: | :------: | :---------------------------: |
-| geometry.inner_radius |         |  float   | Restrained by condition: >0.  |
-| geometry.outer_radius |         |  float   | Restrained by condition: >0.  |
-|    geometry.angle     |         |  float   |                               |
-|      geometry.x       |         |  float   |                               |
-|      geometry.y       |         |  float   |                               |
-|      geometry.z       |         |  float   |                               |
-|    geometry.z_span    |         |  float   | Restrained by condition: >0.  |
-|    geometry.z_min     |         |  float   |                               |
-|    geometry.z_max     |         |  float   |                               |
-|   geometry.rotate_x   |    0    |  float   |                               |
-|   geometry.rotate_y   |    0    |  float   |                               |
-|   geometry.rotate_z   |    0    |  float   |                               |
-|   material.material   |         | material |                               |
-|  material.mesh_order  |         | integer  | Restrained by condition: >=0. |
+| geometry.inner_radius |         |  float   | The inner radius of arc waveguide. Restrained by condition: >0.  |
+| geometry.outer_radius |         |  float   | The outer radius of arc waveguide. Restrained by condition: >0.  |
+|    geometry.angle     |         |  float   |   The angle corresponding to the arc length of an arc waveguide.     |
+|      geometry.x       |         |  float   |  The x-coordinate of the center point position of arc waveguide.                       |
+|      geometry.y       |         |  float   |       The y-coordinate of the center point position of arc waveguide.                        |
+|      geometry.z       |         |  float   |     The z-coordinate of the center point position of arc waveguide.        |
+|    geometry.z_span    |         |  float   | Setting the thickness of arc waveguide. Restrained by condition: >0.  |
+|    geometry.z_min     |         |  float   | The z-coordinate of the bottom position of the thickness of arc waveguide.   |
+|    geometry.z_max     |         |  float   |   The z-coordinate of the top position of the thickness of arc waveguide.    |
+|   geometry.rotate_x   |    0    |  float   |    The angle of the x-axe in the rotation operation.     |
+|   geometry.rotate_y   |    0    |  float   |   The angle of the y-axe in the rotation operation.      |
+|   geometry.rotate_z   |    0    |  float   |      The angle of the z-axe in the rotation operation.       |
+|   material.material   |         | material |  Material of the geometric structure.     |
+|  material.mesh_order  |         | integer  | The oreder of material coverage when creating a geometric structure.Restrained by condition: >=0. |
 
 Similarly, we offer support for using code  `type="ArcWaveguide3D"` to adjust the arc waveguide structure in the thickness direction.
 
@@ -189,23 +173,13 @@ st.add_geometry(name="arc_3d", type="ArcWaveguide3D", property={
                  "x": space, "y": 0, "z": 0, "rotate_x": 0, "rotate_y": 0, "rotate_z": 0}})
 ```
 
-|        **Parameters**         | &ensp;   Default   &ensp; |      Type      |                   Notes                    |
+|        Parameters         |   Default   |      Type      |                   Notes                    |
 | :-------------------: | :-----: | :------: | :--------------------------------: |
-|    geometry.radius    |         |  float   |    Restrained by condition: >0.    |
-|    geometry.angle     |         |  float   | Restrained by condition: >0,<=360. |
-| geometry.base_height  |         |  float   |    Restrained by condition: >0.    |
-|  geometry.top_width   |         |  float   |    Restrained by condition: >0.    |
-| geometry.bottom_width |         |  float   |    Restrained by condition: >0.    |
-|      geometry.x       |         |  float   |                                    |
-|      geometry.y       |         |  float   |                                    |
-|      geometry.z       |         |  float   |                                    |
-|    geometry.z_min     |         |  float   |                                    |
-|    geometry.z_max     |         |  float   |                                    |
-|   geometry.rotate_x   |    0    |  float   |                                    |
-|   geometry.rotate_y   |    0    |  float   |                                    |
-|   geometry.rotate_z   |    0    |  float   |                                    |
-|   material.material   |         | material |                                    |
-|  material.mesh_order  |         | integer  |   Restrained by condition: >=0.    |
+|    geometry.radius    |         |  float   |    The radius of the central width of the arc. Restrained by condition: >0.    |
+|    geometry.angle     |         |  float   | The angle corresponding to the arc length of an arc waveguide. Restrained by condition: >0,<=360. |
+| geometry.base_height  |         |  float   |    The height of the arc waveguide. Restrained by condition: >0.    |
+|  geometry.top_width   |         |  float   |    The top width of the arc waveguide. Restrained by condition: >0.    |
+| geometry.bottom_width |         |  float   |    The bottom width of the arc waveguide. Restrained by condition: >0.    |
 
 ### 2.1.3 Bezier curve/ Bezier curve 3D
 
@@ -224,26 +198,26 @@ st.add_geometry(name="bezier", type="BezierCurve", property={
 
 |       Parameters        |     Default     |       Type       |                 Notes                 |
 | :-----------------: | :-----: | :------: | :---------------------------: |
-| geometry.point_1_x  |         |  float   |                               |
-| geometry.point_1_y  |         |  float   |                               |
-| geometry.point_2_x  |         |  float   |                               |
-| geometry.point_2_y  |         |  float   |                               |
-| geometry.point_3_x  |         |  float   |                               |
-| geometry.point_3_y  |         |  float   |                               |
-| geometry.point_4_x  |         |  float   |                               |
-| geometry.point_4_y  |         |  float   |                               |
-|   geometry.width    |         |  float   |                               |
-|     geometry.x      |         |  float   |                               |
-|     geometry.y      |         |  float   |                               |
-|     geometry.z      |         |  float   |                               |
-|   geometry.z_span   |         |  float   | Restrained by condition: >0.  |
-|   geometry.z_min    |         |  float   |                               |
-|   geometry.z_max    |         |  float   |                               |
-|  geometry.rotate_x  |    0    |  float   |                               |
-|  geometry.rotate_y  |    0    |  float   |                               |
-|  geometry.rotate_z  |    0    |  float   |                               |
-|  material.material  |         | material |                               |
-| material.mesh_order |         | integer  | Restrained by condition: >=0. |
+| geometry.point_1_x  |         |  float   |  The x-coordinate of the first point for generating a Bezier curve.      |
+| geometry.point_1_y  |         |  float   | The y-coordinate of the first point for generating a Bezier curve.   |
+| geometry.point_2_x  |         |  float   |   The x-coordinate of the second point for generating a Bezier curve.       |
+| geometry.point_2_y  |         |  float   | The y-coordinate of the second point for generating a Bezier curve.   |
+| geometry.point_3_x  |         |  float   | The x-coordinate of the third point for generating a Béezier curve.   |
+| geometry.point_3_y  |         |  float   |The y-coordinate of the third point for generating a Béezier curve.    |
+| geometry.point_4_x  |         |  float   |   The x-coordinate of the forth point for generating a Bezier curve.      |
+| geometry.point_4_y  |         |  float   | The y-coordinate of the forth point for generating a Bezier curve.   |
+|   geometry.width    |         |  float   |  The width of the Bezier curve.     |
+|     geometry.x      |         |  float   |  The center point x-coordinate the Bezier curve.    |
+|     geometry.y      |         |  float   |    The center point y-coordinate the Bezier curve.     |
+|     geometry.z      |         |  float   |  The center point z-coordinate the Bezier curve.    |
+|   geometry.z_span   |         |  float   | The thinckness of the Bezier curve. Restrained by condition: >0.  |
+|   geometry.z_min    |         |  float   |  The z-coordinate of the bottom position of the thickness of the Bezier curve.   |
+|   geometry.z_max    |         |  float   |  The z-coordinate of the top position of the thickness of the Bezier curve.   |
+|  geometry.rotate_x  |    0    |  float   | The angle of the x-axe in the rotation operation.     |
+|  geometry.rotate_y  |    0    |  float   |  The angle of the y-axe in the rotation operation.  |
+|  geometry.rotate_z  |    0    |  float   |   The angle of the z-axe in the rotation operation.   |
+|  material.material  |         | material |  Material of the geometric structure.    |
+| material.mesh_order |         | integer  | The oreder of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
 Similarly, we offer support for using code  `type="BezierCurve3D"` to adjust the Bézier curve structure in the thickness direction.
 
@@ -258,21 +232,11 @@ st.add_geometry(name="bezier_3d", type="BezierCurve3D", property={
 
 |           Parameters            |     Default     |       Type       |                 Notes                 |
 | :-------------------------: | :-----: | :------: | :---------------------------: |
-|    geometry.base_height     |         |  float   | Restrained by condition: >0.  |
-|     geometry.top_width      |         |  float   | Restrained by condition: >0.  |
-|    geometry.bottom_width    |         |  float   | Restrained by condition: >0.  |
+|    geometry.base_height     |         |  float   | The height of the Bezier curve. Restrained by condition: >0.  |
+|     geometry.top_width      |         |  float   | The top width of the Bezier curve. Restrained by condition: >0.  |
+|    geometry.bottom_width    |         |  float   | The bottom width of the Bezier curve. Restrained by condition: >0.  |
 | geometry.[]control_points.x |         |  float   |                               |
 | geometry.[]control_points.y |         |  float   |                               |
-|         geometry.x          |         |  float   |                               |
-|         geometry.y          |         |  float   |                               |
-|         geometry.z          |         |  float   |                               |
-|       geometry.z_min        |         |  float   |                               |
-|       geometry.z_max        |         |  float   |                               |
-|      geometry.rotate_x      |    0    |  float   |                               |
-|      geometry.rotate_y      |    0    |  float   |                               |
-|      geometry.rotate_z      |    0    |  float   |                               |
-|      material.material      |         | material |                               |
-|     material.mesh_order     |         | integer  | Restrained by condition: >=0. |
 
 
 
@@ -292,18 +256,18 @@ st.add_geometry(name="circle", type="Circle", property={
 
 |       Parameters        |     Default     |       Type       |                 Notes                 |
 | :-----------------: | :-----: | :------: | :---------------------------: |
-|   geometry.radius   |         |  float   | Restrained by condition: >0.  |
-|     geometry.x      |         |  float   |                               |
-|     geometry.y      |         |  float   |                               |
-|     geometry.z      |         |  float   |                               |
-|   geometry.z_span   |         |  float   | Restrained by condition: >0.  |
-|   geometry.z_min    |         |  float   |                               |
-|   geometry.z_max    |         |  float   |                               |
-|  geometry.rotate_x  |    0    |  float   |                               |
-|  geometry.rotate_y  |    0    |  float   |                               |
-|  geometry.rotate_z  |    0    |  float   |                               |
-|  material.material  |         | material |                               |
-| material.mesh_order |         | integer  | Restrained by condition: >=0. |
+|   geometry.radius   |         |  float   | Radius of the circle. Restrained by condition: >0.  |
+|     geometry.x      |         |  float   | The x-coordinate of the center point position of circle.    |
+|     geometry.y      |         |  float   |    The y-coordinate of the center point position of circle.      |
+|     geometry.z      |         |  float   |   The z-coordinate of the center point position of circle.       |
+|   geometry.z_span   |         |  float   | The thinckness of the circle. Restrained by condition: >0.  |
+|   geometry.z_min    |         |  float   |The z-coordinate of the bottom position of the thickness of the circle.      |
+|   geometry.z_max    |         |  float   |  The z-coordinate of the top position of the thickness of the circle.     |
+|  geometry.rotate_x  |    0    |  float   |    The angle of the x-axe in the rotation operation.        |
+|  geometry.rotate_y  |    0    |  float   |  The angle of the y-axe in the rotation operation.    |
+|  geometry.rotate_z  |    0    |  float   |  The angle of the z-axe in the rotation operation.        |
+|  material.material  |         | material | Material of the geometric structure. |
+| material.mesh_order |         | integer  | The oreder of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
 
 
@@ -355,19 +319,19 @@ st.add_geometry(name="ellipse", type="Ellipse", property={
 
 |       Parameters        |     Default     |       Type       |               Notes                 |
 | :-----------------: | :-----: | :------: | :---------------------------: |
-|  geometry.x_radius  |         |  float   | Restrained by condition: >0.  |
-|  geometry.y_radius  |         |  float   | Restrained by condition: >0.  |
-|     geometry.x      |         |  float   |                               |
-|     geometry.y      |         |  float   |                               |
-|     geometry.z      |         |  float   |                               |
-|   geometry.z_span   |         |  float   | Restrained by condition: >0.  |
-|   geometry.z_min    |         |  float   |                               |
-|   geometry.z_max    |         |  float   |                               |
-|  geometry.rotate_x  |    0    |  float   |                               |
-|  geometry.rotate_y  |    0    |  float   |                               |
-|  geometry.rotate_z  |    0    |  float   |                               |
-|  material.material  |         | material |                               |
-| material.mesh_order |         | integer  | Restrained by condition: >=0. |
+|  geometry.x_radius  |         |  float   | The length in the x direction of the ellipse. Restrained by condition: >0.  |
+|  geometry.y_radius  |         |  float   | The width in the y direction of the ellipse.Restrained by condition: >0.  |
+|     geometry.x      |         |  float   |  The x-coordinate of the center point position of the ellipse.    |
+|     geometry.y      |         |  float   |  The y-coordinate of the center point position of the ellipse.      |
+|     geometry.z      |         |  float   |   The z-coordinate of the center point position of the ellipse.    |
+|   geometry.z_span   |         |  float   | The thinckness of the ellipse. Restrained by condition: >0.  |
+|   geometry.z_min    |         |  float   |The z-coordinate of the bottom position of the thickness of the ellipse.      |
+|   geometry.z_max    |         |  float   |  The z-coordinate of the top position of the thickness of the ellipse.     |
+|  geometry.rotate_x  |    0    |  float   |    The angle of the x-axe in the rotation operation.        |
+|  geometry.rotate_y  |    0    |  float   |  The angle of the y-axe in the rotation operation.    |
+|  geometry.rotate_z  |    0    |  float   |  The angle of the z-axe in the rotation operation.        |
+|  material.material  |         | material | Material of the geometric structure. |
+| material.mesh_order |         | integer  | The oreder of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
 
 
@@ -388,25 +352,25 @@ st.add_geometry(name="linear_trapezoid", type="LinearTrapezoid", property={
 
 |       Parameters        |     Default     |       Type       |                 Notes                 |
 | :-----------------: | :-----: | :------: | :---------------------------: |
-| geometry.point_1_x  |         |  float   |                               |
-| geometry.point_1_y  |         |  float   |                               |
-| geometry.point_2_x  |         |  float   |                               |
-| geometry.point_2_y  |         |  float   |                               |
-| geometry.point_3_x  |         |  float   |                               |
-| geometry.point_3_y  |         |  float   |                               |
-| geometry.point_4_x  |         |  float   |                               |
-| geometry.point_4_y  |         |  float   |                               |
-|     geometry.x      |         |  float   |                               |
-|     geometry.y      |         |  float   |                               |
-|     geometry.z      |         |  float   |                               |
-|   geometry.z_span   |         |  float   | Restrained by condition: >0.  |
-|   geometry.z_min    |         |  float   |                               |
-|   geometry.z_max    |         |  float   |                               |
-|  geometry.rotate_x  |    0    |  float   |                               |
-|  geometry.rotate_y  |    0    |  float   |                               |
-|  geometry.rotate_z  |    0    |  float   |                               |
-|  material.material  |         | material |                               |
-| material.mesh_order |         | integer  | Restrained by condition: >=0. |
+| geometry.point_1_x  |         |  float   |     The x-coordinate of one point when constructing a linear trapezoid structure.          |
+| geometry.point_1_y  |         |  float   | The y-coordinate of one point when constructing a linear trapezoid structure.      |
+| geometry.point_2_x  |         |  float   |    The x-coordinate of one point when constructing a linear trapezoid structure.      |
+| geometry.point_2_y  |         |  float   |  The y-coordinate of one point when constructing a linear trapezoid structure.      |
+| geometry.point_3_x  |         |  float   |    The x-coordinate of one point when constructing a linear trapezoid structure.    |
+| geometry.point_3_y  |         |  float   |   The y-coordinate of one point when constructing a linear trapezoid structure.    |
+| geometry.point_4_x  |         |  float   |       The x-coordinate of one point when constructing a linear trapezoid structure.     |
+| geometry.point_4_y  |         |  float   |     The y-coordinate of one point when constructing a linear trapezoid structure.     |
+|     geometry.x      |         |  float   |  The x-coordinate of the center point position of the linear trapezoid.    |
+|     geometry.y      |         |  float   |  The y-coordinate of the center point position of the linear trapezoid.      |
+|     geometry.z      |         |  float   |   The z-coordinate of the center point position of the linear trapezoid.    |
+|   geometry.z_span   |         |  float   | The thinckness of the linear trapezoid. Restrained by condition: >0.  |
+|   geometry.z_min    |         |  float   |The z-coordinate of the bottom position of the thickness of the linear trapezoid.      |
+|   geometry.z_max    |         |  float   |  The z-coordinate of the top position of the thickness of the linear trapezoid.     |
+|  geometry.rotate_x  |    0    |  float   |    The angle of the x-axe in the rotation operation.        |
+|  geometry.rotate_y  |    0    |  float   |  The angle of the y-axe in the rotation operation.    |
+|  geometry.rotate_z  |    0    |  float   |  The angle of the z-axe in the rotation operation.        |
+|  material.material  |         | material | Material of the geometric structure. |
+| material.mesh_order |         | integer  | The oreder of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
 
 

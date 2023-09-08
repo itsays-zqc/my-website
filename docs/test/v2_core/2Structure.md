@@ -21,7 +21,7 @@ st = pj.Structure(mesh_type,
     <td align="center">mesh_type</td>
     <td align="center">curve_mesh</td>
     <td align="center">string</td>
-    <td align="center">Different mesh types for iterative calculations, Selections are ['curve_mesh', 'staircase'].</td>
+    <td align="center">Different mesh types for iterative calculations. Selections are ['curve_mesh', 'staircase'].</td>
   </tr>
   <tr>
     <td align="center">mesh_factor</td>
@@ -121,10 +121,10 @@ st.add_geometry(name="gds_file_3D", type="gds_file3D", property={
 
 |      **Parameters**      | Default |   Type   |                            Notes                             |
 | :----------------------: | :-----: | :------: | :----------------------------------------------------------: |
-|   geometry.tilt_angle    |   90    |  float   |                                                              |
-|  geometry.tilt_location  |   top   |  string  | Selections are ['top', 'TOP', 'Top', 'bottom', 'BOTTOM', 'Bottom', 'middle', 'MIDDLE', 'Middle', 'user_defined']. |
+|   geometry.tilt_angle    |   90    |  float   | Tilt angle of waveguide sidewall.   |
+|  geometry.tilt_location  |   top   |  string  | Different ways of tilting the sidewalls of the waveguide. Selections are ['top', 'TOP', 'Top', 'bottom', 'BOTTOM', 'Bottom', 'middle', 'MIDDLE', 'Middle', 'user_defined']. |
 |  geometry.user_defined   |    1    |  float   |                                                              |
-| geometry.mirror_normal_z |    0    |  float   | The z-normal plane of mirror symmetry.                                      |
+| geometry.mirror_normal_z |    0    |  float   | The posiotion of z-normal plane for mirror symmetry.                                      |
 | geometry.mirror_plane_z0 |    0    |  float   |       The center point position of z normal palne.                                                       |
 |    geometry.rotate_x     |    0    |  float   | The angle of the x-axe in the rotation operation.                                  |
 |    geometry.rotate_y     |    0    |  float   |  The angle of the y-axe in the rotation operation.                                        |
@@ -288,19 +288,18 @@ st.add_geometry(name="custom_polygon", type="CustomPolygon", property={
 |       Parameters        |     Default     |       Type       |                 Notes                 |
 | :-----------------: | :-----: | :------: | :---------------------------: |
 |    geometry.size    |         |  float   | Restrained by condition: >0.  |
-|   geometry.sides    |         | integer  | Restrained by condition: >=3. |
-|     geometry.x      |         |  float   |                               |
-|     geometry.y      |         |  float   |                               |
-|     geometry.z      |         |  float   |                               |
-|   geometry.z_span   |         |  float   | Restrained by condition: >0.  |
-|   geometry.z_min    |         |  float   |                               |
-|   geometry.z_max    |         |  float   |                               |
-|  geometry.rotate_x  |    0    |  float   |                               |
-|  geometry.rotate_y  |    0    |  float   |                               |
-|  geometry.rotate_z  |    0    |  float   |                               |
-|  material.material  |         | material |                               |
-| material.mesh_order |         | integer  | Restrained by condition: >=0. |
-
+|   geometry.sides    |         | integer  |To set the number of custom polygon sides. Restrained by condition: >=3. |
+|     geometry.x      |         |  float   |  The center point x-coordinate the custom polygon.    |
+|     geometry.y      |         |  float   |    The center point y-coordinate the custom polygon.     |
+|     geometry.z      |         |  float   |  The center point z-coordinate the custom polygon.    |
+|   geometry.z_span   |         |  float   | The thinckness of the custom polygon. Restrained by condition: >0.  |
+|   geometry.z_min    |         |  float   |  The z-coordinate of the bottom position of the thickness of the custom polygon.   |
+|   geometry.z_max    |         |  float   |  The z-coordinate of the top position of the thickness of the custom polygon.   |
+|  geometry.rotate_x  |    0    |  float   | The angle of the x-axe in the rotation operation.     |
+|  geometry.rotate_y  |    0    |  float   |  The angle of the y-axe in the rotation operation.  |
+|  geometry.rotate_z  |    0    |  float   |   The angle of the z-axe in the rotation operation.   |
+|  material.material  |         | material |  Material of the geometric structure.    |
+| material.mesh_order |         | integer  | The oreder of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
 
 ### 2.1.6 Ellipse
@@ -390,23 +389,23 @@ st.add_geometry(name="pyramid", type="Pyramid", property={
 
 |         Parameters         |     Default     |       Type       |                 Notes                 |
 | :--------------------: | :-----: | :------: | :---------------------------: |
-| geometry.x_span_bottom |         |  float   | Restrained by condition: >=0. |
-| geometry.y_span_bottom |         |  float   | Restrained by condition: >=0. |
-|  geometry.x_span_top   |         |  float   | Restrained by condition: >=0. |
-|  geometry.y_span_top   |         |  float   | Restrained by condition: >=0. |
-|    geometry.theta_x    |    0    |  float   |                               |
-|    geometry.theta_y    |    0    |  float   |                               |
-|       geometry.x       |         |  float   |                               |
-|       geometry.y       |         |  float   |                               |
-|       geometry.z       |         |  float   |                               |
-|    geometry.z_span     |         |  float   | Restrained by condition: >0.  |
-|     geometry.z_min     |         |  float   |                               |
-|     geometry.z_max     |         |  float   |                               |
-|   geometry.rotate_x    |    0    |  float   |                               |
-|   geometry.rotate_y    |    0    |  float   |                               |
-|   geometry.rotate_z    |    0    |  float   |                               |
-|   material.material    |         | material |                               |
-|  material.mesh_order   |         | integer  | Restrained by condition: >=0. |
+| geometry.x_span_bottom |         |  float   | The length in the x-direction at the bottom of the pyramid. Restrained by condition: >=0. |
+| geometry.y_span_bottom |         |  float   | The width in the y-direction at the bottom of the pyramid. Restrained by condition: >=0. |
+|  geometry.x_span_top   |         |  float   | The length in the x-direction at the top of the pyramid. Restrained by condition: >=0. |
+|  geometry.y_span_top   |         |  float   |  The width in the y-direction at the top of the pyramid. Restrained by condition: >=0. |
+|    geometry.theta_x    |    0    |  float   | The tilt angle of the top pyramid structure along the x+ axis.  |
+|    geometry.theta_y    |    0    |  float   | The tilt angle of the top pyramid structure along the y+ axis.                              |
+|     geometry.x      |         |  float   |  The x-coordinate of the center point position of the pyramid.    |
+|     geometry.y      |         |  float   |  The y-coordinate of the center point position of the pyramid.      |
+|     geometry.z      |         |  float   |   The z-coordinate of the center point position of the pyramid.    |
+|   geometry.z_span   |         |  float   | The thinckness of the pyramid. Restrained by condition: >0.  |
+|   geometry.z_min    |         |  float   |The z-coordinate of the bottom position of the thickness of the pyramid.      |
+|   geometry.z_max    |         |  float   |  The z-coordinate of the top position of the thickness of the pyramid.     |
+|  geometry.rotate_x  |    0    |  float   |    The angle of the x-axe in the rotation operation.        |
+|  geometry.rotate_y  |    0    |  float   |  The angle of the y-axe in the rotation operation.    |
+|  geometry.rotate_z  |    0    |  float   |  The angle of the z-axe in the rotation operation.        |
+|  material.material  |         | material | Material of the geometric structure. |
+| material.mesh_order |         | integer  | The oreder of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
 
 
@@ -426,30 +425,30 @@ st.add_geometry(name='taper_symmetric_test', type='AnalyticalWaveguide',
 
 |Parameters|Default|Type|Notes|                            |
 | :--------------------: | :-----: | :------: | :----------------------------------------------------------: |
-|    geometry.x_span     |         |  float   |                 Restrained by condition: >0.                 |
-|     geometry.x_min     |         |  float   |                                                              |
-|     geometry.x_max     |         |  float   |                                                              |
-|    geometry.y_span     |         |  float   |                 Restrained by condition: >0.                 |
-|     geometry.y_min     |         |  float   |                                                              |
-|     geometry.y_max     |         |  float   |                                                              |
-|   geometry.equation1   |         |  string  |                                                              |
-|   geometry.equation2   |    1    |  string  |                                                              |
-| geometry.nonsymmetric  |  false  |   bool   |                                                              |
-|  geometry.resolution   |   10    | integer  |                                                              |
-|  geometry.tilt_angle   |   90    |  float   |                                                              |
-| geometry.tilt_location |   top   |  string  | Selections are ['top', 'TOP', 'Top', 'bottom', 'BOTTOM', 'Bottom', 'middle', 'MIDDLE', 'Middle', 'user_defined']. |
+|    geometry.x_span     |         |  float   |                 The length of the waveguide in the x-direction. Restrained by condition: >0.                 |
+|     geometry.x_min     |         |  float   | The x-coordinate  value of the endpoint for the waveguide length.                                   |
+|     geometry.x_max     |         |  float   | The x-coordinate  value of the endpoint for the waveguide length.                                  |
+|    geometry.y_span     |         |  float   |                 The width of the waveguide in the y-direction. Restrained by condition: >0.                 |
+|     geometry.y_min     |         |  float   |  The y-coordinate  value of the endpoint for the waveguide width.                                          |
+|     geometry.y_max     |         |  float   |  The y-coordinate  value of the endpoint for the waveguide width.                                    |
+|   geometry.equation1   |         |  string  | The customed function 1 used in modeling the analytical waveguide.                                     |
+|   geometry.equation2   |       |  string  |  When the geometry is asymmetric(`'nonsymmetric': True`), the customed function 2 used in modeling the analytical waveguide.                                          |
+| geometry.nonsymmetric  |  false  |   bool   |    To Control whether the waveguide is symmetric.                                 |
+|  geometry.resolution   |   10    | integer  | The resolution in modeling the analytical waveguide when working with functions.                                                             |
+|  geometry.tilt_angle   |   90    |  float   |  Tilt angle of the structure sidewall.        |
+| geometry.tilt_location |   top   |  string  | Different ways of tilting the sidewalls of the waveguide. Selections are ['top', 'TOP', 'Top', 'bottom', 'BOTTOM', 'Bottom', 'middle', 'MIDDLE', 'Middle', 'user_defined']. |
 | geometry.user_defined  |    1    |  float   |                                                              |
-|       geometry.x       |         |  float   |                                                              |
-|       geometry.y       |         |  float   |                                                              |
-|       geometry.z       |         |  float   |                                                              |
-|    geometry.z_span     |         |  float   |                 Restrained by condition: >0.                 |
-|     geometry.z_min     |         |  float   |                                                              |
-|     geometry.z_max     |         |  float   |                                                              |
-|   geometry.rotate_x    |    0    |  float   |                                                              |
-|   geometry.rotate_y    |    0    |  float   |                                                              |
-|   geometry.rotate_z    |    0    |  float   |                                                              |
-|   material.material    |         | material |                                                              |
-|  material.mesh_order   |         | integer  |                Restrained by condition: >=0.                 |
+|     geometry.x      |    0    |  float   |    The x-coordinate of the center point position of the analytical waveguide.          |
+|     geometry.y      |    0    |  float   |    The y-coordinate of the center point position of the analytical waveguide.      |
+|     geometry.z      |         |  float   | The z-coordinate of the center point position of the analytical waveguide. |
+|   geometry.z_span   |         |  float   | Setting the thickness of the analytical waveguide. Restrained by condition: >0.  |
+|   geometry.z_min    |         |  float   |   The z-coordinate of the bottom position of the thickness of the analytical waveguide.      |
+|   geometry.z_max    |         |  float   |   The z-coordinate of the top position of the thickness of the analytical waveguide.    |
+|  geometry.rotate_x  |    0    |  float   |    The angle of the x-axe in the rotation operation.        |
+|  geometry.rotate_y  |    0    |  float   |  The angle of the y-axe in the rotation operation.    |
+|  geometry.rotate_z  |    0    |  float   |  The angle of the z-axe in the rotation operation.        |
+|  material.material  |         | material |     Material of the geometric structure.         |
+| material.mesh_order |         | integer  | The oreder of material coverage when creating a geometric structure.Restrained by condition: >=0. |
 
 
 
@@ -468,23 +467,23 @@ st.add_geometry(name="rectangle", type="Rectangle", property={
 
 |       Parameters        |     Default     |       Type       |                 Notes                 |
 | :-----------------: | :-----: | :------: | :---------------------------: |
-|   geometry.x_span   |         |  float   | Restrained by condition: >0.  |
-|   geometry.x_min    |         |  float   |                               |
-|   geometry.x_max    |         |  float   |                               |
-|   geometry.y_span   |         |  float   | Restrained by condition: >0.  |
-|   geometry.y_min    |         |  float   |                               |
-|   geometry.y_max    |         |  float   |                               |
-|     geometry.x      |         |  float   |                               |
-|     geometry.y      |         |  float   |                               |
-|     geometry.z      |         |  float   |                               |
-|   geometry.z_span   |         |  float   | Restrained by condition: >0.  |
-|   geometry.z_min    |         |  float   |                               |
-|   geometry.z_max    |         |  float   |                               |
-|  geometry.rotate_x  |    0    |  float   |                               |
-|  geometry.rotate_y  |    0    |  float   |                               |
-|  geometry.rotate_z  |    0    |  float   |                               |
-|  material.material  |         | material |                               |
-| material.mesh_order |         | integer  | Restrained by condition: >=0. |
+|    geometry.x_span     |         |  float   |                 The length of the rectangle in the x-direction. Restrained by condition: >0.                 |
+|     geometry.x_min     |         |  float   | The x-coordinate  value of the endpoint for the rectangle length.                                   |
+|     geometry.x_max     |         |  float   | The x-coordinate  value of the endpoint for the rectangle length.                                  |
+|    geometry.y_span     |         |  float   |                 The width of the rectangle in the y-direction. Restrained by condition: >0.                 |
+|     geometry.y_min     |         |  float   |  The y-coordinate  value of the endpoint for the rectangle width.                                          |
+|     geometry.y_max     |         |  float   |  The y-coordinate  value of the endpoint for the rectangle width.                                    |
+|     geometry.x      |    0    |  float   |    The x-coordinate of the center point position of the rectangle.          |
+|     geometry.y      |    0    |  float   |    The y-coordinate of the center point position of the rectangle.      |
+|     geometry.z      |         |  float   | The z-coordinate of the center point position of the rectangle. |
+|   geometry.z_span   |         |  float   | Setting the thickness of the rectangle. Restrained by condition: >0.  |
+|   geometry.z_min    |         |  float   |   The z-coordinate of the bottom position of the thickness of the rectangle.      |
+|   geometry.z_max    |         |  float   |   The z-coordinate of the top position of the thickness of the rectangle.    |
+|  geometry.rotate_x  |    0    |  float   |    The angle of the x-axe in the rotation operation.        |
+|  geometry.rotate_y  |    0    |  float   |  The angle of the y-axe in the rotation operation.    |
+|  geometry.rotate_z  |    0    |  float   |  The angle of the z-axe in the rotation operation.        |
+|  material.material  |         | material |     Material of the geometric structure.         |
+| material.mesh_order |         | integer  | The oreder of material coverage when creating a geometric structure.Restrained by condition: >=0. |
 
 
 
@@ -504,19 +503,19 @@ st.add_geometry(name="ring", type="Ring", property={
 
 |        Parameters         |     Default     |       Type       |                 Notes                 |
 | :-------------------: | :-----: | :------: | :---------------------------: |
-| geometry.inner_radius |         |  float   | Restrained by condition: >0.  |
-| geometry.outer_radius |         |  float   | Restrained by condition: >0.  |
-|      geometry.x       |         |  float   |                               |
-|      geometry.y       |         |  float   |                               |
-|      geometry.z       |         |  float   |                               |
-|    geometry.z_span    |         |  float   | Restrained by condition: >0.  |
-|    geometry.z_min     |         |  float   |                               |
-|    geometry.z_max     |         |  float   |                               |
-|   geometry.rotate_x   |    0    |  float   |                               |
-|   geometry.rotate_y   |    0    |  float   |                               |
-|   geometry.rotate_z   |    0    |  float   |                               |
-|   material.material   |         | material |                               |
-|  material.mesh_order  |         | integer  | Restrained by condition: >=0. |
+| geometry.inner_radius |         |  float   | The inner radius of the ring. Restrained by condition: >0.  |
+| geometry.outer_radius |         |  float   | The outer radius of the ring. Restrained by condition: >0.  |
+|     geometry.x      |    0    |  float   |    The x-coordinate of the center point position of the ring.          |
+|     geometry.y      |    0    |  float   |    The y-coordinate of the center point position of the ring.      |
+|     geometry.z      |         |  float   | The z-coordinate of the center point position of the ring. |
+|   geometry.z_span   |         |  float   | Setting the thickness of the ring. Restrained by condition: >0.  |
+|   geometry.z_min    |         |  float   |   The z-coordinate of the bottom position of the thickness of the ring.      |
+|   geometry.z_max    |         |  float   |   The z-coordinate of the top position of the thickness of the ring.    |
+|  geometry.rotate_x  |    0    |  float   |    The angle of the x-axe in the rotation operation.        |
+|  geometry.rotate_y  |    0    |  float   |  The angle of the y-axe in the rotation operation.    |
+|  geometry.rotate_z  |    0    |  float   |  The angle of the z-axe in the rotation operation.        |
+|  material.material  |         | material |     Material of the geometric structure.         |
+| material.mesh_order |         | integer  | The oreder of material coverage when creating a geometric structure.Restrained by condition: >=0. |
 
 
 
@@ -536,20 +535,19 @@ st.add_geometry(name="sector", type="Sector", property={
 
 |       Parameters        |     Default     |       Type       |                 Notes                 |
 | :-----------------: | :-----: | :------: | :---------------------------: |
-|   geometry.radius   |         |  float   | Restrained by condition: >0.  |
-|   geometry.angle    |         |  float   |                               |
-|     geometry.x      |         |  float   |                               |
-|     geometry.y      |         |  float   |                               |
-|     geometry.z      |         |  float   |                               |
-|   geometry.z_span   |         |  float   | Restrained by condition: >0.  |
-|   geometry.z_min    |         |  float   |                               |
-|   geometry.z_max    |         |  float   |                               |
-|  geometry.rotate_x  |    0    |  float   |                               |
-|  geometry.rotate_y  |    0    |  float   |                               |
-|  geometry.rotate_z  |    0    |  float   |                               |
-|  material.material  |         | material |                               |
-| material.mesh_order |         | integer  | Restrained by condition: >=0. |
-
+|   geometry.radius   |         |  float   | The radius of the sector. Restrained by condition: >0.  |
+|   geometry.angle    |         |  float   |   The angle of the sector.        |
+|     geometry.x      |    0    |  float   |    The x-coordinate of the center point position of the sector.          |
+|     geometry.y      |    0    |  float   |    The y-coordinate of the center point position of the sector.      |
+|     geometry.z      |         |  float   | The z-coordinate of the center point position of the sector. |
+|   geometry.z_span   |         |  float   | Setting the thickness of the sector. Restrained by condition: >0.  |
+|   geometry.z_min    |         |  float   |   The z-coordinate of the bottom position of the thickness of the sector.      |
+|   geometry.z_max    |         |  float   |   The z-coordinate of the top position of the thickness of the sector.    |
+|  geometry.rotate_x  |    0    |  float   |    The angle of the x-axe in the rotation operation.        |
+|  geometry.rotate_y  |    0    |  float   |  The angle of the y-axe in the rotation operation.    |
+|  geometry.rotate_z  |    0    |  float   |  The angle of the z-axe in the rotation operation.        |
+|  material.material  |         | material |     Material of the geometric structure.         |
+| material.mesh_order |         | integer  | The oreder of material coverage when creating a geometric structure.Restrained by condition: >=0. |
 
 
 ### 2.1.13 Triangle
@@ -569,23 +567,23 @@ st.add_geometry(name="triangle", type="Triangle", property={
 
 |       Parameters        |     Default     |       Type       |                 Notes                 |
 | :-----------------: | :-----: | :------: | :---------------------------: |
-| geometry.point_1_x  |         |  float   |                               |
-| geometry.point_1_y  |         |  float   |                               |
-| geometry.point_2_x  |         |  float   |                               |
-| geometry.point_2_y  |         |  float   |                               |
-| geometry.point_3_x  |         |  float   |                               |
-| geometry.point_3_y  |         |  float   |                               |
-|     geometry.x      |         |  float   |                               |
-|     geometry.y      |         |  float   |                               |
-|     geometry.z      |         |  float   |                               |
-|   geometry.z_span   |         |  float   | Restrained by condition: >0.  |
-|   geometry.z_min    |         |  float   |                               |
-|   geometry.z_max    |         |  float   |                               |
-|  geometry.rotate_x  |    0    |  float   |                               |
-|  geometry.rotate_y  |    0    |  float   |                               |
-|  geometry.rotate_z  |    0    |  float   |                               |
-|  material.material  |         | material |                               |
-| material.mesh_order |         | integer  | Restrained by condition: >=0. |
+| geometry.point_1_x  |         |  float   |     The x-coordinate of endpoint when constructing a triangle.          |
+| geometry.point_1_y  |         |  float   | The y-coordinate of endpoint when constructing a triangle.      |
+| geometry.point_2_x  |         |  float   |    The x-coordinate of endpoint when constructing a triangle.      |
+| geometry.point_2_y  |         |  float   |  The y-coordinate of endpoint when constructing a triangle.      |
+| geometry.point_3_x  |         |  float   |    The x-coordinate of endpoint when constructing a triangle.    |
+| geometry.point_3_y  |         |  float   |   The y-coordinate of endpoint when constructing a triangle.    |
+|     geometry.x      |         |  float   |  The x-coordinate of the center point position of the triangle.    |
+|     geometry.y      |         |  float   |  The y-coordinate of the center point position of the triangle.      |
+|     geometry.z      |         |  float   |   The z-coordinate of the center point position of the triangle.    |
+|   geometry.z_span   |         |  float   | The thinckness of the triangle. Restrained by condition: >0.  |
+|   geometry.z_min    |         |  float   |The z-coordinate of the bottom position of the thickness of the triangle.      |
+|   geometry.z_max    |         |  float   |  The z-coordinate of the top position of the thickness of the triangle.     |
+|  geometry.rotate_x  |    0    |  float   |    The angle of the x-axe in the rotation operation.        |
+|  geometry.rotate_y  |    0    |  float   |  The angle of the y-axe in the rotation operation.    |
+|  geometry.rotate_z  |    0    |  float   |  The angle of the z-axe in the rotation operation.        |
+|  material.material  |         | material | Material of the geometric structure. |
+| material.mesh_order |         | integer  | The oreder of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
 
 ## 2.2 Add doping
@@ -604,11 +602,11 @@ add_doping(
 			)
 ```
 
-|            Parameters         &ensp; |   &ensp;          Description          &ensp;   |
+|            Parameters         |             Description             |
 | :------------: | :-------------: |
-|      name      |   Doping name   |
-|      type      |   Doping type   |
-|    property    | Doping property |
+|      name      |   To set the name of doping in simulation   |
+|      type      |   The method type of setting up doping. Selections are ['type', 'n', 'p'].    |
+|    property    | The property of doping. |
 
 For instance, the code for importing doping from a file is demonstrated as follows.
 
@@ -624,9 +622,9 @@ You can configure parameters related to importing doping files by adjusting sett
 |       Parameters       |    Default    | &ensp;   Type   &ensp; |                        Notes                         |
 | :------------------: | :-----: | :--: | :------------------------------------------: |
 |    general.format    |         | str  |            Selections are ['DOP']            |
-|  general.file_path   |         | str  |                                              |
-|   general.species    |         | str  |          Selections are ['n', 'p']           |
-|  volume.volume_type  |  'all'  | str  | Selections are ['all', 'material', 'region'] |
+|  general.file_path   |         | str  |  The file path of doping.         |
+|   general.species    |         | str  |  To set the doing species. Selections are ['n', 'p'].            |
+|  volume.volume_type  |  'all'  | str  | Selections are ['all', 'material', 'region'].  |
 | volume.material_list |         | list |   Available when volume_type is 'material'   |
 |  volume.region_list  |         | list |    Available when volume_type is 'region'    |
 
@@ -643,27 +641,27 @@ st.add_doping(name="Uniform", type="p", property={
     "volume": {"volume_type": "material", "material_list": [mt["mat_si"]]}})
 ```
 
-|   Parameters   |  Default  |   Type  &ensp;  |   Notes   |
+|   Parameters   |  Default  |   Type   |   Notes   |
 | :---------------------------: | :-----: | :---: | :------------------------------------------------: |
-|          geometry.x           |         | float |                                                    |
-|        geometry.x_span        |         | float |                                                    |
-|          geometry.y           |         | float |                                                    |
-|        geometry.y_span        |         | float |                                                    |
-|          geometry.z           |         | float |                                                    |
-|        geometry.z_span        |         | float |                                                    |
-|       geometry.rotate_x       |         | float |                                                    |
-|       geometry.rotate_y       |         | float |                                                    |
-|       geometry.rotate_z       |         | float |                                                    |
-|        geometry.x_min         |         | float |                                                    |
-|        geometry.x_max         |         | float |                                                    |
-|        geometry.y_min         |         | float |                                                    |
-|        geometry.y_max         |         | float |                                                    |
-|        geometry.z_min         |         | float |                                                    |
-|        geometry.z_max         |         | float |                                                    |
-| general.distribution_function |         |  str  |      Selections are ['constant', 'gaussian']       |
+|     geometry.x      |         |  float   |  The x-coordinate of the center point position of the doping.    |
+|   geometry.x_span   |         |  float   | The length in x direction of the doping. Restrained by condition: >0.  |
+|   geometry.x_min    |         |  float   | The minimum x-coordinate endpoint data of the doping.      |
+|   geometry.x_max    |         |  float   |  The maximum x-coordinate endpoint data of the doping.     |
+|     geometry.y      |         |  float   |  The y-coordinate of the center point position of the doping.      |
+|   geometry.y_span   |         |  float   | The width in y direction of the doping. Restrained by condition: >0.  |
+|   geometry.y_min    |         |  float   |The minimum y-coordinate endpoint data of the doping.       |
+|   geometry.y_max    |         |  float   |  The maximum y-coordinate endpoint data of the doping.      |
+|     geometry.z      |         |  float   |   The z-coordinate of the center point position of the doping.    |
+|   geometry.z_span   |         |  float   | The thinckness in z direction of the doping. Restrained by condition: >0.  |
+|   geometry.z_min    |         |  float   |The z-coordinate of the bottom position of the thickness of the doping.      |
+|   geometry.z_max    |         |  float   |  The z-coordinate of the top position of the thickness of the doping.     |
+|  geometry.rotate_x  |    0    |  float   |    The angle of the x-axe in the rotation operation.        |
+|  geometry.rotate_y  |    0    |  float   |  The angle of the y-axe in the rotation operation.    |
+|  geometry.rotate_z  |    0    |  float   |  The angle of the z-axe in the rotation operation.        |
+| general.distribution_function |         |  str  |      To set the type of distribution function for doping region. Selections are ['constant', 'gaussian']       |
 |     general.concentration     |         | float |                                                    |
-|      general.source_face      |         |  str  | Available when distribution_function is 'gaussian' |
-|    general.junction_width     |         | float | Available when distribution_function is 'gaussian' |
+|      general.source_face      |         |  str  | To set the doping source surface. Available when distribution_function is 'gaussian' |
+|    general.junction_width     |         | float | To set the junction width. Available when distribution_function is 'gaussian' |
 |   general.ref_concentration   |         | float | Available when distribution_function is 'gaussian' |
 |      volume.volume_type       |  'all'  |  str  |    Selections are ['all', 'material', 'region']    |
 |     volume.material_list      |         | list  |      Available when volume_type is 'material'      |
@@ -688,8 +686,8 @@ add_electrode(
 
 |          Parameters         &ensp; |             &ensp;           Description           &ensp;              |
 | :------------: | :-----------------------------------: |
-|      name      |   Electric boundary condition name.   |
-|    property    | Electric boundary condition property. |
+|      name      |    To set the name of eelectrode in simulation.   |
+|    property    | To set the property of electrode in simulation. |
 
 ### 2.3.1 Steady state
 
@@ -706,15 +704,15 @@ st.add_electrode(name="cathode", property={
 |          Parameters          |      Default       |     Type      |                          Notes                           |
 | :------------------------: | :----------: | :-----: | :------------------------------------------: |
 |        force_ohmic         |     true     |  bool   |                                              |
-|          bc_mode           | steady_state | string  |       Selections are ['steady_state'].       |
-|   apply_AC_small_signal    |     none     | string  |           Selections are ['none'].           |
-|         sweep_type         |    single    | string  | Selections are ['single', 'range', 'value']. |
-|         v_step_max         |     0.5      |  float  |                                              |
-|          voltage           |      0       |  float  |    Available when sweep_type is 'single'     |
-|        range_start         |      0       |  float  |     Available when sweep_type is 'range'     |
-|         range_stop         |      1       |  float  |     Available when sweep_type is 'range'     |
-|       range_interval       |      1       |  float  |     Available when sweep_type is 'range'     |
-|      range_num_points      |      2       | integer |     Available when sweep_type is 'range'     |
+|          bc_mode           | steady_state | string  |       To set the type of electircal boundary condition. Selections are ['steady_state',transient].       |
+|   apply_AC_small_signal    |     none     | string  |           Determining whether to apply the small-signal alternating current. Selections are ['none', 'All'].           |
+|         sweep_type         |    single    | string  | To set the voltage type of the electrode. Selections are ['single', 'range', 'value']. |
+|         v_step_max         |     0.5      |  float  |    The maxium step of voltage value.          |
+|          voltage           |      0       |  float  |    The value of voltage. Available when sweep_type is 'single'     |
+|        range_start         |      0       |  float  |     The  start value of a voltage range. Available when sweep_type is 'range'     |
+|         range_stop         |      1       |  float  |     The  stop value of a voltage range. Available when sweep_type is 'range'     |
+|       range_interval       |      1       |  float  |     The  interval value of a voltage range. Available when sweep_type is 'range'     |
+|      range_num_points      |      2       | integer |     The   The number of points within the voltage range. Available when sweep_type is 'range'     |
 | []sweep_value_table.index  |              | integer |    Available when sweep_type is 'value'.     |
 | []sweep_value_table.number |              |  float  |    Available when sweep_type is 'value'.     |
 |        surface_type        |    solid     | string  |          Selections are ['solid'].           |
@@ -727,22 +725,6 @@ st.add_electrode(name="cathode", property={
     "solid": "Cathode", "bc_mode": "steady_state",
     "sweep_type": "range", "range_start": tcad_vmin, "range_stop": tcad_vmax, "range_interval": tcad_vstep, "apply_AC_small_signal": "All"})
 ```
-|         Parameters         |   default    |  type   |                    notes                     |
-| :------------------------: | :----------: | :-----: | :------------------------------------------: |
-|        force_ohmic         |     true     |  bool   |                                              |
-|          bc_mode           | steady_state | string  |       Selections are ['steady_state'].       |
-|   apply_AC_small_signal    |     none     | string  |       Selections are ['none', 'All'].        |
-|         sweep_type         |    single    | string  | Selections are ['single', 'range', 'value']. |
-|         v_step_max         |     0.5      |  float  |                                              |
-|          voltage           |      0       |  float  |    Available when sweep_type is 'single'     |
-|        range_start         |      0       |  float  |     Available when sweep_type is 'range'     |
-|         range_stop         |      1       |  float  |     Available when sweep_type is 'range'     |
-|       range_interval       |      1       |  float  |     Available when sweep_type is 'range'     |
-|      range_num_points      |      2       | integer |     Available when sweep_type is 'range'     |
-| []sweep_value_table.index  |              | integer |    Available when sweep_type is 'value'.     |
-| []sweep_value_table.number |              |  float  |    Available when sweep_type is 'value'.     |
-|        surface_type        |    solid     | string  |          Selections are ['solid'].           |
-|           solid            |              | string  |                                              |
 
 ### 2.3.3 Transient
 
@@ -799,8 +781,8 @@ add_surface_recombination(
 
 | Parameters |           Description           |
 | :------------: | :-----------------------------: |
-|      name      |   Surface recombination name.   |
-|    property    | Surface recombination property. |
+|      name      |   To set the name of surface recombination in simulation.   |
+|    property    | To set the property of surface recombination in simulation.  |
 
 **Example:**
 
@@ -812,14 +794,14 @@ st.add_surface_recombination(name="Cathode_Si", property={
 
 |     **Parameters**     |    Default    |   Type   |                            Notes                             |
 | :--------------------: | :-----------: | :------: | :----------------------------------------------------------: |
-|      surface_type      | domain_domain |  string  |    Selections are ['domain_domain', 'material_material'].    |
-|     interface_type     |     null      |  string  | Selections are ['null', 'InsulatorInterface', 'HomoJunction', 'HeteroJunction', 'MetalOhmicInterface', 'SolderPad']. |
+|      surface_type      | domain_domain |  string  |    To set the type for calculating surface recombination. Selections are ['domain_domain', 'material_material'].    |
+|     interface_type     |     null      |  string  | To set the  interface type of surface recombination. Selections are ['null', 'InsulatorInterface', 'HomoJunction', 'HeteroJunction', 'MetalOhmicInterface', 'SolderPad']. |
 | infinite_recombination |     true      |   bool   |    Available when interface_type is 'MetalOhmicInterface'    |
 |     velocity_hole      |       0       |  float   | Available when interface_type is 'MetalOhmicInterface'/'InsulatorInterface' |
 |   velocity_electron    |       0       |  float   | Available when interface_type is 'MetalOhmicInterface'/'InsulatorInterface' |
-|        domain_1        |               |  string  |        Available when surface_type is 'domain_domain'        |
-|        domain_2        |               |  string  |        Available when surface_type is 'domain_domain'        |
-|       material_1       |               | material |      Available when surface_type is 'material_material'      |
-|       material_2       |               | material |      Available when surface_type is 'material_material'      |
+|        domain_1        |               |  string  |        The region 1 for surface recombination. Available when surface_type is 'domain_domain'        |
+|        domain_2        |               |  string  |        The region 2 for surface recombination. Available when surface_type is 'domain_domain'        |
+|       material_1       |               | material |       The material 1 for surface recombination. Available when surface_type is 'material_material'      |
+|       material_2       |               | material |       The material 2 for surface recombination. Available when surface_type is 'material_material'      |
 
 

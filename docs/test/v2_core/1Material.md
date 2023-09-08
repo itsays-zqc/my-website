@@ -50,7 +50,8 @@ add_anisotropy(
   </tr>
   <tr>
     <td align="center">order</td>
-    <td align="center">The oreder of material coverage when creating a geometric structure.</td>
+    <td align="center">The coverage order of materials when modeling a geometric structure.
+    </td>
   </tr>
 </table>
 
@@ -106,7 +107,7 @@ add_dispersion(
   </tr>
   <tr>
     <td align="center">order</td>
-    <td align="center">The oreder of material coverage when creating a geometric structure.</td>
+    <td align="center">The coverage order of materials when modeling a geometric structure.</td>
   </tr>
 </table>
 
@@ -161,7 +162,7 @@ add_lib(
   </tr>
   <tr>
     <td align="center">order</td>
-    <td align="center">The oreder of material coverage when creating a geometric structure.</td>
+    <td align="center">The coverage order of materials when modeling a geometric structure.</td>
   </tr>
 </table>
 
@@ -208,7 +209,7 @@ add_nondispersion(
   </tr>
   <tr>
     <td align="center"><strong>order</strong></td>
-    <td align="center">The oreder of material coverage when creating a geometric structure.</td>
+    <td align="center">The coverage order of materials when modeling a geometric structure.</td>
   </tr>
 </table>
 

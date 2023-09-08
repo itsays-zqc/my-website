@@ -534,122 +534,10 @@ simu.add(
 
 
 
-## 6.5 AFDTD
 
-Incorporate an AFDTD solver into the current project using the code `type='AFDTD'`.
+## 6.5 OEDevice
 
-```python
-add(
-            self,
-            *,
-            name: str,
-            type: Literal["AFDTD"],
-            property: FdtdPostProcess,
-    )
-```
-
-**Example:**
-
-```python
-simu = pj.Simulation()
-simu.add(name="preview_fdtd", type="AFDTD", property={
-    "mesh_settings": {"mesh_accuracy": {"cells_per_wavelength": cells_per_wavelength}}})
-```
-
-|                          Parameters                          |     Default      |  Type   |                      Notes                      |
-| :----------------------------------------------------------: | :--------------: | :-----: | :---------------------------------------------: |
-|              extra.fdtd_port_group.source_port               |                  | string  |                                                 |
-|                      general.dimension                       |        3d        | string  |             Selections are ['3d'].              |
-|           general.using_optical_path_estimate_time           |      false       |  bool   |                                                 |
-|                   general.simulation_time                    |       1000       | integer |                                                 |
-|                   mesh_settings.mesh_type                    | auto_non_uniform | string  | Selections are ['auto_non_uniform', 'uniform']. |
-|       mesh_settings.mesh_accuracy.cells_per_wavelength       |        15        | integer |                                                 |
-|             mesh_settings.mesh_step_settings.dx              |       0.1        |  float  |                                                 |
-|             mesh_settings.mesh_step_settings.dy              |       0.1        |  float  |                                                 |
-|             mesh_settings.mesh_step_settings.dz              |       0.1        |  float  |                                                 |
-|    mesh_settings.minimum_mesh_step_settings.min_mesh_step    |      0.0001      |  float  |                                                 |
-|       advanced_options.auto_shutoff.use_early_shutoff        |       true       |  bool   |                                                 |
-|        advanced_options.auto_shutoff.auto_shutoff_min        |      1.0e-4      |  float  |                                                 |
-|        advanced_options.auto_shutoff.down_sample_time        |       100        |  float  |                                                 |
-| advanced_options.live_slice_filed_display_settings.show_field |      false       |  bool   |                                                 |
-| advanced_options.live_slice_filed_display_settings.select_field_section |   2d_z_normal    | string  | Selections are ['2d_y_normal', '2d_z_normal'].  |
-| advanced_options.live_slice_filed_display_settings.select_component |        ex        | string  |       Selections are ['ex', 'ey', 'ez'].        |
-| advanced_options.live_slice_filed_display_settings.time_interval |       200        |  float  |                                                 |
-| advanced_options.live_slice_filed_display_settings.position  |        0         |  float  |                                                 |
-|                    thread_setting.thread                     |        4         | integer |                                                 |
-
-
-（解释各个标题，以及将OED放在最前面，AFDE属于OED）
-## 6.6 AFDE
-
-Integrate an AFDE solver into the current project using the code `type='AFDE'`.
-
-```python
-add(
-            self,
-            *,
-            name: str,
-            type: Literal["AFDE"],
-            property: AfdePostProcess,
-    )
-```
-
-**Example:**
-
-```python
-simu = pj.Simulation()
-simu.add(name="preview_fde", type="AFDE", property={
-    "mesh_settings": {"global_mesh_uniform_grid": {"dy": ogrid_global_y, "dz": ogrid_global_z}},
-    "fde_analysis": {"modal_analysis": {"calculate_modes": False, "mesh_structure": False, "wavelength": wavelength},
-                     "modulator_analysis": {"modulator_analysis": True, "wavelength": wavelength, "np_path": ""}},
-    "other": {**Si_index_vs_doping}})
-```
-
-|                          Parameters                          |      Default      |  Type   |                            Notes                             |
-| :----------------------------------------------------------: | :---------------: | :-----: | :----------------------------------------------------------: |
-|                     general.solver_type                      |    2d_x_normal    | string  | Selections are ['2d_x_normal', '2d_y_normal', '2d_z_normal', 'x', 'y', 'z']. |
-|          mesh_settings.global_mesh_uniform_grid.dx           |       0.02        |  float  |                                                              |
-|          mesh_settings.global_mesh_uniform_grid.dy           |       0.02        |  float  |                                                              |
-|          mesh_settings.global_mesh_uniform_grid.dz           |       0.02        |  float  |                                                              |
-|    mesh_settings.minimum_mesh_step_settings.min_mesh_step    |      0.0001       |  float  |                                                              |
-|                    thread_setting.thread                     |         4         | integer |                                                              |
-|          fde_analysis.modal_analysis.mesh_structure          |       false       |  bool   |                                                              |
-|         fde_analysis.modal_analysis.calculate_modes          |       false       |  bool   |                                                              |
-|  fde_analysis.modal_analysis.[]far_field_settings.calculate  |       true        |  bool   |                                                              |
-| fde_analysis.modal_analysis.[]far_field_settings.mode_selection |                   | integer |                                                              |
-| fde_analysis.modal_analysis.[]far_field_settings.projection_method |      planar       | string  |                  Selections are ['planar'].                  |
-| fde_analysis.modal_analysis.[]far_field_settings.farfield_filter |         0         |  float  |                                                              |
-| fde_analysis.modal_analysis.[]far_field_settings.material_index |        1.4        |  float  |                                                              |
-| fde_analysis.modal_analysis.[]far_field_settings.projection_distance |      4430.65      |  float  |                                                              |
-| fde_analysis.modal_analysis.[]far_field_settings.points_in_x |        50         |  float  |                                                              |
-| fde_analysis.modal_analysis.[]far_field_settings.points_in_y |        50         |  float  |                                                              |
-| fde_analysis.modal_analysis.[]far_field_settings.farfield_x  |         0         |  float  |                                                              |
-| fde_analysis.modal_analysis.[]far_field_settings.farfield_x_span |      26.1834      |  float  |                                                              |
-| fde_analysis.modal_analysis.[]far_field_settings.farfield_y  |         0         |  float  |                                                              |
-| fde_analysis.modal_analysis.[]far_field_settings.farfield_y_span |      18.1231      |  float  |                                                              |
-|            fde_analysis.modal_analysis.wavelength            |       1.55        |  float  |                                                              |
-|        fde_analysis.modal_analysis.wavelength_offset         |       0.002       |  float  |                                                              |
-|      fde_analysis.modal_analysis.number_of_trial_modes       |         5         | integer |                                                              |
-|              fde_analysis.modal_analysis.search              |     max_index     | string  |           Selections are ['near_n', 'max_index'].            |
-|                fde_analysis.modal_analysis.n                 |         1         |  float  |                                                              |
-|      fde_analysis.modal_analysis.calculate_group_index       |       false       |  bool   |                                                              |
-|  fde_analysis.modal_analysis.bent_waveguide.bent_waveguide   |       false       |  bool   |                                                              |
-|      fde_analysis.modal_analysis.bent_waveguide.radius       |        0.0        |  float  |                                                              |
-|    fde_analysis.modal_analysis.bent_waveguide.orientation    |        0.0        |  float  |                                                              |
-|     fde_analysis.modal_analysis.bent_waveguide.location      | simulation_center | string  |            Selections are ['simulation_center'].             |
-|      fde_analysis.modal_analysis.mode_removal.threshold      |                   |  float  |                                                              |
-|      fde_analysis.frequency_analysis.frequency_analysis      |       false       |  bool   |                                                              |
-|       fde_analysis.frequency_analysis.start_wavelength       |       1.55        |  float  |                                                              |
-|       fde_analysis.frequency_analysis.stop_wavelength        |      1.49896      |  float  |                                                              |
-|       fde_analysis.frequency_analysis.number_of_points       |        10         | integer |                                                              |
-|       fde_analysis.frequency_analysis.effective_index        |        1.0        |  float  |                                                              |
-| fde_analysis.frequency_analysis.detailed_dispersion_calculation |       false       |  bool   |                                                              |
-
-
-
-## 6.7 OEDevice
-
-Incorporate an OEDevice solver into the current project using the code `type='OEDevice'`.
+Incorporate an OEDevice(Optic Eletrical Devices) solver into the current project using the code `type='OEDevice'`.
 
 ```python
 add(
@@ -722,4 +610,116 @@ simu.add(name="preview_oedevice", type="OEDevice", property={
 |   small_signal_ac.log_start_frequency    |      1.0e+06      |  float  |                                                              |
 |    small_signal_ac.log_stop_frequency    |      1.0e+10      |  float  |                                                              |
 | small_signal_ac.log_num_frequency_points |         2         | integer |                                                              |
+
+## 6.6 AFDTD
+
+Incorporate an AFDTD(Active Finite-Difference Time-Domain) solver into the current project using the code `type='AFDTD'`.
+
+```python
+add(
+            self,
+            *,
+            name: str,
+            type: Literal["AFDTD"],
+            property: FdtdPostProcess,
+    )
+```
+
+**Example:**
+
+```python
+simu = pj.Simulation()
+simu.add(name="preview_fdtd", type="AFDTD", property={
+    "mesh_settings": {"mesh_accuracy": {"cells_per_wavelength": cells_per_wavelength}}})
+```
+
+|                          Parameters                          |     Default      |  Type   |                      Notes                      |
+| :----------------------------------------------------------: | :--------------: | :-----: | :---------------------------------------------: |
+|              extra.fdtd_port_group.source_port               |                  | string  |                                                 |
+|                      general.dimension                       |        3d        | string  |             Selections are ['3d'].              |
+|           general.using_optical_path_estimate_time           |      false       |  bool   |                                                 |
+|                   general.simulation_time                    |       1000       | integer |                                                 |
+|                   mesh_settings.mesh_type                    | auto_non_uniform | string  | Selections are ['auto_non_uniform', 'uniform']. |
+|       mesh_settings.mesh_accuracy.cells_per_wavelength       |        15        | integer |                                                 |
+|             mesh_settings.mesh_step_settings.dx              |       0.1        |  float  |                                                 |
+|             mesh_settings.mesh_step_settings.dy              |       0.1        |  float  |                                                 |
+|             mesh_settings.mesh_step_settings.dz              |       0.1        |  float  |                                                 |
+|    mesh_settings.minimum_mesh_step_settings.min_mesh_step    |      0.0001      |  float  |                                                 |
+|       advanced_options.auto_shutoff.use_early_shutoff        |       true       |  bool   |                                                 |
+|        advanced_options.auto_shutoff.auto_shutoff_min        |      1.0e-4      |  float  |                                                 |
+|        advanced_options.auto_shutoff.down_sample_time        |       100        |  float  |                                                 |
+| advanced_options.live_slice_filed_display_settings.show_field |      false       |  bool   |                                                 |
+| advanced_options.live_slice_filed_display_settings.select_field_section |   2d_z_normal    | string  | Selections are ['2d_y_normal', '2d_z_normal'].  |
+| advanced_options.live_slice_filed_display_settings.select_component |        ex        | string  |       Selections are ['ex', 'ey', 'ez'].        |
+| advanced_options.live_slice_filed_display_settings.time_interval |       200        |  float  |                                                 |
+| advanced_options.live_slice_filed_display_settings.position  |        0         |  float  |                                                 |
+|                    thread_setting.thread                     |        4         | integer |                                                 |
+
+
+（解释各个标题，以及将OED放在最前面，AFDE属于OED）
+## 6.7 AFDE
+
+Integrate an AFDE(Active Finite Difference Eigenmode) solver into the current project using the code `type='AFDE'`.
+
+```python
+add(
+            self,
+            *,
+            name: str,
+            type: Literal["AFDE"],
+            property: AfdePostProcess,
+    )
+```
+
+**Example:**
+
+```python
+simu = pj.Simulation()
+simu.add(name="preview_fde", type="AFDE", property={
+    "mesh_settings": {"global_mesh_uniform_grid": {"dy": ogrid_global_y, "dz": ogrid_global_z}},
+    "fde_analysis": {"modal_analysis": {"calculate_modes": False, "mesh_structure": False, "wavelength": wavelength},
+                     "modulator_analysis": {"modulator_analysis": True, "wavelength": wavelength, "np_path": ""}},
+    "other": {**Si_index_vs_doping}})
+```
+
+|                          Parameters                          |      Default      |  Type   |                            Notes                             |
+| :----------------------------------------------------------: | :---------------: | :-----: | :----------------------------------------------------------: |
+|                     general.solver_type                      |    2d_x_normal    | string  | Selections are ['2d_x_normal', '2d_y_normal', '2d_z_normal', 'x', 'y', 'z']. |
+|          mesh_settings.global_mesh_uniform_grid.dx           |       0.02        |  float  |                                                              |
+|          mesh_settings.global_mesh_uniform_grid.dy           |       0.02        |  float  |                                                              |
+|          mesh_settings.global_mesh_uniform_grid.dz           |       0.02        |  float  |                                                              |
+|    mesh_settings.minimum_mesh_step_settings.min_mesh_step    |      0.0001       |  float  |                                                              |
+|                    thread_setting.thread                     |         4         | integer |                                                              |
+|          fde_analysis.modal_analysis.mesh_structure          |       false       |  bool   |                                                              |
+|         fde_analysis.modal_analysis.calculate_modes          |       false       |  bool   |                                                              |
+|  fde_analysis.modal_analysis.[]far_field_settings.calculate  |       true        |  bool   |                                                              |
+| fde_analysis.modal_analysis.[]far_field_settings.mode_selection |                   | integer |                                                              |
+| fde_analysis.modal_analysis.[]far_field_settings.projection_method |      planar       | string  |                  Selections are ['planar'].                  |
+| fde_analysis.modal_analysis.[]far_field_settings.farfield_filter |         0         |  float  |                                                              |
+| fde_analysis.modal_analysis.[]far_field_settings.material_index |        1.4        |  float  |                                                              |
+| fde_analysis.modal_analysis.[]far_field_settings.projection_distance |      4430.65      |  float  |                                                              |
+| fde_analysis.modal_analysis.[]far_field_settings.points_in_x |        50         |  float  |                                                              |
+| fde_analysis.modal_analysis.[]far_field_settings.points_in_y |        50         |  float  |                                                              |
+| fde_analysis.modal_analysis.[]far_field_settings.farfield_x  |         0         |  float  |                                                              |
+| fde_analysis.modal_analysis.[]far_field_settings.farfield_x_span |      26.1834      |  float  |                                                              |
+| fde_analysis.modal_analysis.[]far_field_settings.farfield_y  |         0         |  float  |                                                              |
+| fde_analysis.modal_analysis.[]far_field_settings.farfield_y_span |      18.1231      |  float  |                                                              |
+|            fde_analysis.modal_analysis.wavelength            |       1.55        |  float  |                                                              |
+|        fde_analysis.modal_analysis.wavelength_offset         |       0.002       |  float  |                                                              |
+|      fde_analysis.modal_analysis.number_of_trial_modes       |         5         | integer |                                                              |
+|              fde_analysis.modal_analysis.search              |     max_index     | string  |           Selections are ['near_n', 'max_index'].            |
+|                fde_analysis.modal_analysis.n                 |         1         |  float  |                                                              |
+|      fde_analysis.modal_analysis.calculate_group_index       |       false       |  bool   |                                                              |
+|  fde_analysis.modal_analysis.bent_waveguide.bent_waveguide   |       false       |  bool   |                                                              |
+|      fde_analysis.modal_analysis.bent_waveguide.radius       |        0.0        |  float  |                                                              |
+|    fde_analysis.modal_analysis.bent_waveguide.orientation    |        0.0        |  float  |                                                              |
+|     fde_analysis.modal_analysis.bent_waveguide.location      | simulation_center | string  |            Selections are ['simulation_center'].             |
+|      fde_analysis.modal_analysis.mode_removal.threshold      |                   |  float  |                                                              |
+|      fde_analysis.frequency_analysis.frequency_analysis      |       false       |  bool   |                                                              |
+|       fde_analysis.frequency_analysis.start_wavelength       |       1.55        |  float  |                                                              |
+|       fde_analysis.frequency_analysis.stop_wavelength        |      1.49896      |  float  |                                                              |
+|       fde_analysis.frequency_analysis.number_of_points       |        10         | integer |                                                              |
+|       fde_analysis.frequency_analysis.effective_index        |        1.0        |  float  |                                                              |
+| fde_analysis.frequency_analysis.detailed_dispersion_calculation |       false       |  bool   |                                                              |
+
 

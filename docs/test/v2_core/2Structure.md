@@ -27,7 +27,7 @@ st = pj.Structure(mesh_type,
     <td align="center">mesh_factor</td>
     <td align="center">1.2</td>
     <td align="center">float</td>
-    <td align="center">Maximum rate when the mesh changes. Restrained by condition: &ge;1.05, &le;1.6.</td>
+    <td align="center">Maximum rate when the mesh changes.</td>
   </tr>
   <tr>
     <td align="center">background_material</td>
@@ -121,15 +121,15 @@ st.add_geometry(name="gds_file_3D", type="gds_file3D", property={
 
 |      **Parameters**      | Default |   Type   |                            Notes                             |
 | :----------------------: | :-----: | :------: | :----------------------------------------------------------: |
-|   geometry.tilt_angle    |   90    |  float   | Tilt angle of waveguide sidewall.   |
-|  geometry.tilt_location  |   top   |  string  | Different ways of tilting the sidewalls of the waveguide. Selections are ['top', 'TOP', 'Top', 'bottom', 'BOTTOM', 'Bottom', 'middle', 'MIDDLE', 'Middle', 'user_defined']. |
-|  geometry.user_defined   |    1    |  float   |                                                              |
+|   geometry.tilt_angle    |   90   |  float   | Tilt angle of waveguide sidewall.   |
+|  geometry.tilt_location  |   top   |  string  | To ensure that the models within the GDS layout are placed at the specified sizes on the different ratio of sidewalls when importing GDS layout. Selections are ['top', 'TOP', 'Top', 'bottom', 'BOTTOM', 'Bottom', 'middle', 'MIDDLE', 'Middle', 'user_defined']. |
+|  geometry.user_defined   |    1    |  float   |      To decide the ratio of sidewalls when importing GDS layout.                                                    |
 | geometry.mirror_normal_z |    0    |  float   | The posiotion of z-normal plane for mirror symmetry.                                      |
 | geometry.mirror_plane_z0 |    0    |  float   |       The center point position of z normal palne.                                                       |
 |    geometry.rotate_x     |    0    |  float   | The angle of the x-axe in the rotation operation.                                  |
 |    geometry.rotate_y     |    0    |  float   |  The angle of the y-axe in the rotation operation.                                        |
 |    geometry.rotate_z     |    0    |  float   | The angle of the z-axe in the rotation operation.                                      |
-| general.construct_method |         |  string  |            Selections are ['method1', 'method2']             |
+| general.construct_method |         |  string  |     The method of constructing the GDS after choosing to import the GDS file. Selections are ['method1', 'method2']             |
 
 
 
@@ -235,8 +235,8 @@ st.add_geometry(name="bezier_3d", type="BezierCurve3D", property={
 |    geometry.base_height     |         |  float   | The height of the Bezier curve. Restrained by condition: >0.  |
 |     geometry.top_width      |         |  float   | The top width of the Bezier curve. Restrained by condition: >0.  |
 |    geometry.bottom_width    |         |  float   | The bottom width of the Bezier curve. Restrained by condition: >0.  |
-| geometry.[]control_points.x |         |  float   |                               |
-| geometry.[]control_points.y |         |  float   |                               |
+| geometry.[]control_points.x |         |  float   | The x-coordinate of the points for generating a Bezier curve.   |
+| geometry.[]control_points.y |         |  float   |  The y-coordinate of the points for generating a Bezier curve. |
 
 
 
@@ -287,7 +287,7 @@ st.add_geometry(name="custom_polygon", type="CustomPolygon", property={
 
 |       Parameters        |     Default     |       Type       |                 Notes                 |
 | :-----------------: | :-----: | :------: | :---------------------------: |
-|    geometry.size    |         |  float   | Restrained by condition: >0.  |
+|    geometry.size    |         |  float   | The side length of the polygon. Restrained by condition: >0.  |
 |   geometry.sides    |         | integer  |To set the number of custom polygon sides. Restrained by condition: >=3. |
 |     geometry.x      |         |  float   |  The center point x-coordinate the custom polygon.    |
 |     geometry.y      |         |  float   |    The center point y-coordinate the custom polygon.     |

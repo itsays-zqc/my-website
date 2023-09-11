@@ -269,7 +269,7 @@ pjp.add(name="input_te_tm", type="eme_port",
 |       eme_port.general.mode_index        |         1         | integer |         Under the 'user_import' condition, use this parameter to decide the source mode.                |
 |         eme_port.general.search          |     max_index     | string  |           Calculate the mode based on the maximum refractive index in the structure. Selections are ['near_n', 'max_index']. Selections are ['near_n', 'max_index'].            |
 |            eme_port.general.n            |        1.0        | integer |                                     Under the 'near_n' condition, use this value of refractive index to search the source mode.                          |
-|  eme_port.bent_waveguide.bent_waveguide  |       false       |  bool   |             Select whether to calculate modes in curved waveguides.                 |
+|  eme_port.bent_waveguide.bent_waveguide  |       false       |  bool   |             Select whether to calculate modes in bent waveguides.                 |
 |      eme_port.bent_waveguide.radius      |         1         |  float  |               Set the waveguide radius for curved waveguides.                 |
 |   eme_port.bent_waveguide.orientation    |        20         |  float  |        Bent direction of the waveguide.                |
 |     eme_port.bent_waveguide.location     | simulation_center | string  |            Set the bent center position of bent waveguides. Selections are ['simulation_center'].          |

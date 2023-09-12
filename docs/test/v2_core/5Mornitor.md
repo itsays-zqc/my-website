@@ -19,9 +19,9 @@ add(
 
 | **Parameters** |        Description        |
 | :------------: | :-----------------------: |
-|      name      |   Profile monitor name.   |
-|      type      |       Monitor type.       |
-|    property    | Profile monitor property. |
+|      name      |    The name of profile monitor defined in the project.   |
+|      type      |       To decide the type of monitor.       |
+|    property    | The property of profile monitor. |
 
 **Example:**
 
@@ -34,21 +34,20 @@ mn.add(name="y_normal", type="profile_monitor",
 
 |    **Parameters**     | Default |  Type   |                            Notes                             |
 | :-------------------: | :-----: | :-----: | :----------------------------------------------------------: |
-| geometry.monitor_type |         | string  | Selections are ['2d_x_normal', '2d_y_normal', '2d_z_normal', 'x', 'y', 'z']. |
-| geometry.x_resolution |   100   | integer |                                                              |
-|      geometry.x       |         |  float  |                                                              |
-|    geometry.x_span    |         |  float  |                Restrained by condition: >=0.                 |
-|    geometry.x_min     |         |  float  |                                                              |
-|    geometry.x_max     |         |  float  |                                                              |
-|      geometry.y       |         |  float  |                                                              |
-|    geometry.y_span    |         |  float  |                Restrained by condition: >=0.                 |
-|    geometry.y_min     |         |  float  |                                                              |
-|    geometry.y_max     |         |  float  |                                                              |
-|      geometry.z       |         |  float  |                                                              |
-|    geometry.z_span    |         |  float  |                Restrained by condition: >=0.                 |
-|    geometry.z_min     |         |  float  |                                                              |
-|    geometry.z_max     |         |  float  |                                                              |
-
+| geometry.monitor_type |   -    | string  | Select the profile monitor type and the orientation.Selections are ['2d_x_normal', '2d_y_normal', '2d_z_normal', 'x', 'y', 'z']. |
+| geometry.x_resolution |   100   | integer |      The resolution of output simulation results in profile monitor.                   |
+|     geometry.x      |    -     |  float   |  The x-coordinate of the center point position of the profile monitor.    |
+|   geometry.x_span   |     -    |  float   | The length in x direction of the profile monitor. Restrained by condition: >0.  |
+|   geometry.x_min    |    -     |  float   | The minimum x-coordinate endpoint data of the profile monitor.      |
+|   geometry.x_max    |     -    |  float   |  The maximum x-coordinate endpoint data of the profile monitor.     |
+|     geometry.y      |     -    |  float   |  The y-coordinate of the center point position of the profile monitor.      |
+|   geometry.y_span   |     -    |  float   | The width in y direction of the profile monitor. Restrained by condition: >0.  |
+|   geometry.y_min    |     -    |  float   |The minimum y-coordinate endpoint data of the profile monitor.       |
+|   geometry.y_max    |     -    |  float   |  The maximum y-coordinate endpoint data of the profile monitor.      |
+|     geometry.z      |     -    |  float   |   The z-coordinate of the center point position of the profile monitor.    |
+|   geometry.z_span   |     -    |  float   | The height in z direction of the profile monitor. Restrained by condition: >0.  |
+|   geometry.z_min    |     -    |  float   | The z-coordinate of the bottom position of the height of the profile monitor.      |
+|   geometry.z_max    |      -   |  float   |  The z-coordinate of the top position of the height of the profile monitor.     |
 
 
 ## 5.2 Global monitor/Global option
@@ -67,9 +66,9 @@ add(
 
 | **Parameters** |       Description        |
 | :------------: | :----------------------: |
-|      name      |   Global monitor name.   |
-|      type      |      Monitor type.       |
-|    property    | Global monitor property. |
+|      name      |    The name of global monitor defined in the project.   |
+|      type      |       To decide the type of monitor.       |
+|    property    | The property of global monitor. |
 
 **Example:**
 
@@ -84,20 +83,20 @@ mn.add(name='Global Option', type='global_option',
 
 |             **Parameters**             |  Default   |  Type   |                    Notes                    |
 | :------------------------------------: | :--------: | :-----: | :-----------------------------------------: |
-|     frequency_power.sample_spacing     |  uniform   | string  |         Selections are ['uniform'].         |
-| frequency_power.use_wavelength_spacing |    true    |  bool   |                                             |
-|      frequency_power.spacing_type      | wavelength | string  | Selections are ['wavelength', 'frequency']. |
-|     frequency_power.spacing_limit      |  min_max   | string  | Selections are ['min_max', 'center_span'].  |
-|     frequency_power.wavelength_min     |            |  float  |                                             |
-|     frequency_power.wavelength_max     |            |  float  |                                             |
-|   frequency_power.wavelength_center    |            |  float  |                                             |
-|    frequency_power.wavelength_span     |            |  float  |                                             |
-|     frequency_power.frequency_min      |            |  float  |                                             |
-|     frequency_power.frequency_max      |            |  float  |                                             |
-|    frequency_power.frequency_center    |            |  float  |                                             |
-|     frequency_power.frequency_span     |            |  float  |                                             |
-|    frequency_power.frequency_points    |     5      | integer |                                             |
-|    advanced.min_sampling_per_cycle     |     2      | integer |                                             |
+|     frequency_power.sample_spacing     |  uniform   | string  |         Set the type of frequency interval for the frequency monitor. Selections are ['uniform'].         |
+| frequency_power.use_wavelength_spacing |    true    |  bool   |   Select whether to use wavelength as a variable for result output.     |
+|      frequency_power.spacing_type      | wavelength | string  |   The different spacing type for result output. Selections are ['wavelength', 'frequency']. |
+|     frequency_power.spacing_limit      |  min_max   | string  | Select the way to set wavelength interval or frequency interval.Selections are ['min_max', 'center_span'].  |
+|     frequency_power.wavelength_min     |    -      |  float  |        Set the minimum value of the wavelength range.                                     |
+|     frequency_power.wavelength_max     |     -       |  float  | Set the maximum value of the wavelength range.   |
+|   frequency_power.wavelength_center    |     -       |  float  |       Set the center wavelength.    |
+|    frequency_power.wavelength_span     |     -       |  float  |  Set the wavelength span.      |
+|     frequency_power.frequency_min      |      -      |  float  |   Set the minimum value of the frequency range.         |
+|     frequency_power.frequency_max      |     -       |  float  |     Set the maximum value of the frequency range.       |
+|    frequency_power.frequency_center    |     -       |  float  |       Set the center value of the frequency range.            |
+|     frequency_power.frequency_span     |      -     |  float  |   Set the frequency span.           |
+|    frequency_power.frequency_points    |     5      | integer |   Set the number of points in the frequency range or wavelength range.    |
+|    advanced.min_sampling_per_cycle     |     2      | integer |         Set the minimum sampling number of points within the optical cycle.          |
 
 
 
@@ -117,9 +116,9 @@ add(
 
 | **Parameters** |      Description       |
 | :------------: | :--------------------: |
-|      name      |   Time monitor name.   |
-|      type      |     Monitor type.      |
-|    property    | Time monitor property. |
+|      name      |    The name of time monitor defined in the project.   |
+|      type      |       To decide the type of monitor.       |
+|    property    | The property of time monitor. |
 
 **Example:**
 
@@ -134,24 +133,24 @@ mn.add(name='time_monitor1', type='time_monitor',
 
 |                **Parameters**                 |      Default      |  Type   |                            Notes                             |
 | :-------------------------------------------: | :---------------: | :-----: | :----------------------------------------------------------: |
-|              general.stop_method              | end_of_simulation | string  | Selections are ['end_of_simulation', 'choose_stop_time', 'choose_number_of_snapshots']. |
-|              general.start_time               |         0         |  float  |                                                              |
-|               general.stop_time               |       1000        |  float  |                                                              |
-|          general.number_of_snapshots          |         0         | integer |                                                              |
-|             geometry.monitor_type             |                   | string  | Selections are ['point', 'linear_x', 'linear_y', 'linear_z', '2d_x_normal', '2d_y_normal', '2d_z_normal', '3d']. |
-|                  geometry.x                   |                   |  float  |                                                              |
-|                geometry.x_span                |                   |  float  |                Restrained by condition: >=0.                 |
-|                geometry.x_min                 |                   |  float  |                                                              |
-|                geometry.x_max                 |                   |  float  |                                                              |
-|                  geometry.y                   |                   |  float  |                                                              |
-|                geometry.y_span                |                   |  float  |                Restrained by condition: >=0.                 |
-|                geometry.y_min                 |                   |  float  |                                                              |
-|                geometry.y_max                 |                   |  float  |                                                              |
-|                  geometry.z                   |                   |  float  |                                                              |
-|                geometry.z_span                |                   |  float  |                Restrained by condition: >=0.                 |
-|                geometry.z_min                 |                   |  float  |                                                              |
-|                geometry.z_max                 |                   |  float  |                                                              |
-| advanced.sampling_rate.min_sampling_per_cycle |        10         | integer |                                                              |
+|              general.stop_method              | end_of_simulation | string  | Set the method to stop data collection for the time monitor. Selections are ['end_of_simulation', 'choose_stop_time', 'choose_number_of_snapshots']. |
+|              general.start_time               |         0         |  float  |          The start time for data collection by the time monitor.                |
+|               general.stop_time               |       1000        |  float  |    The stop time for data collection by the time monitor.      |
+|          general.number_of_snapshots          |         0         | integer |           The number of time snapshots for data collection.                             |
+|             geometry.monitor_type             |                   | string  | The type and orientation of the time monitor. Selections are ['point', 'linear_x', 'linear_y', 'linear_z', '2d_x_normal', '2d_y_normal', '2d_z_normal', '3d']. |
+|     geometry.x      |    -     |  float   |  The x-coordinate of the center point position of the time monitor.    |
+|   geometry.x_span   |     -    |  float   | The length in x direction of the time monitor. Restrained by condition: >0.  |
+|   geometry.x_min    |    -     |  float   | The minimum x-coordinate endpoint data of the time monitor.      |
+|   geometry.x_max    |     -    |  float   |  The maximum x-coordinate endpoint data of the time monitor.     |
+|     geometry.y      |     -    |  float   |  The y-coordinate of the center point position of the time monitor.      |
+|   geometry.y_span   |     -    |  float   | The width in y direction of the time monitor. Restrained by condition: >0.  |
+|   geometry.y_min    |     -    |  float   |The minimum y-coordinate endpoint data of the time monitor.       |
+|   geometry.y_max    |     -    |  float   |  The maximum y-coordinate endpoint data of the time monitor.      |
+|     geometry.z      |     -    |  float   |   The z-coordinate of the center point position of the time monitor.    |
+|   geometry.z_span   |     -    |  float   | The height in z direction of the time monitor. Restrained by condition: >0.  |
+|   geometry.z_min    |     -    |  float   | The bottom position of the height of the time monitor in z direction.      |
+|   geometry.z_max    |      -   |  float   |  The top position of the height of the time monitor in z direction.      |
+| advanced.sampling_rate.min_sampling_per_cycle |        10         | integer |    Set the minimum sampling number of points within the optical cycle.                   |
 
 
 
@@ -171,9 +170,9 @@ add(
 
 | **Parameters** |    Description    |
 | :------------: | :---------------: |
-|      name      |   Monitor name.   |
-|      type      |   Monitor type.   |
-|    property    | Monitor property. |
+|      name      |    The name of power monitor defined in the project.   |
+|      type      |       To decide the type of monitor.       |
+|    property    | The property of power monitor. |
 
 ### 5.4.1 Power monitor
 
@@ -204,48 +203,53 @@ mn.add(name='through', type='power_monitor',
 
 |                        **Parameters**                        |      Default      |  Type   |                            Notes                             |
 | :----------------------------------------------------------: | :---------------: | :-----: | :----------------------------------------------------------: |
-|                    geometry.monitor_type                     |                   | string  | Selections are ['2d_x_normal', '2d_y_normal', '2d_z_normal', 'x', 'y', 'z']. |
-|                          geometry.x                          |                   |  float  |                                                              |
-|                       geometry.x_span                        |                   |  float  |                Restrained by condition: >=0.                 |
-|                        geometry.x_min                        |                   |  float  |                                                              |
-|                        geometry.x_max                        |                   |  float  |                                                              |
-|                          geometry.y                          |                   |  float  |                                                              |
-|                       geometry.y_span                        |                   |  float  |                Restrained by condition: >=0.                 |
-|                        geometry.y_min                        |                   |  float  |                                                              |
-|                        geometry.y_max                        |                   |  float  |                                                              |
-|                          geometry.z                          |                   |  float  |                                                              |
-|                       geometry.z_span                        |                   |  float  |                Restrained by condition: >=0.                 |
-|                        geometry.z_min                        |                   |  float  |                                                              |
-|                        geometry.z_max                        |                   |  float  |                                                              |
-|                geometry.rotate_settings.theta                |         0         |  float  |              Restrained by condition: >-90,<90.              |
-|                 geometry.rotate_settings.phi                 |         0         |  float  |             Restrained by condition: >=0,<=360.              |
-|           geometry.rotate_settings.rotation_offset           |         0         |  float  |           Restrained by condition: >=-1e30,<=1e30.           |
-|         mode_expansion.[]monitors_for_expansion.name         |                   | string  |                                                              |
-|  mode_expansion.[]monitors_for_expansion.frequency_monitor   |                   | string  |                                                              |
-|                   mode_expansion.direction                   |     positive      | string  |           Selections are ['positive', 'negative'].           |
-|        mode_expansion.mode_calculation.mode_selection        |                   | string  | Selections are ['fundamental', 'fundamental_TE', 'fundamental_TM', 'user_select']. |
-|          mode_expansion.mode_calculation.mode_index          |                   |  list   |                                                              |
-|            mode_expansion.mode_calculation.search            |     max_index     | string  |           Selections are ['near_n', 'max_index'].            |
-|              mode_expansion.mode_calculation.n               |        1.0        |  float  |                                                              |
-|    mode_expansion.mode_calculation.number_of_trial_modes     |        20         | integer |                                                              |
-|   mode_expansion.mode_calculation.override_global_options    |       false       |  bool   |                                                              |
-| mode_expansion.mode_calculation.override_global_monitor_setting.sample_spacing |      uniform      | string  |                 Selections are ['uniform'].                  |
-| mode_expansion.mode_calculation.override_global_monitor_setting.use_wavelength_spacing |       true        |  bool   |                                                              |
-| mode_expansion.mode_calculation.override_global_monitor_setting.spacing_type |    wavelength     | string  |         Selections are ['wavelength', 'frequency'].          |
-| mode_expansion.mode_calculation.override_global_monitor_setting.spacing_limit |      min_max      | string  |          Selections are ['min_max', 'center_span'].          |
-| mode_expansion.mode_calculation.override_global_monitor_setting.wavelength_min |                   |  float  |                                                              |
-| mode_expansion.mode_calculation.override_global_monitor_setting.wavelength_max |                   |  float  |                                                              |
-| mode_expansion.mode_calculation.override_global_monitor_setting.wavelength_center |                   |  float  |                                                              |
-| mode_expansion.mode_calculation.override_global_monitor_setting.wavelength_span |                   |  float  |                                                              |
-| mode_expansion.mode_calculation.override_global_monitor_setting.frequency_min |                   |  float  |                                                              |
-| mode_expansion.mode_calculation.override_global_monitor_setting.frequency_max |                   |  float  |                                                              |
-| mode_expansion.mode_calculation.override_global_monitor_setting.frequency_center |                   |  float  |                                                              |
-| mode_expansion.mode_calculation.override_global_monitor_setting.frequency_span |                   |  float  |                                                              |
-| mode_expansion.mode_calculation.override_global_monitor_setting.frequency_points |                   | integer |                                                              |
-| mode_expansion.mode_calculation.bent_waveguide.bent_waveguide |       false       |  bool   |                                                              |
-|    mode_expansion.mode_calculation.bent_waveguide.radius     |        1.0        |  float  |                                                              |
-|  mode_expansion.mode_calculation.bent_waveguide.orientation  |        0.0        |  float  |                                                              |
-|   mode_expansion.mode_calculation.bent_waveguide.location    | simulation_center | string  |            Selections are ['simulation_center'].             |
+|                    geometry.monitor_type                     |         -          | string  | The type and orientation of the power monitor. Selections are ['2d_x_normal', '2d_y_normal', '2d_z_normal', 'x', 'y', 'z']. |
+|     geometry.x      |    -     |  float   |  The x-coordinate of the center point position of the power monitor.    |
+|   geometry.x_span   |     -    |  float   | The length in x direction of the power monitor. Restrained by condition: >0.  |
+|   geometry.x_min    |    -     |  float   | The minimum x-coordinate endpoint data of the power monitor.      |
+|   geometry.x_max    |     -    |  float   |  The maximum x-coordinate endpoint data of the power monitor.     |
+|     geometry.y      |     -    |  float   |  The y-coordinate of the center point position of the power monitor.      |
+|   geometry.y_span   |     -    |  float   | The width in y direction of the power monitor. Restrained by condition: >0.  |
+|   geometry.y_min    |     -    |  float   |The minimum y-coordinate endpoint data of the power monitor.       |
+|   geometry.y_max    |     -    |  float   |  The maximum y-coordinate endpoint data of the power monitor.      |
+|     geometry.z      |     -    |  float   |   The z-coordinate of the center point position of the power monitor.    |
+|   geometry.z_span   |     -    |  float   | The height in z direction of the power monitor. Restrained by condition: >0.  |
+|   geometry.z_min    |     -    |  float   | The bottom position of the height of the power monitor in z direction.      |
+|   geometry.z_max    |      -   |  float   |  The top position of the height of the power monitor in z direction.      |
+|                geometry.rotate_settings.theta                |         0         |  float  |              The rotation angle theta of the power monitor. Restrained by condition: >-90,<90.              |
+|                 geometry.rotate_settings.phi                 |         0         |  float  |              The rotation angle phi of the power monitor. Restrained by condition: >=0,<=360.              |
+|           geometry.rotate_settings.rotation_offset           |         0         |  float  |           The rotation offset of the power monitor.Restrained by condition: >=-1e30,<=1e30.           |
+
+
+|                        **Parameters**                        |      Default      |  Type   |                            Notes                             |
+| :----------------------------------------------------------: | :---------------: | :-----: | :----------------------------------------------------------: |
+|         mode_expansion.[]monitors_for_expansion.name         |          -         | string  |        The name of the power monitor required for individual mode expansion when called separately.              |
+|  mode_expansion.[]monitors_for_expansion.frequency_monitor   |          -         | string  |             The name of the frequency monitor required for individual mode expansion when called separately.                     |
+|                   mode_expansion.direction                   |     positive      | string  |           Set the direction of the mode expansion. Selections are ['positive', 'negative'].           |
+|        mode_expansion.mode_calculation.mode_selection        |          -         | string  | Decide the mode for mode expansion calculation. Selections are ['fundamental', 'fundamental_TE', 'fundamental_TM', 'user_select']. |
+|          mode_expansion.mode_calculation.mode_index          |         -          |  list   |   Under the 'user_select' condition, use this parameter to decide the related number of source mode.                 |
+|            mode_expansion.mode_calculation.search            |     max_index     | string  |           Calculate the mode based on the maximum refractive index or user defined refractive index in the structure. Selections are ['near_n', 'max_index'].            |
+|              mode_expansion.mode_calculation.n               |        1.0        |  float  |   Under the 'near_n' condition, use this value of refractive index to search the mode.                               |
+|    mode_expansion.mode_calculation.number_of_trial_modes     |        20         | integer |  When calculating modes, determine the calculated number of modes around the refractive index.                   |
+|   mode_expansion.mode_calculation.override_global_options    |       false       |  bool   |            Decide whether to override the global monitor settings.                                                 |
+|     mode_expansion.mode_calculation.override_global_monitor_setting.sample_spacing     |  uniform   | string  |         Set the type of frequency interval. Selections are ['uniform'].         |
+| mode_expansion.mode_calculation.override_global_monitor_setting.use_wavelength_spacing |    true    |  bool   |   Select whether to use wavelength as a variable for result output.     |
+|      mode_expansion.mode_calculation.override_global_monitor_setting.spacing_type      | wavelength | string  |   The different spacing type for result output. Selections are ['wavelength', 'frequency']. |
+|     mode_expansion.mode_calculation.override_global_monitor_setting.spacing_limit      |  min_max   | string  | Select the way to set wavelength interval or frequency interval.Selections are ['min_max', 'center_span'].  |
+|     mode_expansion.mode_calculation.override_global_monitor_setting.wavelength_min     |    -      |  float  |        Set the minimum value of the wavelength range.                                     |
+|     mode_expansion.mode_calculation.override_global_monitor_setting.wavelength_max     |     -       |  float  | Set the maximum value of the wavelength range.   |
+|   mode_expansion.mode_calculation.override_global_monitor_setting.wavelength_center    |     -       |  float  |       Set the center wavelength.    |
+|    mode_expansion.mode_calculation.override_global_monitor_setting.wavelength_span     |     -       |  float  |  Set the wavelength span.      |
+|     mode_expansion.mode_calculation.override_global_monitor_setting.frequency_min      |      -      |  float  |   Set the minimum value of the frequency range.         |
+|     mode_expansion.mode_calculation.override_global_monitor_setting.frequency_max      |     -       |  float  |     Set the maximum value of the frequency range.       |
+|    mode_expansion.mode_calculation.override_global_monitor_setting.frequency_center    |     -       |  float  |       Set the center value of the frequency range.            |
+|     mode_expansion.mode_calculation.override_global_monitor_setting.frequency_span     |      -     |  float  |   Set the frequency span.           |
+|    mode_expansion.mode_calculation.override_global_monitor_setting.frequency_points    |     -      | integer |   Set the number of points in the frequency range or wavelength range.    |
+|  mode_expansion.mode_calculation.bent_waveguide.bent_waveguide  |       false       |  bool   |      Select whether to calculate modes in curved waveguides.          |
+|      mode_expansion.mode_calculation.bent_waveguide.radius      |         1         |  float  |    Set the waveguide radius for curved waveguides.             |
+|    mode_expansion.mode_calculation.bent_waveguide.orientation   |        20         |  float  |       Bent direction of the waveguide.         |
+|     mode_expansion.mode_calculation.bent_waveguide.location     | simulation_center | string  |            Set the bent center position of bent waveguides. Selections are ['simulation_center'].             |
+
 
 
 
@@ -265,9 +269,9 @@ add(
 
 | **Parameters** |      Description       |
 | :------------: | :--------------------: |
-|      name      |   Band monitor name.   |
-|      type      |     Monitor type.      |
-|    property    | Band monitor property. |
+|      name      |    The name of band monitor defined in the project.   |
+|      type      |       To decide the type of monitor.       |
+|    property    | The property of band monitor. |
 
 **Example:**
 
@@ -318,11 +322,11 @@ add(
     )
 ```
 
-| **Parameters** |       Description        |
-| :------------: | :----------------------: |
-|      name      |   Charge monitor name.   |
-|      type      |      Monitor type.       |
-|    property    | Charge monitor property. |
+| **Parameters** |      Description       |
+| :------------: | :--------------------: |
+|      name      |    The name of charge monitor defined in the project.   |
+|      type      |       To decide the type of monitor.       |
+|    property    | The property of charge monitor. |
 
 **Example:**
 
@@ -371,9 +375,9 @@ add(
 
 | **Parameters** |    Description     |
 | :------------: | :----------------: |
-|      name      |   EME port name.   |
-|      type      |   EME port type.   |
-|    property    | EME port property. |
+|      name      |    The name of electric monitor defined in the project.   |
+|      type      |       To decide the type of monitor.       |
+|    property    | The property of electric monitor. |
 
 **Example:**
 

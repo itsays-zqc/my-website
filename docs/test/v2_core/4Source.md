@@ -69,8 +69,8 @@ src.add(name='source', type='mode_source', axis='x_forward',
 |            general.phase            |    0.0    |  float  |       To set the initial phase value for the mode source.                                                      |
 |       general.mode_selection        |      -     | string  | To decide the mode which propagates in the waveguide. Selections are ['fundamental', 'fundamental_TE', 'fundamental_TM', 'fundamental_TE_and_TM', 'user_select', 'user_import']. |
 |   general.mode_removal.threshold    |     -      |  float  |   Screen the mode source according to the energy arriving at the boundary to ensure the accuracy of the calculated transmission mode.                    |
-|         general.mode_index          |     0     | integer |               Under the 'user_import' condition, use this parameter to decide the source mode.                                                  |
-|           general.search            | max_index | string  |          Calculate the mode based on the maximum refractive index in the structure. Selections are ['near_n', 'max_index'].            |
+|         general.mode_index          |     0     | integer |               Under the 'user_import' condition, use this parameter to decide  the related number of source mode.                                                  |
+|           general.search            | max_index | string  |          Calculate the mode based on the maximum refractive index or user defined refractive index in the structure. Selections are ['near_n', 'max_index'].            |
 |              general.n              |    1.0    |  float  |Under the 'near_n' condition, use this value of refractive index to search the source mode.               |
 |    general.number_of_trial_modes    |    20     | integer |   When calculating modes, determine the calculated number of modes around the refractive index.                       |
 | general.waveform.waveform_id_select |     -      |   any   |   Call the previously defined wavelength-related parameters.            |
@@ -86,9 +86,9 @@ src.add(name='source', type='mode_source', axis='x_forward',
 |   geometry.y_min    |     -    |  float   |The minimum y-coordinate endpoint data of the mode source.       |
 |   geometry.y_max    |     -    |  float   |  The maximum y-coordinate endpoint data of the mode source.      |
 |     geometry.z      |     -    |  float   |   The z-coordinate of the center point position of the mode source.    |
-|   geometry.z_span   |     -    |  float   | The thinckness in z direction of the mode source. Restrained by condition: >0.  |
-|   geometry.z_min    |     -    |  float   |The z-coordinate of the bottom position of the thickness of the mode source.      |
-|   geometry.z_max    |      -   |  float   |  The z-coordinate of the top position of the thickness of the mode source.     |
+|   geometry.z_span   |     -    |  float   | The height in z direction of the mode source. Restrained by condition: >0.  |
+|   geometry.z_min    |     -    |  float   |The z-coordinate of the bottom position of the height of the mode source.      |
+|   geometry.z_max    |      -   |  float   |  The z-coordinate of the top position of the height of the mode source.     |
 
 
 
@@ -112,7 +112,7 @@ add(
 | **Parameters** |       Description        |
 | :------------: | :----------------------: |
 |      name      |  The name of Gaussian source defined in the project.   |
-|      type      |       The type of Gaussian source.       |
+|      type      |       To decide the type of source.       |
 |      axis      |  Determining the propagation direction of the Gaussian source. Literal["x_forward","y_forward","z_forward","x_backward","y_backward","z_backward"].   |
 |    property    | The property of Gaussian source. |
 
@@ -154,9 +154,9 @@ so.add(name='source', type='gaussian_source', axis='z_backward',
 |   geometry.y_min    |      -   |  float   |The minimum y-coordinate endpoint data of the Gaussian source.       |
 |   geometry.y_max    |     -    |  float   |  The maximum y-coordinate endpoint data of the Gaussian source.      |
 |     geometry.z      |     -    |  float   |   The z-coordinate of the center point position of the Gaussian source.    |
-|   geometry.z_span   |     -    |  float   | The thinckness in z direction of the Gaussian source. Restrained by condition: >0.  |
-|   geometry.z_min    |    -     |  float   |The z-coordinate of the bottom position of the thickness of the Gaussian source.      |
-|   geometry.z_max    |     -    |  float   |  The z-coordinate of the top position of the thickness of the Gaussian source.     |
+|   geometry.z_span   |     -    |  float   | The height in z direction of the Gaussian source. Restrained by condition: >0.  |
+|   geometry.z_min    |    -     |  float   |The z-coordinate of the bottom position of the height of the Gaussian source.      |
+|   geometry.z_max    |     -    |  float   |  The z-coordinate of the top position of the height of the Gaussian source.     |
 
 ## 4.3 FDTD port
 
@@ -175,7 +175,7 @@ add(
 | **Parameters** |   Description   |
 | :------------: | :-------------: |
 |      name      |   The name of FDTD port source defined in the project.  |
-|      type      |   To decide the type of the FDTD port source.      |
+|      type      |   To decide the type of source.      |
 |    property    | The property of the FDTD port source. |
 
 **Example:**
@@ -201,9 +201,9 @@ pt.add(name='port_left', type='fdtd_port',
 |   geometry.y_min    |     -    |  float   |The minimum y-coordinate endpoint data of the FDTD port source.       |
 |   geometry.y_max    |     -    |  float   |  The maximum y-coordinate endpoint data of the FDTD port source.      |
 |     geometry.z      |     -    |  float   |   The z-coordinate of the center point position of the FDTD port source.    |
-|   geometry.z_span   |     -    |  float   | The thinckness in z direction of the FDTD port source. Restrained by condition: >0.  |
-|   geometry.z_min    |     -    |  float   | The z-coordinate of the bottom position of the thickness of the FDTD port source.      |
-|   geometry.z_max    |      -   |  float   |  The z-coordinate of the top position of the thickness of the FDTD port source.     |
+|   geometry.z_span   |     -    |  float   | The height in z direction of the FDTD port source. Restrained by condition: >0.  |
+|   geometry.z_min    |     -    |  float   | The z-coordinate of the bottom position of the height of the FDTD port source.      |
+|   geometry.z_max    |      -   |  float   |  The z-coordinate of the top position of the height of the FDTD port source.     |
 |         modal_properties.general.inject_axis         |  x_axis   | string  | To set the inject axis of FDTD port source. Selections are ['x_axis', 'y_axis', 'z_axis', 'x', 'y', 'z']. |
 |          modal_properties.general.direction          |  forward  | string  |To set the propagation direction of FDTD port source. Selections are ['forward', 'backward'].            |
 |          modal_properties.general.amplitude          |    1.0    |  float  |To set the amplitude of FDTD port source.             |
@@ -211,7 +211,7 @@ pt.add(name='port_left', type='fdtd_port',
 |      modal_properties.general.mode_selection    |      -     | string  | To decide the FDTD port mode which propagates in the waveguide. Selections are ['fundamental', 'fundamental_TE', 'fundamental_TM', 'fundamental_TE_and_TM', 'user_select', 'user_import']. |
 |  modal_properties.general.mode_removal.threshold    |     -      |  float  |   Screen the FDTD port source according to the energy arriving at the boundary to ensure the accuracy of the calculated transmission FDTD port mode.                    |
 |         modal_properties.general.mode_index         |     0     | integer |               Under the 'user_import' condition, use this parameter to decide the FDTD port source mode.                                                  |
-|         modal_properties.general.search          | max_index | string  |          Calculate the FDTD port mode based on the maximum refractive index in the structure. Selections are ['near_n', 'max_index'].            |
+|         modal_properties.general.search          | max_index | string  |          Calculate the FDTD port mode based on the maximum refractive index or user defined refractive index in the structure. Selections are ['near_n', 'max_index'].            |
 |            modal_properties.general.n          |    1.0    |  float  |Under the 'near_n' condition, use this value of refractive index to search the FDTD port source mode.               |
 |   modal_properties.general.number_of_trial_modes   |    20     | integer |   When calculating FDTD port mode, determine the calculated number of FDTD port mode around the refractive index.                       |
 | modal_properties.bent_waveguide.bent_waveguide  |       false       |  bool   |      Select whether to calculate modes in curved waveguides.          |
@@ -262,12 +262,12 @@ pjp.add(name="input_te_tm", type="eme_port",
 |   geometry.y_min    |     -    |  float   |The minimum y-coordinate endpoint data of the EME port source.       |
 |   geometry.y_max    |     -    |  float   |  The maximum y-coordinate endpoint data of the EME port source.      |
 |     geometry.z      |     -    |  float   |   The z-coordinate of the center point position of the EME port source.    |
-|   geometry.z_span   |     -    |  float   | The thinckness in z direction of the EME port source. Restrained by condition: >0.  |
-|   geometry.z_min    |     -    |  float   | The z-coordinate of the bottom position of the thickness of the EME port source.      |
-|   geometry.z_max    |      -   |  float   |  The z-coordinate of the top position of the thickness of the EME port source.     |
+|   geometry.z_span   |     -    |  float   | The height in z direction of the EME port source. Restrained by condition: >0.  |
+|   geometry.z_min    |     -    |  float   | The z-coordinate of the bottom position of the height of the EME port source.      |
+|   geometry.z_max    |      -   |  float   |  The z-coordinate of the top position of the height of the EME port source.     |
 |     eme_port.general.mode_selection      |         -         | string  | To decide the mode which propagates in the waveguide. Selections are ['fundamental', 'fundamental_TE', 'fundamental_TM', 'fundamental_TE_and_TM', 'user_select', 'user_import']. |
 |       eme_port.general.mode_index        |         1         | integer |         Under the 'user_import' condition, use this parameter to decide the source mode.                |
-|         eme_port.general.search          |     max_index     | string  |           Calculate the mode based on the maximum refractive index in the structure. Selections are ['near_n', 'max_index']. Selections are ['near_n', 'max_index'].            |
+|         eme_port.general.search          |     max_index     | string  |           Calculate the mode based on the maximum refractive index or user defined refractive index in the structure. Selections are ['near_n', 'max_index']. Selections are ['near_n', 'max_index'].            |
 |            eme_port.general.n            |        1.0        | integer |                                     Under the 'near_n' condition, use this value of refractive index to search the source mode.                          |
 |  eme_port.bent_waveguide.bent_waveguide  |       false       |  bool   |             Select whether to calculate modes in bent waveguides.                 |
 |      eme_port.bent_waveguide.radius      |         1         |  float  |               Set the waveguide radius for curved waveguides.                 |

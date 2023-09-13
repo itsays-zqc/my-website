@@ -18,10 +18,10 @@ add(
 
 | Parameters |                         Description                          |
 | :--------: | :----------------------------------------------------------: |
-|    name    |                       Simulation name.                       |
-|    type    |                       Simulation type.                       |
-|  location  |   Simulation run mode, cloud or local.Simulation property.   |
-|  property  |                     Simulation property.                     |
+|    name    |                       The name of simulation defined in the project.                       |
+|    type    |                       To decide the type of simulation.                       |
+|  location  |   The method of running simulation, choose either cloud or local.   |
+|  property  |                     The property of simulation defined.                    |
 |   kwargs   | Other simulation parameters. "source_name" is needed for "mode_selection:user_select" type simulation. |
 
 ## 6.1 FDE
@@ -67,49 +67,49 @@ simu.add(name=simu_name, type='FDE',
 
 |                          Parameters                          |      Default      |  Type   |                            Notes                             |
 | :----------------------------------------------------------: | :---------------: | :-----: | :----------------------------------------------------------: |
-|                     general.solver_type                      |    2d_x_normal    | string  | Selections are ['2d_x_normal', '2d_y_normal', '2d_z_normal', 'x', 'y', 'z']. |
-|          mesh_settings.global_mesh_uniform_grid.dx           |       0.02        |  float  |                                                              |
-|          mesh_settings.global_mesh_uniform_grid.dy           |       0.02        |  float  |                                                              |
-|          mesh_settings.global_mesh_uniform_grid.dz           |       0.02        |  float  |                                                              |
-|    mesh_settings.minimum_mesh_step_settings.min_mesh_step    |      0.0001       |  float  |                                                              |
-|                    thread_setting.thread                     |         4         | integer |                                                              |
-|          fde_analysis.modal_analysis.mesh_structure          |       false       |  bool   |                                                              |
-|         fde_analysis.modal_analysis.calculate_modes          |       false       |  bool   |                                                              |
-|  fde_analysis.modal_analysis.[]far_field_settings.calculate  |       true        |  bool   |                                                              |
-| fde_analysis.modal_analysis.[]far_field_settings.mode_selection |                   | integer |                                                              |
-| fde_analysis.modal_analysis.[]far_field_settings.projection_method |      planar       | string  |                  Selections are ['planar'].                  |
-| fde_analysis.modal_analysis.[]far_field_settings.farfield_filter |         0         |  float  |                                                              |
-| fde_analysis.modal_analysis.[]far_field_settings.material_index |        1.4        |  float  |                                                              |
-| fde_analysis.modal_analysis.[]far_field_settings.projection_distance |      4430.65      |  float  |                                                              |
-| fde_analysis.modal_analysis.[]far_field_settings.points_in_x |        50         |  float  |                                                              |
-| fde_analysis.modal_analysis.[]far_field_settings.points_in_y |        50         |  float  |                                                              |
-| fde_analysis.modal_analysis.[]far_field_settings.farfield_x  |         0         |  float  |                                                              |
-| fde_analysis.modal_analysis.[]far_field_settings.farfield_x_span |      26.1834      |  float  |                                                              |
-| fde_analysis.modal_analysis.[]far_field_settings.farfield_y  |         0         |  float  |                                                              |
-| fde_analysis.modal_analysis.[]far_field_settings.farfield_y_span |      18.1231      |  float  |                                                              |
-|            fde_analysis.modal_analysis.wavelength            |       1.55        |  float  |                                                              |
-|        fde_analysis.modal_analysis.wavelength_offset         |       0.002       |  float  |                                                              |
-|      fde_analysis.modal_analysis.number_of_trial_modes       |         5         | integer |                                                              |
-|              fde_analysis.modal_analysis.search              |     max_index     | string  |           Selections are ['near_n', 'max_index'].            |
-|                fde_analysis.modal_analysis.n                 |         1         |  float  |                                                              |
-|      fde_analysis.modal_analysis.calculate_group_index       |       false       |  bool   |                                                              |
-|  fde_analysis.modal_analysis.bent_waveguide.bent_waveguide   |       false       |  bool   |                                                              |
-|      fde_analysis.modal_analysis.bent_waveguide.radius       |        0.0        |  float  |                                                              |
-|    fde_analysis.modal_analysis.bent_waveguide.orientation    |        0.0        |  float  |                                                              |
-|     fde_analysis.modal_analysis.bent_waveguide.location      | simulation_center | string  |            Selections are ['simulation_center'].             |
-|      fde_analysis.modal_analysis.mode_removal.threshold      |                   |  float  |                                                              |
-|      fde_analysis.frequency_analysis.frequency_analysis      |       false       |  bool   |                                                              |
-|       fde_analysis.frequency_analysis.start_wavelength       |       1.55        |  float  |                                                              |
-|       fde_analysis.frequency_analysis.stop_wavelength        |      1.49896      |  float  |                                                              |
-|       fde_analysis.frequency_analysis.number_of_points       |        10         | integer |                                                              |
-|       fde_analysis.frequency_analysis.effective_index        |        1.0        |  float  |                                                              |
-| fde_analysis.frequency_analysis.detailed_dispersion_calculation |       false       |  bool   |                                                              |
+|                     general.solver_type                      |    2d_x_normal    | string  | To decide the type of simulation. Selections are ['2d_x_normal', '2d_y_normal', '2d_z_normal', 'x', 'y', 'z']. |
+|          mesh_settings.global_mesh_uniform_grid.dx           |       0.02        |  float  |    The global mesh step in the x direction.         |
+|          mesh_settings.global_mesh_uniform_grid.dy           |       0.02        |  float  |    The global mesh step in the y direction.                                                           |
+|          mesh_settings.global_mesh_uniform_grid.dz           |       0.02        |  float  |     The global mesh step in the z direction.                         |
+|    mesh_settings.minimum_mesh_step_settings.min_mesh_step    |      0.0001       |  float  |    The minimum mesh step in the simulation ragion.                    |
+|                    thread_setting.thread                     |         4         | integer |            Determine the number of cores required to run the simulation on the local computer.             |
+|          fde_analysis.modal_analysis.mesh_structure          |       false       |  bool   |     Confirm whether to generate a refractive index diagram for the structure.   |
+|         fde_analysis.modal_analysis.calculate_modes          |       false       |  bool   |            Determine whether to calculate the modes.          |
+|  fde_analysis.modal_analysis.[]far_field_settings.calculate  |       true        |  bool   |       Determine whether to calculate the far field.    |
+| fde_analysis.modal_analysis.[]far_field_settings.mode_selection |     -         | integer |         Select the mode for which far-field calculation is needed.                 |
+| fde_analysis.modal_analysis.[]far_field_settings.projection_method |      planar       | string  |                  Specify the projection type for calculating the far-field.Selections are ['planar'].                  |
+| fde_analysis.modal_analysis.[]far_field_settings.farfield_filter |         0         |  float  |      Configure this parameter to filter near field data for eliminating high frequency ripples in the results. Its value ranging from 0 to 1.                                                        |
+| fde_analysis.modal_analysis.[]far_field_settings.material_index |        1.4        |  float  |    Set the material refractive index for projection.            |
+| fde_analysis.modal_analysis.[]far_field_settings.projection_distance |      4430.65      |  float  |  The distance for far-field projection calculation.                         |
+| fde_analysis.modal_analysis.[]far_field_settings.points_in_x |        50         |  float  |          In x direction, the number of points in the far field.               |
+| fde_analysis.modal_analysis.[]far_field_settings.points_in_y |        50         |  float  |          In y direction, the number of points in the far field.                                                     |
+| fde_analysis.modal_analysis.[]far_field_settings.farfield_x  |         0         |  float  |          In x direction, the position of far field center point.            |
+| fde_analysis.modal_analysis.[]far_field_settings.farfield_x_span |      26.1834      |  float  |            In x direction, the span of far field range.             |
+| fde_analysis.modal_analysis.[]far_field_settings.farfield_y  |         0         |  float  |             In y direction, the position of far field center point.    |
+| fde_analysis.modal_analysis.[]far_field_settings.farfield_y_span |      18.1231      |  float  |              In y direction, the span of far field range.     |
+|            fde_analysis.modal_analysis.wavelength            |       1.55        |  float  |               The mode wavelength for FDE calculation.              |
+|        fde_analysis.modal_analysis.wavelength_offset         |       0.002       |  float  |                The mode wavelength offset for FDE calculation.                                              |
+|      fde_analysis.modal_analysis.number_of_trial_modes       |         5         | integer |           When calculating modes, determine the calculated number of modes around the refractive index.                |
+|              fde_analysis.modal_analysis.search              |     max_index     | string  |           Calculate the mode based on the maximum refractive index or user defined refractive index in the structure. Selections are ['near_n', 'max_index'].            |
+|                fde_analysis.modal_analysis.n                 |         1         |  float  |     Under the 'near_n' condition, use this value of refractive index to search the source mode.                                        |
+|      fde_analysis.modal_analysis.calculate_group_index       |       false       |  bool   |    Determine whether to calculate the group refractive index.          |
+|  fde_analysis.modal_analysis.bent_waveguide.bent_waveguide   |       false       |  bool   |        Select whether to calculate modes in bent waveguides.                     |
+|      fde_analysis.modal_analysis.bent_waveguide.radius       |        0.0        |  float  |  Set the waveguide radius for bent waveguides.              |
+|    fde_analysis.modal_analysis.bent_waveguide.orientation    |        0.0        |  float  |            The bent direction of the waveguide.               |
+|     fde_analysis.modal_analysis.bent_waveguide.location      | simulation_center | string  |            Set the bent center position of bent waveguides. Selections are ['simulation_center'].             |
+|      fde_analysis.modal_analysis.mode_removal.threshold      |        -        |  float  |     Screen the FDTD port source according to the energy arriving at the boundary to ensure the accuracy of the calculated transmission FDTD port mode.                       |
+|      fde_analysis.frequency_analysis.frequency_analysis      |       false       |  bool   |      Determine whether to invoke frequency analysis.                      |
+|       fde_analysis.frequency_analysis.start_wavelength       |      -      |  float  |          Set the start frequency of the frequency analysis.                 |
+|       fde_analysis.frequency_analysis.stop_wavelength        |      -     |  float  |          Set the stop frequency of the frequency analysis.                         |
+|       fde_analysis.frequency_analysis.number_of_points       |        10         | integer |         Set the number of points in the frequency analysis             |
+|       fde_analysis.frequency_analysis.effective_index        |        1.0        |  float  |            To search the mode near this refractive index.                        |
+| fde_analysis.frequency_analysis.detailed_dispersion_calculation |       false       |  bool   |      Determine whether to calculate the dispersion of structure.                                 |
 
 
 
 ### 6.1.1 Mode selection
 
-Integrate a mode selection into the current project.
+For quick previewing structure index or getting convinent mode calculation, we integrate a FDE mode selection into the FDTD simulation project.
 
 ```python
 add(
@@ -139,25 +139,25 @@ simu.add(name=simu_name+'_cal_mode', simulation_name=simu_name, source_name='sou
 
 |                     Parameters                     |      Default      |  Type   |                  Notes                  |
 | :------------------------------------------------: | :---------------: | :-----: | :-------------------------------------: |
-|           modal_analysis.mesh_structure            |       false       |  bool   |                                         |
-|           modal_analysis.calculate_modes           |       false       |  bool   |                                         |
-|             modal_analysis.wavelength              |       1.55        |  float  |                                         |
-|          modal_analysis.wavelength_offset          |       0.002       |  float  |                                         |
-|        modal_analysis.number_of_trial_modes        |        20         | integer |                                         |
-|               modal_analysis.search                |     max_index     | string  | Selections are ['near_n', 'max_index']. |
-|                  modal_analysis.n                  |         1         |  float  |                                         |
-|        modal_analysis.calculate_group_index        |       false       |  bool   |                                         |
-|    modal_analysis.bent_waveguide.bent_waveguide    |       false       |  bool   |                                         |
-|        modal_analysis.bent_waveguide.radius        |        1.0        |  float  |                                         |
-|     modal_analysis.bent_waveguide.orientation      |        0.0        |  float  |                                         |
-|       modal_analysis.bent_waveguide.location       | simulation_center | string  |  Selections are ['simulation_center'].  |
-|       modal_analysis.mode_removal.threshold        |                   |  float  |                                         |
-|       frequency_analysis.frequency_analysis        |       false       |  bool   |                                         |
-|        frequency_analysis.start_wavelength         |       1.55        |  float  |                                         |
-|         frequency_analysis.stop_wavelength         |      1.49896      |  float  |                                         |
-|        frequency_analysis.number_of_points         |        10         | integer |                                         |
-|         frequency_analysis.effective_index         |        1.0        |  float  |                                         |
-| frequency_analysis.detailed_dispersion_calculation |       false       |  bool   |                                         |
+|           modal_analysis.mesh_structure            |       false       |  bool   |      Confirm whether to generate a refractive index diagram for the structure.       |
+|           modal_analysis.calculate_modes           |       false       |  bool   |      Confirm whether to calculate the mode for the structure.                                   |
+|             modal_analysis.wavelength              |       1.55        |  float  |     The mode wavelength for FDE calculation.          |
+|          modal_analysis.wavelength_offset          |       0.002       |  float  |        The mode wavelength offset for FDE calculation.         |
+|        modal_analysis.number_of_trial_modes        |        20         | integer |     When calculating modes, determine the calculated number of modes around the refractive index.        |
+|               modal_analysis.search                |     max_index     | string  | Calculate the mode based on the maximum refractive index or user defined refractive index in the structure. Selections are ['near_n', 'max_index']. |
+|                  modal_analysis.n                  |         1         |  float  |     Under the 'near_n' condition, use this value of refractive index to search the source mode.     |
+|        modal_analysis.calculate_group_index        |       false       |  bool   |  Determine whether to calculate the group refractive index.               |
+|    modal_analysis.bent_waveguide.bent_waveguide    |       false       |  bool   |       Select whether to calculate modes in bent waveguides.                |
+|        modal_analysis.bent_waveguide.radius        |        1.0        |  float  |       Set the waveguide radius for bent waveguides.                  |
+|     modal_analysis.bent_waveguide.orientation      |        0.0        |  float  | The bent direction of the waveguide.                 |
+|       modal_analysis.bent_waveguide.location       | simulation_center | string  |  Set the bent center position of bent waveguides. Selections are ['simulation_center'].  |
+|       modal_analysis.mode_removal.threshold        |        -         |  float  |      Screen the FDTD port source according to the energy arriving at the boundary to ensure the accuracy of the calculated transmission FDTD port mode.       |
+|       frequency_analysis.frequency_analysis        |       false       |  bool   |    Determine whether to invoke frequency analysis.              |
+|        frequency_analysis.start_wavelength         |       1.55        |  float  |      Set the start frequency of the frequency analysis.            |
+|         frequency_analysis.stop_wavelength         |      1.49896      |  float  | Set the stop frequency of the frequency analysis.              |
+|        frequency_analysis.number_of_points         |        10         | integer |        Set the number of points in the frequency analysis               |
+|         frequency_analysis.effective_index         |        1.0        |  float  |       To search the mode near this refractive index.                  |
+| frequency_analysis.detailed_dispersion_calculation |       false       |  bool   |          Determine whether to calculate the dispersion of structure.      |
 
 
 
@@ -173,10 +173,10 @@ run_fde_beam_and_extract(self, *, property, export_csv=False, show=False, savepa
 
 | **Parameters** |                 Description                  |
 | :------------: | :------------------------------------------: |
-|    property    |                Beam settings                 |
-|   export_csv   |    Whether to save csv, defaults to False    |
-|      show      |    Show figure or not, defaults as False     |
-|    savepath    | Save path of heatmap and csv, defaults to "" |
+|    property    |               Set the property of beam to calculate overlap.              |
+|   export_csv   |    Whether to save a file as csv format, defaults to False.     |
+|      show      |    Whether to show figure or not, defaults as False     |
+|    savepath    | The save path of heatmap and csv, defaults to "" |
 
 Subsequently, we can execute the FDE overlap function and extract the result.
 
@@ -186,9 +186,9 @@ run_fde_overlap_and_extract(self, *, property, savepath="a", export_csv=False)
 
 | **Parameters** |               Description                |
 | :------------: | :--------------------------------------: |
-|    property    |             Overlap settings             |
-|    savepath    |    Save path of csv, defaults to "a"     |
-|   export_csv   | Whether to export csv, defaults to False |
+|    property    |             Set the property of overlap calculation.            |
+|    savepath    |    Save path of csv, defaults to "a".     |
+|   export_csv   | Whether to export csv, defaults to False. |
 
 **Example:**
 

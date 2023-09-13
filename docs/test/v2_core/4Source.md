@@ -214,9 +214,9 @@ pt.add(name='port_left', type='fdtd_port',
 |         modal_properties.general.search          | max_index | string  |          Calculate the FDTD port mode based on the maximum refractive index or user defined refractive index in the structure. Selections are ['near_n', 'max_index'].            |
 |            modal_properties.general.n          |    1.0    |  float  |Under the 'near_n' condition, use this value of refractive index to search the FDTD port source mode.               |
 |   modal_properties.general.number_of_trial_modes   |    20     | integer |   When calculating FDTD port mode, determine the calculated number of FDTD port mode around the refractive index.                       |
-| modal_properties.bent_waveguide.bent_waveguide  |       false       |  bool   |      Select whether to calculate modes in curved waveguides.          |
-|     modal_properties.bent_waveguide.radius      |         1         |  float  |    Set the waveguide radius for curved waveguides.             |
-|   modal_properties.bent_waveguide.orientation   |        20         |  float  |       Bent direction of the waveguide.         |
+| modal_properties.bent_waveguide.bent_waveguide  |       false       |  bool   |      Select whether to calculate modes in bent waveguides.          |
+|     modal_properties.bent_waveguide.radius      |         1         |  float  |    Set the waveguide radius for bent  waveguides.             |
+|   modal_properties.bent_waveguide.orientation   |        20         |  float  |       The bent direction of the waveguide.         |
 |    modal_properties.bent_waveguide.location     | simulation_center | string  |            Set the bent center position of bent waveguides. Selections are ['simulation_center'].             |
 
 

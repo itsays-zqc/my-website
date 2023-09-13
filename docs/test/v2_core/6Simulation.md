@@ -321,7 +321,7 @@ simu.add(name=simu_name, type="EME",
 
 
 
-## 6.2.1 EME CellGroup Custom Setting
+### 6.2.1 EME CellGroup Custom Setting
 
 This section provides guidance on configuring a customized EME cell group according to your specifications.
 

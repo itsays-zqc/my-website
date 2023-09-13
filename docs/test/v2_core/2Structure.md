@@ -99,9 +99,9 @@ st.add_geometry(name="gds_file", type="gds_file", property={
 |     geometry.x      |    0    |  float   |    The x-coordinate of the center point position of structures in the imported GDS file.          |
 |     geometry.y      |    0    |  float   |    The y-coordinate of the center point position of structures in the imported GDS file.      |
 |     geometry.z      |    -   |  float   | The z-coordinate of the center point position of structures in the imported GDS file. |
-|   geometry.z_span   |     -    |  float   | Setting the thickness of structures in the imported GDS file. Restrained by condition: >0.  |
-|   geometry.z_min    |     -    |  float   |   The z-coordinate of the bottom position of the thickness of structures in the imported GDS file.      |
-|   geometry.z_max    |     -    |  float   |   The z-coordinate of the top position of the thickness of structures in the imported GDS file.    |
+|   geometry.z_span   |     -    |  float   | Setting the height of structures in the imported GDS file. Restrained by condition: >0.  |
+|   geometry.z_min    |     -    |  float   |   The z-coordinate of the bottom position of the height of structures in the imported GDS file.      |
+|   geometry.z_max    |     -    |  float   |   The z-coordinate of the top position of the height of structures in the imported GDS file.    |
 |  material.material  |     -    | material |     Material of the geometric structure.         |
 | material.mesh_order |    -     | integer  | The oreder of material coverage when creating a geometric structure.Restrained by condition: >=0. |
 |    general.path     |    -     |  string  |    The path of the imported GDS file.   |
@@ -126,10 +126,10 @@ st.add_geometry(name="gds_file_3D", type="gds_file3D", property={
 |  geometry.user_defined   |    1    |  float   |      To decide the ratio of sidewalls when importing GDS layout.                                                    |
 | geometry.mirror_normal_z |    0    |  float   | The posiotion of z-normal plane for mirror symmetry.                                      |
 | geometry.mirror_plane_z0 |    0    |  float   |       The center point position of z normal palne.                                                       |
-|    geometry.rotate_x     |    0    |  float   | The angle of the x-axe in the rotation operation.                                  |
-|    geometry.rotate_y     |    0    |  float   |  The angle of the y-axe in the rotation operation.                                        |
-|    geometry.rotate_z     |    0    |  float   | The angle of the z-axe in the rotation operation.                                      |
-| general.construct_method |     -    |  string  |     The method of constructing the GDS after choosing to import the GDS file. Selections are ['method1', 'method2']             |
+|    geometry.rotate_x     |    0    |  float   | The angle around the x-axe in the rotation operation.                                  |
+|    geometry.rotate_y     |    0    |  float   |  The angle around the y-axe in the rotation operation.                                        |
+|    geometry.rotate_z     |    0    |  float   | The angle around the z-axe in the rotation operation.                                      |
+| general.construct_method |     -    |  string  |     The method around constructing the GDS after choosing to import the GDS file. Selections are ['method1', 'method2']             |
 
 
 
@@ -154,16 +154,16 @@ st.add_geometry(name="arc", type="ArcWaveguide", property={
 |      geometry.x       |    -     |  float   |  The x-coordinate of the center point position of arc waveguide.                       |
 |      geometry.y       |    -     |  float   |       The y-coordinate of the center point position of arc waveguide.                        |
 |      geometry.z       |    -     |  float   |     The z-coordinate of the center point position of arc waveguide.        |
-|    geometry.z_span    |     -    |  float   | Setting the thickness of arc waveguide. Restrained by condition: >0.  |
-|    geometry.z_min     |    -     |  float   | The z-coordinate of the bottom position of the thickness of arc waveguide.   |
-|    geometry.z_max     |     -    |  float   |   The z-coordinate of the top position of the thickness of arc waveguide.    |
-|   geometry.rotate_x   |    0    |  float   |    The angle of the x-axe in the rotation operation.     |
-|   geometry.rotate_y   |    0    |  float   |   The angle of the y-axe in the rotation operation.      |
-|   geometry.rotate_z   |    0    |  float   |      The angle of the z-axe in the rotation operation.       |
+|    geometry.z_span    |     -    |  float   | Setting the height of arc waveguide. Restrained by condition: >0.  |
+|    geometry.z_min     |    -     |  float   | The z-coordinate of the bottom position of the height of arc waveguide.   |
+|    geometry.z_max     |     -    |  float   |   The z-coordinate of the top position of the height of arc waveguide.    |
+|   geometry.rotate_x   |    0    |  float   |    The angle around the x-axe in the rotation operation.     |
+|   geometry.rotate_y   |    0    |  float   |   The angle around the y-axe in the rotation operation.      |
+|   geometry.rotate_z   |    0    |  float   |      The angle around the z-axe in the rotation operation.       |
 |   material.material   |     -    | material |  Material of the geometric structure.     |
 |  material.mesh_order  |     -    | integer  | The oreder of material coverage when creating a geometric structure.Restrained by condition: >=0. |
 
-Similarly, we offer support for using code  `type="ArcWaveguide3D"` to adjust the arc waveguide structure in the thickness direction.
+Similarly, we offer support for using code  `type="ArcWaveguide3D"` to adjust the arc waveguide structure in the height direction.
 
 ```python
 st.add_geometry(name="arc_3d", type="ArcWaveguide3D", property={
@@ -211,15 +211,15 @@ st.add_geometry(name="bezier", type="BezierCurve", property={
 |     geometry.y      |     -    |  float   |    The center point y-coordinate the Bezier curve.     |
 |     geometry.z      |      -   |  float   |  The center point z-coordinate the Bezier curve.    |
 |   geometry.z_span   |     -    |  float   | The thinckness of the Bezier curve. Restrained by condition: >0.  |
-|   geometry.z_min    |     -    |  float   |  The z-coordinate of the bottom position of the thickness of the Bezier curve.   |
-|   geometry.z_max    |     -    |  float   |  The z-coordinate of the top position of the thickness of the Bezier curve.   |
-|  geometry.rotate_x  |    0    |  float   | The angle of the x-axe in the rotation operation.     |
-|  geometry.rotate_y  |    0    |  float   |  The angle of the y-axe in the rotation operation.  |
-|  geometry.rotate_z  |    0    |  float   |   The angle of the z-axe in the rotation operation.   |
+|   geometry.z_min    |     -    |  float   |  The z-coordinate of the bottom position of the height of the Bezier curve.   |
+|   geometry.z_max    |     -    |  float   |  The z-coordinate of the top position of the height of the Bezier curve.   |
+|  geometry.rotate_x  |    0    |  float   | The angle around the x-axe in the rotation operation.     |
+|  geometry.rotate_y  |    0    |  float   |  The angle around the y-axe in the rotation operation.  |
+|  geometry.rotate_z  |    0    |  float   |   The angle around the z-axe in the rotation operation.   |
 |  material.material  |     -    | material |  Material of the geometric structure.    |
 | material.mesh_order |     -    | integer  | The oreder of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
-Similarly, we offer support for using code  `type="BezierCurve3D"` to adjust the Bézier curve structure in the thickness direction.
+Similarly, we offer support for using code  `type="BezierCurve3D"` to adjust the Bézier curve structure in the height direction.
 
 ```python
 st.add_geometry(name="bezier_3d", type="BezierCurve3D", property={
@@ -261,11 +261,11 @@ st.add_geometry(name="circle", type="Circle", property={
 |     geometry.y      |     -    |  float   |    The y-coordinate of the center point position of circle.      |
 |     geometry.z      |    -     |  float   |   The z-coordinate of the center point position of circle.       |
 |   geometry.z_span   |     -    |  float   | The thinckness of the circle. Restrained by condition: >0.  |
-|   geometry.z_min    |     -    |  float   |The z-coordinate of the bottom position of the thickness of the circle.      |
-|   geometry.z_max    |    -     |  float   |  The z-coordinate of the top position of the thickness of the circle.     |
-|  geometry.rotate_x  |    0    |  float   |    The angle of the x-axe in the rotation operation.        |
-|  geometry.rotate_y  |    0    |  float   |  The angle of the y-axe in the rotation operation.    |
-|  geometry.rotate_z  |    0    |  float   |  The angle of the z-axe in the rotation operation.        |
+|   geometry.z_min    |     -    |  float   |The z-coordinate of the bottom position of the height of the circle.      |
+|   geometry.z_max    |    -     |  float   |  The z-coordinate of the top position of the height of the circle.     |
+|  geometry.rotate_x  |    0    |  float   |    The angle around the x-axe in the rotation operation.        |
+|  geometry.rotate_y  |    0    |  float   |  The angle around the y-axe in the rotation operation.    |
+|  geometry.rotate_z  |    0    |  float   |  The angle around the z-axe in the rotation operation.        |
 |  material.material  |     -    | material | Material of the geometric structure. |
 | material.mesh_order |    -     | integer  | The oreder of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
@@ -293,12 +293,12 @@ st.add_geometry(name="custom_polygon", type="CustomPolygon", property={
 |     geometry.y      |    -     |  float   |    The center point y-coordinate the custom polygon.     |
 |     geometry.z      |     -    |  float   |  The center point z-coordinate the custom polygon.    |
 |   geometry.z_span   |    -     |  float   | The thinckness of the custom polygon. Restrained by condition: >0.  |
-|   geometry.z_min    |     -    |  float   |  The z-coordinate of the bottom position of the thickness of the custom polygon.   |
-|   geometry.z_max    |      -   |  float   |  The z-coordinate of the top position of the thickness of the custom polygon.   |
-|  geometry.rotate_x  |    0    |  float   | The angle of the x-axe in the rotation operation.     |
-|  geometry.rotate_y  |    0    |  float   |  The angle of the y-axe in the rotation operation.  |
-|  geometry.rotate_z  |    0    |  float   |   The angle of the z-axe in the rotation operation.   |
-|  material.material  |      -   | material |  Material of the geometric structure.    |
+|   geometry.z_min    |     -    |  float   |  The z-coordinate of the bottom position of the height of the custom polygon.   |
+|   geometry.z_max    |      -   |  float   |  The z-coordinate of the top position of the height of the custom polygon.   |
+|  geometry.rotate_x  |    0    |  float   | The angle around the x-axe in the rotation operation.     |
+|  geometry.rotate_y  |    0    |  float   |  The angle around the y-axe in the rotation operation.  |
+|  geometry.rotate_z  |    0    |  float   |   The angle around the z-axe in the rotation operation.   |
+|  material.material  |      -   | material |  Material around the geometric structure.    |
 | material.mesh_order |      -   | integer  | The oreder of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
 
@@ -324,11 +324,11 @@ st.add_geometry(name="ellipse", type="Ellipse", property={
 |     geometry.y      |     -    |  float   |  The y-coordinate of the center point position of the ellipse.      |
 |     geometry.z      |     -    |  float   |   The z-coordinate of the center point position of the ellipse.    |
 |   geometry.z_span   |     -    |  float   | The thinckness of the ellipse. Restrained by condition: >0.  |
-|   geometry.z_min    |     -    |  float   |The z-coordinate of the bottom position of the thickness of the ellipse.      |
-|   geometry.z_max    |     -    |  float   |  The z-coordinate of the top position of the thickness of the ellipse.     |
-|  geometry.rotate_x  |    0    |  float   |    The angle of the x-axe in the rotation operation.        |
-|  geometry.rotate_y  |    0    |  float   |  The angle of the y-axe in the rotation operation.    |
-|  geometry.rotate_z  |    0    |  float   |  The angle of the z-axe in the rotation operation.        |
+|   geometry.z_min    |     -    |  float   |The z-coordinate of the bottom position of the height of the ellipse.      |
+|   geometry.z_max    |     -    |  float   |  The z-coordinate of the top position of the height of the ellipse.     |
+|  geometry.rotate_x  |    0    |  float   |    The angle around the x-axe in the rotation operation.        |
+|  geometry.rotate_y  |    0    |  float   |  The angle around the y-axe in the rotation operation.    |
+|  geometry.rotate_z  |    0    |  float   |  The angle around the z-axe in the rotation operation.        |
 |  material.material  |     -    | material | Material of the geometric structure. |
 | material.mesh_order |     -    | integer  | The oreder of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
@@ -363,11 +363,11 @@ st.add_geometry(name="linear_trapezoid", type="LinearTrapezoid", property={
 |     geometry.y      |     -    |  float   |  The y-coordinate of the center point position of the linear trapezoid.      |
 |     geometry.z      |     -    |  float   |   The z-coordinate of the center point position of the linear trapezoid.    |
 |   geometry.z_span   |     -    |  float   | The thinckness of the linear trapezoid. Restrained by condition: >0.  |
-|   geometry.z_min    |     -    |  float   |The z-coordinate of the bottom position of the thickness of the linear trapezoid.      |
-|   geometry.z_max    |     -    |  float   |  The z-coordinate of the top position of the thickness of the linear trapezoid.     |
-|  geometry.rotate_x  |    0    |  float   |    The angle of the x-axe in the rotation operation.        |
-|  geometry.rotate_y  |    0    |  float   |  The angle of the y-axe in the rotation operation.    |
-|  geometry.rotate_z  |    0    |  float   |  The angle of the z-axe in the rotation operation.        |
+|   geometry.z_min    |     -    |  float   |The z-coordinate of the bottom position of the height of the linear trapezoid.      |
+|   geometry.z_max    |     -    |  float   |  The z-coordinate of the top position of the height of the linear trapezoid.     |
+|  geometry.rotate_x  |    0    |  float   |    The angle around the x-axe in the rotation operation.        |
+|  geometry.rotate_y  |    0    |  float   |  The angle around the y-axe in the rotation operation.    |
+|  geometry.rotate_z  |    0    |  float   |  The around the z-axe in the rotation operation.        |
 |  material.material  |     -    | material | Material of the geometric structure. |
 | material.mesh_order |     -    | integer  | The oreder of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
@@ -399,11 +399,11 @@ st.add_geometry(name="pyramid", type="Pyramid", property={
 |     geometry.y      |     -    |  float   |  The y-coordinate of the center point position of the pyramid.      |
 |     geometry.z      |     -    |  float   |   The z-coordinate of the center point position of the pyramid.    |
 |   geometry.z_span   |     -    |  float   | The thinckness of the pyramid. Restrained by condition: >0.  |
-|   geometry.z_min    |     -    |  float   |The z-coordinate of the bottom position of the thickness of the pyramid.      |
-|   geometry.z_max    |     -    |  float   |  The z-coordinate of the top position of the thickness of the pyramid.     |
-|  geometry.rotate_x  |    0    |  float   |    The angle of the x-axe in the rotation operation.        |
-|  geometry.rotate_y  |    0    |  float   |  The angle of the y-axe in the rotation operation.    |
-|  geometry.rotate_z  |    0    |  float   |  The angle of the z-axe in the rotation operation.        |
+|   geometry.z_min    |     -    |  float   |The z-coordinate of the bottom position of the height of the pyramid.      |
+|   geometry.z_max    |     -    |  float   |  The z-coordinate of the top position of the height of the pyramid.     |
+|  geometry.rotate_x  |    0    |  float   |    The angle around the x-axe in the rotation operation.        |
+|  geometry.rotate_y  |    0    |  float   |  The angle around the y-axe in the rotation operation.    |
+|  geometry.rotate_z  |    0    |  float   |  The angle around the z-axe in the rotation operation.        |
 |  material.material  |    -     | material | Material of the geometric structure. |
 | material.mesh_order |     -    | integer  | The oreder of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
@@ -441,12 +441,12 @@ st.add_geometry(name='taper_symmetric_test', type='AnalyticalWaveguide',
 |     geometry.x      |    0    |  float   |    The x-coordinate of the center point position of the analytical waveguide.          |
 |     geometry.y      |    0    |  float   |    The y-coordinate of the center point position of the analytical waveguide.      |
 |     geometry.z      |     -    |  float   | The z-coordinate of the center point position of the analytical waveguide. |
-|   geometry.z_span   |     -    |  float   | Setting the thickness of the analytical waveguide. Restrained by condition: >0.  |
-|   geometry.z_min    |      -   |  float   |   The z-coordinate of the bottom position of the thickness of the analytical waveguide.      |
-|   geometry.z_max    |     -    |  float   |   The z-coordinate of the top position of the thickness of the analytical waveguide.    |
-|  geometry.rotate_x  |    0    |  float   |    The angle of the x-axe in the rotation operation.        |
-|  geometry.rotate_y  |    0    |  float   |  The angle of the y-axe in the rotation operation.    |
-|  geometry.rotate_z  |    0    |  float   |  The angle of the z-axe in the rotation operation.        |
+|   geometry.z_span   |     -    |  float   | Setting the height of the analytical waveguide. Restrained by condition: >0.  |
+|   geometry.z_min    |      -   |  float   |   The z-coordinate of the bottom position of the height of the analytical waveguide.      |
+|   geometry.z_max    |     -    |  float   |   The z-coordinate of the top position of the height of the analytical waveguide.    |
+|  geometry.rotate_x  |    0    |  float   |    The angle around the x-axe in the rotation operation.        |
+|  geometry.rotate_y  |    0    |  float   |  The angle around the y-axe in the rotation operation.    |
+|  geometry.rotate_z  |    0    |  float   |  The angle around the z-axe in the rotation operation.        |
 |  material.material  |      -   | material |     Material of the geometric structure.         |
 | material.mesh_order |      -   | integer  | The oreder of material coverage when creating a geometric structure.Restrained by condition: >=0. |
 
@@ -476,12 +476,12 @@ st.add_geometry(name="rectangle", type="Rectangle", property={
 |     geometry.x      |    0    |  float   |    The x-coordinate of the center point position of the rectangle.          |
 |     geometry.y      |    0    |  float   |    The y-coordinate of the center point position of the rectangle.      |
 |     geometry.z      |     -    |  float   | The z-coordinate of the center point position of the rectangle. |
-|   geometry.z_span   |    -     |  float   | Setting the thickness of the rectangle. Restrained by condition: >0.  |
-|   geometry.z_min    |     -    |  float   |   The z-coordinate of the bottom position of the thickness of the rectangle.      |
-|   geometry.z_max    |     -    |  float   |   The z-coordinate of the top position of the thickness of the rectangle.    |
-|  geometry.rotate_x  |    0    |  float   |    The angle of the x-axe in the rotation operation.        |
-|  geometry.rotate_y  |    0    |  float   |  The angle of the y-axe in the rotation operation.    |
-|  geometry.rotate_z  |    0    |  float   |  The angle of the z-axe in the rotation operation.        |
+|   geometry.z_span   |    -     |  float   | Setting the height of the rectangle. Restrained by condition: >0.  |
+|   geometry.z_min    |     -    |  float   |   The z-coordinate of the bottom position of the height of the rectangle.      |
+|   geometry.z_max    |     -    |  float   |   The z-coordinate of the top position of the height of the rectangle.    |
+|  geometry.rotate_x  |    0    |  float   |    The angle around the x-axe in the rotation operation.        |
+|  geometry.rotate_y  |    0    |  float   |  The angle around the y-axe in the rotation operation.    |
+|  geometry.rotate_z  |    0    |  float   |  The angle around the z-axe in the rotation operation.        |
 |  material.material  |    -     | material |     Material of the geometric structure.         |
 | material.mesh_order |     -    | integer  | The oreder of material coverage when creating a geometric structure.Restrained by condition: >=0. |
 
@@ -508,12 +508,12 @@ st.add_geometry(name="ring", type="Ring", property={
 |     geometry.x      |    0    |  float   |    The x-coordinate of the center point position of the ring.          |
 |     geometry.y      |    0    |  float   |    The y-coordinate of the center point position of the ring.      |
 |     geometry.z      |    -     |  float   | The z-coordinate of the center point position of the ring. |
-|   geometry.z_span   |     -    |  float   | Setting the thickness of the ring. Restrained by condition: >0.  |
-|   geometry.z_min    |     -    |  float   |   The z-coordinate of the bottom position of the thickness of the ring.      |
-|   geometry.z_max    |     -    |  float   |   The z-coordinate of the top position of the thickness of the ring.    |
-|  geometry.rotate_x  |    0    |  float   |    The angle of the x-axe in the rotation operation.        |
-|  geometry.rotate_y  |    0    |  float   |  The angle of the y-axe in the rotation operation.    |
-|  geometry.rotate_z  |    0    |  float   |  The angle of the z-axe in the rotation operation.        |
+|   geometry.z_span   |     -    |  float   | Setting the height of the ring. Restrained by condition: >0.  |
+|   geometry.z_min    |     -    |  float   |   The z-coordinate of the bottom position of the height of the ring.      |
+|   geometry.z_max    |     -    |  float   |   The z-coordinate of the top position of the height of the ring.    |
+|  geometry.rotate_x  |    0    |  float   |    The angle around the x-axe in the rotation operation.        |
+|  geometry.rotate_y  |    0    |  float   |  The angle around the y-axe in the rotation operation.    |
+|  geometry.rotate_z  |    0    |  float   |  The angle around the z-axe in the rotation operation.        |
 |  material.material  |     -    | material |     Material of the geometric structure.         |
 | material.mesh_order |     -    | integer  | The oreder of material coverage when creating a geometric structure.Restrained by condition: >=0. |
 
@@ -540,12 +540,12 @@ st.add_geometry(name="sector", type="Sector", property={
 |     geometry.x      |    0    |  float   |    The x-coordinate of the center point position of the sector.          |
 |     geometry.y      |    0    |  float   |    The y-coordinate of the center point position of the sector.      |
 |     geometry.z      |     -    |  float   | The z-coordinate of the center point position of the sector. |
-|   geometry.z_span   |     -    |  float   | Setting the thickness of the sector. Restrained by condition: >0.  |
-|   geometry.z_min    |     -    |  float   |   The z-coordinate of the bottom position of the thickness of the sector.      |
-|   geometry.z_max    |     -    |  float   |   The z-coordinate of the top position of the thickness of the sector.    |
-|  geometry.rotate_x  |    0    |  float   |    The angle of the x-axe in the rotation operation.        |
-|  geometry.rotate_y  |    0    |  float   |  The angle of the y-axe in the rotation operation.    |
-|  geometry.rotate_z  |    0    |  float   |  The angle of the z-axe in the rotation operation.        |
+|   geometry.z_span   |     -    |  float   | Setting the height of the sector. Restrained by condition: >0.  |
+|   geometry.z_min    |     -    |  float   |   The z-coordinate of the bottom position of the height of the sector.      |
+|   geometry.z_max    |     -    |  float   |   The z-coordinate of the top position of the height of the sector.    |
+|  geometry.rotate_x  |    0    |  float   |    The angle around the x-axe in the rotation operation.        |
+|  geometry.rotate_y  |    0    |  float   |  The angle around the y-axe in the rotation operation.    |
+|  geometry.rotate_z  |    0    |  float   |  The angle around the z-axe in the rotation operation.        |
 |  material.material  |     -    | material |     Material of the geometric structure.         |
 | material.mesh_order |     -    | integer  | The oreder of material coverage when creating a geometric structure.Restrained by condition: >=0. |
 
@@ -577,11 +577,11 @@ st.add_geometry(name="triangle", type="Triangle", property={
 |     geometry.y      |     -    |  float   |  The y-coordinate of the center point position of the triangle.      |
 |     geometry.z      |     -    |  float   |   The z-coordinate of the center point position of the triangle.    |
 |   geometry.z_span   |     -    |  float   | The thinckness of the triangle. Restrained by condition: >0.  |
-|   geometry.z_min    |      -   |  float   |The z-coordinate of the bottom position of the thickness of the triangle.      |
-|   geometry.z_max    |     -    |  float   |  The z-coordinate of the top position of the thickness of the triangle.     |
-|  geometry.rotate_x  |    0    |  float   |    The angle of the x-axe in the rotation operation.        |
-|  geometry.rotate_y  |    0    |  float   |  The angle of the y-axe in the rotation operation.    |
-|  geometry.rotate_z  |    0    |  float   |  The angle of the z-axe in the rotation operation.        |
+|   geometry.z_min    |      -   |  float   |The z-coordinate of the bottom position of the height of the triangle.      |
+|   geometry.z_max    |     -    |  float   |  The z-coordinate of the top position of the height of the triangle.     |
+|  geometry.rotate_x  |    0    |  float   |    The angle around the x-axe in the rotation operation.        |
+|  geometry.rotate_y  |    0    |  float   |  The angle around the y-axe in the rotation operation.    |
+|  geometry.rotate_z  |    0    |  float   |  The angle around the z-axe in the rotation operation.        |
 |  material.material  |     -    | material | Material of the geometric structure. |
 | material.mesh_order |     -    | integer  | The oreder of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
@@ -653,11 +653,11 @@ st.add_doping(name="Uniform", type="p", property={
 |   geometry.y_max    |    -     |  float   |  The maximum y-coordinate endpoint data of the doping.      |
 |     geometry.z      |    -     |  float   |   The z-coordinate of the center point position of the doping.    |
 |   geometry.z_span   |     -    |  float   | The thinckness in z direction of the doping. Restrained by condition: >0.  |
-|   geometry.z_min    |    -     |  float   |The z-coordinate of the bottom position of the thickness of the doping.      |
-|   geometry.z_max    |    -     |  float   |  The z-coordinate of the top position of the thickness of the doping.     |
-|  geometry.rotate_x  |    0    |  float   |    The angle of the x-axe in the rotation operation.        |
-|  geometry.rotate_y  |    0    |  float   |  The angle of the y-axe in the rotation operation.    |
-|  geometry.rotate_z  |    0    |  float   |  The angle of the z-axe in the rotation operation.        |
+|   geometry.z_min    |    -     |  float   |The z-coordinate of the bottom position of the height of the doping.      |
+|   geometry.z_max    |    -     |  float   |  The z-coordinate of the top position of the height of the doping.     |
+|  geometry.rotate_x  |    0    |  float   |    The angle around the x-axe in the rotation operation.        |
+|  geometry.rotate_y  |    0    |  float   |  The angle around the y-axe in the rotation operation.    |
+|  geometry.rotate_z  |    0    |  float   |  The angle around the z-axe in the rotation operation.        |
 | general.distribution_function |      -   |  str  |      To set the type of distribution function for doping region. Selections are ['constant', 'gaussian']       |
 |     general.concentration     |     -    | float |                                                    |
 |      general.source_face      |     -    |  str  | To set the doping source surface. Available when distribution_function is 'gaussian' |

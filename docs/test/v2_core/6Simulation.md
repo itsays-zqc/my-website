@@ -186,9 +186,9 @@ run_fde_overlap_and_extract(self, *, property, savepath="a", export_csv=False)
 
 | **Parameters** |               Description                |
 | :------------: | :--------------------------------------: |
-|    property    |             Set the property of overlap calculation.            |
-|    savepath    |    Save path of csv, defaults to "a".     |
-|   export_csv   | Whether to export csv, defaults to False. |
+|    property    |             Set the property of overlap calculation.     |
+|    savepath    |    Save path of csv, defaults to "a".                    |
+|   export_csv   | Whether to export csv, defaults to False.                |
 
 **Example:**
 
@@ -284,40 +284,40 @@ simu.add(name=simu_name, type="EME",
 
 |                          Parameters                          |   Default    |  Type   |                   Notes                    |
 | :----------------------------------------------------------: | :----------: | :-----: | :----------------------------------------: |
-|                      general.wavelength                      |              |  float  |                                            |
-|                  general.wavelength_offset                   |    0.002     |  float  |                                            |
-|                 general.use_wavelength_sweep                 |    false     |  bool   |                                            |
-|         eme_setup.cell_geometry.energy_conservation          | make_passive | string  |  Selections are ['none', 'make_passive'].  |
-|            eme_setup.cell_geometry.display_cells             |    false     |  bool   |                                            |
-|            eme_setup.cell_geometry.display_groups            |    false     |  bool   |                                            |
-|     eme_setup.cell_geometry.[]cell_group_definition.span     |              |  float  |                                            |
-| eme_setup.cell_geometry.[]cell_group_definition.cell_number  |              | integer |                                            |
-| eme_setup.cell_geometry.[]cell_group_definition.number_of_modes |              | integer |                                            |
-|      eme_setup.cell_geometry.[]cell_group_definition.sc      |     none     | string  | Selections are ['none', 'sub_cell', 'sc']. |
-|    eme_setup.cell_geometry.[]cell_group_definition.search    |  max_index   | string  |  Selections are ['near_n', 'max_index'].   |
-|      eme_setup.cell_geometry.[]cell_group_definition.n       |     1.0      |  float  |                                            |
-|     transverse_mesh_setting.global_mesh_uniform_grid.dx      |     0.02     |  float  |                                            |
-|     transverse_mesh_setting.global_mesh_uniform_grid.dy      |     0.02     |  float  |                                            |
-|     transverse_mesh_setting.global_mesh_uniform_grid.dz      |     0.02     |  float  |                                            |
-| transverse_mesh_setting.minimum_mesh_step_settings.min_mesh_step |    0.0001    |  float  |                                            |
-|            advanced.eme_settings.max_stored_modes            |     1000     | integer |                                            |
-|                    thread_settings.thread                    |      4       | integer |                                            |
-|                  eme_analysis.eme_propagate                  |    false     |  bool   |                                            |
-|             eme_analysis.periodicity.periodicity             |    false     |  bool   |                                            |
-| eme_analysis.periodicity.[]periodic_group_definition.start_cell_group |              | integer |                                            |
-| eme_analysis.periodicity.[]periodic_group_definition.end_cell_group |              | integer |                                            |
-| eme_analysis.periodicity.[]periodic_group_definition.periods |              | integer |                                            |
-|       eme_analysis.propagation_sweep.propagation_sweep       |    false     |  bool   |                                            |
-|           eme_analysis.propagation_sweep.parameter           | group_span_1 | string  |                                            |
-|             eme_analysis.propagation_sweep.start             |      0       |  float  |                                            |
-|             eme_analysis.propagation_sweep.stop              |      1       |  float  |                                            |
-|       eme_analysis.propagation_sweep.number_of_points        |      3       | integer |                                            |
-|        eme_analysis.wavelength_sweep.wavelength_sweep        |    false     |  bool   |                                            |
-|             eme_analysis.wavelength_sweep.start              |     1.5      |  float  |                                            |
-|              eme_analysis.wavelength_sweep.stop              |     1.6      |  float  |                                            |
-|  eme_analysis.wavelength_sweep.number_of_wavelength_points   |      3       | integer |                                            |
-|               eme_analysis.select_source.phase               |      0       |  float  |                                            |
-|            eme_analysis.select_source.select_mode            |              |         |                                            |
+|                      general.wavelength                      |        -      |  float  |            Specify the wavelength for EME simulation.                          |
+|                  general.wavelength_offset                   |    0.002     |  float  |       Set the offset of wavelength in EME simulation.               |
+|                 general.use_wavelength_sweep                 |    false     |  bool   |      Confirm whether to invoke wavelength sweep.                 |
+|         eme_setup.cell_geometry.energy_conservation          | make_passive | string  |  Set the type of energy conservation when calculating the S matrix. Selections are ['none', 'make_passive'].  |
+|            eme_setup.cell_geometry.display_cells             |    false     |  bool   |    Confirm whether to generate a preview of the EME cell when generating a structure preview.   |
+|            eme_setup.cell_geometry.display_groups            |    false     |  bool   |      Confirm whether to generate a preview of the EME cell groups when generating a structure preview.                 |
+|     eme_setup.cell_geometry.[]cell_group_definition.span     |     -      |  float  |        Set the span of the cell group in EME simulation.                  |
+| eme_setup.cell_geometry.[]cell_group_definition.cell_number  |      -        | integer |     Set the number of the cell in EME simulation.                   |
+| eme_setup.cell_geometry.[]cell_group_definition.number_of_modes |       -       | integer |      Set the number of the modes calculated in EME simulation.               |
+|      eme_setup.cell_geometry.[]cell_group_definition.sc      |     none     | string  | Set the subcell method in EME simulation. Selections are ['none', 'sub_cell', 'sc']. |
+|    eme_setup.cell_geometry.[]cell_group_definition.search    |  max_index   | string  |   Calculate the modes based on the maximum refractive index or user defined refractive index in the EME simulation. Selections are ['near_n', 'max_index'].   |
+|      eme_setup.cell_geometry.[]cell_group_definition.n       |     1.0      |  float  |          Under the 'near_n' condition, use this value of refractive index to search the modes in EME simulation.            |
+|     transverse_mesh_setting.global_mesh_uniform_grid.dx      |     0.02     |  float  |         Set the global mesh grid of EME simulation region in x coordinate.               |
+|     transverse_mesh_setting.global_mesh_uniform_grid.dy      |     0.02     |  float  |      Set the global mesh grid of EME simulation region in y coordinate.                      |
+|     transverse_mesh_setting.global_mesh_uniform_grid.dz      |     0.02     |  float  |   Set the global mesh grid of EME simulation region in z coordinate.                 |
+| transverse_mesh_setting.minimum_mesh_step_settings.min_mesh_step |    0.0001    |  float  |   Set the minimum mesh step in EME simulation.           |
+|            advanced.eme_settings.max_stored_modes            |     1000     | integer |    The maximum number of modes for EME simulation in each cell.              |
+|                    thread_settings.thread                    |      4       | integer |    Determine the number of cores required to run the simulation on the local computer.              |
+|                  eme_analysis.eme_propagate                  |    false     |  bool   |      Determine whether to calculate the propogation fields and the s matrix.                                 |
+|             eme_analysis.periodicity.periodicity             |    false     |  bool   |     Specify whether to use periodicity to simplify  structure in the EME simulation.                |
+| eme_analysis.periodicity.[]periodic_group_definition.start_cell_group |   -         | integer |         Set the start cell number for periodic structure.                   |
+| eme_analysis.periodicity.[]periodic_group_definition.end_cell_group |      -      | integer |       Set the end cell number for periodic structure.                |
+| eme_analysis.periodicity.[]periodic_group_definition.periods |      -      | integer |      Set the repetition number of cells in the periodic structure.                    |
+|       eme_analysis.propagation_sweep.propagation_sweep       |    false     |  bool   |   Determine whether to sweep the length of structure for propagating in EME simulation.             |
+|           eme_analysis.propagation_sweep.parameter           | group_span_1 | string  |   Select the cell group corresponding to the structure for which propagation sweep is needed.                 |
+|             eme_analysis.propagation_sweep.start             |      0       |  float  |         Set the starting length of the structure for propagation sweep.                  |
+|             eme_analysis.propagation_sweep.stop              |      1       |  float  |   Set the stopping length of the structure for propagation sweep.                     |
+|       eme_analysis.propagation_sweep.number_of_points        |      3       | integer |           Set the number of points for propagation sweep.                    |
+|        eme_analysis.wavelength_sweep.wavelength_sweep        |    false     |  bool   |             Decide whether to sweep the wavelength in EME simulaiton.                    |
+|             eme_analysis.wavelength_sweep.start              |     1.5      |  float  |     Set the starting wavelength in EME simulaiton.                           |
+|              eme_analysis.wavelength_sweep.stop              |     1.6      |  float  |  Set the stopping wavelength in EME simulaiton.                   |
+|  eme_analysis.wavelength_sweep.number_of_wavelength_points   |      3       | integer |    Set the number of points in wavelength range.           |
+|               eme_analysis.select_source.phase               |      0       |  float  |           Set  the phase of selected source in EME simulation.                     |
+|            eme_analysis.select_source.select_mode            |      -        |     string    |           Set the type of mode propagating in the EME simulation.                  |
 
 
 
@@ -408,25 +408,24 @@ simu.add(name=simu_name, type='FDTD',
 
 |                          Parameters                          |     Default      |  Type   |                      Notes                      |
 | :----------------------------------------------------------: | :--------------: | :-----: | :---------------------------------------------: |
-|              extra.fdtd_port_group.source_port               |                  | string  |                                                 |
-|                      general.dimension                       |        3d        | string  |             Selections are ['3d'].              |
-|           general.using_optical_path_estimate_time           |      false       |  bool   |                                                 |
-|                   general.simulation_time                    |       1000       | integer |                                                 |
-|                   mesh_settings.mesh_type                    | auto_non_uniform | string  | Selections are ['auto_non_uniform', 'uniform']. |
-|       mesh_settings.mesh_accuracy.cells_per_wavelength       |        15        | integer |                                                 |
-|             mesh_settings.mesh_step_settings.dx              |       0.1        |  float  |                                                 |
-|             mesh_settings.mesh_step_settings.dy              |       0.1        |  float  |                                                 |
-|             mesh_settings.mesh_step_settings.dz              |       0.1        |  float  |                                                 |
-|    mesh_settings.minimum_mesh_step_settings.min_mesh_step    |      0.0001      |  float  |                                                 |
-|       advanced_options.auto_shutoff.use_early_shutoff        |       true       |  bool   |                                                 |
-|        advanced_options.auto_shutoff.auto_shutoff_min        |      1.0e-4      |  float  |                                                 |
-|        advanced_options.auto_shutoff.down_sample_time        |       100        |  float  |                                                 |
-| advanced_options.live_slice_filed_display_settings.show_field |      false       |  bool   |                                                 |
-| advanced_options.live_slice_filed_display_settings.select_field_section |   2d_z_normal    | string  | Selections are ['2d_y_normal', '2d_z_normal'].  |
-| advanced_options.live_slice_filed_display_settings.select_component |        ex        | string  |       Selections are ['ex', 'ey', 'ez'].        |
-| advanced_options.live_slice_filed_display_settings.time_interval |       200        |  float  |                                                 |
-| advanced_options.live_slice_filed_display_settings.position  |        0         |  float  |                                                 |
-|                    thread_setting.thread                     |                  |         |                                                 |
+|                      general.dimension                       |        3d        | string  |             Determine the dimension type of the FDTD simulation. Selections are ['3d'].              |
+|           general.using_optical_path_estimate_time           |      false       |  bool   |     Choose whether to use the time evaluated by system running the FDTD simulation.                 |
+|                   general.simulation_time                    |       1000       | integer |      Set the simulation time in FDTD simulation.                       |
+|                   mesh_settings.mesh_type                    | auto_non_uniform | string  | Decide the type of mesh in FDTD simulation. Selections are ['auto_non_uniform', 'uniform']. |
+|       mesh_settings.mesh_accuracy.cells_per_wavelength       |        15        | integer |      Under the 'auto_non_uniform' condition, this parameter helps to set the mesh accuarcy by using cell number in per wavelength.               |
+|             mesh_settings.mesh_step_settings.dx              |       0.1        |  float  |   Under the 'uniform' condition, this parameter helps to set the mesh accuarcy by using cell length in x coordinent.                                               |
+|             mesh_settings.mesh_step_settings.dy              |       0.1        |  float  |     Under the 'uniform' condition, this parameter helps to set the mesh accuarcy by using cell length in y coordinent.                                             |
+|             mesh_settings.mesh_step_settings.dz              |       0.1        |  float  |             Under the 'uniform' condition, this parameter helps to set the mesh accuarcy by using cell length in z coordinent.                                     |
+|    mesh_settings.minimum_mesh_step_settings.min_mesh_step    |      0.0001      |  float  |      Under the 'auto_non_uniform' condition, this parameter helps to set the minimum mesh step.                          |
+|       advanced_options.auto_shutoff.use_early_shutoff        |       true       |  bool   |         Decide whether to use early shutoff.                                        |
+|        advanced_options.auto_shutoff.auto_shutoff_min        |      1.0e-4      |  float  |  Control the simulation shutoff based on the ratio of energy to the maximum input energy. |
+|        advanced_options.auto_shutoff.down_sample_time        |       100        |  float  |    Inspect the auto shutoff conditions every down sample time.                    |
+| advanced_options.live_slice_filed_display_settings.show_field |      false       |  bool   |         Decide whether to gennerate the electric intensity filed image for the results.                  |
+| advanced_options.live_slice_filed_display_settings.select_field_section |   2d_z_normal    | string  | Decide the type of the field image. Selections are ['2d_y_normal', '2d_z_normal'].  |
+| advanced_options.live_slice_filed_display_settings.select_component |        ex        | string  |       Decide the field component to show in the image. Selections are ['ex', 'ey', 'ez'].        |
+| advanced_options.live_slice_filed_display_settings.time_interval |       200        |  float  |   Set the time interval for displaying image.          |
+| advanced_options.live_slice_filed_display_settings.position  |        0         |  float  |     Set the center position of the field image.                     |
+|                    thread_setting.thread                     |     4      |     integer    |    Determine the number of cores required to run the simulation on the local computer.                      |
 
 
 
@@ -521,16 +520,16 @@ simu.add(
 
 |          Parameters           | Default |  Type   |                Notes                 |
 | :---------------------------: | :-----: | :-----: | :----------------------------------: |
-|        simulation_name        |         | string  |                                      |
-|          sweep_type           | ranges  | string  | Selections are ['ranges', 'values']. |
-|     []parameters.variable     |         |  float  |                                      |
-|      []parameters.start       |         |  float  |                                      |
-|       []parameters.stop       |         |  float  |                                      |
-| []parameters.number_of_points |         | integer |                                      |
-|      []parameters.values      |         |  list   |                                      |
-|         []result.name         |         | string  |                                      |
-|        []result.result        |         | string  |                                      |
-|      []result.component       |         | string  |                                      |
+|        simulation_name        |    -     | string  |         Set the sweep name in the simulation.                |
+|          sweep_type           | ranges  | string  | Set the type of valuse to sweep parameters in the simulation. Selections are ['ranges', 'values']. |
+|     []parameters.variable     |         |  float  |      Invoke the specific variable for sweep.                          |
+|      []parameters.start       |         |  float  |          Under the 'ranges' circumstances, we can decide the initial value of the variable.    |
+|       []parameters.stop       |         |  float  |         Under the 'ranges' circumstances, we can decide the stopping value of the variable.             |
+| []parameters.number_of_points |         | integer |      Decide the number of points in the  range of variable.           |
+|      []parameters.values      |         |  list   |     Under the 'values' circumstances, we can give the value of the variable.                       |
+|         []result.name         |         | string  |      Set the name  in the sweep function.                |
+|        []result.result        |         | string  |                 Get the related results.                       |
+|      []result.component       |         | string  |        Invoke the related componet in results.                 |
 
 
 

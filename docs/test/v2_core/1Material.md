@@ -34,7 +34,7 @@ add_anisotropy(
   </tr>
   <tr>
     <td align="center">name</td>
-    <td align="center">The name of material.</td>
+    <td align="center">The name of material in the project.</td>
   </tr>
   <tr>
     <td align="center">data</td>
@@ -91,7 +91,7 @@ add_dispersion(
   </tr>
   <tr>
     <td align="center">name</td>
-    <td align="center">The name of material.</td>
+    <td align="center">The name of material in the project.</td>
   </tr>
   <tr>
     <td align="center">data</td>
@@ -146,7 +146,7 @@ add_lib(
   </tr>
   <tr>
     <td align="center">name</td>
-    <td align="center">The name of material.</td>
+    <td align="center">The name of material in the project.</td>
   </tr>
   <tr>
     <td align="center">data</td>
@@ -197,7 +197,7 @@ add_nondispersion(
   </tr>
   <tr>
     <td align="center"><strong>name</strong></td>
-    <td align="center">The name of material.</td>
+    <td align="center">The name of material in the project.</td>
   </tr>
   <tr>
     <td align="center"><strong>data</strong></td>

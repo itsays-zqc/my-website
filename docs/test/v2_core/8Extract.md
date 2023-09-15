@@ -6,13 +6,13 @@ We support the atrributes to extract as below:
 
 |                        **Parameters**                        |                         Description                          |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
-|                       PowerAttributes                        | Literal['E', 'Ex', 'Ey', 'Ez', 'H', 'Hx', 'Hy', 'Hz', 'Px', 'Py', 'Pz', 'Energy density'] |
-|                        ModeAttributes                        | Literal["a", "b", "n", "p", "N", "P", "t_forward", "t_backward", "T_forward", "T_backward"] |
-|                                                              | Literal["TEratio", "neff_real", "neff_imag", "ng_real", "ng_imag", "wavelength_nm", "loss_dBpcm"] |
+|                       PowerAttributes                        | The following are power related physical attributes. Literal['E', 'Ex', 'Ey', 'Ez', 'H', 'Hx', 'Hy', 'Hz', 'Px', 'Py', 'Pz', 'Energy density'] |
+|                        ModeAttributes                        | The following are mode related physical attributes. Literal["a", "b", "n", "p", "N", "P", "t_forward", "t_backward", "T_forward", "T_backward"] |
+|                                                              | The following are other attributes which can be extracted. Literal["TEratio", "neff_real", "neff_imag", "ng_real", "ng_imag", "wavelength_nm", "loss_dBpcm"] |
 
 | **Parameters** |                         Description                          |
 | :------------: | :----------------------------------------------------------: |
-|      data      |           Which type/field data will be extracted.           |
+|      data      |          To decide what type/field data will be extracted.           |
 |   export_csv   |          Whether to export a csv. Default as False.          |
 |      show      | Whether to show the picture. If set to False, the picture will be saved instead. Default as False. |
 |    savepath    |              Picture save path. Default as 'a'.              |

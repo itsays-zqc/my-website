@@ -25,15 +25,15 @@ run_index(
 
 | **Parameters** |                     Description                     |
 | :------------: | :-------------------------------------------------: |
-|    property    |              Index monitor properties.              |
-|      name      |                    Monitor name.                    |
-|   export_csv   |        Export csv or not. Default as False.         |
-|      show      |        Show figure or not. Default as False.        |
-|    savepath    |   Save path for csv and picture. Default as 'a'.    |
-|    export_n    | Whether to export nx, ny, nz... . Default as True.  |
-|    export_c    | Whether to export σx, σy, σz... . Default as False. |
-|   max_index    | Maximum index of heatmap colorbar. Default as None. |
-|   max_sigma    | Maximum sigma of heatmap colorbar. Default as None. |
+|    property    |             To set the properties of index monitor.              |
+|      name      |                    The name of index monitor in the simulation.                    |
+|   export_csv   |       Decide whether to export the data as csv format or not. The default is False.         |
+|      show      |        Decide whether to show index preview figure or not. The default is False.        |
+|    savepath    |   Define the save path for the csv data and the picture. The default is 'a'.    |
+|    export_n    | Decide whether to export the real part of index ,such as nx, ny, nz... . The default is True.  |
+|    export_c    | Decide whether to export the imaginary part of index, such as σx, σy, σz... . The default is False. |
+|   max_index    | The maximum index of heatmap colorbar. The default is None. |
+|   max_sigma    | The maximum sigma of heatmap colorbar.The default is  None. |
 
 **Example:**
 
@@ -45,24 +45,21 @@ simu[simu_name].run_index(name=f'{simu_name}_x_0', savepath=f'{plot_path}{k}Inde
 
 |      Parameters       | Default |  Type  |                            Notes                             |
 | :-------------------: | :-----: | :----: | :----------------------------------------------------------: |
-| geometry.monitor_type |         | string | Selections are ['2d_x_normal', '2d_y_normal', '2d_z_normal']. |
-|      geometry.x       |         | float  |                                                              |
-|    geometry.x_span    |         | float  |                Restrained by condition: >=0.                 |
-|    geometry.x_min     |         | float  |                                                              |
-|    geometry.x_max     |         | float  |                                                              |
-|      geometry.y       |         | float  |                                                              |
-|    geometry.y_span    |         | float  |                Restrained by condition: >=0.                 |
-|    geometry.y_min     |         | float  |                                                              |
-|    geometry.y_max     |         | float  |                                                              |
-|      geometry.z       |         | float  |                                                              |
-|    geometry.z_span    |         | float  |                Restrained by condition: >=0.                 |
-|    geometry.z_min     |         | float  |                                                              |
-|    geometry.z_max     |         | float  |                                                              |
-
-
+| geometry.monitor_type |    -     | string | Set the orientation of the index monitor. The selections are ['2d_x_normal', '2d_y_normal', '2d_z_normal']. |
+|     geometry.x      |    -     |  float   |  The x-coordinate of the center point position of the index monitor.    |
+|   geometry.x_span   |     -    |  float   | The length in x direction of the index monitor. Restrained by condition: >0.  |
+|   geometry.x_min    |     -    |  float   | The minimum x-coordinate endpoint data of the index monitor.      |
+|   geometry.x_max    |     -    |  float   |  The maximum x-coordinate endpoint data of the index monitor.     |
+|     geometry.y      |    -     |  float   |  The y-coordinate of the center point position of the index monitor.      |
+|   geometry.y_span   |    -     |  float   | The width in y direction of the index monitor. Restrained by condition: >0.  |
+|   geometry.y_min    |     -    |  float   |The minimum y-coordinate endpoint data of the index monitor.       |
+|   geometry.y_max    |    -     |  float   |  The maximum y-coordinate endpoint data of the index monitor.      |
+|     geometry.z      |     -    |  float   |   The z-coordinate of the center point position of the index monitor.    |
+|   geometry.z_span   |    -     |  float   | The thinckness in z direction of the index monitor. Restrained by condition: >0.  |
+|   geometry.z_min    |     -    |  float   |The z-coordinate of the bottom position of the thickness of the index monitor.      |
+|   geometry.z_max    |     -    |  float   |  The z-coordinate of the top position of the thickness of the index monitor.     |
 
 ## 7.2 Structure show and show 3D
-
 
 This portion of the code is primarily intended for show structure. Please note that this method becomes invalid if the current structure manager contains Pyramid or Arc-Waveguide 3D type geometries.
 
@@ -96,12 +93,12 @@ structure_show(
 
 |                **Parameters**                |                         Description                          |
 | :------------------------------------------: | :----------------------------------------------------------: |
-|                     mode                     |                          Show mode.                          |
-|                     show                     | Whether to show the picture. If set to False, the picture will be saved instead. |
-|                   savepath                   |                      Picture save path.                      |
-|                   fig_type                   |                    Picture suffix(type).                     |
-|               simulation_name                |                       Simulation name.                       |
-|             disabled_components              |               Disable components from showing.               |
+|                     mode                     |     Specify the orientation of the structure preview function.                                             |
+|                     show                     |Decide whether to show directly the preview of structure directly in the related software.If set to False, the picture will be saved instead. |
+|                   savepath                   |                       Decide the save path of the preivew.                      |
+|                   fig_type                   |                    Decide the suffix(type) of Picture.                     |
+|               simulation_name                |                       The simulation name.                       |
+|             disabled_components              |               Disable the components from showing.               |
 | xyratioZoom multiplier of x and y direction. |            Zoom multiplier of x and y direction.             |
 |                 celldisplay                  |                  Whether to show eme cells.                  |
 
@@ -113,7 +110,7 @@ show3d(self, show_with: Literal["webviewer", "matplotlib"，"local_gui"] = "webv
 
 | **Parameters** |                         Description                          |
 | :------------: | :----------------------------------------------------------: |
-|   show_with    | "webviewer" will start a server and toggle a browser windows. "matplotlib" will toggle a Axes3D windows. Default as "webviewer". |
+|   show_with    | Choose the type of display. The selection are "webviewer", "matplotlib"，"local_gui". The "webviewer" will start a server and toggle a browser windows. "matplotlib" will toggle a Axes3D windows. Default as "webviewer". |
 
 **Example:**
 
@@ -146,12 +143,12 @@ run_doping(
 
 | **Parameters** |                         Description                          |
 | :------------: | :----------------------------------------------------------: |
-|    property    |                  Doping preview properties.                  |
-|      name      |                     Doping preview name.                     |
-|      show      |            Show figure or not. Default as False.             |
-|    savepath    |               Save path for picture. Required.               |
-|      norm      | Colorbar normalization. Selections are ['linear', 'log']. Default as 'linear'. |
-|     scale      | Scale type. Selections are ['equal', 'auto']. Default as 'equal'. |
+|    property    |                  The properties of doping preview.                  |
+|      name      |                     The name of doping preview.                     |
+|      show      |            Decide whether to show directly the preview of structure directly in the related software.If set to False, the picture will be saved instead.            |
+|    savepath    |               The save path for picture.              |
+|      norm      | The normalization of colorbar. Selections are ['linear', 'log']. Default as 'linear'. |
+|     scale      | The type of  pcture scale. Selections are ['equal', 'auto']. Default as 'equal'. |
 |  superimpose   |   Superimpose doping on structure or not. Default as True.   |
 | material_list  |         Specified material type list. Default as [].         |
 |  region_list   | Specified region name list. Default as []. Superior to material_list when not empty. |
@@ -169,16 +166,16 @@ simu["preview_oedevice"].run_doping(name="x_in", property={
 
 |     Parameters     | Default |  Type  |                            Notes                             |
 | :----------------: | :-----: | :----: | :----------------------------------------------------------: |
-| geometry.dimension |         | string | Selections are ['2d_x_normal', '2d_y_normal', '2d_z_normal']. |
-|     geometry.x     |         | float  |                                                              |
-|  geometry.x_span   |         | float  |                Restrained by condition: >=0.                 |
-|   geometry.x_min   |         | float  |                                                              |
-|   geometry.x_max   |         | float  |                                                              |
-|     geometry.y     |         | float  |                                                              |
-|  geometry.y_span   |         | float  |                Restrained by condition: >=0.                 |
-|   geometry.y_min   |         | float  |                                                              |
-|   geometry.y_max   |         | float  |                                                              |
-|     geometry.z     |         | float  |                                                              |
-|  geometry.z_span   |         | float  |                Restrained by condition: >=0.                 |
-|   geometry.z_min   |         | float  |                                                              |
-|   geometry.z_max   |         | float  |                                                              |
+| geometry.dimension |         | string | Set the orientation of the doping region. The selections are ['2d_x_normal', '2d_y_normal', '2d_z_normal']. |
+|     geometry.x      |    -     |  float   |  The x-coordinate of the center point position of the doping region.    |
+|   geometry.x_span   |     -    |  float   | The length in x direction of the doping region. Restrained by condition: >0.  |
+|   geometry.x_min    |     -    |  float   | The minimum x-coordinate endpoint data of the doping region.      |
+|   geometry.x_max    |     -    |  float   |  The maximum x-coordinate endpoint data of the doping region.     |
+|     geometry.y      |    -     |  float   |  The y-coordinate of the center point position of the doping region.      |
+|   geometry.y_span   |    -     |  float   | The width in y direction of the doping region. Restrained by condition: >0.  |
+|   geometry.y_min    |     -    |  float   |The minimum y-coordinate endpoint data of the doping region.       |
+|   geometry.y_max    |    -     |  float   |  The maximum y-coordinate endpoint data of the doping region.      |
+|     geometry.z      |     -    |  float   |   The z-coordinate of the center point position of the doping region.    |
+|   geometry.z_span   |    -     |  float   | The thinckness in z direction of the doping region. Restrained by condition: >0.  |
+|   geometry.z_min    |     -    |  float   |The z-coordinate of the bottom position of the thickness of the doping region.      |
+|   geometry.z_max    |     -    |  float   |  The z-coordinate of the top position of the thickness of the doping region.     |

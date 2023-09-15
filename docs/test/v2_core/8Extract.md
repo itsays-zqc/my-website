@@ -15,13 +15,13 @@ We support the atrributes to extract as below:
 |      data      |          To decide what type/field data will be extracted.           |
 |   export_csv   |          Whether to export a csv. Default as False.          |
 |      show      | Whether to show the picture. If set to False, the picture will be saved instead. Default as False. |
-|    savepath    |              Picture save path. Default as 'a'.              |
+|    savepath    |              The save path of picture . Default as 'a'.              |
 |     target     |    How the data is organized/displayed. Default as None.     |
 |   attribute    | Which attribute will extracted, in few cases this parameter is not needed. Default as None. |
 |      real      |      Whether to add real part of data. Default as True.      |
 |      imag      | Whether to add imag part of data. If both real and imag is activate, 'ABS' data will be extracted. Default as True. |
-|     plot_x     |         selection of x axis of heatmap or line plot.         |
-|     plot_y     |               selection of y axis of heatmap.                |
+|     plot_x     |         The selection of x axis of heatmap or line plot.         |
+|     plot_y     |               The selection of y axis of heatmap.                |
 |     kwargs     | Other visualization parameters. 'monitor_name' and 'mode_expansion_name' for 'fdtd:mode_expansion' for example. |
 
 

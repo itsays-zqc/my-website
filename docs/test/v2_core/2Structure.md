@@ -103,7 +103,7 @@ st.add_geometry(name="gds_file", type="gds_file", property={
 |   geometry.z_min    |     -    |  float   |   The z-coordinate of the bottom position of the height of structures in the imported GDS file.      |
 |   geometry.z_max    |     -    |  float   |   The z-coordinate of the top position of the height of structures in the imported GDS file.    |
 |  material.material  |     -    | material |     Material of the geometric structure.         |
-| material.mesh_order |    -     | integer  | The oreder of material coverage when creating a geometric structure.Restrained by condition: >=0. |
+| material.mesh_order |    -     | integer  | The order of material coverage when creating a geometric structure.Restrained by condition: >=0. |
 |    general.path     |    -     |  string  |    The path of the imported GDS file.   |
 |  general.cell_name  |     -    |  string  |  The cell name of imported GDS file.  |
 | general.layer_name  |     -    |   list   |   The layer name of imported GDS file.     |
@@ -161,7 +161,7 @@ st.add_geometry(name="arc", type="ArcWaveguide", property={
 |   geometry.rotate_y   |    0    |  float   |   The angle around the y-axe in the rotation operation.      |
 |   geometry.rotate_z   |    0    |  float   |      The angle around the z-axe in the rotation operation.       |
 |   material.material   |     -    | material |  Material of the geometric structure.     |
-|  material.mesh_order  |     -    | integer  | The oreder of material coverage when creating a geometric structure.Restrained by condition: >=0. |
+|  material.mesh_order  |     -    | integer  | The order of material coverage when creating a geometric structure.Restrained by condition: >=0. |
 
 Similarly, we offer support for using code  `type="ArcWaveguide3D"` to adjust the arc waveguide structure in the height direction.
 
@@ -211,13 +211,13 @@ st.add_geometry(name="bezier", type="BezierCurve", property={
 |     geometry.y      |     -    |  float   |    The center point y-coordinate the Bezier curve.     |
 |     geometry.z      |      -   |  float   |  The center point z-coordinate the Bezier curve.    |
 |   geometry.z_span   |     -    |  float   | The thinckness of the Bezier curve. Restrained by condition: >0.  |
-|   geometry.z_min    |     -    |  float   |  The z-coordinate of the bottom position of the height of the Bezier curve.   |
-|   geometry.z_max    |     -    |  float   |  The z-coordinate of the top position of the height of the Bezier curve.   |
+|   geometry.z_min    |     -    |  float   |  The bottom position of the height of the Bezier curve in the z-coordinate.   |
+|   geometry.z_max    |     -    |  float   | The top position of the height of the Bezier curve in the z-coordinate.   |
 |  geometry.rotate_x  |    0    |  float   | The angle around the x-axe in the rotation operation.     |
 |  geometry.rotate_y  |    0    |  float   |  The angle around the y-axe in the rotation operation.  |
 |  geometry.rotate_z  |    0    |  float   |   The angle around the z-axe in the rotation operation.   |
 |  material.material  |     -    | material |  Material of the geometric structure.    |
-| material.mesh_order |     -    | integer  | The oreder of material coverage when creating a geometric structure. Restrained by condition: >=0. |
+| material.mesh_order |     -    | integer  | The order of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
 Similarly, we offer support for using code  `type="BezierCurve3D"` to adjust the Bézier curve structure in the height direction.
 
@@ -267,7 +267,7 @@ st.add_geometry(name="circle", type="Circle", property={
 |  geometry.rotate_y  |    0    |  float   |  The angle around the y-axe in the rotation operation.    |
 |  geometry.rotate_z  |    0    |  float   |  The angle around the z-axe in the rotation operation.        |
 |  material.material  |     -    | material | Material of the geometric structure. |
-| material.mesh_order |    -     | integer  | The oreder of material coverage when creating a geometric structure. Restrained by condition: >=0. |
+| material.mesh_order |    -     | integer  | The order of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
 
 
@@ -299,7 +299,7 @@ st.add_geometry(name="custom_polygon", type="CustomPolygon", property={
 |  geometry.rotate_y  |    0    |  float   |  The angle around the y-axe in the rotation operation.  |
 |  geometry.rotate_z  |    0    |  float   |   The angle around the z-axe in the rotation operation.   |
 |  material.material  |      -   | material |  Material around the geometric structure.    |
-| material.mesh_order |      -   | integer  | The oreder of material coverage when creating a geometric structure. Restrained by condition: >=0. |
+| material.mesh_order |      -   | integer  | The order of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
 
 ### 2.1.6 Ellipse
@@ -330,7 +330,7 @@ st.add_geometry(name="ellipse", type="Ellipse", property={
 |  geometry.rotate_y  |    0    |  float   |  The angle around the y-axe in the rotation operation.    |
 |  geometry.rotate_z  |    0    |  float   |  The angle around the z-axe in the rotation operation.        |
 |  material.material  |     -    | material | Material of the geometric structure. |
-| material.mesh_order |     -    | integer  | The oreder of material coverage when creating a geometric structure. Restrained by condition: >=0. |
+| material.mesh_order |     -    | integer  | The order of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
 
 
@@ -369,7 +369,7 @@ st.add_geometry(name="linear_trapezoid", type="LinearTrapezoid", property={
 |  geometry.rotate_y  |    0    |  float   |  The angle around the y-axe in the rotation operation.    |
 |  geometry.rotate_z  |    0    |  float   |  The around the z-axe in the rotation operation.        |
 |  material.material  |     -    | material | Material of the geometric structure. |
-| material.mesh_order |     -    | integer  | The oreder of material coverage when creating a geometric structure. Restrained by condition: >=0. |
+| material.mesh_order |     -    | integer  | The order of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
 
 
@@ -405,7 +405,7 @@ st.add_geometry(name="pyramid", type="Pyramid", property={
 |  geometry.rotate_y  |    0    |  float   |  The angle around the y-axe in the rotation operation.    |
 |  geometry.rotate_z  |    0    |  float   |  The angle around the z-axe in the rotation operation.        |
 |  material.material  |    -     | material | Material of the geometric structure. |
-| material.mesh_order |     -    | integer  | The oreder of material coverage when creating a geometric structure. Restrained by condition: >=0. |
+| material.mesh_order |     -    | integer  | The order of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
 
 
@@ -437,7 +437,7 @@ st.add_geometry(name='taper_symmetric_test', type='AnalyticalWaveguide',
 |  geometry.resolution   |   10    | integer  | The resolution in modeling the analytical waveguide when working with functions.                                                             |
 |  geometry.tilt_angle   |   90    |  float   |  Tilt angle of the structure sidewall.        |
 | geometry.tilt_location |   top   |  string  | Different ways of tilting the sidewalls of the waveguide. Selections are ['top', 'TOP', 'Top', 'bottom', 'BOTTOM', 'Bottom', 'middle', 'MIDDLE', 'Middle', 'user_defined']. |
-| geometry.user_defined  |    1    |  float   |                                                              |
+| geometry.user_defined  |    1    |  float   |            To decide the ratio of sidewalls.                            |
 |     geometry.x      |    0    |  float   |    The x-coordinate of the center point position of the analytical waveguide.          |
 |     geometry.y      |    0    |  float   |    The y-coordinate of the center point position of the analytical waveguide.      |
 |     geometry.z      |     -    |  float   | The z-coordinate of the center point position of the analytical waveguide. |
@@ -448,7 +448,7 @@ st.add_geometry(name='taper_symmetric_test', type='AnalyticalWaveguide',
 |  geometry.rotate_y  |    0    |  float   |  The angle around the y-axe in the rotation operation.    |
 |  geometry.rotate_z  |    0    |  float   |  The angle around the z-axe in the rotation operation.        |
 |  material.material  |      -   | material |     Material of the geometric structure.         |
-| material.mesh_order |      -   | integer  | The oreder of material coverage when creating a geometric structure.Restrained by condition: >=0. |
+| material.mesh_order |      -   | integer  | The order of material coverage when creating a geometric structure.Restrained by condition: >=0. |
 
 
 
@@ -483,7 +483,7 @@ st.add_geometry(name="rectangle", type="Rectangle", property={
 |  geometry.rotate_y  |    0    |  float   |  The angle around the y-axe in the rotation operation.    |
 |  geometry.rotate_z  |    0    |  float   |  The angle around the z-axe in the rotation operation.        |
 |  material.material  |    -     | material |     Material of the geometric structure.         |
-| material.mesh_order |     -    | integer  | The oreder of material coverage when creating a geometric structure.Restrained by condition: >=0. |
+| material.mesh_order |     -    | integer  | The order of material coverage when creating a geometric structure.Restrained by condition: >=0. |
 
 
 
@@ -515,7 +515,7 @@ st.add_geometry(name="ring", type="Ring", property={
 |  geometry.rotate_y  |    0    |  float   |  The angle around the y-axe in the rotation operation.    |
 |  geometry.rotate_z  |    0    |  float   |  The angle around the z-axe in the rotation operation.        |
 |  material.material  |     -    | material |     Material of the geometric structure.         |
-| material.mesh_order |     -    | integer  | The oreder of material coverage when creating a geometric structure.Restrained by condition: >=0. |
+| material.mesh_order |     -    | integer  | The order of material coverage when creating a geometric structure.Restrained by condition: >=0. |
 
 
 
@@ -547,7 +547,7 @@ st.add_geometry(name="sector", type="Sector", property={
 |  geometry.rotate_y  |    0    |  float   |  The angle around the y-axe in the rotation operation.    |
 |  geometry.rotate_z  |    0    |  float   |  The angle around the z-axe in the rotation operation.        |
 |  material.material  |     -    | material |     Material of the geometric structure.         |
-| material.mesh_order |     -    | integer  | The oreder of material coverage when creating a geometric structure.Restrained by condition: >=0. |
+| material.mesh_order |     -    | integer  | The order of material coverage when creating a geometric structure.Restrained by condition: >=0. |
 
 
 ### 2.1.13 Triangle
@@ -583,7 +583,7 @@ st.add_geometry(name="triangle", type="Triangle", property={
 |  geometry.rotate_y  |    0    |  float   |  The angle around the y-axe in the rotation operation.    |
 |  geometry.rotate_z  |    0    |  float   |  The angle around the z-axe in the rotation operation.        |
 |  material.material  |     -    | material | Material of the geometric structure. |
-| material.mesh_order |     -    | integer  | The oreder of material coverage when creating a geometric structure. Restrained by condition: >=0. |
+| material.mesh_order |     -    | integer  | The order of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
 
 ## 2.2 Add doping

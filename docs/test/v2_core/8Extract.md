@@ -370,6 +370,104 @@ eme_res.extract(data='eme_propagate:cell_mesh_structure',
                                       )
 ```
 
+### 8.2.9 EME propagate:port overlap
+
+Get the result of port overlap data of EME propagation.
+
+```python
+def extract(
+        self,
+        *,
+        data: Literal[
+            'eme_propagate:port_overlap',
+        ],
+        target: Literal['line'] = 'line',
+        port_name: str,
+        
+        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = 'a',
+        plot_x: OptStr=None, plot_y: OptStr=None,
+    ) 
+```
+
+### 8.2.10 EME propagate:cell mode information
+
+Get the result of cell mode information of EME propagation.
+
+```python
+extract(
+        self,
+        *,
+        target: Literal['intensity'] = 'intensity',
+        data: Literal[
+            'eme_propagate:cell_mode_info',
+        ],
+        attribute: Literal['E', 'H'],
+        cell_params: str,
+        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = 'a',
+        plot_x: OptStr=None, plot_y: OptStr=None,
+        mode: Any = None,
+    )
+```
+
+### 8.2.11 EME propagate:propagation field
+
+Get the result of propagation field of EME propagation.
+
+```python
+extract(
+        self,
+        *,
+        data: Literal[
+            'eme_propagate:prop_field',
+        ],
+        # target: intensity",
+        attribute:PowerAttributes,
+        cell_params: str,
+        
+        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = 'a',
+        plot_x: OptStr=None, plot_y: OptStr=None,
+    )
+```
+
+### 8.2.12 EME propagate:internal S
+
+Get the result of internal S data of EME propagation.
+
+```python
+extract(
+        self,
+        *,
+        data: Literal[
+            "eme_propagate:internal_s",
+        ],
+        target: Literal['intensity'] = 'intensity',
+        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = 'a',
+        plot_x: OptStr=None, plot_y: OptStr=None,
+    ) 
+```
+    
+### 8.2.13 EME propagate:cell p matrix/cell overlap/cell S/propagation S
+
+Get the result of cell p matrix/cell overlap/cell S/propagation S
+ data of EME propagation.
+
+```python
+    def extract(
+        self,
+        *,
+        data: Literal[
+            "eme_propagate:cell_p_matrix",
+            "eme_propagate:cell_overlap",
+            "eme_propagate:cell_s",
+            "eme_propagate:prop_s",
+        ],
+        target: Literal['intensity'] = 'intensity',
+        cell_params: str,
+        
+        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = 'a',
+        plot_x: OptStr=None, plot_y: OptStr=None,
+    )
+```
 
 
 ## 8.3 FDTD

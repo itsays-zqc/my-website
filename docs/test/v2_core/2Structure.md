@@ -1,7 +1,7 @@
 
 # Structure
 
-The code within the "Structure" section is designed to assist you in incorporating the necessary structures during the EO(Electro-Optic) simulation process. 
+The code within the "Structure" section is designed to assist you  incorporating the necessary structures during the EO(Electro-Optic) simulation process. 
 
 ```python
 st = pj.Structure(mesh_type, 
@@ -38,7 +38,7 @@ st = pj.Structure(mesh_type,
 </table>
 
 
-You can choose to create models using GDS files. Meanwhile, you can also utilize various methods in this "Structure" module such as Bézier curves, tapering, and circular rings for your simulation project.
+You can choose to create geometry models using GDS files. Meanwhile, you can also utilize various methods in this "Structure" module such as Bézier curves, tapering, and circular rings for your simulation project.
 
 
 
@@ -256,13 +256,13 @@ st.add_geometry(name="circle", type="Circle", property={
 
 |       Parameters        |     Default     |       Type       |                 Notes                 |
 | :-----------------: | :-----: | :------: | :---------------------------: |
-|   geometry.radius   |    -     |  float   | Radius of the circle. Restrained by condition: >0.  |
+|   geometry.radius   |    -     |  float   | The radius of the circle. Restrained by condition: >0.  |
 |     geometry.x      |     -    |  float   | The x-coordinate of the center point position of circle.    |
 |     geometry.y      |     -    |  float   |    The y-coordinate of the center point position of circle.      |
 |     geometry.z      |    -     |  float   |   The z-coordinate of the center point position of circle.       |
 |   geometry.z_span   |     -    |  float   | The thinckness of the circle. Restrained by condition: >0.  |
-|   geometry.z_min    |     -    |  float   |The z-coordinate of the bottom position of the height of the circle.      |
-|   geometry.z_max    |    -     |  float   |  The z-coordinate of the top position of the height of the circle.     |
+|   geometry.z_min    |     -    |  float   |The bottom position of the height of the circle in z-coordinate.      |
+|   geometry.z_max    |    -     |  float   |  The top position of the height of the circle in z-coordinate.     |
 |  geometry.rotate_x  |    0    |  float   |    The angle around the x-axe in the rotation operation.        |
 |  geometry.rotate_y  |    0    |  float   |  The angle around the y-axe in the rotation operation.    |
 |  geometry.rotate_z  |    0    |  float   |  The angle around the z-axe in the rotation operation.        |

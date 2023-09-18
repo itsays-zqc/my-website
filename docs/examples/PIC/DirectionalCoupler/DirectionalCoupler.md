@@ -248,7 +248,7 @@ st.add_mesh(name='sub_mesh',
 <div class="text-justify">
 
 
-In this code segment, we use the `add_mesh` function to add a sub-mesh in region 5.<br/>The `name` parameter defines the name of the mesh.<br/>The `general` parameter specifies the grid accuracy in the xyz directions (in this case, 0.02 micrometers in each direction).<br/>The `geometry` parameter sets the coordinates of the sub-mesh.
+In this code segment, we use the `add_mesh` function to add a sub-mesh in region 5.<br/>The `name` parameter defines the name of the mesh.<br/>The `general` parameter specifies the grid accuracy in the xyz directions (in this case, 0.002 micrometers in each direction).<br/>The `geometry` parameter sets the coordinates of the sub-mesh.
 
 </div>
 

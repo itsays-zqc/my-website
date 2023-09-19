@@ -95,8 +95,8 @@ structure_show(
 | :------------------------------------------: | :----------------------------------------------------------: |
 |                     mode                     |     Specify the orientation of the structure preview function.                                             |
 |                     show                     |Decide whether to show directly the preview of structure directly in the related software.If set to False, the picture will be saved instead. |
-|                   savepath                   |                       Decide the save path of the preivew.                      |
-|                   fig_type                   |                    Decide the suffix(type) of Picture.                     |
+|                   savepath                   |                       Decide the save path of the preivew picture.                      |
+|                   fig_type                   |                    Decide the suffix(type) of the preivew picture.                     |
 |               simulation_name                |                       The simulation name.                       |
 |             disabled_components              |               Disable the components from showing.               |
 | xyratioZoom multiplier of x and y direction. |            Zoom multiplier of x and y direction.             |

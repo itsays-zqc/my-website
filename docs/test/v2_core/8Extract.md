@@ -22,7 +22,7 @@ We support the atrributes to extract as below:
 |      imag      | Whether to add imag part of data. If both real and imag is activate, 'ABS' data will be extracted. Default as True. |
 |     plot_x     |         The selection of x axis of heatmap or line plot.         |
 |     plot_y     |               The selection of y axis of heatmap.                |
-|     kwargs     | Other visualization parameters. 'monitor_name' and 'mode_expansion_name' for 'fdtd:mode_expansion' for example. |
+|     **kwargs     | Other visualization parameters. For example: 'monitor_name' , 'mode_expansion_name' for 'fdtd:mode_expansion'. |
 
 
 
@@ -203,7 +203,7 @@ eme_res.extract(
 
 ### 8.2.3 Propagation sweep:monitor
 
-Get the result of monitor data of Propagation sweep.
+Get the result of monitor data of propagation sweep.
 
 ```python
 extract(

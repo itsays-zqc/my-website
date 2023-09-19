@@ -26,7 +26,7 @@ add(
 
 ## 6.1 FDE
 
-Incorporate an FDE solver into the current project using the code `type='FDE'`.
+Incorporate a FDE solver into the current project using the code `type='FDE'`.
 
 ```python
 add(
@@ -163,7 +163,7 @@ simu.add(name=simu_name+'_cal_mode', simulation_name=simu_name, source_name='sou
 
 ### 6.1.2 Beam overlap
 
-Calculating beam overlap within the FDE module involves a two-step process.
+Calculating beam overlap involves a two-step process within the FDE module.
 
 Firstly, it's necessary to acquire the FDE beam results and  extract the relevant data.
 
@@ -176,7 +176,7 @@ run_fde_beam_and_extract(self, *, property, export_csv=False, show=False, savepa
 |    property    |               Set the property of beam to calculate overlap.              |
 |   export_csv   |    Whether to save a file as csv format, defaults to False.     |
 |      show      |    Whether to show figure or not, defaults as False     |
-|    savepath    | The save path of heatmap and csv, defaults to "" |
+|    savepath    | The save path of heatmap and csv. |
 
 Subsequently, we can execute the FDE overlap function and extract the result.
 

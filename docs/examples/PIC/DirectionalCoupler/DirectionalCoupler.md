@@ -48,7 +48,7 @@ Using the `FDE module`, we will calculate symmetric and antisymmetric modes in a
 <div class="text-justify">
 
 
-Once you have installed and configured the environment, import the python code and the GDS layout.<br/>The example library and related model code are usually located in the directory : `.venv_maxoptics/site-packages/maxoptics_sdk/examples`.<br/>The GDS file is generally imported into the path : `.venv_maxoptics/site-packages/maxoptics_sdk/examples/examples_gds`
+Once you have installed and configured the environment, import the python code and the GDS layout.<br/>The example library and related model code are usually located in the directory : `.venv_maxoptics/site-packages/maxoptics_sdk/examples/func_demo`.<br/>The GDS file is generally imported into the path : `.venv_maxoptics/site-packages/maxoptics_sdk/examples/examples_gds`
 
 </div>
 
@@ -241,7 +241,7 @@ To achieve more accurate calculations of the model's modal fields, we can add a 
 # region --- 5. Sub Mesh ---
 st.add_mesh(name='sub_mesh',
             property={'general': {'dx': 0.002, 'dy': 0.002, 'dz': 0.002},
-                      'geometry': {'x': 0, 'x_span': 6, 'y': 0, 'y_span': 2, 'z': 0, 'z_span': 0.2}})
+                      'geometry': {'x': 0, 'x_span': 6, 'y': 0, 'y_span': 2, 'z': 0.11, 'z_span': 0.22}})
 # endregion
 ```
 
@@ -472,7 +472,7 @@ By turning on/off the relevant functionalities, you can control the simulation p
 
 </div>
 
-|  ![image-20230808144936139](image-20230808144936139.png) | ![image-20230808144943253](image-20230808144943253.png) |
+|  ![image-20230808144936139](03_mode0.png) | ![image-20230808144943253](03_mode1.png) |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
 
 

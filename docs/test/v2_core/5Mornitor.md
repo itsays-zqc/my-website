@@ -5,7 +5,7 @@ This section provides guidance on adding a monitor to your simulation project. W
 
 ## 5.1 Profile monitor
 
-Incorporate a profile monitor into the current project. The profile monitor is solely used for simulations in EME.
+Incorporate a profile monitor into the current project. The profile monitor is solely used for the EME simulation.
 
 ```python
 add(

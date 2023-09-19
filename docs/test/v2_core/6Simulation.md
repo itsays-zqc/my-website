@@ -22,7 +22,7 @@ add(
 |    type    |                       To decide the type of simulation.                       |
 |  location  |   The method of running simulation, choose either cloud or local.   |
 |  property  |                     The property of simulation defined.                    |
-|   kwargs   | Other simulation parameters. "source_name" is needed for "mode_selection:user_select" type simulation. |
+|   **kwargs   | Other simulation parameters. "source_name" is needed for "mode_selection:user_select" type simulation. |
 
 ## 6.1 FDE
 

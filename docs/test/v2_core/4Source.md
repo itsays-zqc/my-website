@@ -16,7 +16,7 @@ wv_struct = wv[waveform_name]
 
 |    Parameters     | Description |
 | :---------------: | :---------: |
-|       name        | Use waveform name to get a Waveform from all waveforms. |
+|       name        | The waveform name in the simulation. |
 | wavelength_center |Determine the center wavelength of the waveform. |
 |  wavelength_span  |        Determine the wavelength span of the waveform.     |
 |  wavelength_min   |   Determine the minimun wavelength of the waveform.   |
@@ -69,11 +69,11 @@ src.add(name='source', type='mode_source', axis='x_forward',
 |            general.phase            |    0.0    |  float  |       To set the initial phase value for the mode source.                                                      |
 |       general.mode_selection        |      -     | string  | To decide the mode which propagates in the waveguide. Selections are ['fundamental', 'fundamental_TE', 'fundamental_TM', 'fundamental_TE_and_TM', 'user_select', 'user_import']. |
 |   general.mode_removal.threshold    |     -      |  float  |   Screen the mode source according to the energy arriving at the boundary to ensure the accuracy of the calculated transmission mode.                    |
-|         general.mode_index          |     0     | integer |               Under the 'user_import' condition, use this parameter to decide  the related number of source mode.                                                  |
+|         general.mode_index          |     0     | integer |               Under the 'user_select' condition, use this parameter to decide  the related number of source mode.                                                  |
 |           general.search            | max_index | string  |          Calculate the mode based on the maximum refractive index or user defined refractive index in the structure. Selections are ['near_n', 'max_index'].            |
 |              general.n              |    1.0    |  float  |Under the 'near_n' condition, use this value of refractive index to search the source mode.               |
 |    general.number_of_trial_modes    |    20     | integer |   When calculating modes, determine the calculated number of modes around the refractive index.                       |
-| general.waveform.waveform_id_select |     -      |   any   |   Call the previously defined wavelength-related parameters.            |
+| general.waveform.waveform_id_select |     -      |   any   |   Call the previously defined wavelength form MO waveform list.            |
 |       general.rotations.theta       |     0     |  float  |          Set the theta rotation angle of the mode source.               |
 |        general.rotations.phi        |     0     |  float  |          Set the phi rotation angle of the mode source.    |
 |  general.rotations.rotation_offset  |     0     |  float  |          Set the rotation offset of the mode source.           |
@@ -134,7 +134,7 @@ so.add(name='source', type='gaussian_source', axis='z_backward',
 |          general.direction          |  forward  | string  |To set the propagation direction of Gaussian source. Selections are ['forward', 'backward'].            |
 |          general.amplitude          |    1.0    |  float  |To set the amplitude of Gaussian source.             |
 |            general.phase            |    0.0    |  float  |       To set the initial phase value for the Gaussian source.                                                      |
-| general.waveform.waveform_id_select |     -      |   any   |   Call the previously defined wavelength-related parameters.            |
+| general.waveform.waveform_id_select |     -      |   any   |    Call the previously defined wavelength form MO waveform list.            |
 |       general.rotations.theta       |     0     |  float  |          Set the theta rotation angle of the Gaussian source.               |
 |        general.rotations.phi        |     0     |  float  |          Set the phi rotation angle of the Gaussian source.    |
 |  general.rotations.rotation_offset  |     0     |  float  |          Set the rotation offset of the Gaussian source.           |
@@ -143,7 +143,7 @@ so.add(name='source', type='gaussian_source', axis='z_backward',
 |   general.beam_settings.beam_parameters   | waist_size_and_position  |  string  | Choose a method for determining the relevant parameters of Gaussian source. Selections are ['waist_size_and_position', 'beam_size_and_divergence']. |
 |    general.beam_settings.waist_radius     |       -          |  float   |         The beam waist radius of the Gaussian source. The corresponding position when the field attenuates to 1/e.       |
 | general.beam_settings.distance_from_waist |            -           |  float   |       The distance from the center of the Gaussian source to the beam waist radius.               |
-|     general.beam_settings.beam_radius     |             -             |  float   |         The beam waist radius of the Gaussian source. The corresponding position when the field attenuates to 1/e.               |
+|     general.beam_settings.beam_radius     |             -             |  float   |         The beam radius of the Gaussian source.              |
 |  general.beam_settings.divergence_angle   |       -              |  float   |          The divergence angle of Gaussian beam.              |
 |     geometry.x      |    -     |  float   |  The x-coordinate of the center point position of the Gaussian source.    |
 |   geometry.x_span   |     -    |  float   | The length in x direction of the Gaussian source. Restrained by condition: >0.  |
@@ -210,7 +210,7 @@ pt.add(name='port_left', type='fdtd_port',
 |          modal_properties.general.phase            |    0.0    |  float  |       To set the initial phase value for the FDTD port source.                                                      |
 |      modal_properties.general.mode_selection    |      -     | string  | To decide the FDTD port mode which propagates in the waveguide. Selections are ['fundamental', 'fundamental_TE', 'fundamental_TM', 'fundamental_TE_and_TM', 'user_select', 'user_import']. |
 |  modal_properties.general.mode_removal.threshold    |     -      |  float  |   Screen the FDTD port source according to the energy arriving at the boundary to ensure the accuracy of the calculated transmission FDTD port mode.                    |
-|         modal_properties.general.mode_index         |     0     | integer |               Under the 'user_import' condition, use this parameter to decide the FDTD port source mode.                                                  |
+|         modal_properties.general.mode_index         |     0     | integer |               Under the 'user_select' condition, use this parameter to decide the FDTD port source mode.                                                  |
 |         modal_properties.general.search          | max_index | string  |          Calculate the FDTD port mode based on the maximum refractive index or user defined refractive index in the structure. Selections are ['near_n', 'max_index'].            |
 |            modal_properties.general.n          |    1.0    |  float  |Under the 'near_n' condition, use this value of refractive index to search the FDTD port source mode.               |
 |   modal_properties.general.number_of_trial_modes   |    20     | integer |   When calculating FDTD port mode, determine the calculated number of FDTD port mode around the refractive index.                       |
@@ -266,7 +266,7 @@ pjp.add(name="input_te_tm", type="eme_port",
 |   geometry.z_min    |     -    |  float   | The z-coordinate of the bottom position of the height of the EME port source.      |
 |   geometry.z_max    |      -   |  float   |  The z-coordinate of the top position of the height of the EME port source.     |
 |     eme_port.general.mode_selection      |         -         | string  | To decide the mode which propagates in the waveguide. Selections are ['fundamental', 'fundamental_TE', 'fundamental_TM', 'fundamental_TE_and_TM', 'user_select', 'user_import']. |
-|       eme_port.general.mode_index        |         1         | integer |         Under the 'user_import' condition, use this parameter to decide the source mode.                |
+|       eme_port.general.mode_index        |         1         | integer |         Under the 'user_select' condition, use this parameter to decide the source mode.                |
 |         eme_port.general.search          |     max_index     | string  |           Calculate the mode based on the maximum refractive index or user defined refractive index in the structure. Selections are ['near_n', 'max_index']. Selections are ['near_n', 'max_index'].            |
 |            eme_port.general.n            |        1.0        | integer |                                     Under the 'near_n' condition, use this value of refractive index to search the source mode.                          |
 |  eme_port.bent_waveguide.bent_waveguide  |       false       |  bool   |             Select whether to calculate modes in bent waveguides.                 |

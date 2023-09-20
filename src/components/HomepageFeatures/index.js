@@ -147,7 +147,7 @@ const FeatureList = [
       <>
          {/* <hr /> */}
         <div style={{ textAlign: 'left' }}>
-          <a href="/my-website/docs/test/v2_core/1Material">1.How can I add an anisotropic material with SDK?</a>
+          <a href="itsays-zqc.github.io/my-website/docs/test/v2_core/2Structure#2110-rectangle">1.How can I add an anisotropic material with SDK?</a>
         </div>
         <hr style={{ margin: '0.25rem 0' }}/>
   

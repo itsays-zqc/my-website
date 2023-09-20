@@ -117,7 +117,7 @@ add_dispersion(
 ```python
 mt = pj.Material()
 mt.add_dispersion(name="SiO2",
-    data=[(1.55e-06, 1.444, 0), (1.30e-06, 1.81, 0.227)], order=1
+    data=[(1.55e-06, 1.444, 0), (1.30e-06, 1.81, 0.227)], order=2
     )
 ```
 

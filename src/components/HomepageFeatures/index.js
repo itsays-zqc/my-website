@@ -147,23 +147,23 @@ const FeatureList = [
       <>
          {/* <hr /> */}
         <div style={{ textAlign: 'left' }}>
-          <a href="/my-website/docs/test/core/material/interface#1-add_anisotropy">1.How can I add an anisotropic material with SDK?</a>
+          <a href="/my-website/docs/test/v2_core/1Material">1.How can I add an anisotropic material with SDK?</a>
         </div>
         <hr style={{ margin: '0.25rem 0' }}/>
   
         <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/test/core/monitors/interface#1-add-a-monitor">2.How can I add a monitor with SDK?</a>
+        <a href="/my-website/docs/test/v2_core/5Mornitor">2.How can I add a monitor with SDK?</a>
         </div>
         <hr style={{ margin: '0.25rem 0' }}/>
 
 
         <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/test/core/simulation/simu_res#1-add">3.How can I create a simulation with SDK?</a>
+        <a href="/my-website/docs/test/v2_core/6Simulation">3.How can I create a simulation with SDK?</a>
         </div>
         <hr style={{ margin: '0.25rem 0' }}/>
 
         <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/test/core/structure/interface">4.How can I adjust the structure with SDK?</a>
+        <a href="/my-website/docs/test/v2_core/2Structure">4.How can I adjust the structure with SDK?</a>
         </div>
         <hr style={{ margin: '0.25rem 0' }}/>
         

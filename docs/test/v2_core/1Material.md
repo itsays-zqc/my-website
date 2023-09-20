@@ -2,15 +2,15 @@
 
 # Material
 
-The purpose of this section of code instructions is to assist you in adding the required simulation materials to meet your simulation needs. We can use this module with code `mt = pj.Material() `. 
+In this section, the code instructions aim to assist you in adding the required simulation materials into your simulation project. We can use this module with the code `mt = pj.Material() `. 
 
-These instructions enable you to incorporate dispersion/non-dispersion materials and anisotropic materials into the simulation. Additionally, you have the option to directly access the necessary materials from the Max-Optics material library.
+These instructions enable you to incorporate dispersion/non-dispersion materials and anisotropic materials into the simulation project. Additionally, you have the options to directly access the necessary materials from the Max-Optics material library.
 
 
 
 ## 1.1 Add anisotropy material
 
-Add non-dispersion material to a project.
+Add anisotropy material to a project.
 
 ```python
 add_anisotropy(
@@ -46,7 +46,7 @@ add_anisotropy(
   </tr>
   <tr>
     <td align="center">fitting</td>
-    <td align="center">The fitting mode of material.</td>
+    <td align="center">The fitting mode of material data.</td>
   </tr>
   <tr>
     <td align="center">order</td>
@@ -103,7 +103,7 @@ add_dispersion(
   </tr>
   <tr>
     <td align="center">fitting</td>
-    <td align="center">The fitting mode of material.</td>
+    <td align="center">The fitting mode of material data.</td>
   </tr>
   <tr>
     <td align="center">order</td>

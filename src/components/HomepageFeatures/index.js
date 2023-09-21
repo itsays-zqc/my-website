@@ -9,7 +9,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 const FeatureList = [
   {
-    title:<a href='/my-website/docs/faq/'><font color='black'>Frequently Asked Questions</font></a>,
+    title:<a href='/my-website/docs/faq/General'><font color='black'>Frequently Asked Questions</font></a>,
    
     Svg: require('@site/static/img/book.svg').default,
     
@@ -52,7 +52,7 @@ const FeatureList = [
   },
   {
     // title: 'Tutorials',
-    title:<a href='/my-website/docs/tutorial/material'><font color='black'>Tutorials</font></a>,
+    title:<a href='/my-website/docs/tutorial/1Material'><font color='black'>Tutorials</font></a>,
 
     Svg: require('@site/static/img/hat.svg').default,
     description: (
@@ -140,7 +140,7 @@ const FeatureList = [
 
   {
     // title: 'How do I',
-    title:<a href='/my-website/docs/category/maxoptics_sdkall'><font color='black'>Max-Optics SDK</font></a>,
+    title:<a href='/my-website/docs/category/max-optics-sdk'><font color='black'>Max-Optics SDK</font></a>,
 
     Svg: require('@site/static/img/tool.svg').default,
     description: (

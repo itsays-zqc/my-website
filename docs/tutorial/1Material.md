@@ -1,30 +1,36 @@
 ---
-sidebar_position: 1
----
 
+sidebar_position: 1
+
+---
+import 'katex/dist/katex.min.css';
+import { InlineMath, BlockMath } from 'react-katex';
 
 
 # Material
 
-### Features Description: 
+**Features Description:** 
 
 The Global Material Database allows for the definition of complex materials using experimental data or parameterized models. The Material Database stores the material data to be used in the simulation. It also provides an interface to change material properties like color, mesh order, and fit parameters. User could import materials from “Standard” database to “User” and “Project” material database, and also from “User” material database to “Project” material database.
 
-###  Standard & User & Project Material Database:
-
-
+**Standard & User & Project Material Database:**
 
 Material database includes standard, user, and project material database.
 
-## Standard Material Database
+## 1 Standard Material Database
 
 The standard material database includes two parts, one is material list, and another is material property plot. The material list includes a number of common materials, when creating a new simulation, the standard database will be loaded. And the materials in the standard material database can be imported into “User” and “Project” material database. The default materials cannot be edited directly. 
 
-!['figure 1'](../../static/img/tutorial/material/fig1.png "figure 1")
+| !['figure 1'](../../static/img/tutorial/material/fig1.png "figure 1") | 
+| :------------------------------------------------------------: | 
 
-### Material List
 
-!['figure 2'](../../static/img/tutorial/material/materialList.png)
+### 1.1 Material List
+
+| !['figure 2'](../../static/img/tutorial/material/materialList.png) | 
+| :------------------------------------------------------------: | 
+
+
 
 1. __ID__ : ID
 2. __Name__ : Material Name
@@ -39,7 +45,7 @@ The standard material database includes two parts, one is material list, and ano
 8. __Export__: Export materials according to user needs.
 
 
-### Materials in the Standard Material Database
+### 1.2 Materials in the Standard Material Database
 The following materials are included in the standard material database.
 
 <table>
@@ -303,29 +309,82 @@ The following materials are included in the standard material database.
 
 
 
-### Material Properties:
+### 1.3 Material Properties:
 
-![](../../static/img/tutorial/material/materialproperties.png)
+|![](../../static/img/tutorial/material/materialproperties.png) | 
+| :------------------------------------------------------------: | 
 
 
-__Plot__ : User can view each material property in this plot area via clicking a certain material in material list, also can view properties they are interested in via two options in the bottom of plot. Material properties include “Color”, “Name”, “Mesh Order”, “Wavelength”, “Frequency”, “n,k”-Re(refractive index)&Im(refractive index), “εr′,εr″”-Re(relative permittivity)&Im(relative permittivity), ε’,σ-Re(relative permittivity)&Im(relative permittivity).
 
-### 1)	Material Data & Model Fitting
+**_Plot_** : User can view each material property in this plot area via clicking a certain material in material list, also can view properties they are interested in via two options in the bottom of plot. Material properties include “Color”, “Name”, “Mesh Order”, “Wavelength”, “Frequency”, “n,k”-Re(refractive index)&Im(refractive index), “εr′,εr″”-Re(relative permittivity)&Im(relative permittivity), ε’,σ-Re(relative permittivity)&Im(relative permittivity).
+
+#### 1.1.3.1 Material Data & Model Fitting
 
 Material Data tab: User can view each material property in this list via double clicking a certain material in material list. Material properties include “Color”, “Name”, “Mesh Order”, “Wavelength”, “Frequency”, “n,k”-Re(refractive index)&Im(refractive index), and “εr′,εr″”-Re(relative permittivity)&Im(relative permittivity).
 
-1. 
-![](../../static/img/tutorial/material/materialdataAndModelFitting.png)
+**1. Material Data** 
 
-2. Model Fitting: (Currently, the model fitting feature is not available and is still in the development process.)
+|![](../../static/img/tutorial/material/materialdataAndModelFitting.png) | 
+| :------------------------------------------------------------: | 
+
+**2. Model Fitting:** (Currently, the model fitting feature is not available and is still in the development process.)
 
 
 
-## User Material Database
+## 2 User Material Database
 
 The User material database, a database that stores materials used by user. The user material database includes two parts, one is material list, and another is material property plot. User can copy or delete a selected material, The materials in the “User” material database can be imported to the “Project” material database. And users also can export materials according to their needs.
 
+|![](../../static/img/tutorial/material/userDataBase.png) | 
+| :------------------------------------------------------------: | 
 
-![](../../static/img/tutorial/material/userDataBase.png)
+
+
+### 2.1 Material List
+
+1. __ID__ : ID
+2. __Name__ : Material Name
+3. __Mesh Oder__: Decides how overlapping objects are meshed in the simulation.
+4. __Color__ : Material Color
+5. __Type__ : Types of material, three types are included, there are Lossy material, Lossless material and List data as follows.
+   1. __Lossy Material__ : Lossy Material
+   2. __Lossless Material__ : Lossless Material (insulating material)
+   3. __List Data__ : Materials whose dielectric permittivity changes with wavelength settings, displayed in tabular form.
+6. __Last Modified__ :Last modified time
+7. __Import__: Import materials to user or project database.
+8. __Export__: Export materials according to user needs.
+
+
+### 2.2 Material Properties
+
+![](../../static/img/tutorial/material/usermaterial.png)
+
+**_Plot_** : User can view each material property in this plot area via clicking a certain material in material list, also can view properties they are interested in via two options in the bottom of plot. Material properties include “Color”, “Name”, “Mesh Order”, “Wavelength”, “Frequency”, “n,k”-Re(refractive index)&Im(refractive index), “εr′,εr″”-Re(relative permittivity)&Im(relative permittivity), ε’,σ-Re(relative permittivity)&Im(relative permittivity).
+
+#### 2.2.1 Material Data & Model Fitting
+
+Material Data Tab: User can view each material property in this list via double clicking a certain material in material list. Material properties include “Color”, “Name”, “Mesh Order”, “Wavelength”, “Frequency”, “n,k”-Re(refractive index)&Im(refractive index), and “εr′,εr″”-Re(relative permittivity)&Im(relative permittivity).
+
+**_Anisotropy_** : Two options in this drop-down menu, “None” and “Diagonal”, when diagonal option is checked, user can create FDTD, FDE, or EME anisotropic optical material in the “User Material Database” window.
+
+**_Solver physics_** :Anisotropic materials react to electric field with directional dependent electric displacement. Permittivity can be represented by a 9 element tensor <InlineMath math="\varepsilon_{ij}" />.
+
+<BlockMath math="D_i = \varepsilon_{ij}E_j" />
+
+In general, this tensor can be diagnonalized by a proper choice of coordinate system, e.g. in principle dielectric axes. So it is simplified to
+
+<BlockMath math="\varepsilon =\begin{bmatrix}
+ \varepsilon_x & 0 & 0\\
+ 0 &  \varepsilon_y & 0\\
+ 0 & 0 &  \varepsilon_z
+\end{bmatrix}" />
+
+**_Diagonal anisotropic materials_**:To define an anisotropic material, set the Anisotropy field in the material database to Diagonal and assign the parameters for each diagonal component.
+
+![](../../static/img/tutorial/material/anisoropic.png)
+
+## 3 Project Material Database
+
+The project material database stores project materials. The database would inherit materials from the project automatically, which may contain standard materials and user materials in the project. And the materials in the standard and user material database can be imported to project material database. Users also can add, delete and export materials according to their needs.
 
 

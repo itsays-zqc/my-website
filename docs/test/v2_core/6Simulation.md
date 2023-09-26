@@ -494,6 +494,36 @@ fdtd_res = simu[simu_name].run()
                                       "resolution": {"horizontal_points": 100, "vertical_points": 100}}}})
 ```
 
+### 6.3.2 FDTD smatrix sweep
+
+When we use the FDTD port as the input source, we can assist you in computing the smatrix sweep within the FDTD module.
+
+```python
+# region --- Port ---
+pt = pj.Port(property={'waveform_id': wv[waveform_name], 'source_port': 'left_port'})
+
+pt.add(name='left_port', type='fdtd_port',
+        property={'geometry': {'x': -wg_length / 2 + span, 'x_span': 0, 'y': 0, 'y_span': port_width, 'z': 0, 'z_span': port_height},
+                    'modal_properties': {'general': {'inject_axis': 'x_axis', 'direction': 'forward', 'mode_selection': 'fundamental'}}})
+if run_options.matrix_sweep:
+    pt.add(name='right_port', type='fdtd_port',
+            property={'geometry': {'x': wg_length / 2 - span, 'x_span': 0, 'y': 0, 'y_span': port_width, 'z': 0, 'z_span': port_height},
+                        'modal_properties': {'general': {'inject_axis': 'x_axis', 'direction': 'backward', 'mode_selection': 'fundamental'}}})
+# endregion
+
+# region --- Simulation ---
+simu = pj.Simulation()
+simu.add(name='fdtd', type='FDTD',
+            property={'general': {'simulation_time': 1000},
+                    'mesh_settings': {'mesh_accuracy': {'cells_per_wavelength': grids_per_lambda}}})
+if run_options.matrix_sweep:
+    smatrix_res = simu.add(name='matrix_sweep', type='FDTD:smatrix',
+                            property={'simulation_name': 'fdtd',
+                                        's_matrix_setup': [{'port': 'left_port', 'active': True}, {'port': 'right_port', 'active': True}]})
+# endregion
+
+
+```
 
 
 

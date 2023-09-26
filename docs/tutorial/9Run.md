@@ -1,5 +1,5 @@
 ---
-sidebar_position: 10
+sidebar_position: 9
 ---
 
 # Run
@@ -19,4 +19,8 @@ Run simulation
 
 5. Supports simulation memory requirements check.
 
+<div class="centered">
+
 !['run'](../../static/img/tutorial/run/run.png)
+
+</div>

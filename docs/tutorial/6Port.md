@@ -116,7 +116,7 @@ Selecting this option enables the bent waveguide solver to work with the followi
 
 <div class="centered">
 
-!['Port8'](../../static/img/tutorial/Port/Port9.png)
+![](../../static/img/tutorial/Port/Port9.png)
 
 </div>
 

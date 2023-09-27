@@ -432,7 +432,7 @@ st.add_geometry(name='taper_symmetric_test', type='AnalyticalWaveguide',
 |     geometry.y_min     |    -     |  float   |  The y-coordinate  value of the endpoint for the waveguide width.                                          |
 |     geometry.y_max     |     -    |  float   |  The y-coordinate  value of the endpoint for the waveguide width.                                    |
 |   geometry.equation1   |    -     |  string  | The customed function 1 used in modeling the analytical waveguide.                                     |
-|   geometry.equation2   |    -   |  string  |  When the geometry is asymmetric(`'nonsymmetric': True`), the customed function 2 used in modeling the analytical waveguide.                                          |
+|   geometry.equation2   |    -   |  string  |  When the geometry is asymmetric(`'nonsymmetric': True`), the customed function 2 used in modeling the analytical waveguide.      |
 | geometry.nonsymmetric  |  false  |   bool   |    To Control whether the waveguide is symmetric.                                 |
 |  geometry.resolution   |   10    | integer  | The resolution in modeling the analytical waveguide when working with functions.                                                             |
 |  geometry.tilt_angle   |   90    |  float   |  Tilt angle of the structure sidewall.        |
@@ -585,7 +585,6 @@ st.add_geometry(name="triangle", type="Triangle", property={
 |  material.material  |     -    | material | Material of the geometric structure. |
 | material.mesh_order |     -    | integer  | The order of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
-
 ## 2.2 Add doping
 
 When participating in optoelectronic simulation, you have the option to utilize the provided code for introducing doping into the simulation structure. 
@@ -608,27 +607,10 @@ add_doping(
 |      type      |   The method type of setting up doping. Selections are ['type', 'n', 'p'].    |
 |    property    | The property of doping. |
 
-For instance, the code for importing doping from a file is demonstrated as follows.
-
-**Example:**
-
-```python
-st.add_doping(name="import_n", type="file", property={
-    "general": {"format": "DOP", "file_path": n_dop_file, "species": "n"}})
-```
+### 2.2.1 Function doping
+When `type` is set to `"n"` or `"p"`, function doping is applied. In this case, `type` also means the doping species, with `"n"` for donor and `"p"` for acceptor.
 
 You can configure parameters related to importing doping files by adjusting settings under the `property.general` sections.
-
-|       Parameters       |    Default    | &ensp;   Type   &ensp; |                        Notes                         |
-| :------------------: | :-----: | :--: | :------------------------------------------: |
-|    general.format    |    -     | str  |            Selections are ['DOP']            |
-|  general.file_path   |    -     | str  |  The file path of doping.         |
-|   general.species    |    -     | str  |  To set the doing species. Selections are ['n', 'p'].            |
-|  volume.volume_type  |  'all'  | str  | Selections are ['all', 'material', 'region'].  |
-| volume.material_list |    -     | list |   Available when volume_type is 'material'   |
-|  volume.region_list  |    -     | list |    Available when volume_type is 'region'    |
-
-The code for utilizing custom region doping is provided below.
 
 **Example:**
 
@@ -643,29 +625,51 @@ st.add_doping(name="Uniform", type="p", property={
 
 |   Parameters   |  Default  |   Type   |   Notes   |
 | :---------------------------: | :-----: | :---: | :------------------------------------------------: |
-|     geometry.x      |    -     |  float   |  The x-coordinate of the center point position of the doping.    |
+|     geometry.x      |    -     |  float   |  The x-coordinate of the center point position of doping box.    |
 |   geometry.x_span   |     -    |  float   | The length in x direction of the doping. Restrained by condition: >0.  |
-|   geometry.x_min    |    -     |  float   | The minimum x-coordinate endpoint data of the doping.      |
-|   geometry.x_max    |    -     |  float   |  The maximum x-coordinate endpoint data of the doping.     |
-|     geometry.y      |     -    |  float   |  The y-coordinate of the center point position of the doping.      |
+|   geometry.x_min    |    -     |  float   | The minimum x-coordinate endpoint data doping box.      |
+|   geometry.x_max    |    -     |  float   |  The maximum x-coordinate endpoint data of doping box.     |
+|     geometry.y      |     -    |  float   |  The y-coordinate of the center point position of doping box.      |
 |   geometry.y_span   |    -     |  float   | The width in y direction of the doping. Restrained by condition: >0.  |
-|   geometry.y_min    |     -    |  float   |The minimum y-coordinate endpoint data of the doping.       |
-|   geometry.y_max    |    -     |  float   |  The maximum y-coordinate endpoint data of the doping.      |
-|     geometry.z      |    -     |  float   |   The z-coordinate of the center point position of the doping.    |
-|   geometry.z_span   |     -    |  float   | The thinckness in z direction of the doping. Restrained by condition: >0.  |
-|   geometry.z_min    |    -     |  float   |The z-coordinate of the bottom position of the height of the doping.      |
-|   geometry.z_max    |    -     |  float   |  The z-coordinate of the top position of the height of the doping.     |
+|   geometry.y_min    |     -    |  float   |The minimum y-coordinate endpoint data of doping box.       |
+|   geometry.y_max    |    -     |  float   |  The maximum y-coordinate endpoint data of doping box.      |
+|     geometry.z      |    -     |  float   |   The z-coordinate of the center point position of doping box.    |
+|   geometry.z_span   |     -    |  float   | The thinckness in z direction of doping box. Restrained by condition: >0.  |
+|   geometry.z_min    |    -     |  float   |The z-coordinate of the bottom position of the height of doping box.      |
+|   geometry.z_max    |    -     |  float   |  The z-coordinate of the top position of the height of doping box.     |
 |  geometry.rotate_x  |    0    |  float   |    The angle around the x-axis in the rotation operation.        |
 |  geometry.rotate_y  |    0    |  float   |  The angle around the y-axis in the rotation operation.    |
 |  geometry.rotate_z  |    0    |  float   |  The angle around the z-axis in the rotation operation.        |
-| general.distribution_function |      -   |  str  |      To set the type of distribution function for doping region. Selections are ['constant', 'gaussian']       |
-|     general.concentration     |     -    | float |                                                    |
-|      general.source_face      |     -    |  str  | To set the doping source surface. Available when distribution_function is 'gaussian' |
+| general.distribution_function |      -   |  str  |    To set the type of distribution function for doping region. Selections are ['constant', 'gaussian']. When it's set to 'constant', constant doping is applied and only 'concentration' is required. When it's set to 'gaussian', Gaussian function doping is applied, and 'concentration', 'ref_concentration', 'junction_width', 'source_face'  are required.       |
+|     general.concentration     |     -    |  float |  To set the doping concentration in non-diffusion area.    |
+|      general.source_face      |     -    |  str  | To set the doping source surface. Available when distribution_function is 'gaussian'. Selections are ['low_x', 'low_y','low_z'].'lower_x' means the source face is 'x=x_min'. Similarly for the rest. There is no diffusion area on the edge of source face. As for the other edges, there is a diffusion area respectively within the doping box. |
 |    general.junction_width     |     -    | float | To set the junction width. Available when distribution_function is 'gaussian' |
-|   general.ref_concentration   |     -    | float | Available when distribution_function is 'gaussian' |
-|      volume.volume_type       |  'all'  |  str  |    Selections are ['all', 'material', 'region']    |
-|     volume.material_list      |    -     | list  |      Available when volume_type is 'material'      |
-|      volume.region_list       |      -   | list  |       Available when volume_type is 'region'       |
+|   general.ref_concentration   |     -    | float | Concentration on the edge of diffusion area (edge of doping box). Available when distribution_function is 'gaussian'. |
+|      volume.volume_type       |  'all'  |  str  |   The default of 'all' means the doping is applied to all the (semiconductor) structures, restricted by the doping box. Selections are ['all', 'material', 'region']    |
+|     volume.material_list      |    -     | list  |     It means the doping is applied to the structures of the specified materials and restricted by the doping box. Available when volume_type is 'material'.      |
+|      volume.region_list       |      -   | list  |    It  means the doping is applied to the specified structures and restricted by the doping box.   Available when volume_type is 'region'       |
+
+
+### 2.2.2 Imported doping
+
+When type is set to 'ile', doping is imported from a file.
+
+**Example:**
+
+```python
+st.add_doping(name="import_n", type="file", property={
+    "general": {"format": "DOP", "file_path": n_dop_file, "species": "n"}})
+```
+
+
+|       Parameters       |    Default    | &ensp;   Type   &ensp; |                        Notes                         |
+| :------------------: | :-----: | :--: | :------------------------------------------: |
+|    general.format    |    -     | str  |     Set the format of doping file. Only "DOP" is supported currently. Selections are ['DOP']. When it's set to "DOP", the doping file is a text file that stores a doping profile in rectangular grid. There are three columns in the file, which are the first dimension coordinate [um], the second dimension coordinate [um] and the doping concentration [cm^-3] respectively. Doping concentration should be non-negative.         |
+|  general.file_path   |    -     | str  |  The absolute path of the doping file         |
+|   general.species    |    -     | str  |  To set the doing species. Selections are ['n', 'p'].            |
+|  volume.volume_type  |  'all'  | str  | To set a list of regions or materials for doping. Selections are ['all', 'material', 'region'].  |
+| volume.material_list |    -     | list |   Available when volume_type is 'material'   |
+|  volume.region_list  |    -     | list |    Available when volume_type is 'region'    |
 
 
 
@@ -691,6 +695,10 @@ add_electrode(
 
 ### 2.3.1 Steady state
 
+When the property `bc_mode` is set to `"steady_state"`, the steady state boundary condition is applied.
+
+**Example:**
+
 ```python
 st = pj.Structure()
 st.add_electrode(name="anode", property={
@@ -703,9 +711,9 @@ st.add_electrode(name="cathode", property={
 
 |          Parameters          |      Default       |     Type      |                          Notes                           |
 | :------------------------: | :----------: | :-----: | :------------------------------------------: |
-|        force_ohmic         |     true     |  bool   |                                              |
+|        force_ohmic         |     true     |  bool   |   Whether the electrode is ohmic, default to be True. Currently only ohmic contact is supported, so force_ohmic can't be set to False.   |
 |          bc_mode           | steady_state | string  |       To set the type of electircal boundary condition. Selections are ['steady_state',transient].       |
-|   apply_AC_small_signal    |     none     | string  |           Determining whether to apply the small-signal alternating current. Selections are ['none', 'All'].           |
+|   apply_AC_small_signal    |     none     | string  |   Determining whether to apply the small-signal alternating current. Selections are ['none', 'All']. When it's set to "none", no AC small signal is applied at each sweeping voltage. When it's set to "All", the AC small signal is applied after steady state simulation at each sweeping voltage      |
 |         sweep_type         |    single    | string  | To set the voltage type of the electrode. Selections are ['single', 'range', 'value']. |
 |         v_step_max         |     0.5      |  float  |    The maxium step of voltage value.          |
 |          voltage           |      0       |  float  |    The value of voltage. Available when sweep_type is 'single'     |
@@ -713,12 +721,22 @@ st.add_electrode(name="cathode", property={
 |         range_stop         |      1       |  float  |     The  stop value of a voltage range. Available when sweep_type is 'range'     |
 |       range_interval       |      1       |  float  |     The  interval value of a voltage range. Available when sweep_type is 'range'     |
 |      range_num_points      |      2       | integer |     The   The number of points within the voltage range. Available when sweep_type is 'range'     |
-| []sweep_value_table.index  |       -       | integer |    Available when sweep_type is 'value'.     |
-| []sweep_value_table.number |       -       |  float  |    Available when sweep_type is 'value'.     |
-|        surface_type        |    solid     | string  |          Selections are ['solid'].           |
-|           solid            |       -       | string  |                                              |
+| []sweep_value_table.index  |       -       | integer |    The index table of voltage values. Available when sweep_type is 'value'.     |
+| []sweep_value_table.number |       -       |  float  |     The value table of voltage. Available when sweep_type is 'value'.     |
+|        surface_type        |    solid     | string  |     To set the surface type of electrode. Currently only 'solid' is supported, meaning that all the surfaces of a structure are selected.      |
+|           solid            |       -       | string  | Name of the structure to be set as an electrode. Available when surface_type is set to 'solid'.         |
 
 ### 2.3.2 SSAC (Small signal alternating current)
+
+When solving the frequency response of optical signal for the device, transient simulation should be performed. In this case, the bc_mode of the corresponding electrode should be set to "transient", and the solver_mode of OEDevice solver should be set to "transient", too.
+
+In most of other cases, steady state or SSAC simulation is needed, the 'bc_mode' of electrodes should be 'steady_state'.
+
+When solving capacitance and resistance with respect to frequency, SSAC simulation is required. The solver_mode of OEDevice solver should be set to "SSAC", and the apply_AC_small_signal of the corresponding electrode should be set to "All".
+
+When running steady state simulation, just set the solver_mode of OEDevice solver to 'steady_state'.
+
+**Example:**
 
 ```python
 st.add_electrode(name="cathode", property={
@@ -727,6 +745,10 @@ st.add_electrode(name="cathode", property={
 ```
 
 ### 2.3.3 Transient
+
+When the property bc_mode is set to "transient", the transient boundary condition is applied.
+
+**Example:**
 
 ```python
 st = pj.Structure()
@@ -748,17 +770,18 @@ st.add_electrode(name="cathode", property={
 |               Parameters               |    Default    |     type      |             &ensp;      Notes      &ensp;&ensp;             |
 | :----------------------------------: | :-----: | :-----: | :---------------------------: |
 |             force_ohmic              |  true   |  bool   |                               |
-|               bc_mode                |    -     | string  | Selections are ['transient']. |
-|               voltage                |    0    |  float  |                               |
-|       []time_table.time_start        |    -     |  float  |                               |
-|        []time_table.time_stop        |    -     |  float  |                               |
-|      []time_table.initial_step       |    -     |  float  |                               |
-|        []time_table.max_step         |    -     |  float  |                               |
-|     []time_table.optical.enabled     |    0    | integer |     Selections are [0, 1]     |
-|     []time_table.optical.envelop     |     -    | integer |      Selections are [0]       |
-| []time_table.optical.source_fraction |    -     |  float  |                               |
-|             surface_type             |  solid  | string  |   Selections are ['solid'].   |
-|                solid                 |     -    | string  |                               |
+|               bc_mode                |    -    | string  | Selections are ['transient']. |
+|               voltage                |    0    |  float  | Set the voltage that is applied to the electrode and a steady state simulation is performed first. The transient simulation is based on the steady state result. The optical generation rate is not applied during the steady state simulation.     |
+|                v_step_max            |     -    | string  |   Set the max step of the voltage from the equilibrium state to steady state at the bias of voltage.    |
+|       []time_table.time_start        |    -     |  float  |  Set the start time point of the range. The value of 0 represents the steady state of the earlier simulation.    |
+|        []time_table.time_stop        |    -     |  float  |   Set the stop time point of the range.            |
+|      []time_table.initial_step       |    -     |  float  |  Set the initial time step of the range         |
+|        []time_table.max_step         |    -     |  float  |  Set the max time step of the range         |
+|     []time_table.optical.enabled     |    0     | integer |     Whether to apply optical generation rate during the time range. The value of 1 means True, and 0 means False. Selections are [0, 1].     |
+|     []time_table.optical.envelop     |     -    | integer |   The envelop of the scaling factor of the light power during the time range. When it's set to 0, the envelop is uniform.  Selections are [0].  |
+| []time_table.optical.source_fraction |    -     |  float  | When envelop is set to0, this value is the scaling factor of the light power during the time range.    |
+|             surface_type             |  solid   | string  |   Selections are ['solid'].   |
+|                solid                 |     -    | string  |   Available when surface_type is set to 'solid'.    |
 
 
 
@@ -795,10 +818,10 @@ st.add_surface_recombination(name="Cathode_Si", property={
 |     **Parameters**     |    Default    |   Type   |                            Notes                             |
 | :--------------------: | :-----------: | :------: | :----------------------------------------------------------: |
 |      surface_type      | domain_domain |  string  |    To set the type for calculating surface recombination. Selections are ['domain_domain', 'material_material'].    |
-|     interface_type     |     null      |  string  | To set the  interface type of surface recombination. Selections are ['null', 'InsulatorInterface', 'HomoJunction', 'HeteroJunction', 'MetalOhmicInterface', 'SolderPad']. |
-| infinite_recombination |     true      |   bool   |    Available when interface_type is 'MetalOhmicInterface'    |
-|     velocity_hole      |       0       |  float   | Available when interface_type is 'MetalOhmicInterface'/'InsulatorInterface' |
-|   velocity_electron    |       0       |  float   | Available when interface_type is 'MetalOhmicInterface'/'InsulatorInterface' |
+|     interface_type     |     null      |  string  | To set the  interface type of surface recombination. Selections are ['null', 'InsulatorInterface', 'HomoJunction', 'HeteroJunction', 'MetalOhmicInterface', 'SolderPad']. 'InsulatorInterface' is interface between semiconductor and insulator, 'HomoJunction' means the interface between homogeneous semiconductor and semiconductor,'HeteroJunction' means the interface between heterogeneous semiconductor and semiconductor, 'MetalOhmicInterface' means the interface between semiconductor and conductor, 'SolderPad' means the interface between conductor and insulator. |
+| infinite_recombination |     true      |   bool   |    Only available when interface_type is "MetalOhmicInterface". The surface recombination velocity of holes and electrons will be available when infinite_recombination is False.    |
+|     velocity_hole      |       0       |  float   | To define surface recombination velocity of holes. Available when interface_type is 'MetalOhmicInterface'/'InsulatorInterface' |
+|   velocity_electron    |       0       |  float   | To define surface recombination velocity of electron. Available when interface_type is 'MetalOhmicInterface'/'InsulatorInterface' |
 |        domain_1        |         -      |  string  |        The region 1 for surface recombination. Available when surface_type is 'domain_domain'        |
 |        domain_2        |        -       |  string  |        The region 2 for surface recombination. Available when surface_type is 'domain_domain'        |
 |       material_1       |        -       | material |       The material 1 for surface recombination. Available when surface_type is 'material_material'      |

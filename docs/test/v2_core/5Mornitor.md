@@ -285,13 +285,13 @@ mn.add(name="band_line", type="band_monitor", property={
 
 |        **Parameters**         | Default |  Type   |                        Notes                         |
 | :---------------------------: | :-----: | :-----: | :--------------------------------------------------: |
-|       general.record_ec       |  true   |  bool   |                                                      |
-|       general.record_ev       |  true   |  bool   |                                                      |
-|       general.record_ei       |  true   |  bool   |                                                      |
-|      general.record_efn       |  true   |  bool   |                                                      |
-|      general.record_efp       |  true   |  bool   |                                                      |
+|       general.record_ec       |  true   | bool   |   The conduction band edge energy at 300K.                                                    |
+|       general.record_ev       |  true   |  bool   |  The valance band edge energy at 300K.                                                    |
+|       general.record_ei       |  true   |bool   |   The fermi level for intrinsic doped material.                                                   |
+|      general.record_efn       |  true   |  bool   |   The electron quasi-Fermi energy.                                                   |
+|      general.record_efp       |  true   |  bool   |  The hole quasi-Fermi energy.                                                    |
 |      general.record_evac      |  true   |  bool   |                                                      |
-|     geometry.monitor_type     |         | string  | Selections are ['linear_x', 'linear_y', 'linear_z']. |
+|     geometry.monitor_type     |         | string  | Set the dimension type of the monitor. For electrical monitors, only 1D type and 2D type are available currently. Selections are ['linear_x', 'linear_y', 'linear_z']. |
 |          geometry.x           |         |  float  |                                                      |
 |        geometry.x_span        |         |  float  |            Restrained by condition: >=0.             |
 |        geometry.x_min         |         |  float  |                                                      |
@@ -304,9 +304,7 @@ mn.add(name="band_line", type="band_monitor", property={
 |        geometry.z_span        |         |  float  |            Restrained by condition: >=0.             |
 |        geometry.z_min         |         |  float  |                                                      |
 |        geometry.z_max         |         |  float  |                                                      |
-| geometry.interpolate_accuracy |    1    | integer |        Restrained by condition: >=1 && <= 10.        |
-
-
+| geometry.interpolate_accuracy |    1    | integer |  Set the accuracy of the rectangular grid for extracting the monitor result.  Restrained by condition: >=1 && <= 10. Here 1 means the grid size is 10nm, and 10 means the grid size is 1nm, and the grid size varies uniformly with the variation in 'interpolate_accuracy'.         |
 
 ## 5.7 Charge monitor
 
@@ -339,8 +337,8 @@ mn.add(name="np_line_080nm", type="charge_monitor", property={
 
 |         **Parameters**         | Default |  Type   |                            Notes                             |
 | :----------------------------: | :-----: | :-----: | :----------------------------------------------------------: |
-|    general.record_electrons    |  true   |  bool   |                                                              |
-|      general.record_holes      |  true   |  bool   |                                                              |
+|    general.record_electrons    |  true   |  bool   | The distribution of electron concentration in monitor. |
+|      general.record_holes      |  true   |  bool   |  The distribution of hole concentration in monitor.     |
 | general.integrate_total_charge |  true   |  bool   | Available when monitor_type is in ['2d_x_normal', '2d_y_normal', '2d_z_normal']. |
 |     geometry.monitor_type      |         | string  | Selections are ['linear_x', 'linear_y', 'linear_z', '2d_x_normal', '2d_y_normal', '2d_z_normal']. |
 |           geometry.x           |         |  float  |                                                              |
@@ -390,8 +388,8 @@ add(
 
 |             **Parameters**             | Default |  Type   |                            Notes                             |
 | :------------------------------------: | :-----: | :-----: | :----------------------------------------------------------: |
-|     general.record_electrics_field     |  true   |  bool   |                                                              |
-| general.record_electrostatic_potential |  true   |  bool   |                                                              |
+|     general.record_electrics_field     |  true   |  bool   | The distribution of electric field in monitor.       |
+| general.record_electrostatic_potential |  true   |  bool   |  The distribution of electric potential in monitor.        |
 |      general.calculate_net_charge      |  true   |  bool   | Available when monitor_type is in ['2d_x_normal', '2d_y_normal', '2d_z_normal']. |
 |         geometry.monitor_type          |         | string  | Selections are ['linear_x', 'linear_y', 'linear_z', '2d_x_normal', '2d_y_normal', '2d_z_normal']. |
 |               geometry.x               |         |  float  |                                                              |

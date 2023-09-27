@@ -75,28 +75,12 @@ simu.add(name=simu_name, type='FDE',
 |                    thread_setting.thread                     |         4         | integer |            Determine the number of cores required to run the simulation on the local computer.             |
 |          fde_analysis.modal_analysis.mesh_structure          |       false       |  bool   |     Confirm whether to generate a refractive index diagram for the structure.   |
 |         fde_analysis.modal_analysis.calculate_modes          |       false       |  bool   |            Determine whether to calculate the modes.          |
-|  fde_analysis.modal_analysis.[]far_field_settings.calculate  |       true        |  bool   |       Determine whether to calculate the far field.    |
-| fde_analysis.modal_analysis.[]far_field_settings.mode_selection |     -         | integer |         Select the mode for which far-field calculation is needed.                 |
-| fde_analysis.modal_analysis.[]far_field_settings.projection_method |      planar       | string  |                  Specify the projection type for calculating the far-field.Selections are ['planar'].                  |
-| fde_analysis.modal_analysis.[]far_field_settings.farfield_filter |         0         |  float  |      Configure this parameter to filter near field data for eliminating high frequency ripples in the results. Its value ranging from 0 to 1.                                                        |
-| fde_analysis.modal_analysis.[]far_field_settings.material_index |        1.4        |  float  |    Set the material refractive index for projection.            |
-| fde_analysis.modal_analysis.[]far_field_settings.projection_distance |      4430.65      |  float  |  The distance for far-field projection calculation.                         |
-| fde_analysis.modal_analysis.[]far_field_settings.points_in_x |        50         |  float  |          In x direction, the number of points in the far field.               |
-| fde_analysis.modal_analysis.[]far_field_settings.points_in_y |        50         |  float  |          In y direction, the number of points in the far field.                                                     |
-| fde_analysis.modal_analysis.[]far_field_settings.farfield_x  |         0         |  float  |          In x direction, the position of far field center point.            |
-| fde_analysis.modal_analysis.[]far_field_settings.farfield_x_span |      26.1834      |  float  |            In x direction, the span of far field range.             |
-| fde_analysis.modal_analysis.[]far_field_settings.farfield_y  |         0         |  float  |             In y direction, the position of far field center point.    |
-| fde_analysis.modal_analysis.[]far_field_settings.farfield_y_span |      18.1231      |  float  |              In y direction, the span of far field range.     |
 |            fde_analysis.modal_analysis.wavelength            |       1.55        |  float  |               The mode wavelength for FDE calculation.              |
 |        fde_analysis.modal_analysis.wavelength_offset         |       0.002       |  float  |                The mode wavelength offset for FDE calculation.                                              |
 |      fde_analysis.modal_analysis.number_of_trial_modes       |         5         | integer |           When calculating modes, determine the calculated number of modes around the refractive index.                |
 |              fde_analysis.modal_analysis.search              |     max_index     | string  |           Calculate the mode based on the maximum refractive index or user defined refractive index in the structure. Selections are ['near_n', 'max_index'].            |
 |                fde_analysis.modal_analysis.n                 |         1         |  float  |     Under the 'near_n' condition, use this value of refractive index to search the source mode.                                        |
 |      fde_analysis.modal_analysis.calculate_group_index       |       false       |  bool   |    Determine whether to calculate the group refractive index.          |
-|  fde_analysis.modal_analysis.bent_waveguide.bent_waveguide   |       false       |  bool   |        Select whether to calculate modes in bent waveguides.                     |
-|      fde_analysis.modal_analysis.bent_waveguide.radius       |        0.0        |  float  |  Set the waveguide radius for bent waveguides.              |
-|    fde_analysis.modal_analysis.bent_waveguide.orientation    |        0.0        |  float  |            The bent direction of the waveguide.               |
-|     fde_analysis.modal_analysis.bent_waveguide.location      | simulation_center | string  |            Set the bent center position of bent waveguides. Selections are ['simulation_center'].             |
 |      fde_analysis.modal_analysis.mode_removal.threshold      |        -        |  float  |     Screen the FDTD port source according to the energy arriving at the boundary to ensure the accuracy of the calculated transmission FDTD port mode.                       |
 |      fde_analysis.frequency_analysis.frequency_analysis      |       false       |  bool   |      Determine whether to invoke frequency analysis.                      |
 |       fde_analysis.frequency_analysis.start_wavelength       |      -      |  float  |          Set the start frequency of the frequency analysis.                 |
@@ -223,8 +207,12 @@ simu = pj.Simulation()
                                'wavelength': wavelength, 'wavelength_offset': 0.0001, 'number_of_trial_modes': number_of_trial_modes, 'calculate_group_index': True,
                                'bent_waveguide': {'bent_waveguide': True, 'radius': 5.25, 'orientation': 0, 'location': 'simulation_center'}}}})
 ```
-
-
+|                     Parameters                     |      Default      |  Type   |                  Notes                  |
+| :------------------------------------------------: | :---------------: | :-----: | :-------------------------------------: |
+|  fde_analysis.modal_analysis.bent_waveguide.bent_waveguide   |       false       |  bool   |        Select whether to calculate modes in bent waveguides.                     |
+|      fde_analysis.modal_analysis.bent_waveguide.radius       |        0.0        |  float  |  Set the waveguide radius for bent waveguides.              |
+|    fde_analysis.modal_analysis.bent_waveguide.orientation    |        0.0        |  float  |            The bent direction of the waveguide.               |
+|     fde_analysis.modal_analysis.bent_waveguide.location      | simulation_center | string  |            Set the bent center position of bent waveguides. Selections are ['simulation_center'].             |
 
 ### 6.1.4 Far field
 
@@ -243,8 +231,20 @@ simu.add(name=simu_name, type='FDE',
                                                    'projection_distance': 8000, 'points_in_x': 50, 'points_in_y': 50,
                                                    'farfield_x_span': 40, 'farfield_y_span': 40, 'farfield_x': 0, 'farfield_y': 0}]}}})
 ```
-
-
+|                     Parameters                     |      Default      |  Type   |                  Notes                  |
+| :------------------------------------------------: | :---------------: | :-----: | :-------------------------------------: |
+|  fde_analysis.modal_analysis.[]far_field_settings.calculate  |       true        |  bool   |       Determine whether to calculate the far field.    |
+| fde_analysis.modal_analysis.[]far_field_settings.mode_selection |     -         | integer |         Select the mode for which far-field calculation is needed.                 |
+| fde_analysis.modal_analysis.[]far_field_settings.projection_method |      planar       | string  |                  Specify the projection type for calculating the far-field.Selections are ['planar'].                  |
+| fde_analysis.modal_analysis.[]far_field_settings.farfield_filter |         0         |  float  |      Configure this parameter to filter near field data for eliminating high frequency ripples in the results. Its value ranging from 0 to 1.                                                        |
+| fde_analysis.modal_analysis.[]far_field_settings.material_index |        1.4        |  float  |    Set the material refractive index for projection.            |
+| fde_analysis.modal_analysis.[]far_field_settings.projection_distance |      4430.65      |  float  |  The distance for far-field projection calculation.                         |
+| fde_analysis.modal_analysis.[]far_field_settings.points_in_x |        50         |  float  |          In x direction, the number of points in the far field.               |
+| fde_analysis.modal_analysis.[]far_field_settings.points_in_y |        50         |  float  |          In y direction, the number of points in the far field.                                                     |
+| fde_analysis.modal_analysis.[]far_field_settings.farfield_x  |         0         |  float  |          In x direction, the position of far field center point.            |
+| fde_analysis.modal_analysis.[]far_field_settings.farfield_x_span |      26.1834      |  float  |            In x direction, the span of far field range.             |
+| fde_analysis.modal_analysis.[]far_field_settings.farfield_y  |         0         |  float  |             In y direction, the position of far field center point.    |
+| fde_analysis.modal_analysis.[]far_field_settings.farfield_y_span |      18.1231      |  float  |              In y direction, the span of far field range.     |
 
 ## 6.2 EME
 
@@ -307,23 +307,15 @@ simu.add(name=simu_name, type="EME",
 | eme_analysis.periodicity.[]periodic_group_definition.start_cell_group |   -         | integer |         Set the start cell number for periodic structure.                   |
 | eme_analysis.periodicity.[]periodic_group_definition.end_cell_group |      -      | integer |       Set the end cell number for periodic structure.                |
 | eme_analysis.periodicity.[]periodic_group_definition.periods |      -      | integer |      Set the repetition number of cells in the periodic structure.                    |
-|       eme_analysis.propagation_sweep.propagation_sweep       |    false     |  bool   |   Determine whether to sweep the length of structure for propagating in EME simulation.             |
-|           eme_analysis.propagation_sweep.parameter           | group_span_1 | string  |   Select the cell group corresponding to the structure for which propagation sweep is needed.                 |
-|             eme_analysis.propagation_sweep.start             |      0       |  float  |         Set the starting length of the structure for propagation sweep.                  |
-|             eme_analysis.propagation_sweep.stop              |      1       |  float  |   Set the stopping length of the structure for propagation sweep.                     |
-|       eme_analysis.propagation_sweep.number_of_points        |      3       | integer |           Set the number of points for propagation sweep.                    |
-|        eme_analysis.wavelength_sweep.wavelength_sweep        |    false     |  bool   |             Decide whether to sweep the wavelength in EME simulaiton.                    |
-|             eme_analysis.wavelength_sweep.start              |     1.5      |  float  |     Set the starting wavelength in EME simulaiton.                           |
-|              eme_analysis.wavelength_sweep.stop              |     1.6      |  float  |  Set the stopping wavelength in EME simulaiton.                   |
-|  eme_analysis.wavelength_sweep.number_of_wavelength_points   |      3       | integer |    Set the number of points in wavelength range.           |
-|               eme_analysis.select_source.phase               |      0       |  float  |           Set  the phase of selected source in EME simulation.                     |
-|            eme_analysis.select_source.select_mode            |      -        |     string    |           Set the type of mode propagating in the EME simulation.                  |
+
 
 
 
 ### 6.2.1 EME CellGroup Custom Setting
 
 This section provides guidance on configuring a customized EME cell group according to your specifications.
+
+**Example:**
 
 ```python
 simu = pj.Simulation()
@@ -351,6 +343,8 @@ simu.add(name=simu_name, type="EME",
 
 This section can guide you in configuring an EME periodic structure.
 
+**Example:**
+
 ```python
 simu = pj.Simulation()
 simu.add(name=simu_name, type='EME',
@@ -370,11 +364,68 @@ simu.add(name=simu_name, type='EME',
              }})
 ```
 
+### 6.2.3 EME propagation Sweep
 
+**Example:**
 
+```python
+simu = pj.Simulation()
+simu.add(name=simu_name, type="EME",
+            property={"general": {"wavelength": wavelength, "use_wavelength_sweep": True},
+                    "eme_setup": {
+                        "cell_geometry": {
+                            "energy_conservation": "make_passive",  # ["none","make_passive"]
+                            "cell_group_definition": [
+                                {"span": 2, "cell_number": 1, "number_of_modes": number_of_modes, "sc": "none"},
+                                {"span": 1, "cell_number": 1, "number_of_modes": number_of_modes, "sc": "none"},
+                                {"span": 200, "cell_number": 30, "number_of_modes": number_of_modes, "sc": "sub_cell"},
+                                {"span": 3, "cell_number": 1, "number_of_modes": number_of_modes, "sc": "none"}]}},
+                    "transverse_mesh_setting": {"global_mesh_uniform_grid": {"dy": grid, "dz": grid}},
+                    "eme_analysis": {
+                        "eme_propagate": run_options.run,
+                        "propagation_sweep": {"propagation_sweep": run_options.run_length_sweep,
+                                                "parameter": "group_span_3", "start": 50, "stop": 250, "number_of_points": 5},
+                        "select_source": {"phase": 0, "select_mode": "TE"}}})
+```
+|                          Parameters                          |   Default    |  Type   |                   Notes                    |
+| :----------------------------------------------------------: | :----------: | :-----: | :----------------------------------------: |
+|       eme_analysis.propagation_sweep.propagation_sweep       |    false     |  bool   |   Determine whether to sweep the length of structure for propagating in EME simulation.             |
+|           eme_analysis.propagation_sweep.parameter           | group_span_1 | string  |   Select the cell group corresponding to the structure for which propagation sweep is needed.                 |
+|             eme_analysis.propagation_sweep.start             |      0       |  float  |         Set the starting length of the structure for propagation sweep.                  |
+|             eme_analysis.propagation_sweep.stop              |      1       |  float  |   Set the stopping length of the structure for propagation sweep.                     |
+|       eme_analysis.propagation_sweep.number_of_points        |      3       | integer |           Set the number of points for propagation sweep.                    |
 
+### 6.2.4 EME wavelength Sweep
 
+**Example:**
 
+```python
+simu = pj.Simulation()
+simu.add(name=simu_name, type="EME",
+            property={"general": {"wavelength": wavelength, "use_wavelength_sweep": True},
+                    "eme_setup": {
+                        "cell_geometry": {
+                            "energy_conservation": "make_passive",  # ["none","make_passive"]
+                            "cell_group_definition": [
+                                {"span": L-1, "cell_number": 10, "number_of_modes": number_of_modes, "sc": "sub_cell"},
+                                ]}},
+                    "transverse_mesh_setting": {"global_mesh_uniform_grid": {"dy": global_mesh_grid, "dz": global_mesh_grid}},
+                    "eme_analysis": {
+                        "eme_propagate": run_options.run,
+                        "wavelength_sweep": {
+                            "wavelength_sweep": run_options.run_wavelength_sweep,
+                            "start": wavelength_start, "stop": wavelength_stop, "number_of_wavelength_points": wavelength_points},
+                        "select_source": {"phase": 0, "select_mode": "TE"}}})
+```
+
+|                          Parameters                          |   Default    |  Type   |                   Notes                    |
+| :----------------------------------------------------------: | :----------: | :-----: | :----------------------------------------: |
+|        eme_analysis.wavelength_sweep.wavelength_sweep        |    false     |  bool   |             Decide whether to sweep the wavelength in EME simulaiton.                    |
+|             eme_analysis.wavelength_sweep.start              |     1.5      |  float  |     Set the starting wavelength in EME simulaiton.                           |
+|              eme_analysis.wavelength_sweep.stop              |     1.6      |  float  |  Set the stopping wavelength in EME simulaiton.                   |
+|  eme_analysis.wavelength_sweep.number_of_wavelength_points   |      3       | integer |    Set the number of points in wavelength range.           |
+|               eme_analysis.select_source.phase               |      0       |  float  |           Set  the phase of selected source in EME simulation.                     |
+|            eme_analysis.select_source.select_mode            |      -        |     string    |           Set the type of mode propagating in the EME simulation.                  |
 
 
 
@@ -443,6 +494,36 @@ fdtd_res = simu[simu_name].run()
                                       "resolution": {"horizontal_points": 100, "vertical_points": 100}}}})
 ```
 
+### 6.3.2 FDTD smatrix sweep
+
+When we use the FDTD port as the input source, we can assist you in computing the smatrix sweep within the FDTD module.
+
+```python
+# region --- Port ---
+pt = pj.Port(property={'waveform_id': wv[waveform_name], 'source_port': 'left_port'})
+
+pt.add(name='left_port', type='fdtd_port',
+        property={'geometry': {'x': -wg_length / 2 + span, 'x_span': 0, 'y': 0, 'y_span': port_width, 'z': 0, 'z_span': port_height},
+                    'modal_properties': {'general': {'inject_axis': 'x_axis', 'direction': 'forward', 'mode_selection': 'fundamental'}}})
+if run_options.matrix_sweep:
+    pt.add(name='right_port', type='fdtd_port',
+            property={'geometry': {'x': wg_length / 2 - span, 'x_span': 0, 'y': 0, 'y_span': port_width, 'z': 0, 'z_span': port_height},
+                        'modal_properties': {'general': {'inject_axis': 'x_axis', 'direction': 'backward', 'mode_selection': 'fundamental'}}})
+# endregion
+
+# region --- Simulation ---
+simu = pj.Simulation()
+simu.add(name='fdtd', type='FDTD',
+            property={'general': {'simulation_time': 1000},
+                    'mesh_settings': {'mesh_accuracy': {'cells_per_wavelength': grids_per_lambda}}})
+if run_options.matrix_sweep:
+    smatrix_res = simu.add(name='matrix_sweep', type='FDTD:smatrix',
+                            property={'simulation_name': 'fdtd',
+                                        's_matrix_setup': [{'port': 'left_port', 'active': True}, {'port': 'right_port', 'active': True}]})
+# endregion
+
+
+```
 
 
 
@@ -460,6 +541,8 @@ add(
             property: AnyParameterSweepPostProcess,
     )
 ```
+
+An example of FDTD sweep is presented in the following code.
 
 **Example:**
 

@@ -136,5 +136,90 @@ A uniform mesh is applied to the entire simulation volume, regardless of any mat
 
 **Works Flow**:
 
-|![](../../../static/img/tutorial/simulation/fdtd/workflow.png)|
+|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;![](../../../static/img/tutorial/simulation/fdtd/workflow.png)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
+| :------------------------------------------------------------: |
+
+### 2.1 Modeling
+#### 2.1.1 Material database settings
+
+Press on "**Material**" button, the material database window will bring out, and import new materials from standard material database or user material database into project material database according to user needs.( when import success a prompt information will pop out informs that `Import Success. Success: 1/1, Fail: 0/1 (duplicated)`).
+
+Material work flows:
+
+|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;![](../../../static/img/tutorial/simulation/fdtd/Mworkflow.png)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
+| :------------------------------------------------------------: |
+
+#### 2.1.2 Add a rectangle
+
+Press arrow on the “**Structures**” button, and select a Rectangle from the drop-down menu. Set the properties of the substrate rectangle according to the following table.
+
+Menu bar->Structures->Rectangle->Geometry->Material
+
+|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;![](../../../static/img/tutorial/simulation/fdtd/tablerect.png)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
+| :------------------------------------------------------------: |
+
+#### 2.1.3 Waveforms setting
+
+Press arrow on the “**Waveforms**” button in the menu bar, then add the waveform with name: ”Waveform0” under the project waveform and set the properties in Waveforms dialog box.
+
+|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;![](../../../static/img/tutorial/simulation/fdtd/waveform.png)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
+| :------------------------------------------------------------: |
+
+|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;![](../../../static/img/tutorial/simulation/fdtd/waveform1.png)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
+| :------------------------------------------------------------: |
+
+|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;![](../../../static/img/tutorial/simulation/fdtd/waveform2.png)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
+| :------------------------------------------------------------: |
+
+
+
+
+
+### 2.2 Add FDTD
+
+Press arrow on the “**Simulation**” button in the menu bar, and select “**FDTD**” from the drop-down menu, and set the properties according to the following table.
+
+|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;![](../../../static/img/tutorial/simulation/fdtd/addfdtd.png)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
+| :------------------------------------------------------------: |
+
+### 2.3 Add Mode Source
+
+Press arrow on the “**Mode Source**” button in the menu bar, and select “**Mode Source**” from the drop-down menu. Set the properties of mode source according to the following table
+
+|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;![](../../../static/img/tutorial/simulation/fdtd/modesource.png)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
+| :------------------------------------------------------------: |
+
+|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;![](../../../static/img/tutorial/simulation/fdtd/modesource1.png)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
+| :------------------------------------------------------------: |
+
+### 2.4 Add Power Monitor
+
+Press arrow on the “**Monitor**” button in the menu bar, and select “**Frequency-Domain Field and Power**” from the drop-down menu. Set the properties of power monitor according to the following table.
+
+|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;![](../../../static/img/tutorial/simulation/fdtd/addmonitor.png)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
+| :------------------------------------------------------------: |
+
+**Notes**: Before simulation, please press “**File**” button, and select “**Save**” from drop-down manual, manually. (File -> Save)
+
+### 2.5 Run
+
+Press arrow on the “**Run**” button in the menu bar and select “**Run FDTD**” from drop-down menu. 
+
+|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&emsp;&emsp;&emsp;&emsp;&emsp;![](../../../static/img/tutorial/simulation/fdtd/runfdtd.png)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
+| :------------------------------------------------------------: |
+
+### 2.6 Result View
+
+You can check the simulation result via clicking items in the “**Result View**”.
+
+#### 2.6.1 FDTD Monitor->Power Monitor->Image tab
+
+|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&emsp;&emsp;&emsp;&emsp;&emsp;![](../../../static/img/tutorial/simulation/fdtd/Rpower.png)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
+| :------------------------------------------------------------: |
+
+#### 2.6.2 FDTD Monitor-> Power Monitor->Line tab
+
+In these windows, you can view different plot types, and they are interested in via settings in relative sections.
+
+|&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&emsp;&emsp;&emsp;&emsp;&emsp;![](../../../static/img/tutorial/simulation/fdtd/RLine.png)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
 | :------------------------------------------------------------: |

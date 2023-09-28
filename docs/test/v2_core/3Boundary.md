@@ -214,12 +214,12 @@ st.add_emesh_along_line(name="EMesh_Ge_SiO2_Interface_Slope_Left", property={
 
 | Parameters | Default | Type  |             Notes             |
 | :------------: | :-----: | :---: | :---------------------------: |
-|    start_x     |    0    | float |                               |
-|    start_y     |    0    | float | Restrained by condition: >=0. |
-|    start_z     |    0    | float |                               |
-|     end_x      |    1    | float |                               |
-|     end_y      |    1    | float |                               |
-|     end_z      |    1    | float | Restrained by condition: >=0. |
-|   mesh_size    |  0.01   | float |                               |
+|    start_x     |    0    | float |  The minimum value of mesh region in x axis. |
+|    start_y     |    0    | float | The minimum value of mesh region in y axis. Restrained by condition: >=0. |
+|    start_z     |    0    | float | The minimum value of mesh region in z axis.   |
+|     end_x      |    1    | float | The maximum value of mesh region in x axis.   |
+|     end_y      |    1    | float | The maximum value of mesh region in y axis.   |
+|     end_z      |    1    | float | The maximum value of mesh region in z axis.  Restrained by condition: >=0. |
+|   mesh_size    |  0.01   | float |  The size of the unit grid.     |
 
 

@@ -670,18 +670,18 @@ simu.add(name="preview_oedevice", type="OEDevice", property={
 |         genrate.coordinate_unit          |         m         | string  |  Set the coordinate unit in the gfile.  Selections are ['m', 'cm', 'um', 'nm'].  |
 |        genrate.field_length_unit         |         m         | string  |   Selections are ['m', 'cm', 'um', 'nm'].  |
 |            geometry.dimension            |    2d_x_normal    | string  | Selections are ['2d_x_normal', '2d_y_normal', '2d_z_normal']. |
-|                geometry.x                |                   |  float  |                                                              |
-|             geometry.x_span              |                   |  float  |                                                              |
-|              geometry.x_min              |                   |  float  |                                                              |
-|              geometry.x_max              |                   |  float  |                                                              |
-|                geometry.y                |                   |  float  |                                                              |
-|             geometry.y_span              |                   |  float  |                                                              |
-|              geometry.y_min              |                   |  float  |                                                              |
-|              geometry.y_max              |                   |  float  |                                                              |
-|                geometry.z                |                   |  float  |                                                              |
-|             geometry.z_span              |                   |  float  |                                                              |
-|              geometry.z_min              |                   |  float  |                                                              |
-|              geometry.z_max              |                   |  float  |                                                              |
+|     geometry.x      |    -     |  float   |  The x-coordinate of the center point position of the OEDevice.    |
+|   geometry.x_span   |     -    |  float   | The length in x direction of the OEDevice. Restrained by condition: >0.  |
+|   geometry.x_min    |    -     |  float   | The minimum x-coordinate endpoint data of the OEDevice.      |
+|   geometry.x_max    |     -    |  float   |  The maximum x-coordinate endpoint data of the OEDevice.     |
+|     geometry.y      |     -    |  float   |  The y-coordinate of the center point position of the OEDevice.      |
+|   geometry.y_span   |     -    |  float   | The width in y direction of the OEDevice. Restrained by condition: >0.  |
+|   geometry.y_min    |     -    |  float   |The minimum y-coordinate endpoint data of the OEDevice.       |
+|   geometry.y_max    |     -    |  float   |  The maximum y-coordinate endpoint data of the OEDevice.      |
+|     geometry.z      |     -    |  float   |   The z-coordinate of the center point position of the OEDevice.    |
+|   geometry.z_span   |     -    |  float   | The height in z direction of the OEDevice. Restrained by condition: >0.  |
+|   geometry.z_min    |     -    |  float   | The z-coordinate of the bottom position of the height of the OEDevice.      |
+|   geometry.z_max    |      -   |  float   |  The z-coordinate of the top position of the height of the OEDevice.     |
 |  small_signal_ac.perturbation_amplitude  |       0.001       |  float  |     Set the voltage amplitude of the small signal.  |
 |    small_signal_ac.frequency_spacing     |      single       | string  |   Set the spacing type of the frequency. Selections are ['single', 'linear', 'log'].          |
 |        small_signal_ac.frequency         |      1.0e+6       |  float  |  Set the value of the single frequency.   |
@@ -738,7 +738,6 @@ simu.add(name="preview_fdtd", type="AFDTD", property={
 |                    thread_setting.thread                     |        4         | integer |    Determine the number of cores required to run the simulation on the local computer.      |
 
 
-（解释各个标题，以及将OED放在最前面，AFDE属于OED）
 ## 6.7 AFDE
 
 Integrate an AFDE(Active Finite Difference Eigenmode) solver into the current project using the code `type='AFDE'`.

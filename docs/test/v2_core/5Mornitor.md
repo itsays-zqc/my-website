@@ -253,7 +253,7 @@ mn.add(name='through', type='power_monitor',
 
 
 
-## 5.6 Band monitor
+## 5.5 Band monitor
 
 Integrate a band monitor into the current project.
 
@@ -292,21 +292,24 @@ mn.add(name="band_line", type="band_monitor", property={
 |      general.record_efp       |  true   |  bool   |  The hole quasi-Fermi energy.                                                    |
 |      general.record_evac      |  true   |  bool   |                                                      |
 |     geometry.monitor_type     |         | string  | Set the dimension type of the monitor. For electrical monitors, only 1D type and 2D type are available currently. Selections are ['linear_x', 'linear_y', 'linear_z']. |
-|          geometry.x           |         |  float  |                                                      |
-|        geometry.x_span        |         |  float  |            Restrained by condition: >=0.             |
-|        geometry.x_min         |         |  float  |                                                      |
-|        geometry.x_max         |         |  float  |                                                      |
-|          geometry.y           |         |  float  |                                                      |
-|        geometry.y_span        |         |  float  |            Restrained by condition: >=0.             |
-|        geometry.y_min         |         |  float  |                                                      |
-|        geometry.y_max         |         |  float  |                                                      |
-|          geometry.z           |         |  float  |                                                      |
-|        geometry.z_span        |         |  float  |            Restrained by condition: >=0.             |
-|        geometry.z_min         |         |  float  |                                                      |
-|        geometry.z_max         |         |  float  |                                                      |
+|     geometry.x      |    -     |  float   |  The x-coordinate of the center point position of the band monitor.    |
+|   geometry.x_span   |     -    |  float   | The length in x direction of the band monitor. Restrained by condition: >0.  |
+|   geometry.x_min    |    -     |  float   | The minimum x-coordinate endpoint data of the band monitor.      |
+|   geometry.x_max    |     -    |  float   |  The maximum x-coordinate endpoint data of the band monitor.     |
+|     geometry.y      |     -    |  float   |  The y-coordinate of the center point position of the band monitor.      |
+|   geometry.y_span   |     -    |  float   | The width in y direction of the band monitor. Restrained by condition: >0.  |
+|   geometry.y_min    |     -    |  float   |The minimum y-coordinate endpoint data of the band monitor.       |
+|   geometry.y_max    |     -    |  float   |  The maximum y-coordinate endpoint data of the band monitor.      |
+|     geometry.z      |     -    |  float   |   The z-coordinate of the center point position of the band monitor.    |
+|   geometry.z_span   |     -    |  float   | The height in z direction of the band monitor. Restrained by condition: >0.  |
+|   geometry.z_min    |     -    |  float   | The z-coordinate of the bottom position of the height of the band monitor.      |
+|   geometry.z_max    |      -   |  float   |  The z-coordinate of the top position of the height of the band monitor.     |
 | geometry.interpolate_accuracy |    1    | integer |  Set the accuracy of the rectangular grid for extracting the monitor result.  Restrained by condition: >=1 && <= 10. Here 1 means the grid size is 10nm, and 10 means the grid size is 1nm, and the grid size varies uniformly with the variation in 'interpolate_accuracy'.         |
 
-## 5.7 Charge monitor
+
+
+
+## 5.6 Charge monitor
 
 Incorporate a charge monitor into the current project.
 
@@ -341,23 +344,23 @@ mn.add(name="np_line_080nm", type="charge_monitor", property={
 |      general.record_holes      |  true   |  bool   |  The distribution of hole concentration in monitor.     |
 | general.integrate_total_charge |  true   |  bool   | Available when monitor_type is in ['2d_x_normal', '2d_y_normal', '2d_z_normal']. |
 |     geometry.monitor_type      |         | string  | Selections are ['linear_x', 'linear_y', 'linear_z', '2d_x_normal', '2d_y_normal', '2d_z_normal']. |
-|           geometry.x           |         |  float  |                                                              |
-|        geometry.x_span         |         |  float  |                Restrained by condition: >=0.                 |
-|         geometry.x_min         |         |  float  |                                                              |
-|         geometry.x_max         |         |  float  |                                                              |
-|           geometry.y           |         |  float  |                                                              |
-|        geometry.y_span         |         |  float  |                Restrained by condition: >=0.                 |
-|         geometry.y_min         |         |  float  |                                                              |
-|         geometry.y_max         |         |  float  |                                                              |
-|           geometry.z           |         |  float  |                                                              |
-|        geometry.z_span         |         |  float  |                Restrained by condition: >=0.                 |
-|         geometry.z_min         |         |  float  |                                                              |
-|         geometry.z_max         |         |  float  |                                                              |
+|     geometry.x      |    -     |  float   |  The x-coordinate of the center point position of the charge monitor.    |
+|   geometry.x_span   |     -    |  float   | The length in x direction of the charge monitor. Restrained by condition: >0.  |
+|   geometry.x_min    |    -     |  float   | The minimum x-coordinate endpoint data of the charge monitor.      |
+|   geometry.x_max    |     -    |  float   |  The maximum x-coordinate endpoint data of the charge monitor.     |
+|     geometry.y      |     -    |  float   |  The y-coordinate of the center point position of the charge monitor.      |
+|   geometry.y_span   |     -    |  float   | The width in y direction of the charge monitor. Restrained by condition: >0.  |
+|   geometry.y_min    |     -    |  float   |The minimum y-coordinate endpoint data of the charge monitor.       |
+|   geometry.y_max    |     -    |  float   |  The maximum y-coordinate endpoint data of the charge monitor.      |
+|     geometry.z      |     -    |  float   |   The z-coordinate of the center point position of the charge monitor.    |
+|   geometry.z_span   |     -    |  float   | The height in z direction of the charge monitor. Restrained by condition: >0.  |
+|   geometry.z_min    |     -    |  float   | The z-coordinate of the bottom position of the height of the charge monitor.      |
+|   geometry.z_max    |      -   |  float   |  The z-coordinate of the top position of the height of the charge monitor.     |
 | geometry.interpolate_accuracy  |    1    | integer |            Restrained by condition: >=1 && <= 10.            |
 
 
 
-## 5.8 Electric monitor
+## 5.7 Electric monitor
 
 Integrate an electric monitor into the current project.
 
@@ -392,16 +395,16 @@ add(
 | general.record_electrostatic_potential |  true   |  bool   |  The distribution of electric potential in monitor.        |
 |      general.calculate_net_charge      |  true   |  bool   | Available when monitor_type is in ['2d_x_normal', '2d_y_normal', '2d_z_normal']. |
 |         geometry.monitor_type          |         | string  | Selections are ['linear_x', 'linear_y', 'linear_z', '2d_x_normal', '2d_y_normal', '2d_z_normal']. |
-|               geometry.x               |         |  float  |                                                              |
-|            geometry.x_span             |         |  float  |                Restrained by condition: >=0.                 |
-|             geometry.x_min             |         |  float  |                                                              |
-|             geometry.x_max             |         |  float  |                                                              |
-|               geometry.y               |         |  float  |                                                              |
-|            geometry.y_span             |         |  float  |                Restrained by condition: >=0.                 |
-|             geometry.y_min             |         |  float  |                                                              |
-|             geometry.y_max             |         |  float  |                                                              |
-|               geometry.z               |         |  float  |                                                              |
-|            geometry.z_span             |         |  float  |                Restrained by condition: >=0.                 |
-|             geometry.z_min             |         |  float  |                                                              |
-|             geometry.z_max             |         |  float  |                                                              |
+|     geometry.x      |    -     |  float   |  The x-coordinate of the center point position of the electric monitor.    |
+|   geometry.x_span   |     -    |  float   | The length in x direction of the electric monitor. Restrained by condition: >0.  |
+|   geometry.x_min    |    -     |  float   | The minimum x-coordinate endpoint data of the electric monitor.      |
+|   geometry.x_max    |     -    |  float   |  The maximum x-coordinate endpoint data of the electric monitor.     |
+|     geometry.y      |     -    |  float   |  The y-coordinate of the center point position of the electric monitor.      |
+|   geometry.y_span   |     -    |  float   | The width in y direction of the electric monitor. Restrained by condition: >0.  |
+|   geometry.y_min    |     -    |  float   |The minimum y-coordinate endpoint data of the electric monitor.       |
+|   geometry.y_max    |     -    |  float   |  The maximum y-coordinate endpoint data of the electric monitor.      |
+|     geometry.z      |     -    |  float   |   The z-coordinate of the center point position of the electric monitor.    |
+|   geometry.z_span   |     -    |  float   | The height in z direction of the electric monitor. Restrained by condition: >0.  |
+|   geometry.z_min    |     -    |  float   | The z-coordinate of the bottom position of the height of the electric monitor.      |
+|   geometry.z_max    |      -   |  float   |  The z-coordinate of the top position of the height of the electric monitor.     |
 |     geometry.interpolate_accuracy      |    1    | integer |            Restrained by condition: >=1 && <= 10.            |

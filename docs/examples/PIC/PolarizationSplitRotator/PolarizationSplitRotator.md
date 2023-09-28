@@ -5,18 +5,15 @@ import {InlineMath, BlockMath} from 'react-katex';
 
 ## Introduction
 <div class="text-justify">
-绝缘体上的硅波导具有强的双折射效应，但是很多光学器件对光的偏振十分敏感，因此在光子集成回路常需要增加偏振分束与旋转的设计来获得高性能的器件。
+The large refractive index difference of silicon waveguides on insulators can produce strong birefringence effects, making many optical devices very sensitive to the polarization of light. The polarization beam splitter rotator can separate light of different polarizations and output light of the same polarization, which can effectively solve the problem of polarization sensitivity in silicon waveguides.
 
-在本例中，我们演示了使用EME求解器计算模式耦合与转换器件的仿真流程。利用非对称的定向耦合器结构将正交偏振的光耦合分开，然后将旋转到我们需要的结构。
-Silicon waveguides on insulators have strong birefringence effects, but many optical devices are very sensitive to the polarization of light. Therefore, in photonic integrated circuits, it is often necessary to increase the design of polarization splitting and rotation to obtain high-performance devices.
-In this example, we demonstrated the simulation process of using an EME solver to calculate mode coupling and conversion devices. Using an asymmetric directional coupler structure to separate the orthogonal polarized light coupling, and then rotate it to the desired structure.
+In this example, we demonstrated the simulation process of a compact PSR using an EME solver, which consists of an adiabatic conical waveguide, an asymmetric directional coupler, and an MMI. In an adiabatic conical waveguide, TM0 mode can be efficiently converted to TE1 mode, and then the TE1 mode can be converted to TE0 mode using ADC.
 </div>
 
 ## Simulation
 ### 1. Code Description
 #### 1.1 Import Toolkit
 <div class="text-justify">
-
 First, we need to import `maxoptics_sdk` and Python's third-party package. The import module for EME simulation is shown below.
 </div>
 
@@ -26,7 +23,6 @@ from maxoptics_sdk.helper import timed, with_path
 import os
 import time
 from typing import NamedTuple
-
 ```
 
 #### 1.2 Define Simulation Function 

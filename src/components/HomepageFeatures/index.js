@@ -66,12 +66,12 @@ const FeatureList = [
 
 
       <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/tutorial/4Simulation/2FDTD">2.What is FDTD?</a>
+        <a href="/my-website/docs/tutorial/4Simulation/2FDTD">2.What is the FDTD?</a>
       </div>
       <hr style={{ margin: '0.25rem 0' }}/>
 
       <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/tutorial/4Simulation/3EME">3.What is EME?</a>
+        <a href="/my-website/docs/tutorial/4Simulation/3EME">3.What is the EME?</a>
       </div>
       <hr style={{ margin: '0.25rem 0' }}/>
 
@@ -82,7 +82,7 @@ const FeatureList = [
       <hr style={{ margin: '0.25rem 0' }}/>
 
       <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/category/simulation">5.How to  set the simulation?</a>
+        <a href="/my-website/docs/category/simulation">5.How to set the simulation?</a>
       </div>
       <hr style={{ margin: '0.25rem 0' }}/>
 

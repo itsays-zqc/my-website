@@ -59,32 +59,7 @@ const FeatureList = [
       <>
               {/* <hr /> */}
 
-        <div style={{ textAlign: 'left' }}>
-          <a href="/my-website/docs/tutorial/4Simulation/1FDE">1.What is FDE?</a>
-        </div>
-        <hr style={{ margin: '0.25rem 0' }}/>
-
-  
-        <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/tutorial/4Simulation/2FDTD">2.What is FDTD?</a>
-        </div>
-        <hr style={{ margin: '0.25rem 0' }}/>
-
-        <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/tutorial/4Simulation/3EME">3.What is EME?</a>
-        </div>
-        <hr style={{ margin: '0.25rem 0' }}/>
-
-
-        <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/tutorial/1Material">4.How to set material?</a>
-        </div>
-        <hr style={{ margin: '0.25rem 0' }}/>
-
-        <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/category/simulation">5.How to  set the simulation?</a>
-        </div>
-        <hr style={{ margin: '0.25rem 0' }}/>
+       
 
        
         

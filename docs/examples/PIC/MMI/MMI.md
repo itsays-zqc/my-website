@@ -613,18 +613,29 @@ As shown in the figure below, the S-matrix is a 3∙3 matrix.
 
 
 
-1. The S parameters at different wavelength.The left picture represent the 
+4. The S parameters and transmission at different wavelength.
 
 
 
 <div class="text-justify">
 
 The S21 parameter represents the absolute value of the transmission coefficient from port 1 input to port 2 output. Due to the symmetry of the structure, S31=S21.
+The transmission result is shown in the left picture below which is calculted form the S parameter about the one of output ports. Therefore, we can obtain the insert loss is about 0.125 dB at 1.55 micrometer wavelength.
+
 
 </div>
 
-|  ![](S21.png) |  
-| :----------------------------------------------------------: |
+|  ![](S21.png) |  ![](T_wavelength.png) |  
+| :----------------------------------------------------------: | :----------------------------------------------------------: |
+
+
+<div class="text-justify">
+
+Above all, 
+
+
+</div>
+
 
 ## Supplement
 
@@ -632,5 +643,7 @@ The S21 parameter represents the absolute value of the transmission coefficient 
 
 
 To view a function's definition and supported parameters or a parameter dictionary, you can right-click on its name and select "Go to Definition"  or press "Ctrl" while left-clicking on its name to view its definition, showing the available parameters and their descriptions.  
+
+
 
 </div>

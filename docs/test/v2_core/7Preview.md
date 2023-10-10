@@ -1,5 +1,7 @@
 # Preview
 
+<div class="text-justify">
+
 In this section, we currently offer the capability to provide an advanced preview of structural models, refractive index and doping profile.
 
 This preview serves to validate the structues before initiating the formal simulation, thereby assisting in verifying the accuracy of the structures. Consequently, it leads to reduced simulation time and an overall enhancement of simulation efficiency.
@@ -179,3 +181,5 @@ simu["preview_oedevice"].run_doping(name="x_in", property={
 |   geometry.z_span   |    -     |  float   | The thinckness in z direction of the doping region. Restrained by condition: >0.  |
 |   geometry.z_min    |     -    |  float   |The z-coordinate of the bottom position of the thickness of the doping region.      |
 |   geometry.z_max    |     -    |  float   |  The z-coordinate of the top position of the thickness of the doping region.     |
+
+</div>

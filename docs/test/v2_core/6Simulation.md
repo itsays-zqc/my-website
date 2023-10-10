@@ -1,5 +1,7 @@
 # Simulation
 
+<div class="text-justify">
+
 In the forthcoming code segment, we will showcase examples of simulation, accompanied by their parameter lists. This will aid you in achieving a simulation project.
 
 Our platform will offer support for a variety of simulation modules, encompassing both optical and electrical simulation. These may include FDE, FDTD, OEDevice modules, ensuring an expansive electro-optical simulation capabilities.
@@ -803,3 +805,4 @@ simu.add(name="preview_fde", type="AFDE", property={
 |       fde_analysis.frequency_analysis.effective_index        |        1.0        |  float  |            To search the mode near this refractive index.                        |
 | fde_analysis.frequency_analysis.detailed_dispersion_calculation |       false       |  bool   |      Determine whether to calculate the dispersion of structure.                                 |
 
+</div>

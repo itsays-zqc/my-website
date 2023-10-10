@@ -129,7 +129,7 @@ In this example, we show how to use Max-Optics local passive to run FDE and view
 
 
 
-## 2 Simulation Cases:
+## 2 Simulation Cases
 
 In this example, we show how to use Max-Optics local passive to run FDE and view the simulation result.
 

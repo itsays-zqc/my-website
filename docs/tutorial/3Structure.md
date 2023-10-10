@@ -4,7 +4,11 @@ sidebar_position: 3
 
 
 
+
+
 # Structure
+
+<div class="text-justify">
 
 **Features Description**: Add or Edit Structures.
 
@@ -123,3 +127,5 @@ Click “Structures” button and select one structure from drop-down menu
 
 |&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;![](../../static/img/tutorial/structures/editProperties.png)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
 | :------------------------------------------------------------: |
+
+</div>

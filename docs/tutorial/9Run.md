@@ -4,6 +4,8 @@ sidebar_position: 9
 
 # Run
 
+<div class="text-justify">
+
 - **Feature description:**
 Run simulation
 
@@ -22,5 +24,7 @@ Run simulation
 <div class="centered">
 
 !['run'](../../static/img/tutorial/run/run.png)
+
+</div>
 
 </div>

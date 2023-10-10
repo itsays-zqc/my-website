@@ -629,13 +629,6 @@ The transmission result is shown in the left picture below which is calculted fo
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
 
 
-<div class="text-justify">
-
-Above all, 
-
-
-</div>
-
 
 ## Supplement
 

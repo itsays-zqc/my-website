@@ -7,6 +7,8 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 # FDE Solver
 
+<div class="text-justify">
+
 **Solver Physics**: The FDE solver employs finite-difference techniques to compute the spatial characteristics and frequency dependence of modes. By solving the Maxwell's equations on a cross-sectional mesh of the waveguide, the solver determines the mode field profiles, effective index, and loss values. 
 
 |!['fde1'](../../../static/img/tutorial/simulation/FDE/1.png)|
@@ -218,3 +220,5 @@ You also can view the result in Result View via clicking the FDE result item.
 
 |!['fde12'](../../../static/img/tutorial/material/mode/fde12.png )|
 | :------------------------------------------------------------: |
+
+</div>

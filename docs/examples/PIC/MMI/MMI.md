@@ -32,8 +32,6 @@ After data processing, performance parameters such as the imbalance, insertion l
 ##  Multi-Mode Interference(EME module)
 
 The simulation design of a multimode interference coupler typically employs the EME module. This allows for a rapid scan of the length of the multimode interference region to quickly identify the optimal length for beam splitting. Therefore, in the following code, we will learn how to create a Multi-Mode Interference (MMI) simulation and output the results for data processing.
-
-
 ### 1.Basic Options
 
 #### 1.1 Import File
@@ -208,7 +206,7 @@ st.add_geometry(name="psr", type="gds_file",
 
 We can import the MMI layout from the GDS file.<br/>The `name` parameter defines the structure name.<br/>The `type` parameter specifies the structure type.<br/>The `path`, `cell_name`, and `layer_name` parameters point to the GDS file and specify the relevant layers and cell names used in the layout.<br/>The `geometry` parameter sets the structure's coordinates. <br/>The `material` parameter specifies the material properties <br/>The `mesh_order` parameter sets the mesh order for the simulation. 
 
-Detailed explaination about structures : https://itsays-zqc.github.io/my-website/docs/test/v2_core/2Structure
+Detailed explaination about structure : https://itsays-zqc.github.io/my-website/docs/test/v2_core/2Structure
 
 </div>
 
@@ -414,7 +412,7 @@ Detailed explaination about EME simulation : https://itsays-zqc.github.io/my-web
 
 </div>
 
-#### 2.13 Structure Show
+#### 2.13 Calculate Mode
 
 <div class="text-justify">
 
@@ -458,7 +456,7 @@ Detailed explaination about modes calculation : https://itsays-zqc.github.io/my-
 
 </div>
 
-#### 1.14 Run
+#### 2.14 Run
 
 <div class="text-justify">
 
@@ -473,21 +471,7 @@ eme_res = simu[simu_name].run()
 # endregion
 ```
 
-#### 1.15 Run and Extract Results
-
-<div class="text-justify">
-
-In the region 11 ,we can recall the simulation name to run it.
-
-</div>
-
-```python
-# region --- 11. Run ---
-eme_res = simu[simu_name].run()
-# endregion
-```
-
-#### 1.16 Extract Results
+#### 2.15 Extract Results
 
 <div class="text-justify">
 
@@ -545,7 +529,7 @@ Detailed explaination about data extraction : https://itsays-zqc.github.io/my-we
 
 </div>
 
-#### 1.17 Switches
+#### 2.16 Switches
 
 <div class="text-justify">
 
@@ -634,9 +618,7 @@ The transmission result is shown in the left picture below which is calculted fo
 
 <div class="text-justify">
 
-
 To view a function's definition and supported parameters or a parameter dictionary, you can right-click on its name and select "Go to Definition"  or press "Ctrl" while left-clicking on its name to view its definition, showing the available parameters and their descriptions.  
-
 
 
 </div>

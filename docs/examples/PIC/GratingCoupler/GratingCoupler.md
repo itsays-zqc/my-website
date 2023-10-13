@@ -5,23 +5,299 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 ## Introduction:
 
-<div class="text-justify">
-
-&emsp;&emsp;Grating devices are diffractive elements with periodic optical properties or periodic spatial structures, enabling flexible functionalities such as phase matching, coupling, beam shaping, and wavelength conversion. They possess advantages of simple structures and ease of integration, making them widely applied in both active and passive components of integrated photonics. The depicted device in the figure represents a grating coupler, designed to facilitate the input and output of optical signals between optical fibers and on-chip waveguides.
-
-&emsp;&emsp;The primary performance parameters of the grating coupler include **coupling efficiency** and **process tolerance**.
+<div class="justify">
 
 </div>
 
-![MMI introduction](GC_intro.png 'MMI introduction')
+## Simulation 
+### 1 Code Description
+#### 1.1 Import Toolkit
 
-## Simulation Methods
+First, we need to import `maxoptics_sdk` and Python's third-party package. The import module for FDE and FDTD simulation are shown below.
+
+
+```python
+import maxoptics_sdk.all as mo
+from maxoptics_sdk.helper import timed, with_path
+import os
+import time
+import numpy as np
+from typing import NamedTuple
+```
+
+#### 1.2  Define Simulation Function and parameters
+To facilitate parameter changes, we can define function to encapsulate the entire simulation project. Before starting the simulation, you can define variables to control the parameters. Set as follows.
+
+```python
+@timed
+@with_path
+def simulation(*, run_mode, wavelength, grids_per_lambda, run_options: 'RunOptions', **kwargs):
+    # region --- 0. General Parameters ---
+    waveform_name = f'wv{wavelength*1e3}'
+
+    path = kwargs['path']
+    simu_name = 'GratingCoupler'
+    time_str = time.strftime('%Y%m%d_%H%M%S', time.localtime())
+    project_name = f'{simu_name}_{run_mode}_{time_str}'
+    plot_path = f'{path}/plots/{project_name}/'
+    gds_file_root_path = os.path.abspath(os.path.join(path, '..'))
+    gds_file = gds_file_root_path + '/examples_gds/gc.gds'
+    kL = [f'0{k}' for k in range(5)]
+    # endregion
+```
+
+#### 1.3 Create project
+You can create a new project using the `Project` function of Max's software development toolkit.
+```python
+# region --- 1. Project ---
+    pj = mo.Project(name=project_name, location=run_mode,)
+# endregion
+```
+#### 1.4 Add Material
+<div class="text-justify">
+
+ Here we demonstrate using the `Material` function to create material and using the `add_lib` function to add materials from the material library. You can refer to the following script to set material.
+</div>
+
+```python
+# region --- 2. Material ---
+mt = pj.Material()
+mt.add_nondispersion(name='Si', data=[(3.47656, 0)], order=2)
+mt.add_nondispersion(name='SiO2', data=[(1.44402, 0)], order=2)
+mt.add_lib(name='Air', data=mo.Material.Air, order=2)
+# endregion
+```
 
 <div class="text-justify">
 
-&emsp;&emsp;By employing the `FDTD module`, the process of coupling light from an optical fiber to an on-chip waveguide can be simulated. In the simulation, a Gaussian light source with a certain tilt angle is introduced. The monitor will then provide the throughput of the device, indicating the transmission of energy of the fundamental mode  in waveguide, as well as the distribution of the optical field intensity during the transmission.
-
-&emsp;&emsp; After data processing, the coupling efficiency of the grating coupler can be obtained, facilitating the optimization of the grating coupler's design to achieve high-efficiency transmission of optical signals from optical fibers to on-chip waveguides.
-
-
+The `name` is used to define the name of the added material.<br/>The `data` is used to receive refractive index data extracted from the material library.<br/>The `order` is used to set the material priority of the grid.
 </div>
+
+#### 1.5 Add waveform
+Adding a light source for simulating in 3D FDTD, and we use `Waveform` to set the waveform parameters of the light source.
+
+```python
+# region --- 3. Waveform ---
+wv = pj.Waveform()
+wv.add(name=waveform_name, wavelength_center=wavelength, wavelength_span=0.1)
+# endregion
+```
+`name` sets the name of the waveform, `wavelength_center` sets the center wavelength of the light source, and `wavelength_span` sets the wavelength range of the light source.
+
+#### 1.6 Add Structure
+<div class="text-justify">
+Microring resonator is typical filter for Soi waveguide, including two straight optical waveguides and a coupled ring-shaped waveguide. 
+
+We use `Structure` to create structure , where `mesh_type` is the type of mesh, `mesh_factor` is the growth factor of the mesh, and `background_material` is the background material of the structure. Use the `add_geometry` function to add geometric structures and select the type from the structural components. The specific properties can be set as follows.
+</div>
+
+```python
+# region --- 4. Structure ---
+st = pj.Structure()
+
+st.add_geometry(name='top_cladding', type='gds_file',
+                property={'general': {'path': gds_file, 'cell_name': 'gc', 'layer_name': (1, 0)},
+                            'geometry': {'z': 0.11, 'z_span': 0.22},
+                            'material': {'material': mt['Si'], 'mesh_order': 2}})
+st.add_geometry(name='middle_cladding', type='gds_file',
+                property={'general': {'path': gds_file, 'cell_name': 'gc', 'layer_name': (2, 0)},
+                            'geometry': {'z': 0.075, 'z_span': 0.15},
+                            'material': {'material': mt['Si'], 'mesh_order': 2}})
+st.add_geometry(name='grating', type='gds_file',
+                property={'general': {'path': gds_file, 'cell_name': 'gc', 'layer_name': (3, 0)},
+                            'geometry': {'z': 0.185, 'z_span': 0.07},
+                            'material': {'material': mt['Si'], 'mesh_order': 2}})
+st.add_geometry(name='SiO2_TOX_UP', type='gds_file',
+                property={'general': {'path': gds_file, 'cell_name': 'gc', 'layer_name': (4, 0)},
+                            'geometry': {'z': 0.5, 'z_span': 1.0},
+                            'material': {'material': mt['SiO2'], 'mesh_order': 1}})
+st.add_geometry(name='SiO2_TOX_DOWN', type='gds_file',
+                property={'general': {'path': gds_file, 'cell_name': 'gc', 'layer_name': (5, 0)},
+                            'geometry': {'z': -1, 'z_span': 2},
+                            'material': {'material': mt['SiO2'], 'mesh_order': 2}})
+st.add_geometry(name='Si_substrate', type='gds_file',
+                property={'general': {'path': gds_file, 'cell_name': 'gc', 'layer_name': (6, 0)},
+                            'geometry': {'z': -6, 'z_span': 8},
+                            'material': {'material': mt['Si'], 'mesh_order': 2}})
+# endregion                           
+```
+
+|Key| Value |type|Description|
+|-----|------|---------------|-----|
+|name|ring|string|name the added geometry|
+|type|Ring|string|select the type of structure |
+|x&emsp;&emsp;&emsp;&emsp;|0&emsp;&emsp;&emsp;&emsp;|float&emsp;&emsp;&emsp;&emsp;|center position in the x-direction of the geometric structure &nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
+|material|mt["Si"]|material | select the material added Materials|
+|mesh_order|3|integer|set the priority of the material|
+|x|0|float|the center coordinate of the ring in the x-direction|
+|y|0|float|the center coordinate of the ring in the y-direction|
+|z|0|float|the center coordinate of the ring in the z-direction|
+|z_span|0|float|the thickness of the ring in the z-direction|
+|inner_radius|2.6|float|the size of the inner radius of the ring|
+|outer_radius|3|float|the size of the outer radius of the ring|
+
+The properties of `Rectangle` can refer to the settings of the Ring. Select simulation material by using `mesh_order` in areas where geometry overlaps, the priority of structural materials needs to be higher than that of background material.
+
+#### 1.7 Set Boundary
+<div class="text-justify">
+
+Set the boundary size of the simulation structure using optical boundary condition `OBoundary`. Use `geometry` to set the size and position of the boundary, and use `boundary` to set the boundary conditions at the boundary. The boundary properties of FDE and FDTD are set as follows.
+</div>
+
+```python
+# region --- 5. Boundary ---
+st.OBoundary(property={'geometry': {'x': -3.5, 'x_span': 47, 'y': 0, 'y_span': 28, 'z': -0.5, 'z_span': 5},
+                        'boundary': {'x_min': 'PML', 'x_max': 'PML', 'y_min': 'PML', 'y_max': 'PML', 'z_min': 'PML', 'z_max': 'PML'},
+                        'general_pml': {'pml_same_settings': True, 'pml_layer': 8, 'pml_kappa': 2, 'pml_sigma': 0.8, 'pml_polynomial': 3, 'pml_alpha': 0, 'pml_alpha_polynomial': 1}})
+# endregion
+```
+
+#### 1.8 Add source
+<div class="text-justify">
+In 3D FDTD simulation, a light source is required. We use `Source` to create the light source and `add` to add the required light source. The settings for the light source are as follows.
+</div>
+
+```python
+# region --- 6. GaussianSource ---
+so = pj.Source()
+so.add(name='source', type='gaussian_source', axis='z_backward',
+        property={'general': {'angle_theta': 12, 'angle_phi': 0, 'polarization_angle': 90, 'waveform': {'waveform_id_select': wv[waveform_name]},
+                                'beam_settings': {'calculation_method': 'use_scalar_approximation',  # [use_scalar_approximation,use_vector_approximation]
+                                                'beam_parameters': 'waist_size_and_position',  # [waist_size_and_position,beam_size_and_divergence]
+                                                'waist_radius': 5.2, 'distance_from_waist': 1.5,
+                                                # 'beam_parameters': 'beam_size_and_divergence',
+                                                # 'beam_radius': 5.20194, 'divergence_angle': 5.41444
+                                                    }},
+                    'geometry': {'x': 4, 'x_span': 20, 'y': 0, 'y_span': 20, 'z': 1.5, 'z_span': 0}})
+# endregion
+```
+
+Use `type` to select the type of light source, and `axis` to set the direction of the mode light source.
+
+#### 1.9 Add Monitor
+
+In the simulation, `Monitor`function is used to create monitor and `add` function is used to add a monitor. By using `type` to select a power monitor, the transmittance and field distribution of the cross-section can be obtained. It is necessary to add a time monitor to check the field strength at the end of the simulation to determine the accuracy of the simulation results.
+
+```python
+# region --- 7. Monitor ---
+    ''' 7.0 GlobalMonitor '''
+    mn = pj.Monitor()
+    mn.add(name='Global Option', type='global_option',
+           property={'frequency_power': {'spacing_type': 'wavelength', 'spacing_limit': 'center_span',
+                                         'wavelength_center': wavelength, 'wavelength_span': 0.1, 'frequency_points': 5}})
+
+    ''' 7.1 x_normal '''
+    mn.add(name='x_normal', type='power_monitor',
+           property={'general': {'frequency_profile': {'spacing_type': 'wavelength', 'spacing_limit': 'center_span',
+                                                       'wavelength_center': wavelength, 'wavelength_span': 0.1, 'frequency_points': 101}},
+                     'geometry': {'monitor_type': '2d_x_normal', 'x': -26, 'x_span': 0, 'y': 0, 'y_span': 3, 'z': 0.11, 'z_span': 3}})
+
+    ''' 7.2 y_normal '''
+    mn.add(name='y_normal', type='power_monitor',
+           property={'geometry': {'monitor_type': '2d_y_normal', 'x': -5, 'x_span': 44, 'y': 0, 'y_span': 0, 'z': 0.2, 'z_span': 3.5}})
+    # endregion
+```
+
+#### 1.10 Add Solver
+<div class="text-justify">
+
+We use the `Simulation` function to create a simulation and the `add` function to add a solver. The properties settings of FDE and FDTD solvers are as follows.
+</div>
+
+```python
+# region --- 8. Simulation ---
+    simu = pj.Simulation()
+    simu.add(name=simu_name, type='FDTD',
+             property={'general': {'simulation_time': 30000},
+                       'mesh_settings': {'mesh_accuracy': {'cells_per_wavelength': grids_per_lambda}}})
+    # endregion
+
+```
+
+#### 1.11 View Structure
+
+You can use the `structure_show` function to view the top view of the structure, or use the `simu[simu_name].show3d()` call gui to view the structure.
+
+```python
+# region --- 9. Structure Show ---
+st.structure_show(fig_type='png', show=False, savepath=f'{plot_path}{kL[1]}{simu_name}', simulation_name=simu_name)
+# simu[simu_name].show3d()
+# endregion
+```
+#### 1.12 Index Preview
+
+```python
+# region --- 10. Index Preview ---
+if run_options.index_preview:
+    simu[simu_name].run_index(name=f'{simu_name}_y_0', savepath=f'{plot_path}{kL[0]}MeshView_y=0', export_csv=True, show=False,
+                                property={'geometry': {'x': 9, 'x_span': 22, 'y': 0, 'y_span': 0, 'z': -0.5, 'z_span': 5}})
+    simu[simu_name].run_index(name=f'{simu_name}_z_0.17', savepath=f'{plot_path}{kL[0]}MeshView_z=0.17', export_csv=True, show=False,
+                                property={'geometry': {'x': -5, 'x_span': 44, 'y': 0, 'y_span': 21, 'z': 0.17, 'z_span': 0}})
+# endregion
+```
+
+#### 1.12 Run
+
+Pass in the name of the simulation and use `simu[simu_name].run` function to run the simulation.
+```python
+# region --- 11. Run ---
+if run_options.run:
+    fdtd_res = simu[simu_name].run()
+# endregion
+```
+
+#### 1.13 Run and Extract Results
+<div class="text-justify">
+
+Extract data using `extract`, where `data` is the calculation result data, `savepath` is the storage path, `target` is the classification of the data, and `monitor_name` is the name of the monitor. The data extraction reference is as follows.
+</div>
+
+```python
+# region --- 12. See Results ---
+if run_options.extract and run_options.run:
+    ''' x_normal '''
+    wavelength_list_x = np.linspace(wavelength - 0.05, wavelength + 0.05, 51)
+    fdtd_res.extract(data='fdtd:power_monitor', savepath=f'{plot_path}{kL[3]}_x_normal_abs(T)',
+                        monitor_name='x_normal', attribute='T', target='line', plot_x='wavelength', real=True, imag=True, export_csv=True, show=False)
+    for λ in wavelength_list_x:
+        fdtd_res.extract(data='fdtd:power_monitor', savepath=f'{plot_path}{kL[4]}_x_normal_abs(E)_' + str(round(λ, 3)) + 'um',
+                            monitor_name='x_normal', attribute='E', target='intensity', wavelength=str(λ), plot_x='y', plot_y='z', real=True, imag=True, export_csv=True, show=False)
+
+    ''' y_normal '''
+    wavelength_list_y = np.linspace(wavelength - 0.05, wavelength + 0.05, 5)
+    for λ in wavelength_list_y:
+        fdtd_res.extract(data='fdtd:power_monitor', savepath=f'{plot_path}{kL[4]}_y_normal_abs(E)_' + str(round(λ, 3)) + 'um',
+                            monitor_name='y_normal', attribute='E', target='intensity', wavelength=str(λ), plot_x='x', plot_y='z', real=True, imag=True, export_csv=True, show=False)
+# endregion
+return fdtd_res if run_options.run else None
+```
+
+
+#### 1.14 Control Switch
+
+We can control the operation of the simulation by passing in bool values through tuple, as shown in the following code. In every simulation, only one solver will be enabled. When using the FDE solver, set "run_fde" to True and "run_fdtd" to False; When using the FDTD solver, set "run_fdtd" to True and "run_fde" to False.
+
+```python
+class RunOptions(NamedTuple):
+    index_preview: bool
+    run: bool
+    extract: bool
+
+if __name__ == '__main__':
+    simulation(run_mode='local', is_gds_import=True, wavelength=1.55, grids_per_lambda=8,
+               run_options=RunOptions(index_preview=True, run=True, extract=True))
+```
+
+
+### 2. Output results
+#### Length of ring
+
+#### Couple length and gap
+
+
+#### transmission
+
+
+
+
+## References

@@ -1,13 +1,13 @@
 import 'katex/dist/katex.min.css';
 import {InlineMath, BlockMath} from 'react-katex';
 
-# Polarization split rotator
+# Polarization Splitter-Rotator
 
 ## Introduction
 <div class="text-justify">
 The large refractive index difference of silicon waveguides on insulators can produce strong birefringence effects, making many optical devices very sensitive to the polarization of light. The polarization beam splitter rotator can separate light of different polarizations and output light of the same polarization, which can effectively solve the problem of polarization sensitivity in silicon waveguides.
 
-In this example, we demonstrated the simulation process of a compact PSR using an EME solver, which consists of an adiabatic conical waveguide, an asymmetric directional coupler, and an MMI. In an adiabatic conical waveguide, TM0 mode can be efficiently converted to TE1 mode, and then the TE1 mode can be converted to TE0 mode using ADC.
+In this example, we demonstrated the simulation process of a compact PSR using an EME solver, which consists of an adiabatic conical waveguide, an asymmetric directional coupler, and an MMI. In an adiabatic taper waveguide, the TM0 mode can effectively evolve into the TE1 mode, which can then be converted into the TE0 mode in a narrow waveguide using ADC.
 </div>
 
 ## Simulation
@@ -75,32 +75,30 @@ pj = mo.Project(name=project_name, location=run_mode,)
 # endregion
 ```
 
-
 #### 1.5 Add Material
 <div class="text-justify">
 
- Here we demonstrate using the `Material` function to create material and using the `add_nondispersion` function to add non dispersive materials, as well as using the `add_lib` function to add materials from the material library. You can refer to the following script to set material.
+ Here we demonstrate using the `Material` function to create material and using the `add_lib` function to add materials from the material library. You can refer to the following script to set material.
 </div>
 
 ```python
 # region --- 2. Material ---
 mt = pj.Material()
-mt.add_nondispersion(name="Si", data=[(3.454996, 0)], order=2)
-mt.add_nondispersion(name="SiO2", data=[(1.444991, 0)], order=2)
-mt.add_lib(name="Air", data=mo.Material.Air, order=2)
+mt.add_lib(name="Si", data=mo.Material.Si_Palik, order=2)
+mt.add_lib(name="SiO2", data=mo.Material.SiO2_Palik, order=2)
 # endregion
 ```
 
 <div class="text-justify">
 
-The `name` is used to define the name of the added material.<br/>The `data` is used to input the real and imaginary parts of the refractive index of the material.<br/>The `order` is used to set the grid order of the material.
-
+The `name` is used to define the name of the added material.<br/>The `data` is used to receive refractive index data extracted from the material library.<br/>The `order` is used to set the material priority of the grid.
 </div>
+
 
 #### 1.6 Add Structure
 <div class="text-justify">
 
-The structure is composed of silicon dioxide substrate, tapered silicon waveguide and polymer covered waveguide. We use `Structure` to create structure , where `mesh_type` is the type of mesh, `mesh_factor` is the growth factor of the mesh, and `background_material` is the background material of the structure. Use the `add_geometry` function to add geometric structures and select "gds_file" in `type` to establish the model by importing the GDS file. The properties of GDS modeling are shown in the table below.
+The structure of PSR is shown in the figure, which consists of an adiabatic conical waveguide, ADC, and MMI mode filter. We use `Structure` to create structure , where `mesh_type` is the type of mesh, `mesh_factor` is the growth factor of the mesh, and `background_material` is the background material of the structure. Use the `add_geometry` function to add geometric structures and select "gds_file" in `type` to establish the model by importing the GDS file. The properties of GDS modeling are shown in the table below.
 
 </div>
 
@@ -400,11 +398,37 @@ if __name__ == "__main__":
 
 ### 2 Output Results
 
-#### 2.1 ModeProfile
+#### 2.1 taper waveguide
+
+- Change taper width
+  
+我们知道波导的横截面的不对称性会产生模式的杂化，当光沿着绝热锥形波导传播时,可以实现模式的转换。
+我们使用SDK的FDE模块可以很方便得到绝缘体上硅不同宽度波导的有效折射率。如下图所示，在空气包层的在波导宽度为0.65um附近时产生了模式杂化。
+因此我们设计的绝热锥形波导宽度变化应该满足w1<0.65<w2。
+![](EM.png)
+
+
+- Scan taper length
+
+需要注意锥形波导必须足够的长，使得波导的输入的TM模式转化为TE模式而不会产生其它的模式。
+这里可以使用EME的长度扫描来获得最佳的锥形波导长度的模式转换效率。
+
+
+#### 2.2 Coupling waveguide
+
+
+在锥形波导的附近添加一根窄的波导，通过非对称定向耦合器的设计将宽波导中的TE1转换为窄波导中的TE0。这样输入TM模式就被转换为TE模式，而输入的TE0模式在锥形波导传输中保持相同的偏振，在非对称定向耦合区不满足模式转换条件从直通端口输出。因此，可以实现TE和TM分离与旋转。
+根据模式匹配条件
 
 
 
-#### 2.2 EME Propagation
+#### 2.3 Mode filtering
+
+该偏振分束旋转器在直通端口级联了一个MMI模式滤波器，用来消除输出端口残余的TM0和TE1模式，来提高模式的消光比。
+
+
+#### 2.2 EME Propagation    
+
 <div class="text-justify">
 
 

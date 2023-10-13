@@ -1,8 +1,8 @@
 # Extract result
 
-In this section, we support to extract simulation result data, exporting data results in various formats, facilitating more efficient data processing.
+In this section, we support to extract simulation result data, exporting data results in various formats, facilitating more efficient data processing. We support the atrributes to extract as below:
 
-We support the atrributes to extract as below:
+
 
 |                        **Parameters**                        |                         Description                          |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
@@ -650,6 +650,8 @@ fdtd_res.extract(data='fdtd:mode_expansion_mode_info', savepath=f'{plot_path}{kL
 
 ## 8.4 Sweep
 
+<div class="text-justify">
+
 To extract the relevant data of sweep function. 
 
 ### 8.4.1 parameter sweep
@@ -706,3 +708,5 @@ extract(
 smatrix_res.extract(data='smatrix_sweep', savepath=f'{plot_path}{kL[8]}_smatrix_sweep',
                             target='line', plot_x='wavelength', real=True, imag=True, export_csv=True, export_mat=True, show=False)
 ```
+
+</div>

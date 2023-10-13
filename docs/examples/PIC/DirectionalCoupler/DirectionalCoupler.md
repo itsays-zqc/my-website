@@ -449,7 +449,7 @@ By turning on/off the relevant functionalities, you can control the simulation p
 <div class="text-justify">
 
 
-1. The results of the calculation mode will be stored in a CSV format file for subsequent data processing in Python and Excel.
+2. The results of the calculation mode will be stored in a CSV format file for subsequent data processing in Python and Excel.
 
 </div>
 
@@ -468,7 +468,7 @@ By turning on/off the relevant functionalities, you can control the simulation p
 <div class="text-justify">
 
 
-1. Image of the Ey electric field component intensity in symmetric and antisymmetric mode modes.
+3. Image of the Ey electric field component intensity in symmetric and antisymmetric mode modes.
 
 </div>
 
@@ -480,7 +480,7 @@ By turning on/off the relevant functionalities, you can control the simulation p
 <div class="text-justify">
 
 
-1. According to the effective refractive index of the obtained mode field, Python is used for data processing and drawing.
+4. According to the effective refractive index of the obtained mode field, Python is used for data processing and drawing.
 
 </div>
 
@@ -514,7 +514,7 @@ By turning on/off the relevant functionalities, you can control the simulation p
 <div class="text-justify">
 
 
-1.  Similarly, we can obtain the relationship between the gap (distance) between two waveguides and the coupling coefficient and the relationship between the wavelength and the coupling length.
+5.  Similarly, we can obtain the relationship between the gap (distance) between two waveguides and the coupling coefficient and the relationship between the wavelength and the coupling length.
 
 </div>
 
@@ -926,7 +926,7 @@ After running the program, we can obtain a series of corresponding output result
 <div class="text-justify">
 
 
-1. DC (Directional Coupler)  Z-direction electric field intensity at different wavelengths: 1.50 *μ*m, 1.55 *μ*m, and 1.60 *μ*m.
+2. DC (Directional Coupler)  Z-direction electric field intensity at different wavelengths: 1.50 *μ*m, 1.55 *μ*m, and 1.60 *μ*m.
 
 </div>
 
@@ -938,7 +938,7 @@ After running the program, we can obtain a series of corresponding output result
 <div class="text-justify">
 
 
-1. Cross output port and TRU output port transmittance at different wavelengths: 1.50 *μ*m, 1.55 *μ*m, and 1.60 *μ*m.
+3. Cross output port and TRU output port transmittance at different wavelengths: 1.50 *μ*m, 1.55 *μ*m, and 1.60 *μ*m.
 
 </div>
 
@@ -950,7 +950,7 @@ After running the program, we can obtain a series of corresponding output result
 <div class="text-justify">
 
 
-1. TE0 mode transmittance at Cross output port and TRU output port for different wavelengths: 1.50 *μ*m, 1.55 *μ*m, and 1.60 *μ*m.
+4. TE0 mode transmittance at Cross output port and TRU output port for different wavelengths: 1.50 *μ*m, 1.55 *μ*m, and 1.60 *μ*m.
 
 </div>
 
@@ -970,8 +970,8 @@ Based on the information provided, we can get the following results  when propog
 
 <div class="text-justify">
 
+To view a function's definition and supported parameters or a parameter dictionary, you can right-click on its name and select "Go to Definition"  or press "Ctrl" while left-clicking on its name to view its definition, showing the available parameters and their descriptions.  And you can also to find the detailed explaination : https://itsays-zqc.github.io/my-website/docs/category/max-optics-sdk
 
-To view a function's definition and supported parameters or a parameter dictionary, you can right-click on its name and select "Go to Definition"  or press "Ctrl" while left-clicking on its name to view its definition, showing the available parameters and their descriptions.  
 
 </div>
 

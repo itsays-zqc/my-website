@@ -1,5 +1,7 @@
 # Source/Port
 
+<div class="text-justify">
+
 The subsequent code will exemplify the process of incorporating a light source and port within a simulation project.
 
 As of now, the source module accommodates the inclusion of mode source and Gaussian source. Furthermore, our platform extends support for ports into both EME and FDTD simulations.  
@@ -277,7 +279,7 @@ pjp.add(name="input_te_tm", type="eme_port",
 | eme_port.advanced.number_of_trial_modes  |        20         | integer |      When calculating modes, determine the calculated number of modes around the refractive index.             |
 | eme_port.advanced.mode_removal.threshold |          -         |  float  |    Screen the mode source according to the energy arriving at the boundary to ensure the accuracy of the calculated transmission mode.          |
 
-
+</div>
 
 
 

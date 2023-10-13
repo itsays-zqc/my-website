@@ -1,6 +1,8 @@
 
 # Structure
 
+<div class="text-justify">
+
 The code within the "Structure" section is designed to assist you  incorporating the necessary structures during the EO(Electro-Optic) simulation process. 
 
 ```python
@@ -828,3 +830,4 @@ st.add_surface_recombination(name="Cathode_Si", property={
 |       material_2       |        -       | material |       The material 2 for surface recombination. Available when surface_type is 'material_material'      |
 
 
+</div>

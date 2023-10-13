@@ -59,32 +59,32 @@ const FeatureList = [
       <>
               {/* <hr /> */}
 
-        <div style={{ textAlign: 'left' }}>
-          <a href="/my-website/docs/tutorial/simulation/fde">1.What is FDE?</a>
-        </div>
-        <hr style={{ margin: '0.25rem 0' }}/>
-
-  
-        <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/tutorial/simulation/fdtd">2.What is FDTD?</a>
-        </div>
-        <hr style={{ margin: '0.25rem 0' }}/>
-
-        <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/tutorial/simulation/eme">3.What is EME?</a>
-        </div>
-        <hr style={{ margin: '0.25rem 0' }}/>
+      <div style={{ textAlign: 'left' }}>
+        <a href="/my-website/docs/tutorial/4Simulation/1FDE">1.What is FDE?</a>
+      </div>
+      <hr style={{ margin: '0.25rem 0' }}/>
 
 
-        <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/tutorial/material">4.How to set material?</a>
-        </div>
-        <hr style={{ margin: '0.25rem 0' }}/>
+      <div style={{ textAlign: 'left' }}>
+        <a href="/my-website/docs/tutorial/4Simulation/2FDTD">2.What is the FDTD?</a>
+      </div>
+      <hr style={{ margin: '0.25rem 0' }}/>
 
-        <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/category/simulation">5.How to simulation?</a>
-        </div>
-        <hr style={{ margin: '0.25rem 0' }}/>
+      <div style={{ textAlign: 'left' }}>
+        <a href="/my-website/docs/tutorial/4Simulation/3EME">3.What is the EME?</a>
+      </div>
+      <hr style={{ margin: '0.25rem 0' }}/>
+
+
+      <div style={{ textAlign: 'left' }}>
+        <a href="/my-website/docs/tutorial/1Material">4.How to set material?</a>
+      </div>
+      <hr style={{ margin: '0.25rem 0' }}/>
+
+      <div style={{ textAlign: 'left' }}>
+        <a href="/my-website/docs/category/simulation">5.How to set the simulation?</a>
+      </div>
+      <hr style={{ margin: '0.25rem 0' }}/>
 
        
         
@@ -147,23 +147,23 @@ const FeatureList = [
       <>
          {/* <hr /> */}
         <div style={{ textAlign: 'left' }}>
-          <a href="/my-website/docs/test/v2_core/1Material">1.How can I add an anisotropic material with SDK?</a>
+          <a href="/my-website/docs/test/v2_core/1Material">1.How can I add an anisotropic material with the SDK?</a>
         </div>
         <hr style={{ margin: '0.25rem 0' }}/>
   
         <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/test/v2_core/5Mornitor">2.How can I add a monitor with SDK?</a>
+        <a href="/my-website/docs/test/v2_core/5Mornitor">2.How can I add a monitor with the SDK?</a>
         </div>
         <hr style={{ margin: '0.25rem 0' }}/>
 
 
         <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/test/v2_core/6Simulation">3.How can I create a simulation with SDK?</a>
+        <a href="/my-website/docs/test/v2_core/6Simulation">3.How can I create a simulation with the SDK?</a>
         </div>
         <hr style={{ margin: '0.25rem 0' }}/>
 
         <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/test/v2_core/2Structure">4.How can I adjust the structure with SDK?</a>
+        <a href="/my-website/docs/test/v2_core/2Structure">4.How can I adjust the structure with the SDK?</a>
         </div>
         <hr style={{ margin: '0.25rem 0' }}/>
         

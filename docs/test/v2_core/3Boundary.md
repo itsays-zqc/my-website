@@ -1,6 +1,8 @@
 
 # Boundary/Mesh
 
+<div class="text-justify">
+
 The code provided in this section can be utilized to incorporate  boundary and mesh into the current project.
 ## 3.1 Boundary
 
@@ -223,3 +225,4 @@ st.add_emesh_along_line(name="EMesh_Ge_SiO2_Interface_Slope_Left", property={
 |   mesh_size    |  0.01   | float |  The size of the unit grid.     |
 
 
+</div>

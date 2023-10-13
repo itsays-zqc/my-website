@@ -6,6 +6,8 @@ sidebar_position: 7
 
 ## 1 Reflective index monitor
 
+<div class="text-justify">
+
 **Feature Description:** Index monitors store the values of n and k as functions of frequency/wavelength in a simulation. In future, the index monitor will also be able to record the temporal profiles of physical properties for nonlinear media.
 
 ### 1.1 Geometry tab
@@ -366,3 +368,5 @@ Sampling rate:
 4 )	**Actual Sampling:** The actual rate of sampling is identical to the rate that is actually employed for the discrete Fourier transform (DFT), by appropriately taking the desired sampling rate, the Nyquist limit, and the time step dt into account.
 
 5 )	**Down Sample Time:** This specifies the time for step down sampling.
+
+</div>

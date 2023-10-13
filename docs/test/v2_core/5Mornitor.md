@@ -1,6 +1,8 @@
 
 # Monitor
 
+<div class="text-justify">
+
 This section provides guidance on adding a monitor to your simulation project. We offer a variety of monitors designed to enhance your ability to gather simulation data. The subsequent content will be presented below, offering an introduction to each monitor.
 
 ## 5.1 Profile monitor
@@ -408,3 +410,5 @@ add(
 |   geometry.z_min    |     -    |  float   | The z-coordinate of the bottom position of the height of the electric monitor.      |
 |   geometry.z_max    |      -   |  float   |  The z-coordinate of the top position of the height of the electric monitor.     |
 |     geometry.interpolate_accuracy      |    1    | integer |            Restrained by condition: >=1 && <= 10.            |
+
+</div>

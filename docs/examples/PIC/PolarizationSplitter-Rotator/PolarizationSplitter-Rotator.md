@@ -5,9 +5,9 @@ import {InlineMath, BlockMath} from 'react-katex';
 
 ## Introduction
 <div class="text-justify">
-The large refractive index difference of silicon waveguides on insulators can produce strong birefringence effects, making many optical devices very sensitive to the polarization of light. The polarization beam splitter rotator can separate light of different polarizations and output light of the same polarization, which can effectively solve the problem of polarization sensitivity in silicon waveguides.
+The large refractive index difference of silicon waveguides on insulators can produce strong birefringence effects, making many optical devices very sensitive to the polarization of light. The polarization beam splitter-rotator(PSR) can separate light of different polarizations and output light of the same polarization, which can effectively solve the problem of polarization sensitivity in silicon waveguides.
 
-In this example, we demonstrated the simulation process of a compact PSR using an EME solver, which consists of an adiabatic conical waveguide, an asymmetric directional coupler, and an MMI. In an adiabatic taper waveguide, the TM0 mode can effectively evolve into the TE1 mode, which can then be converted into the TE0 mode in a narrow waveguide using ADC.
+In this example, we demonstrated the simulation process of a compact PSR using an EME solver. the TM0 mode can effectively evolve into the TE1 mode, which can then be converted into the TE0 mode in a narrow waveguide using ADC.
 </div>
 
 ## Simulation
@@ -439,4 +439,5 @@ if __name__ == "__main__":
 其中一个模式在特定波导截面的宽度时，满足模式匹配条件的偏振光耦合进入附近的波导中，另一个偏振模式的光则不满足模式匹配条件继续沿着波导传输。
 
 ## References
+
 

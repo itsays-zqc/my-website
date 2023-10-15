@@ -5,15 +5,15 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 ## Introduction
 ![](./mr.png)
-Microring resonators are important filtering devices in photonic integrated circuits, high performance filters require a wide free spectrum range(FSR) and high quality factor. Obtaining a large spectral range requires the use of a small radius, but too small a radius can cause bending loss and reduce the quality factor. In order to meet the requirements of free spectrum range and quality factor, it is necessary to design the size  of the ring and coupling efficiency.
+Microring resonator is important filtering device in photonic integrated circuits, the high performance filter require a wide free spectrum range(FSR) and high quality factor. Obtaining a large spectral range for microring resonator requires the use of a small radius, but too small radius can cause bending loss and reduce the quality factor. In order to meet the requirements of wide free spectrum range and high quality factor, it is necessary to carefully design the size of the ring and coupling efficiency.
 
-In this example, we demonstrate the use of a finite difference eigenmode(FDE) solver to calculate the group refractive index of an optical waveguide, then calculate the effective refractive index of symmetric and anti symmetric modes in the coupling region between the optical waveguide and the ring resonator, and finally use 3D FDTD simulation to calculate the transmittance of the drop port.
+In this example, we demonstrate the use of finite difference eigenmode(FDE) solver to calculate the group refractive index of an optical waveguide, then calculate the effective refractive index of symmetric and anti symmetric modes at the coupling region between the straight waveguide and the ring, and finally use 3D FDTD simulation to calculate the transmittance of the drop port.
 
 ## Simulation 
 ### 1 Code Description
 #### 1.1 Import Toolkit
 
-First, we need to import `maxoptics_sdk` and Python's third-party package. The import module for FDE and FDTD simulation are shown below.
+First, we need to import `maxoptics_sdk` and Python's third-party package. The import module for FDE and FDTD simulation as follows.
 
 
 ```python
@@ -24,7 +24,7 @@ from maxoptics_sdk.helper import timed, with_path
 ```
 
 #### 1.2  Define Simulation Function and parameters
-To facilitate parameter changes, we can define function to encapsulate the entire simulation project. Before starting the simulation, you can define variables to control the parameters. Set as follows.
+To facilitate parameter changes, we can define function to encapsulate the entire simulation project. Before starting the simulation, you can define variables to control the parameters. As shown below.
 
 ```python
 def simulation(*, run_mode, wavelength, grid, number_of_trial_modes, run_options: "RunOptions", **kwargs):
@@ -50,7 +50,7 @@ pj = mo.Project(name=project_name, location=run_mode,)
 #### 1.4 Add Material
 <div class="text-justify">
 
- Here we demonstrate using the `Material` function to create material and using the `add_lib` function to add materials from the material library. You can refer to the following script to set material.
+ Here we demonstrate using the `Material` function to create material and using the `add_lib` function to add material from the material library. You can refer to the following script to set material.
 </div>
 
 ```python
@@ -79,9 +79,9 @@ wv.add(name=waveform_name, wavelength_center=wavelength, wavelength_span=0.1)
 
 #### 1.6 Add Structure
 <div class="text-justify">
-Microring resonator is typical filter for Soi waveguide, including two straight optical waveguides and a coupled ring-shaped waveguide. 
+The microring resonator is typical filter for SOI waveguide, including two straight optical waveguides and a ring-shaped waveguide. 
 
-We use `Structure` to create structure , where `mesh_type` is the type of mesh, `mesh_factor` is the growth factor of the mesh, and `background_material` is the background material of the structure. Use the `add_geometry` function to add geometric structures and select the type from the structural components. The specific properties can be set as follows.
+We use `Structure` to create structure , where `mesh_type` is the type of mesh, `mesh_factor` is the growth factor of the mesh, and `background_material` is the background material of the structure. Use the `add_geometry` function to add geometric structures and select the type from the structural components. Properties settings are as follows.
 </div>
 
 ```python
@@ -115,12 +115,13 @@ st.add_geometry(name="substrate", type="Rectangle",
 |inner_radius|2.6|float|the size of the inner radius of the ring|
 |outer_radius|3|float|the size of the outer radius of the ring|
 
-The properties of `Rectangle` can refer to the settings of the Ring. Select simulation material by using `mesh_order` in areas where geometry overlaps, the priority of structural materials needs to be higher than that of background material.
+The properties of the ring structure are shown in the table above, properties of `Rectangle` can refer to the settings of the ring. Select simulation material by using `mesh_order` in areas where geometry overlaps, the priority of structural materials needs to be higher than that of background material.
 
 #### 1.7 Set Boundary
 <div class="text-justify">
 
-Set the boundary size of the simulation structure using optical boundary condition `OBoundary`. Use `geometry` to set the size and position of the boundary, and use `boundary` to set the boundary conditions at the boundary. The boundary properties of FDE and FDTD are set as follows.
+Set the boundary size of the simulation structure using optical boundary condition `OBoundary`. Use `geometry` to set the size and position of the boundary, and use `boundary` to set the boundary conditions at the boundary. The boundary properties of FDE and FDTD  as follows.
+
 </div>
 
 ```python
@@ -136,7 +137,8 @@ if run_options.run_fdtd:
 
 #### 1.8 Add source
 <div class="text-justify">
-In 3D FDTD simulation, a light source is required. We use `Source` to create the light source and `add` to add the required light source. The settings for the light source are as follows.
+
+In 3D FDTD simulation, a light source is required. We use `Source` to create the light source and `add` to add the required light source. The settings for the light source as follows.
 </div>
 
 ```python
@@ -144,12 +146,11 @@ In 3D FDTD simulation, a light source is required. We use `Source` to create the
 src = pj.Source()
 if run_options.run_fdtd:
     src.add(name="modesource",type="mode_source",axis="x_forward",property={
-        "general":{"mode_selection":"user_select","waveform":{"waveform_id_select":wv[waveform_name]}},
+        "general":{"mode_selection":"fundamental_TE","waveform":{"waveform_id_select":wv[waveform_name]}},
         "geometry":{"x":-4,"x_span":0,"y":3.3,"y_span":2,"z":0,"z_span":2}})
 # endregion
 ```
-
-Use `type` to select the type of light source, and `axis` to set the direction of the mode light source.
++++++++++++++++++++++
 
 #### 1.9 Add Solver
 <div class="text-justify">

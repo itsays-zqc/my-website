@@ -1,15 +1,15 @@
 import 'katex/dist/katex.min.css';
 import {InlineMath, BlockMath} from 'react-katex';
 
-# Spot size converter
+# Spot Size Converter
 
 ## Introduction
 <div class="text-justify">
 
 ![](structure_ps.png)
-The spot size converter (SSC) is an important device for connecting silicon photonic integrated chips and external optical fibers, which can couple the light transmitted in silicon waveguides with low loss into the waveguide. As shown in the figure, SSC has a tapered silicon waveguide with gradually thinning ends and a low refractive index waveguide covered with SiON, and the entire waveguide device is placed in a silicon dioxide environment [1]. The mode field size in a low refractive index waveguide is similar to that in a fiber, so it can effectively couple light from the waveguide into the fiber.
+The spot size converter (SSC) is an important device for connecting silicon photonic integrated chips and external optical fibers, which can couple light transmitted in silicon waveguides into the fiber at low loss. As shown in the figure, SSC has a tapered silicon waveguide with gradually thinning ends and a low refractive index waveguide covered with SiON, and the entire waveguide device is placed in a silicon dioxide environment [1]. The mode field size at the end of the tapered waveguide is similar to that of the optical fiber, so it can effectively couple light from the waveguide into the fiber.
 
-Eigenmode expansion (EME) method has great advantages in calculating long tapered waveguide. By dividing multiple elements in the cross-sectional variation area, and then calculating the modes at the interface of the elements and the bidirectional transmission of the modes, the s-matrix of the conical waveguide transmission can be quickly obtained. When using length sweep, only the bidirectional transmission part needs to be calculated to obtain the S parameter of length sweep.
+Eigenmode expansion (EME) method has great advantages in calculating long taper waveguide. By dividing multiple cells in the cross-sectional variation area, and then calculating the modes at the interface of the cells and the bidirectional transmission of the modes, the s-matrix of the taper waveguide transmission can be quickly obtained. When using length sweep, only the bidirectional transmission part needs to be calculated to obtain the S parameter of length sweep.
 </div>
 
 ## Simulation
@@ -17,7 +17,7 @@ Eigenmode expansion (EME) method has great advantages in calculating long tapere
 #### 1.1 Import Toolkit
 <div class="text-justify">
 
-First, we need to import `maxoptics_sdk` and Python's third-party package. The import module for EME simulation is shown below.
+First, we need to import `maxoptics_sdk` and Python's third-party package. The import module for EME simulation as follows.
 </div>
 
 ```python
@@ -46,7 +46,7 @@ The `run_mode` variable parameter is used to define the location of the simulati
 
 #### 1.3 Define Parameters
 
-Before starting the simulation, we can define parameters to facilitate modeling and parameterization sweep. The defined parameters are as follows.
+Before starting the simulation, we can define parameters to facilitate modeling and parameterization sweep. The defined parameters as follows.
 ```python
 # region --- 0. General Parameters ---
 path = kwargs["path"]
@@ -66,7 +66,7 @@ The `path` variable is used to store the path of this Python file.<br/>The `simu
 </div>
 
 #### 1.4 Create project
-You can create a new project using the `Project` function of Max's software development toolkit.
+we create a new project using the `Project` function of Max's software development toolkit.
 ```python
 # region --- 1. Project ---
 pj = mo.Project(name=project_name, location=run_mode,)
@@ -99,7 +99,7 @@ The `name` is used to define the name of the added material.<br/>The `data` is u
 #### 1.6 Add Structure
 <div class="text-justify">
 
-The structure is composed of silicon dioxide substrate, tapered silicon waveguide and polymer covered waveguide. We use `Structure` to create structure , where `mesh_type` is the type of mesh, `mesh_factor` is the growth factor of the mesh, and `background_material` is the background material of the structure. Use the `add_geometry` function to add geometric structures and select "gds_file" in `type` to establish the model by importing the GDS file. The properties of GDS modeling are shown in the table below.
+The structure is composed of silicon dioxide substrate, adiabatic tapered silicon waveguide and polymer covered waveguide. We use `Structure` to create structure , where `mesh_type` is the type of mesh, `mesh_factor` is the growth factor of the mesh, and `background_material` is the background material of the structure. Use the `add_geometry` function to add geometric structures and select "gds_file" in `type` to establish the model by importing the GDS file method. The properties of GDS modeling are shown in the table below.
 
 </div>
 
@@ -151,7 +151,7 @@ st.OBoundary(property={"geometry": {"x": 0, "x_span": 206, "y": 0, "y_span": 5.5
 #### 1.8 Add Sub Mesh
 <div class="text-justify">
 
-After light passes through tapered silicon waveguide gradually becoming smaller, the mode field is strongly limited to a very small range. Therefore, it is necessary to use `add_mesh` to add a transverse grid to accurately calculate the limited light field. Add local mesh as shown below.
+After light passes through tapered silicon waveguide that gradually becoming smaller, the mode field is strongly limited to a very small range. Therefore, it is necessary to use `add_mesh` to add a transverse grid to accurately calculate the limited light field. Add local mesh as shown below.
 </div>
 
 ```python
@@ -198,7 +198,7 @@ pjp.add(name="right_port", type="eme_port",
 
 #### 1.10 Add Monitor
 
-In the simulation, `Monitor`function is used to create monitor and `add` function is used to add a monitor. Select profile_monitor `type` monitor from the added monitors to view the mode field distribution.
+The `Monitor`function is used to create monitor and `add` function is used to add a monitor. Select profile_monitor `type` monitor from the added monitors to view the mode field distribution.
 ```python
 # region --- 7. Monitor ---
 mn = pj.Monitor()
@@ -268,9 +268,9 @@ simu.add(name=simu_name, type="EME",
 
 <div class="text-justify">
 
-According to different structures and materials, the SSC is divided into four cell groups using `cell_group_definition`. Set the length of the cell group in `span`, use `cell_number` to set the number of cell. The divided cell structure is shown in the following figure. Use `number_of_modes` to set the number of modes calculated at the interface of adjacent units, and it is necessary to set a sufficient number of modes to obtain the correct results.
+According to different structures and materials, the SSC is divided into four cell groups using `cell_group_definition`. Set the length of the cell group in `span`, use `cell_number` to set the number of cell. The divided cell structure is shown in the following figure. Use `number_of_modes` to set the number of modes calculated at the interface of adjacent cells, and it is necessary to set a sufficient number of modes to obtain the correct results.
 
-The area where the structure has not changed, the number of `cell_number` is set to 1, and `sc` is set to "none". In the area of structural changes, multiple cell number need to be used to characterize the structure and the "sub_cell" method is used to reduce the staircase effect caused by discrete changes in the cross-section.
+In the area where the cross-sectional area of cells remains unchanged, the number of `cell_number` is set to 1, and `sc` is set to "none"; In the area of structural changes, multiple cell number need to be used to characterize the structure and the "sub_cell" method is used to reduce the staircase effect caused by discrete changes in the cross-section.
 
 </div>
 
@@ -292,7 +292,7 @@ The `celldisplay` control whether to display the boundaries of the divided cells
 
 #### 1.13 Calculate Mode
 
-You can create a new simulation using `simu.add` function and run the simulation using `simu.add` function. The `type` of simulation needs to be selected as "mode_selection:user_select", and its properties are shown in the table below. Before running EME simulation calculations, we can calculate the mode field distribution of the port by setting the type of mode selection to True and other simulations to False.
+You can create a new simulation using `simu.add` function and run the simulation using `simu.run` function. The `type` of simulation needs to be selected as "mode_selection:user_select", and its properties are shown in the table below. Before running EME simulation calculations, we can calculate the mode field distribution of the port by setting the type of mode selection to True and other simulations to False.
 
 ```python
 # region --- 10. Calculate Mode ---
@@ -324,7 +324,7 @@ if run_options.calculate_modes:
 
 #### 1.14 Run
 
-Pass in the name of the simulation and use `simu[simu_name].run` function to run the simulation.
+Pass in the name of the simulation and use `simu[simu_name].run` function to run the simulation, and assign the result to `eme_res`.
 ```python
 # region --- 11. Run ---
 eme_res = simu[simu_name].run()
@@ -334,12 +334,12 @@ eme_res = simu[simu_name].run()
 #### 1.15 Run and Extract Results
 <div class="text-justify">
 
-Extract data using `extract`, where `data` is the calculation result data, `savepath` is the storage path, `target` is the classification of the data, and `monitor_name` is the name of the monitor.
+Extract data using `extract`, where `data` is the calculated result data, `savepath` is the storage path, `target` is the classification of the data, and `monitor_name` is the name of the monitor.
 </div>
 
 ```python
 # region --- 12. see result ---
-eme_res = simu[simu_name].run()
+
 eme_res.extract(data="eme_propagate:facet_data", savepath=plot_path, real=True, imag=True, export_csv=True)
 eme_res.extract(data="eme_propagate:smatrix", savepath=plot_path + "011_eme_smatrix_intensity",
                 target="intensity", export_csv=True)
@@ -383,11 +383,13 @@ if __name__ == "__main__":
 
 #### 2.1 ModeProfile
 
-We extracted the first two modes of the input port, and the mode field distribution is shown in the following figure.
+We extracted the first two modes of the input port, and the mode field distribution as following figure.
 ![](fde.png)
-After the propagation calculation is completed, the extracted results can be viewed in the storage path, and the extraction of the results can only be set before the program runs. As shown in the following figure, it is clearly observed in the monitor that the incident mode field is larger than the emitted mode field.
-![](SSC_E.png)
+After the propagation calculation is completed, the extracted results can be viewed in the storage path, and the extraction of the results can only be set before the program running.  The mode fields of TE polarization at the input and output ends are shown below, it is clearly observed that the output mode field size is larger than the input.
 
+Silicon waveguides have a strong ability to limit the light field, but it can leak into the environment when the waveguide size is too small. By adding a low refractive index waveguide outside the taper waveguide, the leaked light field is limited and the size of the mode spot is increased. 
+
+![](SSC_E.png)
 
 #### 2.2 EME Propagation
 <div class="text-justify">
@@ -404,11 +406,11 @@ The EME propagation calculation all modes, but only returns the S-matrix of the 
 </div>
 
 ## Analysis and Discuss
-When calculating the area of structural change in EME, it is necessary to divide the structure into multiple cells, and the calculated mode is located at interface between adjacent units. The more cells divided, the more accurate the characterization of the structure. In the long tapered waveguide region, the number of cells divided is too small, and the calculated cross-sectional area varies greatly, resulting in a strong staircase effect. Therefore, before calculating EME, it is necessary to divide the structure into enough cells to ensure the accuracy of the results.
+When calculating the area of structural change in EME, it is necessary to divide the structure into multiple cells, and the calculated modes are located at interface between adjacent cells. The more cells divided, the more accurate the characterization of the structure. In the adiabatic tapered waveguide region, the number of cells divided is too small, and the calculated cross-section area varies greatly, resulting in a strong staircase effect. Therefore, before calculating EME, it is necessary to divide the structure into enough cells to ensure the accuracy of the results.
 
-It should be noted that when calculating the EME transmission of conical waveguides, we need to use the "sub_cell" method, which can reduce the non physical reflection caused by the step change of the unit cross-section. Within the range of input and output straight waveguides, the cross-section of the waveguide remains unchanged, and the "none" method is used to calculate the transmission.
+It should be noted that when calculating the EME transmission of taper waveguide, we need to use the "sub_cell" method, which can reduce the non physical reflection caused by the step change of the unit cross-section. Within the range of input and output straight waveguides, the cross-section of the waveguide remains unchanged, and the "none" method is used to calculate the transmission.
 
-We set "run_length_sweep" to True and conducted a length sweep of 50-250 um on the tapered silicon waveguide area. The number of cells divided in the region where the silicon waveguide changes is 50. As shown in the following figure. When the sweeping length is greater than 100 um, the transmission coefficient S21 will fluctuate with the increase of length. When we increase the number of tapered silicon waveguides to 150, the transmission coefficient curve between the sweeping length of 50-250 um becomes smooth. Therefore, in addition to ensuring the number of modes in the unit cross-section, the EME simulation should also have sufficient number of cells.
+In order to meet the adiabatic condition, we set "run_length_sweep" to True and conducted a length sweep of 50-250 um in the tapered silicon waveguide area. The number of cells divided in the region where the silicon waveguide changes is 50. As shown in the following figure. When the sweeping length is greater than 100 um, the transmission coefficient S21 will fluctuate with the increase of length. When we increase the number of tapered silicon waveguide to 150, the transmission coefficient curve between the sweeping length of 50-250 um becomes smooth. Therefore, in addition to ensuring the number of modes in the unit cross-section, the EME simulation should also have sufficient number of cells.
 
 ![](S21.png)
 

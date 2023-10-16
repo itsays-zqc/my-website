@@ -81,7 +81,7 @@ wv.add(name=waveform_name, wavelength_center=wavelength, wavelength_span=0.1)
 <div class="text-justify">
 The microring resonator is typical filter for SOI waveguide, including two straight optical waveguides and a ring-shaped waveguide. 
 
-We use `Structure` to create structure , where `mesh_type` is the type of mesh, `mesh_factor` is the growth factor of the mesh, and `background_material` is the background material of the structure. Use the `add_geometry` function to add geometric structures and select the type from the structural components. Properties settings are as follows.
+We use `Structure` to create structure , where `mesh_type` is the type of mesh, `mesh_factor` is the growth factor of the mesh, and `background_material` is the background material of the structure. Use the `add_geometry` function to add geometric structures and select the type from the structural components. Properties settings as follows.
 </div>
 
 ```python
@@ -150,12 +150,11 @@ if run_options.run_fdtd:
         "geometry":{"x":-4,"x_span":0,"y":3.3,"y_span":2,"z":0,"z_span":2}})
 # endregion
 ```
-+++++++++++++++++++++
 
 #### 1.9 Add Solver
 <div class="text-justify">
 
-We use the `Simulation` function to create a simulation and the `add` function to add a solver. The properties settings of FDE and FDTD solvers are as follows.
+We use the `Simulation` function to create a simulation and the `add` function to add a solver. The properties settings of FDE and FDTD solvers as follows.
 </div>
 
 ```python
@@ -187,7 +186,7 @@ if run_options.run_fdtd:
 # endregion
 
 ```
-The properties settings for the FDE solver are as follows.
+The properties settings for the FDE solver as follows.
 
 |Key |Value |Type |Description |
 |----|------|-----|------------|
@@ -196,30 +195,30 @@ The properties settings for the FDE solver are as follows.
 |dz | grid | float | grid size along the z-direction|
 |calculate_modes | run_options.run_fde | bool | choose whether to calculate the mode of the waveguide|
 |mesh_structure | False | bool |  choose whether to calculate the refractive index distribution of the structure|
-|wavelength |wavelength | float | solve the wavelength of the mode |
+|wavelength |wavelength | float | calculate the wavelength of the mode |
 |number_of_trial_modes | number_of_trial_modes |integer | number of solving modes|
 |search |max_index | string |choose "max_index" or "near_n" for finding modes|
 |calculate_group_index | True |bool| choose whether to calculate the group refractive index|
 
-The properties settings for the FDTD solver are as follows.
+The properties settings for the FDTD solver as follows.
 
 |Key |Value |Type |Description |
 |----|------|-----|------------|
 |simulation_time |5000 |float | set the maximum simulation time|
 |mesh_type |auto_non_uniform |string | select 'auto_non_uniform' or 'uniform' to set the type of grid|
 |cells_per_wavelength |grids_per_lambda |integer |set the size of the grid |
-|min_mesh_step |1e-4 |float | Set the minimum grid size|
-|auto_shutoff_min |1.e-4 | float| set the convergence threshold of energy and the condition for terminating the simulation|
-|down_sample_time |200 |float | |
-|thread |12 |integer | number of threads allocated to run the program|
+|min_mesh_step |1e-4 |float | set the minimum grid size|
+|auto_shutoff_min |1.e-4 | float| set the energy threshold for terminating the simulation|
+|down_sample_time |200 |float | set additional simulation duration|
+|thread | 4 |integer | number of threads allocated to run the program|
 
-In the settings of the FDE solver, use `calculate_ Modes` controls whether to calculate the mode. Note that we need to calculate the group refractive index of the waveguide and set the `calculate_ group_index`  to True.
+In the settings of the FDE solver, use `calculate_ modes` controls whether to calculate the mode. Note that we need to calculate the group refractive index of the waveguide, so set the `calculate_ group_index`  to True.
 
-In the setting of the FDTD solver, `simulation_time` is used to control the simulation time. We set the simulation time to 5000fs, which is greater than the default value of 1000fs. The microring resonator is a resonance with a high quality factor. If the simulation time is set too small and the simulation stops before the field decays, the results obtained are incorrect.
+In the setting of the FDTD solver, `simulation_time` is used to control the simulation time. We set the simulation time to 5000 fs, which is greater than the default value of 1000 fs. The micro ring resonator has a high quality factor, its simulation requires longer time. If the simulation time is set too small and the simulation stops before the field decays, the results obtained are incorrect.
 
 #### 1.10 Add Monitor
 
-In the simulation, `Monitor`function is used to create monitor and `add` function is used to add a monitor. By using `type` to select a power monitor, the transmittance and field distribution of the cross-section can be obtained. It is necessary to add a time monitor to check the field strength at the end of the simulation to determine the accuracy of the simulation results.
+In the simulation, `Monitor`function is used to create monitor and `add` function is used to add a monitor. By using `type` to select a power monitor, the transmittance and field distribution of the cross-section can be obtained. It is necessary to add a time monitor at the end of the simulation to check the field strength to judge the accuracy of the simulation results.
 
 ```python
 # region --- 8. Monitor ---  
@@ -291,7 +290,7 @@ if run_options.extract:
 
 #### 1.14 Control Switch
 
-We can control the operation of the simulation by passing in bool values through tuple, as shown in the following code. In every simulation, only one solver will be enabled. When using the FDE solver, set "run_fde" to True and "run_fdtd" to False; When using the FDTD solver, set "run_fdtd" to True and "run_fde" to False.
+We can control the operation of the simulation by passing in bool values through tuple, as shown in the following code. In each simulation, only one solver will be enabled. When using the FDE solver, set "run_fde" to True and "run_fdtd" to False; When using the FDTD solver, set "run_fdtd" to True and "run_fde" to False.
 
 ```python
 class RunOptions(NamedTuple):
@@ -310,7 +309,7 @@ if __name__ == "__main__":
 
 ### 2. Output results
 #### Length of ring
-微环谐振器的理论图如下所示，在波导中传输的光场会在其表面附近产生倏逝场，能量会耦合进入靠近波导的微环中。如果我们需要使用微环谐振器设计一个FSR为30nm的滤波器，我们可以根据如下公式计算出微环的有效周长。可以利用FDE求解器计算波导的群折射率，下表显示波导横截面在波长为1.55um的前三个模式的群折射率。
+The light traveling in the waveguide generates evanescent field on its surface, so energy couples into a nearby waveguide as the waveguide approaches. We design a microring resonant filter with an FSR of 30nm, and we can calculate the effective circumference of the microring according to the following formula. The FDE solver can be used to calculate the group refractive index of the waveguide. The following table shows the group refractive index of the waveguide cross-section in the first three modes with a wavelength of 1.55um.
 
 <BlockMath math=" 2{\pi}R= {\lambda}^2/(FSR*n_g)" />
 
@@ -320,19 +319,22 @@ if __name__ == "__main__":
 |1 |0.046759  | 1.692711      |  0.0| 3.467810 |     0.0    |     1550.0   |        0|
 |2 |0.599748  | 1.430406     |   0.0| 1.683888   |   0.0    |     1550.0    |       0|
 
-考虑TE偏振的基膜的传输的情况，可以得到4.43的群折射率，代入公式得到环的半径近似为2.7um。
+Considering the transmission of the fundamental mode of TE polarization, a group refractive index of 4.43 can be obtained. Therefore, selecting a ring with an effective radius of 2.87um can meet the free spectrum range of 30nm.
 
-#### Couple length and gap
-根据对称模式与反对称模式的有效折射率差可以计算出耦合区域的长度，公式如下所示。设置直波导与微环的间隙为100nm，可以满足波导与微环之间的耦合。使用FDE求解器计算波导与微环耦合区域的有效折射率，对应的模式分布如下。
+#### Couple gap and length
+The length of the coupling region can be calculated based on the effective refractive index difference between symmetric and antisymmetric modes, as shown in the following formula. Setting the gap between the straight waveguide and the ring to 100nm can generate strong mutual coupling. Using the FDE solver to calculate the effective refractive index of the coupling region between the waveguide and the microring, the corresponding mode distribution is as follows.
+
+|  ![](symmetric.png) | ![](antisymmetric.png) |  
+| :----------------------------------------------------------: | :----------------------------------------------------------: |
+The coupling distance calculated at wavelength of 1.55um more than 1.4 um. You can choose to increase the radius of the ring to reduce the coupling length. We choose to set the coupling length to zero and obtain sufficient coupling length and expected loop length by increasing the radius.
 
 <BlockMath math="L={\lambda}/({\pi}{\Delta}n)sin^{-1}(|t12|)" />
-在波长为1.55um计算得到的耦合距离为um。耦合距离太长的设计显然不合理，可以选择将直波导变为弯曲波导或将圆环的半径增大来减小耦合长度。我们选择将耦合距离设置为零，通过增大半径获得足够的耦合长度和期望的环长。
 
-#### transmission
+#### Transmission
 
-使用3D的FDTD计算直波导耦合到半径为2.8um的微环的谐振响应。在直波导中添加模式光源为波导的TE基膜，并使用功率监视器查看场分布和透射率。
+Calculate the resonant response of a straight waveguide coupled to a microring with a radius of 2.8um using 3D FDTD. Adding a mode light source as an excitation for straight waveguide, and use a power monitor to view the field distribution and transmittance.
 
-After the light that meets the resonance conditions is coupled from the waveguide into the ring resonator, it passes through the drop end. As shown in the figure below, there is the maximum electric field at the drop end at the resonant wavelength.
+When the light field coupled into the microring meets the resonance condition, it will output from the dorp port. As shown in the figure below, there is the maximum electric field at the drop port at the resonant wavelength.
 ![](mr_xy.png)
 
 

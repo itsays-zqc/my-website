@@ -193,7 +193,7 @@ pjp.add(name="right_port", type="eme_port",
 | y | 0.5 | float | center position of port height |
 | z_span | 7 | float | port height |
 | mode_selection | fundamental_TE | string |select the mode of port |
-| number_of_trial_modes&emsp;&emsp;&emsp;&emsp; | 15&emsp;&emsp;| string&emsp;&emsp;| set the mode of port &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
+| number_of_trial_modes&emsp;&emsp;&emsp;&emsp; | 15&emsp;&emsp;| integer&emsp;&emsp;| set the number of port modes &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
 
 
 #### 1.10 Add Monitor
@@ -268,9 +268,9 @@ simu.add(name=simu_name, type="EME",
 
 <div class="text-justify">
 
-According to different structures and materials, the SSC is divided into four cell groups using `cell_group_definition`. Set the length of the cell group in `span`, use `cell_number` to set the number of cell. The divided cell structure is shown in the following figure. Use `number_of_modes` to set the number of modes calculated at the interface of adjacent cells, and it is necessary to set a sufficient number of modes to obtain the correct results.
+According to different geometric structures and materials, the SSC is divided into four cell groups using `cell_group_definition`. Set the length of the cell group in `span`, use `cell_number` to set the number of cell. The divided cell structure is shown in the following figure. Use `number_of_modes` to set the number of modes calculated at the interface of adjacent cells, and it is necessary to set a sufficient number of modes to obtain the correct results.
 
-In the area where the cross-sectional area of cells remains unchanged, the number of `cell_number` is set to 1, and `sc` is set to "none"; In the area of structural changes, multiple cell number need to be used to characterize the structure and the "sub_cell" method is used to reduce the staircase effect caused by discrete changes in the cross-section.
+In the area where the cross-sectional area of cells remains unchanged, the number of `cell_number` is set to 1, and `sc` is set to "none"; In the area of structural changes, multiple cell number need to be used to characterize the structure and the "sub_cell" method is used to reduce the staircase effect caused by discrete changes of the cross-section.
 
 </div>
 

@@ -5,6 +5,8 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 ## Introduction:
 
+
+![](GC_intro.png)
 <div class="justify">
 
 </div>
@@ -56,7 +58,7 @@ You can create a new project using the `Project` function of Max's software deve
 #### 1.4 Add Material
 <div class="text-justify">
 
- Here we demonstrate using the `Material` function to create material and using the `add_lib` function to add materials from the material library. You can refer to the following script to set material.
+Here we demonstrate using the `Material` function to create material and using the `add_lib` function to add materials from the material library. You can refer to the following script to set material.
 </div>
 
 ```python
@@ -124,19 +126,17 @@ st.add_geometry(name='Si_substrate', type='gds_file',
 
 |Key| Value |type|Description|
 |-----|------|---------------|-----|
-|name|ring|string|name the added geometry|
-|type|Ring|string|select the type of structure |
+|name|top_cladding|string|name the added geometry|
+|type|gds_file|string|select the type of structure |
 |x&emsp;&emsp;&emsp;&emsp;|0&emsp;&emsp;&emsp;&emsp;|float&emsp;&emsp;&emsp;&emsp;|center position in the x-direction of the geometric structure &nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
+|path|gds_file|string|file path of GDS file|
+|cell_name|SSC|string| name of the GDS cell |
+|layer_name|(1,0)|list|name of the GDS layer |
+|z|0.11|float|center position in the z-direction of the geometric structure|
+|z_span|0.22|float| length of the geometric structure in the z-direction|
 |material|mt["Si"]|material | select the material added Materials|
-|mesh_order|3|integer|set the priority of the material|
-|x|0|float|the center coordinate of the ring in the x-direction|
-|y|0|float|the center coordinate of the ring in the y-direction|
-|z|0|float|the center coordinate of the ring in the z-direction|
-|z_span|0|float|the thickness of the ring in the z-direction|
-|inner_radius|2.6|float|the size of the inner radius of the ring|
-|outer_radius|3|float|the size of the outer radius of the ring|
+|mesh_order|2|integer|set the priority of the material|
 
-The properties of `Rectangle` can refer to the settings of the Ring. Select simulation material by using `mesh_order` in areas where geometry overlaps, the priority of structural materials needs to be higher than that of background material.
 
 #### 1.7 Set Boundary
 <div class="text-justify">
@@ -154,7 +154,7 @@ st.OBoundary(property={'geometry': {'x': -3.5, 'x_span': 47, 'y': 0, 'y_span': 2
 
 #### 1.8 Add source
 <div class="text-justify">
-In 3D FDTD simulation, a light source is required. We use `Source` to create the light source and `add` to add the required light source. The settings for the light source are as follows.
+In 3D FDTD simulation, a light source is required. We use `Source` to create the light source and `add` to add the required light source. The settings for the light source as follows.
 </div>
 
 ```python
@@ -176,7 +176,7 @@ Use `type` to select the type of light source, and `axis` to set the direction o
 
 #### 1.9 Add Monitor
 
-In the simulation, `Monitor`function is used to create monitor and `add` function is used to add a monitor. By using `type` to select a power monitor, the transmittance and field distribution of the cross-section can be obtained. It is necessary to add a time monitor to check the field strength at the end of the simulation to determine the accuracy of the simulation results.
+In the simulation, `Monitor` function is used to create monitor and `add` function is used to add a monitor. By using `type` to select a power monitor, the transmittance and field distribution of the cross-section can be obtained. It is necessary to add a time monitor to check the field strength at the end of the simulation to determine the accuracy of the simulation results.
 
 ```python
 # region --- 7. Monitor ---
@@ -201,7 +201,7 @@ In the simulation, `Monitor`function is used to create monitor and `add` functio
 #### 1.10 Add Solver
 <div class="text-justify">
 
-We use the `Simulation` function to create a simulation and the `add` function to add a solver. The properties settings of FDE and FDTD solvers are as follows.
+We use the `Simulation` function to create a simulation and the `add` function to add a solver. The properties settings of FDE and FDTD solvers as follows.
 </div>
 
 ```python
@@ -273,6 +273,7 @@ return fdtd_res if run_options.run else None
 ```
 
 
+
 #### 1.14 Control Switch
 
 We can control the operation of the simulation by passing in bool values through tuple, as shown in the following code. In every simulation, only one solver will be enabled. When using the FDE solver, set "run_fde" to True and "run_fdtd" to False; When using the FDTD solver, set "run_fdtd" to True and "run_fde" to False.
@@ -290,14 +291,15 @@ if __name__ == '__main__':
 
 
 ### 2. Output results
-#### Length of ring
-
-#### Couple length and gap
+#### Transmission
 
 
-#### transmission
+![](T.png)
 
-
+#### Electric profile
+|  ![](E1.525.png) | ![](E1.575.png) |  
+| :----------------------------------------------------------: | :----------------------------------------------------------: |
 
 
 ## References
+D. Taillaert, F. Van Laere, M. Ayre, W. Bogaerts, D. Van Thourhout, P. Bienstman and R. Baets, “Grating Couplers for Coupling between Optical Fibers and Nanophotonic Waveguides,” Japanese Journal of Applied Physics, vol. 45, no. 8a, pp. 6071-6077, 2006.

@@ -119,17 +119,16 @@ st.add_geometry(name="psr", type="gds_file",
 ```
 |Key| Value |type|Description|
 |-----|------|---------------|-----|
-|name|sub|string|name the added geometry|
+|name|box|string|name the added geometry|
 |type|gds_file|string|select the type of structure |
 |path|gds_file|string|file path of GDS file|
-|cell_name|SSC|string| name of the GDS cell |
-|layer_name|(1,0)|list|name of the GDS layer |
+|cell_name|(1,0)|string| name of the GDS cell |
+|layer_name|PSR|list|name of the GDS layer |
 |x&emsp;&emsp;&emsp;&emsp;|0&emsp;&emsp;&emsp;&emsp;|float&emsp;&emsp;&emsp;&emsp;|center position in the x-direction of the geometric structure &nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
-|y|0|float|center position in the y-direction of the geometric structure|
-|z|-1.5|float|center position in the z-direction of the geometric structure|
-|z_span|3|float| length of the geometric structure in the z-direction|
-|material|mt["Si"]|material | select the material in Material|
-|mesh_order|2|integer|set the priority of the mesh|
+|z|-2|float|center position in the z-direction of the geometric structure|
+|z_span|4|float| length of the geometric structure in the z-direction|
+|material|mt["SiO2"]|material | select the material in Material|
+|mesh_order|2|integer|set the priority of the material|
 
 Select simulation material by using `mesh_order` in areas where geometry overlaps, the higher the number of `mesh_order`, the higher the priority of the material.
 
@@ -201,12 +200,12 @@ pjp.add(name="output_down_te_tm", type="eme_port",
 | name       | left_port     | string    | the name of port                |
 |  type |  eme_port | string | select type of port |
 |  port_location | left  | string   |select the location of the port  |
-| y   |  0 | float | center position of port width |
-| y_span| 5.5 | float | port width |
-| y | 0.5 | float | center position of port height |
-| z_span | 7 | float | port height |
+| y   |  2.6785 | float |  center position of the port in the y-direction |
+| y_span| 2 | float | length of the port in the y-direction |
+| z | 0.11 | float | center position of the port in the z-direction |
+| z_span | 2 | float | length of the port in the z-direction |
 | mode_selection | fundamental_TE | string |select the mode of port |
-| number_of_trial_modes&emsp;&emsp;&emsp;&emsp; | 15&emsp;&emsp;| string&emsp;&emsp;| set the mode of port &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
+| number_of_trial_modes&emsp;&emsp;&emsp;&emsp; |number_of_modes&emsp;&emsp;| integer&emsp;&emsp;| set the number of port modes&emsp;&emsp;&emsp;&emsp;&emsp;|
 
 
 #### 1.10 Add Monitor
@@ -282,15 +281,18 @@ simu.add(name=simu_name, type="EME",
 
 <div class="text-justify">
 
-According to different structures and materials, the SSC is divided into four cell groups using `cell_group_definition`. Set the length of the cell group in `span`, use `cell_number` to set the number of cell. The divided cell structure is shown in the following figure. Use `number_of_modes` to set the number of modes calculated at the interface of adjacent units, and it is necessary to set a sufficient number of modes to obtain the correct results.
+According to different geometric structures and materials, the PSR is divided into 8 cell groups using `cell_group_definition`. Set the length of the cell group in `span`, use `cell_number` to set the number of cell. The divided cell structure is shown in the following figure. Use `number_of_modes` to set the number of modes calculated at the interface of adjacent cells, and it is necessary to set a sufficient number of modes to obtain the correct results.
 
-The area where the structure has not changed, the number of `cell_number` is set to 1, and `sc` is set to "none". In the area of structural changes, multiple cell number need to be used to characterize the structure and the "sub_cell" method is used to reduce the staircase effect caused by discrete changes in the cross-section.
+The area where the structure has not changed, the number of `cell_number` is set to 1, and `sc` is set to "none". In the area of structural changes, multiple cell number need to be used to characterize the structure and the "sub_cell" method is used to reduce the staircase effect caused by discrete changes of the cross-section.
 
 </div>
+
+![](EME_PSR.png)
 
 #### 1.12 View Structure
 
 You can use the `structure_show` function to view the top view of the structure, or use the `simu[simu_name].show3d()` call gui to view the structure.
+
 
 ```python
 # region --- 9. Structure Show ---
@@ -321,11 +323,11 @@ if run_options.calculate_modes:
 
 |  key  |   Value   |   Type  |   Description  |
 |-------| --------- | ------- |   ----------- |
-| mesh_structure | True  |  bool  | select to view the refractive index distribution of the port |
-| calculate_modes &emsp;&emsp; | True &emsp;&emsp; | bool &emsp;&emsp;|  select to calculate the mode of cross-section&nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
+| mesh_structure | True  |  bool  | select to calculate the refractive index distribution of the port |
+| calculate_modes &emsp;&emsp; | True &emsp;&emsp; | bool &emsp;&emsp;|  select to calculate mode of cross-section&nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
 | Wavelength | wavelength |  float |  calculate the wavelength of the mode |
-|  number_of_trial_modes | number_of_modes | float  |  number of calculation modes|
-| search | "max_index"  |float | method of calculating mode |
+|  number_of_trial_modes | number_of_modes | integer  |  number of calculation modes|
+| search | "max_index"  |float | method of finding mode |
 | calculate_group_index | True | bool | select to calculate group refractive index |
 | bent_waveguide | False |bool|  select to enable bent waveguide in calculation mode|
 | radius | 1 | float | set the radius of the bent waveguide |
@@ -382,7 +384,7 @@ if run_options.extract:
 
 #### 1.16 Control Switch
 
-We can control the operation of the simulation by passing in bool values through tuple, as shown in the following code.
+We can control the operation of the simulation by passing bool values through tuples, as shown in the following code.
 
 ```python
 class RunOptions(NamedTuple):
@@ -402,11 +404,14 @@ if __name__ == "__main__":
 
 - Change taper width
   
-我们知道波导的横截面的不对称性会产生模式的杂化，当光沿着绝热锥形波导传播时,可以实现模式的转换。
+波导的横截面的不对称性会产生模式的杂化，当光沿着绝热锥形波导传播时,可以实现模式的转换。
 我们使用SDK的FDE模块可以很方便得到绝缘体上硅不同宽度波导的有效折射率。如下图所示，在空气包层的在波导宽度为0.65um附近时产生了模式杂化。
 因此我们设计的绝热锥形波导宽度变化应该满足w1<0.65<w2。
 ![](EM.png)
 
+![](TE.png)
+![](TM.png)
+![](xy.png)
 
 - Scan taper length
 

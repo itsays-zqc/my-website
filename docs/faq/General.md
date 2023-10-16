@@ -9,7 +9,10 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 <div class="text-justify">
 
+
+
 ![mologo](../../static/img/mo_logo.jpg)
+
 ### 公司简介：
 
 上海曼光信息科技有限公司，成立于2018年8月。公司依托山东大学科研团队力量，凭借坚实的电磁场仿真与分析理论与技术基础，以及完备的自动化设备设计与制造、软件设计与开发能力研发出覆盖微波及光学频段的电磁场可视化软硬件产品，为客户提供完善的电磁场相关的仿真、设计、分析、测量解决方案。
@@ -17,13 +20,16 @@ import { InlineMath, BlockMath } from 'react-katex';
 公司业务面向5G、光通信、光电传感、光计算、工业物联网、国防安全等领域，主要涵盖电磁场仿真与测量两大业务。电磁仿真业务主要产品包括无源/有源光电芯片及系统仿真设计软件、光电芯片仿真设计服务、微波/射频天线仿真设计服务。电磁场测量业务光电子器件测量与参数提取平台；微波毫米波测量业务主要产品包括5G NR OTA测试系统、平面/柱面/球面近远场天线测试系统；公司以客户为中心，从客户直接需求出发，完成涵盖自动化测量设备软硬件定制化设计、制造、开发、交付的交钥匙工程，并提供电磁场相关设计与测量分析增值服务。
 
 
+
 ### Company Profile:
 
 <div class="text-justify">
+
 Shanghai Max-Optics Information Technology Co.,Ltd was established in August 2018. With the support of the research team from Shandong University, the company has developed electromagnetic field visualization software and hardware products covering microwave and optical frequency bands, based on solid electromagnetic field simulation and analysis theory and technology foundation, as well as comprehensive capabilities in automated equipment design and manufacturing, software design and development. These products provide customers with comprehensive solutions for electromagnetic field simulation, design, analysis, and measurement.
 
 The company's business focuses on 5G, optical communication, optoelectronic sensing, optical computing, industrial IoT, and defense security. It mainly covers two major businesses: electromagnetic field simulation and measurement. The electromagnetic simulation business includes simulation design software for passive/active optoelectronic chips and systems, optoelectronic chip simulation design services, and microwave/radio frequency antenna simulation design services. The electromagnetic field measurement business includes optoelectronic device measurement and parameter extraction platforms. The microwave millimeter wave measurement business mainly includes 5G NR OTA testing systems, planar/cylindrical/spherical near-field and far-field antenna testing systems. The company is customer-oriented, starting from the direct needs of customers, and completes turnkey projects that cover customized design, manufacturing, development, and delivery of automated measurement equipment hardware and software. It also provides value-added services for electromagnetic field design and measurement analysis.
 </div>
+
 
 <!-- | 曼光     | 曼光     | 曼光科技     |
 | ------- | ------- | ------- |
@@ -40,15 +46,15 @@ The company's business focuses on 5G, optical communication, optoelectronic sens
 
 We are the first company in the industry to offer a "local + cloud" computing platform for photonics integrated circuit (PIC) simulation software. We provide a one-stop solution, delivering software, resources, and technical support anytime, anywhere.
 
-The Importance of Software Simulation:
+***The Importance of Software Simulation:***
 
 As semiconductor devices continue to evolve towards smaller sizes and more complex structures, the use of simulation software solutions offers numerous advantages over laboratory measurement methods, playing a crucial role in semiconductor device development. Highly accurate algorithms enable rapid modeling and simulation of devices, allowing the observation of internal physical processes. Through simulation software, customers can not only design new and complex device structures but also propose solutions to optimize device performance by altering operating conditions or various physical quantities and parameters within device models. From simulating photonic integrated circuits to various types of simulations in different fields, spanning from materials to systems, the use of simulation software not only reduces production costs, shortens development cycles, and increases productivity but also provides clear and concise results data for researchers in various domains to collaborate on complex projects more effectively.
 
-Software Uniqueness:
+***Software Uniqueness:***
 
 We offer two software forms based on 'local + cloud' integration. The first is a software development toolkit SDK based on Python scripting, which includes modeling, simulation, post-processing, and data visualization capabilities. It can call all modules and is user-friendly, easy to learn, and easy to extend. The second is a GUI user interface, enabling interactive simulations using both forms. Additionally, we incorporate advanced grid optimization and GPU acceleration to reduce simulation times. We also provide virtual machine and Windows versions to accommodate various simulation environments preferred by our customers.
 
-Key Product Advantages:
+***Key Product Advantages:***
 
 We currently provide an efficient and reliable one-stop solution for both passive and active devices, combining multiple simulation algorithms. Our simulations exhibit industry-leading accuracy and speed.
 

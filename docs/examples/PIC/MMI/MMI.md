@@ -618,7 +618,7 @@ The transmission result is shown in the left picture below which is calculted fo
 
 <div class="text-justify">
 
-To view a function's definition and supported parameters or a parameter dictionary, you can right-click on its name and select "Go to Definition"  or press "Ctrl" while left-clicking on its name to view its definition, showing the available parameters and their descriptions.  
+To view a function's definition and supported parameters or a parameter dictionary, you can right-click on its name and select "Go to Definition"  or press "Ctrl" while left-clicking on its name to view its definition, showing the available parameters and their descriptions.  And you can also to find the detailed explainnation : https://itsays-zqc.github.io/my-website/docs/category/max-optics-sdk
 
 
 </div>

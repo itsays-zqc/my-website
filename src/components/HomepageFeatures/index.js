@@ -107,13 +107,13 @@ const FeatureList = [
         <hr style={{ margin: '0.25rem 0' }}/>
   
         <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/category/grating">2.Grating</a>
+        <a href="/my-website/docs/examples/PIC/GratingCoupler/">2.Grating</a>
         </div>
         <hr style={{ margin: '0.25rem 0' }}/>
 
 
         <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/examples/Active_Device/MOD/">3.PD</a>
+        <a href="/my-website/docs/examples/Active_Device/Photodetector">3.PD</a>
         </div>
         <hr style={{ margin: '0.25rem 0' }}/>
 

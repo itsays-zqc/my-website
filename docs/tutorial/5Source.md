@@ -27,11 +27,11 @@ The mode source is used to inject a guided mode into the simulation region in FD
 
 5 ) **Rotations:**
 
--> **Theta:** This refers to the angle of propagation measured by degrees, with respect to the incident axis of the source in a 3D simulation. In a 2D simulation, it is the angle of propagation measured by degrees revolved around the global Z-axis in compliance with the right-hand rule, that is, the angle of propagation in the XY plane.
+① **Theta:** This refers to the angle of propagation measured by degrees, with respect to the incident axis of the source in a 3D simulation. In a 2D simulation, it is the angle of propagation measured by degrees revolved around the global Z-axis in compliance with the right-hand rule, that is, the angle of propagation in the XY plane.
 
--> **Phi:** This refers to the angle of propagation measured by degrees revolved around the incident axis of the source in compliance with the right-hand rule in a 3D simulation. In a 2D simulation, this value does not take effect.
+② **Phi:** This refers to the angle of propagation measured by degrees revolved around the incident axis of the source in compliance with the right-hand rule in a 3D simulation. In a 2D simulation, this value does not take effect.
 
--> **Rotation Offset:** A rotation offset can be endowed to the plane upon which the mode is computed. This guarantees that mode sources at an angle do not interfere with structures not belonging to the waveguide/fiber.
+③ **Rotation Offset:** A rotation offset can be endowed to the plane upon which the mode is computed. This guarantees that mode sources at an angle do not interfere with structures not belonging to the waveguide/fiber.
 
 6 ) **Mode selection:** Defines whether to inject fundamental mode or other user-selected modes chosen via the "Select Mode" button. Currently, mode selection options are “Fundamental Mode”, “Fundamental TE Mode”, “Fundamental TM Mode”, “User Select” and “User Import”.
 
@@ -51,9 +51,9 @@ In this section you can set “**Frequency**”, “**Wavelength**”, “**Numb
 
 2) **Search:** The user can specify an index to search around or a range of indices to sweep for finding modes of interest. The specified value indicates the magnitude of the index (which is complex) rather than just its real part.
 
--> **Max index:** By checking this option, the FDTD calculation automatically admits the maximum index mode (Default: 1).
+① **Max index:** By checking this option, the FDTD calculation automatically admits the maximum index mode (Default: 1).
 
--> **Near N:** If unchecked, the user can set the value of N in the following box according to the need. 
+② **Near N:** If unchecked, the user can set the value of N in the following box according to the need. 
 
 If the selected value is not within the range of the mode index value, the nearest value from the user’s setting will be adopted instead for selecting the FDTD mode.
 

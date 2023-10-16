@@ -88,15 +88,15 @@ Before adding the Frequency-domain field and power monitor, Mode Source must be 
 
 2 )	**X/X Span; Y/Y Span; Z/Z Span:**
 
-**X, Y, Z:** The center position of the simulation region.
+① **X, Y, Z:** The center position of the simulation region.
 
-**X Min, X Max:** X min, X max position.
+② **X Min, X Max:** X min, X max position.
 
-**Y Min, Y Max:** Y min, Y max position.
+③ **Y Min, Y Max:** Y min, Y max position.
 
-**Z Min, Z Max:** Z min, Z max position.
+④ **Z Min, Z Max:** Z min, Z max position.
 
-**X SPAN, Y SPAN, Z SPAN:** X, Y, Z span of the simulation region.
+⑤ **X SPAN, Y SPAN, Z SPAN:** X, Y, Z span of the simulation region.
 
 ### 2.3 Data to Record tab
 
@@ -120,15 +120,15 @@ Before adding the Frequency-domain field and power monitor, Mode Source must be 
 
 1 ) **Sampling Frequency**
 
-->**Min Sampling Per Cycle:** This parameter suggests the realistic minimum amount of samplings for each optical cycle. Default value is 2 (the Nyqusit limit) for sake of the optimum efficiency.
+① **Min Sampling Per Cycle:** This parameter suggests the realistic minimum amount of samplings for each optical cycle. Default value is 2 (the Nyqusit limit) for sake of the optimum efficiency.
 
-->**Desired Sampling:** This converts the minimum sampling points in each optical cycle into an actual rate of sampling measured by Hz.
+② **Desired Sampling:** This converts the minimum sampling points in each optical cycle into an actual rate of sampling measured by Hz.
 
-->**Nyquist Limit:** The Nyquist limit of sampling is determined in accordance with the maximum frequencies that may arise in the simulation region.
+③ **Nyquist Limit:** The Nyquist limit of sampling is determined in accordance with the maximum frequencies that may arise in the simulation region.
 
-->**Actual Sampling:** The actual rate of sampling is identical to the rate that is actually employed for the discrete Fourier transform (DFT), by appropriately taking the desired sampling rate, the Nyquist limit, and the time step dt into account
+④ **Actual Sampling:** The actual rate of sampling is identical to the rate that is actually employed for the discrete Fourier transform (DFT), by appropriately taking the desired sampling rate, the Nyquist limit, and the time step dt into account
 
-->**Down Sample Time:** This specifies the time for step down sampling.
+⑤ **Down Sample Time:** This specifies the time for step down sampling.
 
 ### 2.5 Mode Expansion tab
 
@@ -146,9 +146,9 @@ Before adding the Frequency-domain field and power monitor, Mode Source must be 
 
 3 )	**Mode Calculation:**
 
-①**Mode Selection:** Allow you to select the modes for the mode expansion calculation, and user select, “Fundamental Mode”, “Fundamental TE Mode” and “Fundamental TM Mode” are included. (Default: User Select)
+① **Mode Selection:** Allow you to select the modes for the mode expansion calculation, and user select, “Fundamental Mode”, “Fundamental TE Mode” and “Fundamental TM Mode” are included. (Default: User Select)
 
-②.**Override Global Monitor Settings:**
+② **Override Global Monitor Settings:**
 
 ->**Sample spacing:** The sampling frequency or wavelength is determined somehow based on this combo-choice parameter.
 
@@ -156,25 +156,25 @@ Before adding the Frequency-domain field and power monitor, Mode Source must be 
 
 ->**Use source limits:** When checked, the source limits are used by the monitors. Otherwise one uses the pull down menus and their underlying boxes to specify the frequencies/wavelengths at which to collect data.
 
-③**Frequency Points:** Sets to choose the number of frequency points at which to record data. (Default: 5)
+③ **Frequency Points:** Sets to choose the number of frequency points at which to record data. (Default: 5)
 
 1 ) **Monitors for Expansion:** After the modes have been selected, the next step is to choose the monitor with the input field profile. The "Add " and " Remove " buttons on the side can be used to add/remove monitors, and You can choose the desired monitor from the monitor drop down list.
 
 4 )	**Bent Waveguide:** Upon checking this option, the user can define a bent waveguide..
 
-->Radius: Radius of the bent waveguide. (Default value: 1.000e+6 μm)
+① Radius: Radius of the bent waveguide. (Default value: 1.000e+6 μm)
 
-->Orientation: Orientation of the bent waveguide
+② Orientation: Orientation of the bent waveguide
 
-->Location: Loaction of the bent waveguide. (at Simulation Center by default)
+③ Location: Loaction of the bent waveguide. (at Simulation Center by default)
  
 5 )	**Rotations:**
 
-->**Theta:** This refers to the angle of propagation measured by degrees, with respect to the incident axis of the source in a 3D simulation. In a 2D simulation, it is the angle of propagation measured by degrees revolved around the global Z-axis in compliance with the right-hand rule, that is, the angle of propagation in the XY plane.
+① **Theta:** This refers to the angle of propagation measured by degrees, with respect to the incident axis of the source in a 3D simulation. In a 2D simulation, it is the angle of propagation measured by degrees revolved around the global Z-axis in compliance with the right-hand rule, that is, the angle of propagation in the XY plane.
 
-->**Phi:** This refers to the angle of propagation measured by degrees revolved around the incident axis of the source in compliance with the right-hand rule in a 3D simulation. In a 2D simulation, this value does not take effect.
+② **Phi:** This refers to the angle of propagation measured by degrees revolved around the incident axis of the source in compliance with the right-hand rule in a 3D simulation. In a 2D simulation, this value does not take effect.
 
-->**Rotation Offset:** A rotation offset can be endowed to the plane upon which the mode is computed. This guarantees that mode sources at an angle do not interfere with structures not belonging to the waveguide/fiber.
+③ **Rotation Offset:** A rotation offset can be endowed to the plane upon which the mode is computed. This guarantees that mode sources at an angle do not interfere with structures not belonging to the waveguide/fiber.
 
 ### 2.6 FDTD Far Field
 
@@ -230,11 +230,11 @@ After clicking the “OK ” button, the visualizer window will show up, user ca
 
 !['monitor_12'](../../static/img/tutorial/monitor/monitor_12.png)
 
-->**Name:** The FDTD far field name.
+① **Name:** The FDTD far field name.
 
-->**Line Color:** User can customize the line’s color interested in.
+② **Line Color:** User can customize the line’s color interested in.
 
-->**View Data:** Allows user to view the data of far field , after pressing the button a FDTD Far Field data table will pop out.
+③ **View Data:** Allows user to view the data of far field , after pressing the button a FDTD Far Field data table will pop out.
 
 !['monitor_13'](../../static/img/tutorial/monitor/monitor_13.png)
 

@@ -107,7 +107,7 @@ For Python code environment, using a code editor is helpful for managing the SDK
 
 Note that the installation of the SDK and subsequent model simulations will be done within the VSCode interface.
 
-#### Install the SDK
+#### 3. Install the SDK
 
 SDK Directory Structure:
 
@@ -254,7 +254,7 @@ If you encounter an error stating that the required version cannot be found whil
 ERROR: Could not find a version that satisfies the requirement max_optics_sdk~
 ```
 
-&emsp;&emsp;You should first check whether your Python version is 3.8.* as we currently only support this version. Additionally, ensure that the "wheels" folder contains the following three files:
+You should first check whether your Python version is 3.8.* as we currently only support this version. Additionally, ensure that the "wheels" folder contains the following three files:
 
 max_optics_local_sdk-2.3.0.4.630.2001-cp38-cp38-win_amd64.whl
 
@@ -283,7 +283,7 @@ Group authorization refers to deploying it within the local area network of grou
 After installing the relevant Max-Optics software product, the process for configuring the group service is as follows:
 
 
-First, you need to obtain the License Server IP address and port number from your company's administrator, typically in the format such as 192.168.91.67:8273.
+1、Firstly, you need to obtain the License Server IP address and port number from your company's administrator, typically in the format such as 192.168.91.67:8273.
 
 2、In the software installation package, locate the BitAnswer user client configuration software, typically found within the BitAnswer folder.
 

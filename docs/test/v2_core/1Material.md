@@ -29,10 +29,11 @@ add_anisotropy(
             order: int = 2,
    			)
 ```
+
  <table align="center">
   <tr>
-    <th>Parameters</th>
-    <th>Description</th>
+    <th align="center">Parameters</th>
+    <th align="center">Description</th>
   </tr>
   <tr>
     <td align="center">name</td>
@@ -86,10 +87,11 @@ add_dispersion(
             order: int = 2
 			)
 ```
+
  <table align="center">
   <tr>
-    <th>Parameters</th>
-    <th>Description</th>
+    <th align="center">Parameters</th>
+    <th align="center">Description</th>
   </tr>
   <tr>
     <td align="center">name</td>
@@ -143,8 +145,8 @@ add_lib(
 ```
  <table align="center">
   <tr>
-    <th>Parameters</th>
-    <th>Description</th>
+    <th align="center">Parameters</th>
+    <th align="center">Description</th>
   </tr>
   <tr>
     <td align="center">name</td>
@@ -194,8 +196,8 @@ add_nondispersion(
 ```
  <table align="center">
   <tr>
-    <th>Parameters</th>
-    <th>Description</th>
+    <th align="center">Parameters</th>
+    <th align="center">Description</th>
   </tr>
   <tr>
     <td align="center"><strong>name</strong></td>

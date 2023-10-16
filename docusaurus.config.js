@@ -198,12 +198,12 @@ const config = {
             title: 'Products',
             items: [
               {
-                label: 'FDTD',
-                to: '/docs/intro',
+                label: 'Passive Simulation',
+                to: 'docs/faq/General#what-functions-are-available-for-passive-devices-simulation',
               },
               {
-                label: 'MODE',
-                to: '/docs/intro',
+                label: 'Active Simulation',
+                to: 'docs/faq/General#what-functions-are-available-for-active-component-simulation',
               },
             ],
           },

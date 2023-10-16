@@ -14,10 +14,10 @@ st = pj.Structure(mesh_type,
 
  <table align="center">
   <tr>
-    <th>Parameters</th>
-    <th>Default</th>
-    <th>Type</th>
-    <th>Notes</th>
+    <th align="center">Parameters</th>
+    <th align="center">Default</th>
+    <th align="center">Type</th>
+    <th align="center">Notes</th>
   </tr>
   <tr>
     <td align="center">mesh_type</td>
@@ -769,7 +769,7 @@ st.add_electrode(name="cathode", property={
                     "optical": {"enabled": 1, "envelop": 0, "source_fraction": source_fraction}}]})
 ```
 
-|               Parameters               |    Default    |     type      |             &ensp;      Notes      &ensp;&ensp;             |
+|               Parameters               |    Default    |     type      |               Notes                  |
 | :----------------------------------: | :-----: | :-----: | :---------------------------: |
 |             force_ohmic              |  true   |  bool   |                               |
 |               bc_mode                |    -    | string  | Selections are ['transient']. |

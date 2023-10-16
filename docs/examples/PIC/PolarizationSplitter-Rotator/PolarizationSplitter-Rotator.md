@@ -329,10 +329,6 @@ if run_options.calculate_modes:
 |  number_of_trial_modes | number_of_modes | integer  |  number of calculation modes|
 | search | "max_index"  |float | method of finding mode |
 | calculate_group_index | True | bool | select to calculate group refractive index |
-| bent_waveguide | False |bool|  select to enable bent waveguide in calculation mode|
-| radius | 1 | float | set the radius of the bent waveguide |
-|orientation | 0 | float | set the bending direction of the waveguide|
-|location |"simulation_center"|string| set the position of the bent waveguide|
 
 #### 1.14 Run
 
@@ -403,45 +399,39 @@ if __name__ == "__main__":
 #### 2.1 taper waveguide
 
 - Change taper width
-  
-波导的横截面的不对称性会产生模式的杂化，当光沿着绝热锥形波导传播时,可以实现模式的转换。
-我们使用SDK的FDE模块可以很方便得到绝缘体上硅不同宽度波导的有效折射率。如下图所示，在空气包层的在波导宽度为0.65um附近时产生了模式杂化。
-因此我们设计的绝热锥形波导宽度变化应该满足w1<0.65<w2。
-![](EM.png)
-
-![](TE.png)
-![](TM.png)
-![](xy.png)
-
+The asymmetry of the cross-section of a waveguide can lead to hybridization of polarization modes within a certain width range, which is a commonly used method for designing polarization conversion. We can easily obtain the effective refractive index of silicon waveguides with different widths by using the SDK's multiple cyclic FDE. As shown in the figure below, mode hybridization occurs near the waveguide width of 0.65um in the air cladding. As the waveguide width widens, the input TE0 mode light field changes to TM1. Therefore, the width variation range of the adiabatic conical waveguide we designed should include the range of mode hybridization.
 - Scan taper length
-
-需要注意锥形波导必须足够的长，使得波导的输入的TM模式转化为TE模式而不会产生其它的模式。
-这里可以使用EME的长度扫描来获得最佳的锥形波导长度的模式转换效率。
-
+It should be noted that the tapered waveguide must be long enough to convert the input TM mode of the waveguide into TE mode without generating other modes. Here, the length scanning of EME can be used to obtain the optimal mode conversion efficiency of the tapered waveguide length.
+![](PSR_neff.png)
 
 #### 2.2 Coupling waveguide
 
 
-在锥形波导的附近添加一根窄的波导，通过非对称定向耦合器的设计将宽波导中的TE1转换为窄波导中的TE0。这样输入TM模式就被转换为TE模式，而输入的TE0模式在锥形波导传输中保持相同的偏振，在非对称定向耦合区不满足模式转换条件从直通端口输出。因此，可以实现TE和TM分离与旋转。
-根据模式匹配条件
+Add a narrow waveguide near the conical waveguide and convert TE1 in the wide waveguide to TE0 in the narrow waveguide through the design of an asymmetric directional coupler. In this way, the input TM mode is converted to TE0 mode, while the input TE0 mode maintains the same polarization in the conical waveguide transmission, and does not meet the mode conversion conditions in the asymmetric directional coupling region and is output from the through port.
 
 
 
 #### 2.3 Mode filtering
 
-该偏振分束旋转器在直通端口级联了一个MMI模式滤波器，用来消除输出端口残余的TM0和TE1模式，来提高模式的消光比。
+The polarization beam splitter rotator cascades an MMI mode filter at the through port to eliminate residual TM0 and TE1 modes at the output port and improve the extinction ratio of the modes.
 
 
 #### 2.2 EME Propagation    
 
 <div class="text-justify">
-
-
+The calculation of EME requires adding multiple elements in the area where the cross-section of the waveguide changes, and the more severe the structural change, the more elements are needed. After the calculation of `EME propagation`` is completed, the electric field inside the waveguide can be observed.
+Using EME simulation can quickly optimize length, and you can use `propagation_sweep` to optimize transmittance.
 </div>
 
-## Analysis and Discuss
+![](PSR_xy.png)
 
-其中一个模式在特定波导截面的宽度时，满足模式匹配条件的偏振光耦合进入附近的波导中，另一个偏振模式的光则不满足模式匹配条件继续沿着波导传输。
+
+## Analysis and Discuss
+For the calculation of long-distance waveguide transmission models, EME has significant advantages.
+The mode field distribution of input TE0 and TM0 is shown in the following figure.
+![](PSR_FDE.png)
+
+
 
 ## References
 

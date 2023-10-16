@@ -324,8 +324,7 @@ Considering the transmission of the fundamental mode of TE polarization, a group
 #### Couple gap and length
 The length of the coupling region can be calculated based on the effective refractive index difference between symmetric and antisymmetric modes, as shown in the following formula. Setting the gap between the straight waveguide and the ring to 100nm can generate strong mutual coupling. Using the FDE solver to calculate the effective refractive index of the coupling region between the waveguide and the microring, the corresponding mode distribution is as follows.
 
-|  ![](symmetric.png) | ![](antisymmetric.png) |  
-| :----------------------------------------------------------: | :----------------------------------------------------------: |
+![](MRR_FDE.png)
 The coupling distance calculated at wavelength of 1.55um more than 1.4 um. You can choose to increase the radius of the ring to reduce the coupling length. We choose to set the coupling length to zero and obtain sufficient coupling length and expected loop length by increasing the radius.
 
 <BlockMath math="L={\lambda}/({\pi}{\Delta}n)sin^{-1}(|t12|)" />
@@ -335,11 +334,11 @@ The coupling distance calculated at wavelength of 1.55um more than 1.4 um. You c
 Calculate the resonant response of a straight waveguide coupled to a microring with a radius of 2.8um using 3D FDTD. Adding a mode light source as an excitation for straight waveguide, and use a power monitor to view the field distribution and transmittance.
 
 When the light field coupled into the microring meets the resonance condition, it will output from the dorp port. As shown in the figure below, there is the maximum electric field at the drop port at the resonant wavelength.
-![](mr_xy.png)
+![](MRR_xy.png)
 
 
 The transmittance of the drop end is shown in the following figure.
-![](drop.png)
+![](T_drop.png)
 
 ## References
 Hammer, M. and Hiremath, K.R. and Stoffer, R. (2004) Analytical approaches to the description of optical microresonator devices. (Invited) In: Microresonators as Building Blocks for VLSI Photonics, 18-25 October 2003, Erice, Italy. pp. 48-71. AIP Conference Proceedings 709. Springer. ISSN 0094-243X ISBN 978-0-7354-0184-6.

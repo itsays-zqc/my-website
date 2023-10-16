@@ -5,8 +5,7 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 ## Introduction:
 
-
-![](GC_intro.png)
+Grating coupling is a simple method for connecting photonic integrated chips with optical fibers.
 <div class="justify">
 
 </div>
@@ -291,14 +290,17 @@ if __name__ == '__main__':
 
 
 ### 2. Output results
-#### Transmission
 
-
-![](T.png)
 
 #### Electric profile
-|  ![](E1.525.png) | ![](E1.575.png) |  
-| :----------------------------------------------------------: | :----------------------------------------------------------: |
+When the wavelength of the incident light meets the Bragg condition, the incident light will enter the waveguide through grating coupling. 
+![](Grating.png)
+
+
+#### Transmission
+The transmittance of grating coupling varies with wavelength as shown in the following figure.
+![](T_grating.png)
+
 
 
 ## References

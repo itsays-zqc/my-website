@@ -347,7 +347,6 @@ In region 8, we add the EME simulation module.
 </div>
 
 ```python
-
 # region --- 8. Simulation ---
 simu = pj.Simulation()
 simu.add(name=simu_name, type="EME",

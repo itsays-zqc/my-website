@@ -3,6 +3,10 @@ import {InlineMath, BlockMath} from 'react-katex';
 
 # Spot Size Converter
 
+<font face = "Calibri">
+
+<div class="text-justify">
+
 ## Introduction
 <div class="text-justify">
 
@@ -384,7 +388,9 @@ if __name__ == "__main__":
 #### 2.1 ModeProfile
 
 We extracted the first two modes of the input port, and the mode field distribution as following figure.
+
 ![](fde.png)
+
 After the propagation calculation is completed, the extracted results can be viewed in the storage path, and the extraction of the results can only be set before the program running.  The mode fields of TE polarization at the input and output ends are shown below, it is clearly observed that the output mode field size is larger than the input.
 
 Silicon waveguides have a strong ability to limit the light field, but it can leak into the environment when the waveguide size is too small. By adding a low refractive index waveguide outside the taper waveguide, the leaked light field is limited and the size of the mode spot is increased. 
@@ -419,3 +425,8 @@ If you need to sweep the wavelength, you can use "wavelength_sweep" to turn on w
 ## References
 
 [1] T. Tsuchizawa et al, “Microphotonics devices based on silicon microfabrication technology”, IEEE J. Select. Topics Quantum Electron. 11, 2005, 232-240
+
+</div>
+
+</font>
+

@@ -3,6 +3,10 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 # Modulator
 
+<font face = "Calibri">
+
+<div class="text-justify">
+
 ##  Introduction
 
 ​We have developed an electro-optic modulator based on carrier-depletion mechanism in silicon to simulate carrier and index distribution in a global structure. The drift and diffusion of carriers result in depletion at the PN junction. Applying a reverse bias voltage at the cathode broadens the depletion region, altering the carrier concentration and modulating the material's refractive index. Gaussian doping was employed in this model. Modulation efficiency, capacitance, and resistance were calculated to analyze the electro-optic characteristics of the modulator.
@@ -998,6 +1002,7 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 | ![](../MOD/plot/MOD0B_RC_local_time/Resistance/0_Resistance_1.0MHz.jpg) | ![](../MOD/plot/MOD0B_RC_local_time/Resistance/0_Resistance_100.0MHz.jpg) | ![](../MOD/plot/MOD0B_RC_local_time/Resistance/0_Resistance_10000.0MHz.jpg) |
 
 
+</div>
 
 
-
+</font>

@@ -4,6 +4,8 @@ sidebar_position: 9
 
 # Run
 
+<font face = "Calibri">
+
 <div class="text-justify">
 
 - **Feature description:**
@@ -28,3 +30,5 @@ Run simulation
 </div>
 
 </div>
+
+</font>

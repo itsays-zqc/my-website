@@ -3,6 +3,10 @@ import {InlineMath, BlockMath} from 'react-katex';
 
 # Polarization Splitter-Rotator
 
+<font face = "Calibri">
+
+<div class="text-justify">
+
 ## Introduction
 <div class="text-justify">
 The large refractive index difference of silicon waveguides on insulators can produce strong birefringence effects, making many optical devices very sensitive to the polarization of light. The polarization beam splitter-rotator(PSR) can separate light of different polarizations and output light of the same polarization, which can effectively solve the problem of polarization sensitivity in silicon waveguides.
@@ -402,6 +406,7 @@ if __name__ == "__main__":
 The asymmetry of the cross-section of a waveguide can lead to hybridization of polarization modes within a certain width range, which is a commonly used method for designing polarization conversion. We can easily obtain the effective refractive index of silicon waveguides with different widths by using the SDK's multiple cyclic FDE. As shown in the figure below, mode hybridization occurs near the waveguide width of 0.65um in the air cladding. As the waveguide width widens, the input TE0 mode light field changes to TM1. Therefore, the width variation range of the adiabatic conical waveguide we designed should include the range of mode hybridization.
 - Scan taper length
 It should be noted that the tapered waveguide must be long enough to convert the input TM mode of the waveguide into TE mode without generating other modes. Here, the length scanning of EME can be used to obtain the optimal mode conversion efficiency of the tapered waveguide length.
+
 ![](PSR_neff.png)
 
 #### 2.2 Coupling waveguide
@@ -427,12 +432,18 @@ Using EME simulation can quickly optimize length, and you can use `propagation_s
 
 
 ## Analysis and Discuss
+
 For the calculation of long-distance waveguide transmission models, EME has significant advantages.
 The mode field distribution of input TE0 and TM0 is shown in the following figure.
+
 ![](PSR_FDE.png)
 
 
 
 ## References
 Dai D, Wu H. Realization of a compact polarization splitter-rotator on silicon[J]. Optics letters, 2016, 41(10): 2346-2349.
+
+</div>
+
+</font>
 

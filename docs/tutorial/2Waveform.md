@@ -8,6 +8,8 @@ sidebar_position: 2
 
 # Waveform 
 
+<font face = "Calibri">
+
 <div class="text-justify">
 
 **Features Description:** Global waveforms settings include two parts, one is standard waveform list, and another is project waveform list. There are three default materials in the standard waveform list, includes Waveform_1550, Waveform_1310 and Visible_Light. The default waveforms in the standard waveform list cannot be edited directly, user can add, or copy one of waveforms from the standard waveform list. User only can delete newly added or copied waveforms in the standard waveform list. The waveforms in the project waveform list inherit form projects built by user, user can add new waveform or delete selected waveforms in the project waveform list.
@@ -37,3 +39,5 @@ sidebar_position: 2
 11. **_Optimize_** for short pulse: Enabled, this is the default setting for FDTD, meaning a very short pulse will be used in most simulations.
 
 </div>
+
+</font>

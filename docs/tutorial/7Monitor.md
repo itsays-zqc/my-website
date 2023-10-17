@@ -4,6 +4,8 @@ sidebar_position: 7
 
 # Monitor
 
+<font face = "Calibri">
+
 ## 1 Reflective index monitor
 
 <div class="text-justify">
@@ -370,3 +372,5 @@ Sampling rate:
 5 )	**Down Sample Time:** This specifies the time for step down sampling.
 
 </div>
+
+</font>

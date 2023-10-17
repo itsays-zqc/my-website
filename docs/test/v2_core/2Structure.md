@@ -1,6 +1,8 @@
 
 # Structure
 
+<font face = "Calibri">
+
 <div class="text-justify">
 
 The code within the "Structure" section is designed to assist you  incorporating the necessary structures during the EO(Electro-Optic) simulation process. 
@@ -831,3 +833,5 @@ st.add_surface_recombination(name="Cathode_Si", property={
 
 
 </div>
+
+</font>

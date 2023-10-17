@@ -2,6 +2,7 @@
 sidebar_position: 8
 ---
 # Check Memory 
+<font face = "Calibri">
 
 <div class="text-justify">
 
@@ -15,3 +16,5 @@ Before running, user can press “ Check Memory Requirements” to check the nee
 </div>
 
 </div>
+
+</font>

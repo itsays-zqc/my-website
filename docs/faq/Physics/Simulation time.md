@@ -1,6 +1,8 @@
 
 # How to set simulation time? 
 
+<font face = "Calibri">
+
 <div class="text-justify">
 When either the maximum simulation time is reached or the energy in the simulation area is less than the convergence threshold, the simulation project will end. In order to obtain convergence results, the simulation time should be set long enough, and it is recommended that the simulation time be no less than 1000 fs.
 </div>
@@ -27,3 +29,5 @@ After each iteration, the program will calculate the current elapsed time elapse
                                
                                step = elapsed_time/(elapsed_time + remain_time)            
 </div>
+
+</font>

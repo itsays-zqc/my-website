@@ -1,5 +1,9 @@
 # Photodetector
 
+<font face = "Calibri">
+
+<div class="text-justify">
+
 This example introduces the modeling and optoelectronic simulation of a vertical Ge-Si photodetector.
 
 
@@ -3039,3 +3043,6 @@ st.add_electrode(name="cathode", property={
 
 <br/>
 
+</div>
+
+</font>

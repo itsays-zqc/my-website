@@ -1,6 +1,6 @@
 # Active Device Simulation
 
-<br/>
+<br/><font face = "Calibri">
 
 ## 1. How to perform an active device simulation
 
@@ -965,3 +965,4 @@ result_afde.extract(data="loss", export_csv=True, show=False, savepath=savepath)
 
 <br/>
 
+</font>

@@ -1,5 +1,7 @@
 # Preview
 
+<font face = "Calibri">
+
 <div class="text-justify">
 
 In this section, we currently offer the capability to provide an advanced preview of structural models, refractive index and doping profile.
@@ -183,3 +185,5 @@ simu["preview_oedevice"].run_doping(name="x_in", property={
 |   geometry.z_max    |     -    |  float   |  The z-coordinate of the top position of the thickness of the doping region.     |
 
 </div>
+
+</font>

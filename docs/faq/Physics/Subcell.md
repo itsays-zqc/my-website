@@ -2,6 +2,8 @@
 
 ## Staircase approximation
 
+<font face = "Calibri">
+
 <div class="text-justify">
 The Staircase approximation simply uses the mode field of discrete points to represent the mode field of the entire element, which has high computational efficiency. When the cell undergoes discontinuous changes, it can cause non physical reflections at the interface of the cell. The Staircase approximation method is applicable to staircase waveguides, mosaic type photonic devices, and square wave modulated waveguide gratings.
 
@@ -17,3 +19,5 @@ The Subcell approximation calculates the mode at the interface of each cell as a
 ![](./img/subcell.png)
 
 </div>
+
+</font>

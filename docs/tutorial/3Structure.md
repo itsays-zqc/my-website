@@ -2,11 +2,9 @@
 sidebar_position: 3
 ---
 
-
-
-
-
 # Structure
+
+<font face = "Calibri">
 
 <div class="text-justify">
 
@@ -129,3 +127,5 @@ Click “Structures” button and select one structure from drop-down menu
 | :------------------------------------------------------------: |
 
 </div>
+
+</font>

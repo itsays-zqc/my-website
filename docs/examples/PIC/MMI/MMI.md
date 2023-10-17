@@ -3,6 +3,8 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 # 1X2 MMI
 
+<font face = "Calibri">
+
 ## Introduction
 
 <div class="text-justify">
@@ -621,3 +623,5 @@ To view a function's definition and supported parameters or a parameter dictiona
 
 
 </div>
+
+</font>

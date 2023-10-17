@@ -3,6 +3,8 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 # Directional Coupler
 
+<font face = "Calibri">
+
 ## Introduction
 
 <div class="text-justify">
@@ -977,4 +979,10 @@ To view a function's definition and supported parameters or a parameter dictiona
 
 ## References
 
+<div class="text-justify">
+
 Chrostowski, L., & Hochberg, M. (2015). Silicon Photonics Design: From Devices to Systems. Cambridge: Cambridge University Press. doi:10.1017/CBO9781316084168
+
+</div>
+
+</font>

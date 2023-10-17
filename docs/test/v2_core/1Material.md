@@ -2,6 +2,8 @@
 
 # Material
 
+<font face = "Calibri">
+
 <div class="text-justify">
 
 In this section, the code instructions aim to assist you in adding the required simulation materials into your simulation project. We can use this module with the code `mt = pj.Material() `. 
@@ -227,3 +229,4 @@ mt.add_nondispersion(name="SiO2", data=[(1.444, 0)], order=1)
 
 </div>
 
+</font>

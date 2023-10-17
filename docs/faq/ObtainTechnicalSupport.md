@@ -1,4 +1,9 @@
+
+
+
 # Obtain Technical Support
+
+<font face = "Calibri">
 
 When you need technical support or have inquiries related to using Max-Optics, you can follow these steps to obtain support and write a request for assistance:
 
@@ -31,4 +36,4 @@ Contact Information:
 - Email: sales@max-optics.com
 
 
-
+</font>

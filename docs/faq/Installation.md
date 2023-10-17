@@ -6,6 +6,8 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 ---
 
+<font face = "Calibri">
+
 ### How to Install Max-Optics GUI Software? 
 
 Max-Optics Studio Local Passive Software Installation
@@ -407,3 +409,5 @@ If you encounter any issues during usage, please contact your company's administ
 
 - Phone: 150 6666 1688
 - Email: sales@max-optics.com
+
+</font>

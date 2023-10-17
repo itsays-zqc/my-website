@@ -3,6 +3,8 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 # About the basic concept
 
+<font face = "Calibri">
+
 ## Mode
 
 <div class="text-justify">
@@ -51,3 +53,5 @@ When power transmission occurs within or between waveguides, it is called coupli
 * the phase matching condition.
 
 </div>
+
+</font>

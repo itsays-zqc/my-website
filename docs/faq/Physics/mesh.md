@@ -5,7 +5,7 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 ## 1 Mesh type
 
-
+<font face = "Calibri">
 
 | Solver |FDE|EME|FDTD|description|
 |--------|---|---|----|-----------|
@@ -79,3 +79,5 @@ The mesh factor cannot be too small. If the mesh factor is 1, the grid will be e
 ![](./img/mesh_factor.png)
 
 </div>
+
+</font>

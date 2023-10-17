@@ -2,6 +2,8 @@
 
 ## FDE 
 
+<font face = "Calibri">
+
 <div class="text-justify">
 The Finite Difference Eigenmode (FDE ) is a numerical solution algorithm that discretizes the Maxwell equations and solves the constructed feature matrix. The solution process for FDE is as follows.
 
@@ -46,3 +48,5 @@ Using FDTD to calculate light field transmission, the electric field distributio
 ![](./img/FDTD.png)
 
 </div>
+
+</font>

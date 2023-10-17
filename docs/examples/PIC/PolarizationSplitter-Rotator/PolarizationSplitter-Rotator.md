@@ -434,5 +434,5 @@ The mode field distribution of input TE0 and TM0 is shown in the following figur
 
 
 ## References
-
+Dai D, Wu H. Realization of a compact polarization splitter-rotator on silicon[J]. Optics letters, 2016, 41(10): 2346-2349.
 

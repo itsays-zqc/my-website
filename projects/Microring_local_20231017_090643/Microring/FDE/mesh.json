@@ -1,0 +1,102 @@
+{
+    "dimension": 1,
+    "mesh_type": 4,
+    "uniform": true,
+    "grading": false,
+    "background_material_id": 0,
+    "grading_factor": 1.2,
+    "cell_per_wavelength": 6,
+    "min_wavelength": 1.55,
+    "region": {
+        "x": 0,
+        "x_span": 0.00001,
+        "y": -3.05,
+        "y_span": 3,
+        "z": 0,
+        "z_span": 3,
+        "dx": 0.00001,
+        "dy": 0.01,
+        "dz": 0.01
+    },
+    "solver_type": "FDE",
+    "pml": {
+        "x_min": {
+            "type": 1,
+            "condition": {
+                "pml": {
+                    "layer_number": 0,
+                    "pml_kappa": 0,
+                    "pml_sigma": 0,
+                    "pml_polynomial": 0
+                }
+            }
+        },
+        "x_max": {
+            "type": 1,
+            "condition": {
+                "pml": {
+                    "layer_number": 0,
+                    "pml_kappa": 0,
+                    "pml_sigma": 0,
+                    "pml_polynomial": 0
+                }
+            }
+        },
+        "y_min": {
+            "type": 1,
+            "condition": {
+                "pml": {
+                    "layer_number": 0,
+                    "pml_kappa": 0,
+                    "pml_sigma": 0,
+                    "pml_polynomial": 0
+                }
+            }
+        },
+        "y_max": {
+            "type": 1,
+            "condition": {
+                "pml": {
+                    "layer_number": 0,
+                    "pml_kappa": 0,
+                    "pml_sigma": 0,
+                    "pml_polynomial": 0
+                }
+            }
+        },
+        "z_min": {
+            "type": 1,
+            "condition": {
+                "pml": {
+                    "layer_number": 0,
+                    "pml_kappa": 0,
+                    "pml_sigma": 0,
+                    "pml_polynomial": 0
+                }
+            }
+        },
+        "z_max": {
+            "type": 1,
+            "condition": {
+                "pml": {
+                    "layer_number": 0,
+                    "pml_kappa": 0,
+                    "pml_sigma": 0,
+                    "pml_polynomial": 0
+                }
+            }
+        }
+    },
+    "sub_meshes": [
+        {
+            "x": 0,
+            "x_span": 0,
+            "y": -3.05,
+            "y_span": 3,
+            "z": 0,
+            "z_span": 3,
+            "name": "_forbd"
+        }
+    ],
+    "output_type": 2
+}

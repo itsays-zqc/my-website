@@ -11,19 +11,18 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 <font face = "Calibri">
 
-**Features Description:** 
-
 <div class="text-justify">
 
-The Global Material Database allows for the definition of complex materials using experimental data or parameterized models. The Material Database stores the material data to be used in the simulation. It also provides an interface to change material properties like color, mesh order, and fit parameters. User could import materials from “Standard” database to “User” and “Project” material database, and also from “User” material database to “Project” material database.
+**Features Description:** The Global Material Database allows for the definition of complex materials using experimental data or parameterized models. The Material Database stores the material data to be used in the simulation. It also provides an interface to change material properties like color, mesh order, and fit parameters. User could import materials from “Standard” database to “User” and “Project” material database, and also from “User” material database to “Project” material database.
 
 </div>
 
-**Standard & User & Project Material Database:**
+
 
 <div class="text-justify">
 
-Material database includes standard, user, and project material database.
+**Standard & User & Project Material Database:**Material database includes standard, user, and project material database.
+
 </div>
 
 ## 1 Standard Material Database

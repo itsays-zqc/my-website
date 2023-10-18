@@ -49,8 +49,7 @@ Using the `FDE module`, we will calculate symmetric and antisymmetric modes in a
 
 <div class="text-justify">
 
-
-Once you have installed and configured the environment, import the python code and the GDS layout.<br/>The example library and related model code are usually located in the directory : `.venv_maxoptics/site-packages/maxoptics_sdk/examples/func_demo`.<br/>The GDS file is generally imported into the path : `.venv_maxoptics/site-packages/maxoptics_sdk/examples/examples_gds`
+Once you have installed and configured the environment, import the python code and the GDS layout. The example library and related model code are usually located in the directory :`.venv_maxoptics/site-packages/maxoptics_sdk/examples/func_demo`. The GDS file is generally imported into the path :`.venv_maxoptics/site-packages/maxoptics_sdk/examples/examples_gds`
 
 </div>
 

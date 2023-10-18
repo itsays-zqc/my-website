@@ -115,13 +115,13 @@ Click “Structures” button and select one structure from drop-down menu
 | :------------------------------------------------------------: |
 
 
-**__**Transform**: Allow user to operate the object via the four features, include translate, scale, rotate and mirror.
+**Transform**: Allow user to operate the object via the four features, include translate, scale, rotate and mirror.
 
 |&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;![](../../static/img/tutorial/structures/tranform.png)&ensp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
 | :------------------------------------------------------------: |
 
 
-+	Select “Edit Properties” tool in the shortcut bar.
++ Select “Edit Properties” tool in the shortcut bar.
 
 |&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;![](../../static/img/tutorial/structures/editProperties.png)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
 | :------------------------------------------------------------: |

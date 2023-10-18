@@ -178,7 +178,7 @@ mt.add_lib(name="Air", data=mo.Material.Air, order=2)
 
 The `add_lib` contains three parameters `name`,`data` and `order`. <br/>The `data` calls up the property of simulation materials in the MO material library. <br/>The `Order` parameter determines the mesh order for the material during the simulation. <br/>As the same, we also support users to customize the material with `add_nondispersion`function. 
 
-Detailed explaination about material : https://itsays-zqc.github.io/my-website/docs/test/v2_core/1Material
+Detailed explaination about material :  <a href='https://itsays-zqc.github.io/my-website/docs/test/v2_core/1Material'>Material</a>
 
 #### 2.6 Create Model
 
@@ -208,7 +208,7 @@ st.add_geometry(name="psr", type="gds_file",
 
 We can import the MMI layout from the GDS file.<br/>The `name` parameter defines the structure name.<br/>The `type` parameter specifies the structure type.<br/>The `path`, `cell_name`, and `layer_name` parameters point to the GDS file and specify the relevant layers and cell names used in the layout.<br/>The `geometry` parameter sets the structure's coordinates. <br/>The `material` parameter specifies the material properties <br/>The `mesh_order` parameter sets the mesh order for the simulation. 
 
-Detailed explaination about structure : https://itsays-zqc.github.io/my-website/docs/test/v2_core/2Structure
+Detailed explaination about structure : <a href='https://itsays-zqc.github.io/my-website/docs/test/v2_core/2Structure'>Structure</a>
 
 </div>
 
@@ -231,7 +231,7 @@ st.OBoundary(property={"geometry": {"x": 30.75, "x_span": 55.5, "y": 0, "y_span"
 # endregion
 ```
 
-Detailed explaination about boundary : https://itsays-zqc.github.io/my-website/docs/test/v2_core/3Boundary
+Detailed explaination about boundary : <a href='https://itsays-zqc.github.io/my-website/docs/test/v2_core/3Boundary'>Boundary</a>
 
 #### 2.8 Add Sub-mesh
 
@@ -257,7 +257,7 @@ st.add_mesh(
 
 In this code segment, we use the `add_mesh` function to add a sub-mesh in region 5.<br/>The `name` parameter defines the name of the mesh.<br/>The `general` parameter specifies the grid accuracy in the xyz directions .<br/>The `geometry` parameter sets the coordinates of the sub-mesh.
 
-Detailed explaination about mesh : https://itsays-zqc.github.io/my-website/docs/test/v2_core/3Boundary#32-mesh
+Detailed explaination about mesh : <a href='https://itsays-zqc.github.io/my-website/docs/test/v2_core/3Boundary#32-mesh'>Mesh</a>
 
 </div>
 
@@ -308,7 +308,7 @@ The `mode_index` is used to decide the source mode in the 'user_select' conditio
 The `search` parameter calculates the mode based on the maximum refractive index or user defined refractive index in the structure. Selections are ['near_n', 'max_index']. Selections are ['near_n', 'max_index'].<br/>
 The `number_of_trial_modes` parameter determines the calculated number of modes around the refractive index.<br/>
 
-Detailed explaination about port : https://itsays-zqc.github.io/my-website/docs/test/v2_core/4Source#44-eme-port
+Detailed explaination about port : <a href='https://itsays-zqc.github.io/my-website/docs/test/v2_core/4Source#44-eme-port'>Port</a>
 
 
 </div>
@@ -334,7 +334,7 @@ The `monitor_type` parameter selects the profile monitor type and the orientatio
 The `x_resolution` parameter decides the resolution of output simulation results in profile monitor.<br/>
 
 
-Detailed explaination about port : https://itsays-zqc.github.io/my-website/docs/test/v2_core/4Source#44-eme-port
+Detailed explaination about monitor : <a href='https://itsays-zqc.github.io/my-website/docs/test/v2_core/5Mornitor'>Monitor</a>
 
 
 
@@ -375,7 +375,7 @@ simu.add(name=simu_name, type="EME",
 
 <div class="text-justify">
 
-In this code segment, we can run the wavelength sweep and the propagation sweep. The detailed examples refer to https://itsays-zqc.github.io/my-website/docs/test/v2_core/6Simulation#623-eme-propagation-sweep
+In this code segment, we can run the wavelength sweep and the propagation sweep. The detailed examples refer to <a href='https://itsays-zqc.github.io/my-website/docs/test/v2_core/6Simulation#623-eme-propagation-sweep'>EME Propagation Sweep</a>
 
 The `name` parameter defines the name of the simulation module.<br/>The `general` parameter specifies the general property of the simulation module within the structure, such as the geometry of cell, wavelength and so on.<br/>
 The `energy_conservation` parameter specifies the type of energy conservation when calculating the S matrix. Selections are ['none', 'make_passive'].<br/>
@@ -384,8 +384,7 @@ The `number_of_modes` parameter specifies the general property of the simulation
 The `sc` parameter sets the subcell method in EME simulation. Selections are ['none', 'sub_cell', 'sc'].<br/>
 The `eme_propagate` parameter determines whether to calculate the propogation fields and the s matrix.
 
-Detailed explaination about EME simulation : https://itsays-zqc.github.io/my-website/docs/test/v2_core/6Simulation#62-eme
-
+Detailed explaination about EME simulation : <a href='https://itsays-zqc.github.io/my-website/docs/test/v2_core/6Simulation#62-eme'>EME Simulation</a>
 </div>
 
 #### 2.12 Structure Show
@@ -409,7 +408,7 @@ In this code segment, we use the `structure_show` function to form a picture.<br
 The `fig_type` specifies the type of figure. It supports the following list selection`["png", "svg"]`.<br/>
 The `show` , which is a switch that controls whether the picture is generated or not. If you have already installed the GUI locally, you can automatically pop up the 3D structural model within the GUI using `show_with="local_gui"`. Additionally, you can also use `show_with="matplotlib"` to  view the structure.
 
-Detailed explaination about EME simulation : https://itsays-zqc.github.io/my-website/docs/test/v2_core/7Preview#72-structure-show-and-show-3d
+Detailed explaination about structure show : <a href='https://itsays-zqc.github.io/my-website/docs/test/v2_core/7Preview#72-structure-show-and-show-3d'>Structure Show</a>
 
 </div>
 
@@ -453,7 +452,7 @@ if run_options.calculate_modes:
 |orientation | 0 | float | set the bending direction of the waveguide|
 |location |"simulation_center"|string| set the position of the bent waveguide|
 
-Detailed explaination about modes calculation : https://itsays-zqc.github.io/my-website/docs/test/v2_core/6Simulation#62-eme
+
 
 </div>
 
@@ -517,7 +516,6 @@ if run_options.extract:
 <div class="text-justify">
 
 The `extract` function allows you to extract specific simulation results and store them for further analysis.<br/>
-
 The `data` parameter is to decide what type/field data will be extracted.<br/>
 The `savepath` parameter specifies the save path of picture.<br/>
 The `monitor_name` parameter specifies the name of monitor which provides the data needed.<br/>
@@ -525,7 +523,7 @@ The `attribute` parameter specifies which attribute will extracted.<br/>
 The `plot_x` parameter specifies the data of x axis.<br/>
 The `export_csv` parameter is to decide whether to export a csv. Default as False.<br/>
 
-Detailed explaination about data extraction : https://itsays-zqc.github.io/my-website/docs/test/v2_core/8Extract#811-calculate-mode-result
+Detailed explaination about data extraction : <a href='https://itsays-zqc.github.io/my-website/docs/test/v2_core/8Extract/#82-eme'>Data Extraction</a>
 
 
 </div>
@@ -619,7 +617,10 @@ The transmission result is shown in the left picture below which is calculted fo
 
 <div class="text-justify">
 
-To view a function's definition and supported parameters or a parameter dictionary, you can right-click on its name and select "Go to Definition"  or press "Ctrl" while left-clicking on its name to view its definition, showing the available parameters and their descriptions.  And you can also to find the detailed explainnation : https://itsays-zqc.github.io/my-website/docs/category/max-optics-sdk
+To view a function's definition and supported parameters or a parameter dictionary, you can right-click on its name and select "Go to Definition"  or press "Ctrl" while left-clicking on its name to view its definition, showing the available parameters and their descriptions.  And you can also to find the detailed explainnation : <a href='https://itsays-zqc.github.io/my-website/docs/category/max-optics-sdk'>SDK Code</a>
+
+
+
 
 
 </div>

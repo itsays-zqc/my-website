@@ -162,7 +162,8 @@ mt.add_lib(name='Air', data=mo.Material.Air, order=2)
 
 The `add_lib` contains three parameters `name`,`data` and `order`. <br/>The `data` calls up the property of simulation materials in the MO material library. <br/>The `Order` parameter determines the mesh order for the material during the simulation. <br/>As the same, we also support users to customize the material with `add_nondispersion`function. 
 
-Detailed explaination about material : https://itsays-zqc.github.io/my-website/docs/test/v2_core/1Material
+Detailed explaination about material : <a href='https://itsays-zqc.github.io/my-website/docs/test/v2_core/1Material'>Material</a>
+
 
 #### 2.6 Waveform
 
@@ -180,7 +181,7 @@ wv_struct = wv[waveform_name]
 # endregion
 ```
 
-Detailed explaination about waveform: https://itsays-zqc.github.io/my-website/docs/test/v2_core/4Source#41-waveform
+Detailed explaination about waveform: <a href='https://itsays-zqc.github.io/my-website/docs/test/v2_core/4Source#41-waveform'>Waveform</a>
 
 #### 2.7 Create Model
 
@@ -234,7 +235,7 @@ st.add_geometry(name='wg_down', type='Rectangle',
 
 We import the core of Y branch from the GDS file when other part is created by MO `add_geometry` function.<br/>The `name` parameter defines the structure name.<br/>The `type` parameter specifies the structure type.<br/>The `path`, `cell_name`, and `layer_name` parameters point to the GDS file and specify the relevant layers and cell names used in the layout.<br/>The `geometry` parameter sets the structure's coordinates. <br/>The `material` parameter specifies the material properties <br/>The `mesh_order` parameter sets the mesh order for the simulation. 
 
-Detailed explaination about structure : https://itsays-zqc.github.io/my-website/docs/test/v2_core/2Structure
+Detailed explaination about structure : <a href='https://itsays-zqc.github.io/my-website/docs/test/v2_core/2Structure'>Structure</a>
 
 </div>
 
@@ -257,7 +258,7 @@ st.OBoundary(property={'geometry': {'x': 2, 'x_span': 7, 'y': 0, 'y_span': 3, 'z
 # endregion
 ```
 
-Detailed explaination about boundary : https://itsays-zqc.github.io/my-website/docs/test/v2_core/3Boundary
+Detailed explaination about boundary : <a href='https://itsays-zqc.github.io/my-website/docs/test/v2_core/3Boundary'>Boundary</a>
 
 #### 2.9 Add Sub-mesh
 
@@ -281,7 +282,7 @@ st.add_mesh(
 
 In this code segment, we use the `add_mesh` function to add a sub-mesh in region 6.<br/>The `name` parameter defines the name of the mesh.<br/>The `general` parameter specifies the grid accuracy in the xyz directions .<br/>The `geometry` parameter sets the coordinates of the sub-mesh.
 
-Detailed explaination about mesh : https://itsays-zqc.github.io/my-website/docs/test/v2_core/3Boundary#32-mesh
+Detailed explaination about mesh : <a href='https://itsays-zqc.github.io/my-website/docs/test/v2_core/3Boundary#32-mesh'>Mesh</a>
 
 </div>
 
@@ -308,7 +309,7 @@ src.add(name='source', type='mode_source', axis='x_forward',
 
 The `Source` function is utilized to retrieve the source manager for the current project.<br/>The `type` parameter specifies the type of the source and is formatted as either `["mode_source"] or ["gaussian_source"]`.<br/>The `name` parameter represents the name assigned to the source.<br/>The `axis` parameter defines the axis of the source.<br/>The `property` parameter allows for defining specific properties associated with the source.
 
-Detailed explaination about mode source : https://itsays-zqc.github.io/my-website/docs/test/v2_core/4Source#42-mode-source
+Detailed explaination about mode source : <a href='https://itsays-zqc.github.io/my-website/docs/test/v2_core/4Source#42-mode-source'>Mode Source</a>
 
 </div>
 
@@ -354,7 +355,7 @@ For the global monitor, the `Monitor` function is utilized to retrieve the monit
 
 The power monitor is a configuration setting that allows users to specify various simulation parameters.<br/>The `name` parameter assigns a name to the power monitor.<br/>The `type` parameter defines the type of power monitor.<br/>The `general` parameter pertains to settings related to the frequency domain and frequency-dependent behaviors of the simulation.<br/>The `geometry` parameter is used to define the geometric characteristics of the simulated structure.<br/>The `mode_expansion` parameter involves relevant settings for mode expansion simulations. Users can customize the simulation settings by utilizing these input parameters to achieve accurate and comprehensive results based on their specific simulation requirements.
 
-Detailed explaination about monitors : https://itsays-zqc.github.io/my-website/docs/test/v2_core/5Mornitor
+Detailed explaination about monitors :<a href='https://itsays-zqc.github.io/my-website/docs/test/v2_core/5Mornitor'>Monitor</a>
 
 
 </div>
@@ -387,7 +388,7 @@ simu.add(name=simu_name, type='FDTD',
 
 The `Simulation` manager is critical for setting up and running simulations in the current project.<br/>The `name` parameter allows users to assign a unique name to the simulation for identification purposes.<br/>The `type` parameter defines the type of the simulation.<br/>The `simulation_time` parameter specifies the duration of the simulation.<br/>The `mesh_settings` parameter enables users to configure various settings related to the simulation mesh. The `mesh_accuracy` parameter controls the precision of the mesh used in the simulation.<br/>The `cells_per_wavelength` parameter determines the wavelength precision used in the simulation.<br/>The `minimum_mesh_step_settings` parameter sets the minimum mesh step, allowing users to define the smallest allowable size for mesh elements.<br/>Users can tailor the simulation setup to meet their requirements by utilizing these input parameters, enabling accurate and efficient electromagnetic simulations of complex optical structures.
 
-Detailed explaination about FDTD simulation : https://itsays-zqc.github.io/my-website/docs/test/v2_core/6Simulation#63-fdtd
+Detailed explaination about FDTD simulation : <a href='https://itsays-zqc.github.io/my-website/docs/test/v2_core/6Simulation#63-fdtd'>FDTD simulation</a>
 
 </div>
 
@@ -411,7 +412,8 @@ In this code segment, we use the `structure_show` function to form a picture.<br
 The `fig_type` specifies the type of figure. It supports the following list selection`["png", "svg"]`.<br/>
 The `show` , which is a switch that controls whether the picture is generated or not. If you have already installed the GUI locally, you can automatically pop up the 3D structural model within the GUI using `show_with="local_gui"`. Additionally, you can also use `show_with="matplotlib"` to  view the structure.
 
-Detailed explaination about EME simulation : https://itsays-zqc.github.io/my-website/docs/test/v2_core/7Preview#72-structure-show-and-show-3d
+Detailed explaination about structure show: <a href='https://itsays-zqc.github.io/my-website/docs/test/v2_core/7Preview#72-structure-show-and-show-3d'>Structure Show</a>
+
 
 
 #### 2.14 Run
@@ -476,7 +478,7 @@ The `attribute` parameter specifies which attribute will extracted.<br/>
 The `plot_x` parameter specifies the data of x axis.<br/>
 The `export_csv` parameter is to decide whether to export a csv. Default as False.<br/>
 
-Detailed explaination about data extraction : https://itsays-zqc.github.io/my-website/docs/test/v2_core/8Extract#811-calculate-mode-result
+Detailed explaination about data extraction : <a href='https://itsays-zqc.github.io/my-website/docs/test/v2_core/8Extract/#83-fdtd'>Data Extraction</a>
 
 </div>
 
@@ -535,7 +537,7 @@ Above all,the insert loss of this Y branch device is about 0.6 dB at 1.55 microm
 
 <div class="text-justify">
 
-To view a function's definition and supported parameters or a parameter dictionary, you can right-click on its name and select "Go to Definition"  or press "Ctrl" while left-clicking on its name to view its definition, showing the available parameters and their descriptions.  And you can also to find the detailed explaination : https://itsays-zqc.github.io/my-website/docs/category/max-optics-sdk
+To view a function's definition and supported parameters or a parameter dictionary, you can right-click on its name and select "Go to Definition"  or press "Ctrl" while left-clicking on its name to view its definition, showing the available parameters and their descriptions.  And you can also to find the detailed explaination : <a href='https://itsays-zqc.github.io/my-website/docs/category/max-optics-sdk'>SDK Code</a>
 
 
 </div>

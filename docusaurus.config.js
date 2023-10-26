@@ -146,7 +146,7 @@ const config = {
             type: 'docSidebar',
             sidebarId: 'tutorialSidebar',
             position: 'left',
-            label: 'Tutorials',
+            label: 'Max-Optics GUI',
           },
           // {
           //   type: 'docSidebar',
@@ -154,6 +154,12 @@ const config = {
           //   position: 'left',
           //   label: 'How do I',
           // },
+          {
+            type: 'docSidebar',
+            sidebarId: 'testSidebar',
+            position: 'left',
+            label: 'Max-Optics SDK',
+          },
           {
             type: 'docSidebar',
             sidebarId: 'examplesSidebar',
@@ -168,12 +174,7 @@ const config = {
           //   label: 'sdk',
           // },
 
-          {
-            type: 'docSidebar',
-            sidebarId: 'testSidebar',
-            position: 'left',
-            label: 'Max-Optics SDK',
-          },
+
 
           {
             href: 'https://max-optics.com/?lang=zh-cn',

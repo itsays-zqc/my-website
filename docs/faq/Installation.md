@@ -405,9 +405,65 @@ After successful validation, two windows will pop up. Do not close these windows
 
 Group authorization services support a specific number of users. When the user limit is reached, it will prompt: "The number of activated machines has reached the limit, and the authorization code cannot be used on more machines." For more common issues and error messages, please visit the following URL: https://bit.bitanswer.cn/doc/?t=welcome
 
+## How to resolve the issue when encountered the common error codes in MO Passive?
+
+#### 1.Error Code 264
+
+**Possible Reasons:**
+
+1) Incorrect IP or port entered in the Group Service Settings Tool.
+
+2) VPN enabled on the client.
+
+3) Network transmission error.
+
+**Solution:**
+
+1) Verify that the IP and port are entered correctly.
+
+2) Disable VPN.
+
+3) Ensure a stable network connection.
+
+#### 2.Error Code 531
+
+**Possible Reasons:**
+
+1) Authorization code blacklisted due to frequent server connections.
+
+2) Group-authorized client access rules prohibiting access.
+
+**Solution:**
+
+1) Access the Bit platform, enter the authorization code, click on "Query," then click on the authorization code to access detailed information, and remove it from the blacklist.
+
+2) Access the Group Authorization Management Center and remove restrictions in the corresponding product permissions.
+
+#### 3.Error Code 1283
+
+**Possible Reasons:**
+
+1) Specified feature item not found.
+
+2) Authorization code not upgraded.
+
+**Solution:**
+
+1) Developers should log in to the control panel, check the relevant feature items in the authorization code, and save the changes.
+
+2) Log in to the Group Authorization Management Center to upgrade the authorization code.
+
 If you encounter any issues during usage, please contact your company's administrator or Max-Optics technical support personnel:
 
 - Phone: 150 6666 1688
 - Email: sales@max-optics.com
+
+
+
+
+
+
+
+
 
 </font>

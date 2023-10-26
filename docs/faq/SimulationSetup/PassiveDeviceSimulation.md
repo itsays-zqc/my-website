@@ -47,7 +47,7 @@ You can add a dispersive material using `add_dispersion`, as shown in the follow
 
 ```python
 mt = pj.Material()
-mt.add_nondispersion(name="SiO2",data=[(1.55e-06, 1.444, 0), (1.30e-06, 1.81, 0.227)], order=1)
+mt.add_dispersion(name="SiO2",data=[(1.55e-06, 1.444, 0), (1.30e-06, 1.81, 0.227)], order=1)
 ```
 
 ### 2.3 How to add an anisotropic material?

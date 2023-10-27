@@ -52,7 +52,7 @@ const FeatureList = [
   },
   {
     // title: 'Tutorials',
-    title:<a href='/my-website/docs/tutorial/1Material'><font color='black'>Tutorials</font></a>,
+    title:<a href='/my-website/docs/tutorial/1Material'><font color='black'>Max-Optics GUI</font></a>,
 
     Svg: require('@site/static/img/hat.svg').default,
     description: (

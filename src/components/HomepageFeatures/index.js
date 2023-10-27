@@ -94,7 +94,7 @@ const FeatureList = [
   
   {
     // title: 'Example Library',
-    title:<a href='/my-website/docs/category/pic'><font color='black'>Example Library</font></a>,
+    title:<a href='/my-website/docs/category/passive-devices'><font color='black'>Example Library</font></a>,
 
     to:'/docs/examples/Grating/',
     Svg: require('@site/static/img/document.svg').default,
@@ -102,7 +102,7 @@ const FeatureList = [
       <>
        {/* <hr /> */}
         <div style={{ textAlign: 'left' }}>
-          <a href="/my-website/docs/category/pic">1.PIC</a>
+          <a href="/my-website/docs/category/passive-devices">1.Passive Devices</a>
         </div>
         <hr style={{ margin: '0.25rem 0' }}/>
   

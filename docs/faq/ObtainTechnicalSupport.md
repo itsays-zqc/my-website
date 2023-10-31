@@ -20,20 +20,12 @@ If applicable, attach relevant screenshots or log files to supplement the proble
 If you have already attempted some solutions without success, mention them in your request. Provide details of the steps you have taken and the outcomes. This will help the support team understand the efforts you have already made and avoid repetition.
 
 ## Others: 
-If you have other suggestions for designing software features or optimizing physical modules, we look forward to talking to you.
-# User Feedback
-
-Please enter your question and feedback below:
-
-<textarea rows="20" cols="100" placeholder="Enter your question and feedback here"></textarea>
-
----
-
-Thank you for your feedback! We will address your question as soon as possible. If you need further assistance, please contact our customer support team.
+If you have other suggestions for designing software features or optimizing physical modules, we look forward to talking to you. Please contact our customer support team.
 
 Contact Information:
 - Phone: 150 6666 1688
-- Email: sales@max-optics.com
+- E-mail: sales@max-optics.com
+- E-mail：support@max-optics.com
 
 
 </font>

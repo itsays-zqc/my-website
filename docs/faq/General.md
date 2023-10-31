@@ -167,6 +167,7 @@ Our software support team consists of experienced engineers dedicated to softwar
 Feel free to reach out to us via phone or email:：
 Phone：150 6666 1688
 E-mail：sales@max-optics.com
+E-mail：support@max-optics.com
 
 
 ## How to access technical support services?
@@ -188,19 +189,12 @@ If you have already attempted some solutions without success, mention them in yo
 Be Polite and Clear: 
 Maintain a polite and clear tone when writing your support request. Use professional language and appropriate etiquette to express your issue or requirement and express gratitude for the support team's assistance.
 
-User Feedback：
-
-Please enter your question and feedback below:
-
-<textarea rows="20" cols="100" placeholder="Enter your question and feedback here"></textarea>
-
----
-
-Thank you for your feedback! We will address your question as soon as possible. If you need further assistance, please contact our customer support team.
+Please contact our customer support team.
 
 Contact Information:
 - Phone: 150 6666 1688
-- Email: sales@max-optics.com
+- E-mail: sales@max-optics.com
+- E-mail：support@max-optics.com
 
 ## How to set up licensing for remote work or home office use?
 

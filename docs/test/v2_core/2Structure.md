@@ -1,3 +1,5 @@
+import 'katex/dist/katex.min.css';
+import { InlineMath, BlockMath } from 'react-katex';
 
 # Structure
 
@@ -415,7 +417,7 @@ st.add_geometry(name="pyramid", type="Pyramid", property={
 
 ### 2.1.9 Analytical waveguide 
 
-Integrate an analytical waveguide structure into the project by implementing the code `type='AnalyticalWaveguide'`.
+Integrate an analytical waveguide structure into the project by implementing the code `type='AnalyticalWaveguide'`.  we adopt the following codes to model an analytical waveguide with a function of side wall <InlineMath math="y=A*(L/2-x)^m+1.5" /> ,where A and L are user defined parameters. The str() is used for sweeping the structure, and f'{} is used to call the relative parameters:
 
 **Example:**
 

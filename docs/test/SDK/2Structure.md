@@ -109,7 +109,7 @@ st.add_geometry(name="gds_file", type="gds_file", property={
 |   geometry.z_min    |     -    |  float   |   The z-coordinate of the bottom position of the height of structures in the imported GDS file.      |
 |   geometry.z_max    |     -    |  float   |   The z-coordinate of the top position of the height of structures in the imported GDS file.    |
 |  material.material  |     -    | material |     Material of the geometric structure.         |
-| material.mesh_order |    -     | integer  | The order of material coverage when creating a geometric structure.Restrained by condition: >=0. |
+| material.mesh_order |    -     | integer  | The order of material coverage when creating a geometric structure.  Restrained by condition: >=0. |
 |    general.path     |    -     |  string  |    The path of the imported GDS file.   |
 |  general.cell_name  |     -    |  string  |  The cell name of imported GDS file.  |
 | general.layer_name  |     -    |   list   |   The layer name of imported GDS file.     |
@@ -590,6 +590,17 @@ st.add_geometry(name="triangle", type="Triangle", property={
 |  geometry.rotate_z  |    0    |  float   |  The angle around the z-axis in the rotation operation.        |
 |  material.material  |     -    | material | Material of the geometric structure. |
 | material.mesh_order |     -    | integer  | The order of material coverage when creating a geometric structure. Restrained by condition: >=0. |
+
+### 2.1.14 Mesh order
+
+When the mesh order of two structures are same, the structure which is established later has a higher priority.
+
+When the mesh order of two structures are different, the large numerical value of mesh order has greater priority than the small one. That is, The large mesh order of structure is able to cover small mesh order of structure.
+For example, the mesh order=2 structure will cover the mesh order=1.
+
+![](../../../static/img/SDK/structure/mesh_order.png)
+
+The advantage is that increasing the value of mesh order allows user to make new nested structures in the complex model.
 
 ## 2.2 Add doping
 

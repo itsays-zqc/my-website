@@ -153,6 +153,17 @@ st.add_geometry(name="box", type="gds_file",
 
 During the process of modeling by importing GDS files, it's important to pay attention to the setting of the material's `mesh_order` to ensure that the overlapping structures are covered in the correct order.
 
+### 3.9 How to set the mesh order?
+
+The mesh order decides the coverage when creating a geometric structure.
+
+When the mesh order of two structures are same, the structure which is established later has a higher priority. When the mesh order of two structures are different, the large numerical value of mesh order has greater priority than the small one. That is, The large mesh order of structure is able to cover small mesh order of structure.
+For example, the mesh order=2 structure will cover the mesh order=1.
+
+![](../../../static/img/SDK/structure/mesh_order.png)
+
+The advantage is that increasing the value of mesh order allows user to make new nested structures in the complex model.
+
 ## 4. How to set up FDE simulation in SDK? 
 
 ### 4.1 How to configure various parameters for FDE simulation?

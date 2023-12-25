@@ -593,9 +593,9 @@ st.add_geometry(name="triangle", type="Triangle", property={
 
 ### 2.1.14 Mesh order
 
-When the mesh order of two structures are same, the structure which is established later has a higher priority.
+The mesh order decides the coverage when creating a geometric structure.
 
-When the mesh order of two structures are different, the large numerical value of mesh order has greater priority than the small one. That is, The large mesh order of structure is able to cover small mesh order of structure.
+When the mesh order of two structures are same, the structure which is established later has a higher priority. When the mesh order of two structures are different, the large numerical value of mesh order has greater priority than the small one. That is, The large mesh order of structure is able to cover small mesh order of structure.
 For example, the mesh order=2 structure will cover the mesh order=1.
 
 ![](../../../static/img/SDK/structure/mesh_order.png)

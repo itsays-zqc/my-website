@@ -1314,9 +1314,9 @@ After running the program, we can obtain a series of corresponding output result
 </div>
 
 | ![021_ME_CrossVsLambda_mode](021_ME_crossVsLambda_mode.png) | ![021_ME_ThroughVsLambda_mode](021_ME_ThroughVsLambda_mode.png) |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ------------------------------------------------------------ | ------------------------------------------------------------- |
 
-
+ 
 
 <div class="text-justify">
 

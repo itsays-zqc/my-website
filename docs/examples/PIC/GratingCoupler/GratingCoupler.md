@@ -42,7 +42,6 @@ To facilitate parameter changes, we can define function to encapsulate the entir
 def simulation(*, run_mode, wavelength, grids_per_lambda, run_options: 'RunOptions', **kwargs):
     # region --- 0. General Parameters ---
     waveform_name = f'wv{wavelength*1e3}'
-
     path = kwargs['path']
     simu_name = 'GratingCoupler'
     time_str = time.strftime('%Y%m%d_%H%M%S', time.localtime())
@@ -120,9 +119,7 @@ We use `Structure` to create structure , where `mesh_type` is the type of mesh, 
             'general': {
                 'path': gds_file, 'cell_name': 'gc', 'layer_name': (1, 0)},
                 'geometry': {'z': 0.11, 'z_span': 0.22},
-                'material': {'material': mt['Si'], 'mesh_order': 2}
-            }
-        )
+                'material': {'material': mt['Si'], 'mesh_order': 2} } )
     st.add_geometry(
         name='middle_cladding',
         type='gds_file',
@@ -130,43 +127,33 @@ We use `Structure` to create structure , where `mesh_type` is the type of mesh, 
             'general': {
                 'path': gds_file, 'cell_name': 'gc', 'layer_name': (2, 0)},
                 'geometry': {'z': 0.075, 'z_span': 0.15},
-                'material': {'material': mt['Si'], 'mesh_order': 2}
-        }
-    )
+                'material': {'material': mt['Si'], 'mesh_order': 2} } )
     st.add_geometry(
         name='grating',
         type='gds_file',
         property={
             'general': {'path': gds_file, 'cell_name': 'gc', 'layer_name': (3, 0)},
             'geometry': {'z': 0.185, 'z_span': 0.07},
-            'material': {'material': mt['Si'], 'mesh_order': 2}
-        }
-    )
+            'material': {'material': mt['Si'], 'mesh_order': 2} } )
     st.add_geometry(
         name='SiO2_TOX_UP',
         type='gds_file',
         property={'general': {'path': gds_file, 'cell_name': 'gc', 'layer_name': (4, 0)},
                               'geometry': {'z': 0.5, 'z_span': 1.0},
-                              'material': {'material': mt['SiO2'], 'mesh_order': 1}
-        }
-    )
+                              'material': {'material': mt['SiO2'], 'mesh_order': 1} } )
     st.add_geometry(
         name='SiO2_TOX_DOWN',
         type='gds_file',
         property={'general': {'path': gds_file, 'cell_name': 'gc', 'layer_name': (5, 0)},
                               'geometry': {'z': -1, 'z_span': 2},
-                              'material': {'material': mt['SiO2'], 'mesh_order': 2}
-        }
-    )
+                              'material': {'material': mt['SiO2'], 'mesh_order': 2} } )
     st.add_geometry(
         name='Si_substrate',
         type='gds_file',
         property={'general': {'path': gds_file, 'cell_name': 'gc', 'layer_name': (6, 0)},
                               'geometry': {'z': -6, 'z_span': 8},
-                              'material': {'material': mt['Si'], 'mesh_order': 2}
-        }
-    )
-# endregion                 
+                              'material': {'material': mt['Si'], 'mesh_order': 2} } )
+# endregion
 ```
 
 
@@ -187,20 +174,13 @@ We use `Structure` to create structure , where `mesh_type` is the type of mesh, 
 
 <div class="text-justify">
 
-Set the boundary of the simulation structure using optical boundary condition `OBoundary`.
+Set the user defined parameters of pml boundary in the simulation.
 
 </div>
 
 ```python
 # region --- 5. Boundary ---
-    bc = {
-        "pml_layer": 8,
-        "pml_kappa": 2,
-        "pml_sigma": 0.8,
-        "pml_polynomial": 3,
-        "pml_alpha": 0,
-        "pml_alpha_polynomial": 1,
-    }
+    bc = { "pml_layer": 8, "pml_kappa": 2, "pml_sigma": 0.8, "pml_polynomial": 3, "pml_alpha": 0, "pml_alpha_polynomial": 1, }
 # endregion
 ```
 
@@ -214,34 +194,18 @@ We use the `Simulation` function to create a simulation and the `add` function t
 # region --- 6. Simulation ---
     simu = pj.Simulation()
     simu.add(
-        name=simu_name, 
+        name=simu_name,
         type="FDTD",
         property={
             "background_material": mt["Air"],
-            "geometry": {
-                'x': -3.5, 'x_span': 47,
-                'y': 0, 'y_span': 28,
-                'z': -0.5, 'z_span': 5
-            },
+            "geometry": { 'x': -3.5, 'x_span': 47, 'y': 0, 'y_span': 28, 'z': -0.5, 'z_span': 5 },
             "boundary_conditions": {
-                "x_min_bc": "PML",
-                "x_max_bc": "PML",
-                "y_min_bc": "PML",
-                "y_max_bc": "PML",
-                "z_min_bc": "PML",
-                "z_max_bc": "PML",
-                "pml_settings": {
-                    "x_min_pml": bc,
-                    "x_max_pml": bc,
-                    "y_min_pml": bc,
-                    "y_max_pml": bc,
-                    "z_min_pml": bc,
-                    "z_max_pml": bc,
-                },
-            },  
+                "x_min_bc": "PML", "x_max_bc": "PML", "y_min_bc": "PML", "y_max_bc": "PML", "z_min_bc": "PML", "z_max_bc": "PML",
+                "pml_settings": { "x_min_pml": bc, "x_max_pml": bc, "y_min_pml": bc, "y_max_pml": bc, "z_min_pml": bc, "z_max_pml": bc, },
+            },
             'general': {
-                'simulation_time': 30000, 
-                # 'dimension': '2d' 
+                'simulation_time': 30000,
+                # 'dimension': '2d'
             },
             "mesh_settings": {
                 "mesh_factor": 1.2,
@@ -249,12 +213,9 @@ We use the `Simulation` function to create a simulation and the `add` function t
                 "mesh_accuracy": {"cells_per_wavelength": grids_per_lambda},
                 "minimum_mesh_step_settings": {"min_mesh_step": 1e-4},
                 "mesh_refinement": {
-                    "mesh_refinement": "curve_mesh",
-                }
-            },
-            # 'advanced_options': {'auto_shutoff': {'auto_shutoff_min': 1.00e-5, 'down_sample_time': 100}},
-        }
-    )  
+                    "mesh_refinement": "curve_mesh", } },
+                    # 'advanced_options': {'auto_shutoff': {'auto_shutoff_min': 1.00e-5, 'down_sample_time': 100}},
+                } )
 # endregion
 ```
 
@@ -272,20 +233,17 @@ In 3D FDTD simulation, a light source is required. We use `Source` to create the
         type='gaussian_source',
         property={
             'general': {
-                'angle_theta': 12,
-                'angle_phi': 0,
-                'polarization_angle': 90,
+                'angle_theta': 12, 'angle_phi': 0, 'polarization_angle': 90,
                 "inject_axis": "z",
-                "direction": "backward", 
+                "direction": "backward",
                 'waveform': {'waveform_id_select': wv[waveform_name]},
                 'beam_settings': {
-                    # 'calculation_method': 'use_scalar_approximation',  # [use_scalar_approximation,use_vector_approximation]
-                                                   'beam_parameters': 0,  # [waist_size_and_position,beam_size_and_divergence]
-                                                   'waist_radius': 5.2,
-                                                   'distance_from_waist': 1.5,
-                                                #    'beam_radius': 5.201947263996544,
-                                                #    'divergence_angle': 5.420045638438343
-                                                    }},
+                                'beam_parameters': 0,  # [waist_size_and_position,beam_size_and_divergence]
+                                'waist_radius': 5.2,
+                                'distance_from_waist': 1.5,
+                            #    'beam_radius': 5.201947263996544,
+                            #    'divergence_angle': 5.420045638438343
+                                }},
             'geometry': {'x': 4, 'x_span': 20, 'y': 0, 'y_span': 20, 'z': 1.5, 'z_span': 0}})
 # endregion
 ```
@@ -303,7 +261,6 @@ In the simulation, `Monitor` function is used to create monitor and `add` functi
     mn.add(name='Global Option', type='global_option',
            property={'frequency_power': {'spacing_type': 'wavelength', 'spacing_limit': 'center_span',
                                          'wavelength_center': wavelength, 'wavelength_span': 0.1, 'frequency_points': 5}})
-
     ''' 8.1 x_normal '''
     mn.add(name='x_normal', type='power_monitor',
            property={'general': {'frequency_profile': {'spacing_type': 'wavelength', 'spacing_limit': 'center_span',
@@ -343,40 +300,19 @@ Extract data using `extract`, where `data` is the calculation result data, `save
         fdtd_res.extract(
             data='fdtd:power_monitor',
             savepath=f'{plot_path}02_x_normal_abs(T)',
-            monitor_name='x_normal',
-            attribute='T',
-            target='line',
-            plot_x='wavelength',
-            real=True,
-            imag=True,
-            export_csv=True,
-            show=False
+            monitor_name='x_normal', attribute='T', target='line', plot_x='wavelength', real=True, imag=True, export_csv=True, show=False
         )
         fdtd_res.extract(
             data='fdtd:power_monitor',
             savepath=f'{plot_path}02_y_normal_abs(T)',
             monitor_name='y_normal',
-            attribute='T',
-            target='line',
-            plot_x='wavelength',
-            real=True,
-            imag=True,
-            export_csv=True,
-            show=False
+            attribute='T', target='line', plot_x='wavelength', real=True, imag=True, export_csv=True, show=False
         )
         fdtd_res.extract(
             data='fdtd:power_monitor',
             savepath=f'{plot_path}02_y_normal_E_{wavelength}_um',
             monitor_name='y_normal',
-            target="intensity",
-            attribute="E",
-            real=True,
-            imag=False,
-            wavelength=f"{wavelength}",
-            plot_x="x",
-            plot_y="z",
-            show=False,
-            export_csv=True,
+            target="intensity", attribute="E", real=True, imag=False, wavelength=f"{wavelength}", plot_x="x", plot_y="z", show=False, export_csv=True,
         )
 # endregion
     return fdtd_res if run_options.run else None
@@ -404,7 +340,7 @@ if __name__ == '__main__':
 When the wavelength of the incident light meets the Bragg condition, the incident light will enter the waveguide through grating coupling.
 
 
-| ![](Grating.png) | 
+| ![](Grating.png) |
 ------------------------------------------------------------ |
 
 #### Transmission
@@ -412,7 +348,7 @@ When the wavelength of the incident light meets the Bragg condition, the inciden
 The transmittance of grating coupling varies with wavelength as shown in the following figure.
 
 
- |  ![](T_grating.png) | 
+ |  ![](T_grating.png) |
 ------------------------------------------------------------ |
 
 ## References

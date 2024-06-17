@@ -7,12 +7,13 @@
 In this section, we currently offer the capability to provide an advanced preview of structural models, refractive index and doping profile.
 
 This preview serves to validate the structues before initiating the formal simulation, thereby assisting in verifying the accuracy of the structures. Consequently, it leads to reduced simulation time and an overall enhancement of simulation efficiency.
-## 7.1 Run index
+
+## 8.1 Preview index
 
 The code contained in this module enables a preview of the refractive index images with various structures.
 
 ```python
-run_index(
+preview_index(
             self,
             *,
             property: RunIndex,
@@ -30,7 +31,7 @@ run_index(
 | **Parameters** |                     Description                     |
 | :------------: | :-------------------------------------------------: |
 |    property    |             To set the properties of index monitor.              |
-|      name      |                    The name of index monitor in the simulation.                    |
+|      monitor_name      |                    The name of power monitor in the simulation.                    |
 |   export_csv   |       Decide whether to export the data as csv format or not. The default is False.         |
 |      show      |        Decide whether to show index preview figure or not. The default is False.        |
 |    savepath    |   Define the save path for the csv data and the picture. The default is 'a'.    |
@@ -42,28 +43,16 @@ run_index(
 **Example:**
 
 ```python
-simu[simu_name].run_index(name=f'{simu_name}_x_0', savepath=f'{plot_path}{k}IndexPreview_x=0',
-                                  # export_csv=False, show=False,
-                                  property={'geometry': {'x': 0, 'x_span': 0, 'y': 0, 'y_span': 3, 'z': 0, 'z_span': 2}})
+    if run_options.index_preview:
+        simu[simu_name].preview_index(
+            monitor_name="reflection", savepath=f"{plot_path}0A_Preview_reflection_index", export_csv=True, show=False, )
+        simu[simu_name].preview_modes(
+            monitor_name="reflection", savepath=f"{plot_path}0A_Preview_reflection_modes", export_csv=True, show=False, )
 ```
 
-|      Parameters       | Default |  Type  |                            Notes                             |
-| :-------------------: | :-----: | :----: | :----------------------------------------------------------: |
-| geometry.monitor_type |    -     | string | Set the orientation of the index monitor. The selections are ['2d_x_normal', '2d_y_normal', '2d_z_normal']. |
-|     geometry.x      |    -     |  float   |  The x-coordinate of the center point position of the index monitor.    |
-|   geometry.x_span   |     -    |  float   | The length in x direction of the index monitor. Restrained by condition: >0.  |
-|   geometry.x_min    |     -    |  float   | The minimum x-coordinate endpoint data of the index monitor.      |
-|   geometry.x_max    |     -    |  float   |  The maximum x-coordinate endpoint data of the index monitor.     |
-|     geometry.y      |    -     |  float   |  The y-coordinate of the center point position of the index monitor.      |
-|   geometry.y_span   |    -     |  float   | The width in y direction of the index monitor. Restrained by condition: >0.  |
-|   geometry.y_min    |     -    |  float   |The minimum y-coordinate endpoint data of the index monitor.       |
-|   geometry.y_max    |    -     |  float   |  The maximum y-coordinate endpoint data of the index monitor.      |
-|     geometry.z      |     -    |  float   |   The z-coordinate of the center point position of the index monitor.    |
-|   geometry.z_span   |    -     |  float   | The thinckness in z direction of the index monitor. Restrained by condition: >0.  |
-|   geometry.z_min    |     -    |  float   |The z-coordinate of the bottom position of the thickness of the index monitor.      |
-|   geometry.z_max    |     -    |  float   |  The z-coordinate of the top position of the thickness of the index monitor.     |
+## 8.2 Preview mode
 
-## 7.2 Structure show and show 3D
+## 8.3 Structure show and show 3D
 
 This portion of the code is primarily intended for show structure. Please note that this method becomes invalid if the current structure manager contains Pyramid or Arc-Waveguide 3D type geometries.
 
@@ -126,7 +115,7 @@ simu[simu_name].show3d(show_with="local_gui")
 
 
 
-## 7.3 Run doping
+## 8.4 Run doping
 
 The code within this module enables the preview of doping results for the respective structures.
 

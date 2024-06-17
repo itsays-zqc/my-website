@@ -23,10 +23,9 @@ add_anisotropy(
             name: str,
             data: List[
                 Tuple[
-                    float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float],
+                    ,float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float],
             ],
             color: Optional[str] = None,
-            alpha: Optional[float] = None,
             fitting: Literal[None, "linear"],
             order: int = 2,
    			)
@@ -64,9 +63,12 @@ add_anisotropy(
 
 ```python
 mt = pj.Material()
-mt.add_anisotropy(name="LN", fitting=None,
-      data=[(wavelength * 1e-6, 2.211, 0, 2.138, 0, 2.211, 0)], order=2
-      )
+mt.add_anisotropy(
+    name="LN",
+    data=[(wavelength * 1e-6, 2.138, 0, 2.211, 0, 2.211, 0)],
+    fitting=None,
+    order=1, 
+)
 ```
 
 
@@ -84,7 +86,6 @@ add_dispersion(
                 Tuple[float, float, float],
             ],
             color: Optional[str] = None,
-            alpha: Optional[float] = None,
             fitting: Literal[None, "linear"],
             order: int = 2
 			)
@@ -139,9 +140,6 @@ add_lib(
             *,
             name: str,
             data: Any,
-            override: Optional[dict]=None,
-            color: Optional[str] = None,
-            alpha: Optional[float] = None,
             order: int = 2
             )
 ```
@@ -157,14 +155,6 @@ add_lib(
   <tr>
     <td align="center">data</td>
     <td align="center">An existing material in the library.</td>
-  </tr>
-  <tr>
-    <td align="center">override</td>
-    <td align="center">Override.</td>
-  </tr>
-  <tr>
-    <td align="center">color</td>
-    <td align="center">The color of materials in the visual model. If not set, the color will be automatically calculated based on the index parameters.</td>
   </tr>
   <tr>
     <td align="center">order</td>
@@ -192,7 +182,6 @@ add_nondispersion(
         name: str,
         data: List[Tuple[float, float]],
         color: Optional[str] = None,
-        alpha: Optional[float] = None,
         order: int = 2
 		)
 ```
@@ -224,7 +213,7 @@ add_nondispersion(
 
 ```python
 mt = pj.Material()
-mt.add_nondispersion(name="SiO2", data=[(1.444, 0)], order=1)
+mt.add_nondispersion(name="Si", data=[(3.5, 0)], order=2, color="#123456")
 ```
 
 </div>

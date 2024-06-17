@@ -7,42 +7,7 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 <div class="text-justify">
 
-The code within the "Structure" section is designed to assist you  incorporating the necessary structures during the EO(Electro-Optic) simulation process. 
-
-```python
-st = pj.Structure(mesh_type, 
-                  mesh_factor,
-                  background_material
-                 )
-```
-
- <table align="center">
-  <tr>
-    <th align="center">Parameters</th>
-    <th align="center">Default</th>
-    <th align="center">Type</th>
-    <th align="center">Notes</th>
-  </tr>
-  <tr>
-    <td align="center">mesh_type</td>
-    <td align="center">curve_mesh</td>
-    <td align="center">string</td>
-    <td align="center">Different mesh types for iterative calculations. Selections are ['curve_mesh', 'staircase'].</td>
-  </tr>
-  <tr>
-    <td align="center">mesh_factor</td>
-    <td align="center">1.2</td>
-    <td align="center">float</td>
-    <td align="center">Maximum rate when the mesh changes.</td>
-  </tr>
-  <tr>
-    <td align="center">background_material</td>
-    <td align="center">-</td>
-    <td align="center">material</td>
-    <td align="center">Background material</td>
-  </tr>
-</table>
-
+The code within the "Structure" section is designed to assist you incorporating the necessary structures during the EO(Electro-Optic) simulation process. 
 
 You can choose to create geometry models using GDS files. Meanwhile, you can also utilize various methods in this "Structure" module such as Bézier curves, tapering, and circular rings for your simulation project.
 
@@ -120,98 +85,44 @@ Meanwhile, we also offer support for basic operations to GDS layout modeling usi
 st.add_geometry(name="gds_file_3D", type="gds_file3D", property={
     "material": {"material": mt["Si"], "mesh_order": 2},
     "general": {"path": gds_file, "cell_name": "EXTEND_1", "layer_name": (3, 0)},
-    "geometry": {"tilt_angle": 60,"tilt_location": "bottom",
+    "geometry": {"tilt_angle": 60,"tilt_position": "bottom",
                  "x": 4*space, "y": 2*space, "z": 0.05, "z_span": 0.1,
-                 "mirror_normal_z": 0,"mirror_plane_z0": 0,"rotate_x": 0, "rotate_y": 0, "rotate_z": 0}})
+                 "mirror_normal_z": 0,"mirror_plane_z0": 0}})
 ```
 
 |      **Parameters**      | Default |   Type   |                            Notes                             |
 | :----------------------: | :-----: | :------: | :----------------------------------------------------------: |
 |   geometry.tilt_angle    |   90   |  float   | Tilt angle of waveguide sidewall.   |
-|  geometry.tilt_location  |   top   |  string  | To ensure that the models within the GDS layout are placed at the specified sizes on the different ratio of sidewalls when importing GDS layout. Selections are ['top', 'TOP', 'Top', 'bottom', 'BOTTOM', 'Bottom', 'middle', 'MIDDLE', 'Middle', 'user_defined']. |
+|  geometry.tilt_position  |   top   |  string  | To ensure that the models are placed at the specified sizes on the different ratio of sidewalls. Selections are ['top', 'TOP', 'Top', 'bottom', 'BOTTOM', 'Bottom', 'middle', 'MIDDLE', 'Middle', 'user_defined']. |
 |  geometry.user_defined   |    1    |  float   |      To decide the ratio of sidewalls when importing GDS layout.                                                    |
 | geometry.mirror_normal_z |    0    |  float   | The posiotion of z-normal plane for mirror symmetry.                                      |
 | geometry.mirror_plane_z0 |    0    |  float   |       The center point position of z normal palne.                                                       |
-|    geometry.rotate_x     |    0    |  float   | The angle around the x-axis in the rotation operation.                                  |
-|    geometry.rotate_y     |    0    |  float   |  The angle around the y-axis in the rotation operation.                                        |
-|    geometry.rotate_z     |    0    |  float   | The angle around the z-axis in the rotation operation.                                      |
 | general.construct_method |     -    |  string  |     The method around constructing the GDS after choosing to import the GDS file. Selections are ['method1', 'method2']             |
 
 
 
-### 2.1.2 Arc waveguide/Arc waveguide 3D
-
-To establish an arc waveguide within the project, utilize the code `type="ArcWaveguide"`.
-
-**Example:**
-
-```python
-st.add_geometry(name="arc", type="ArcWaveguide", property={
-    "material": {"material": mt["Si"], "mesh_order": 2},
-    "geometry": {"inner_radius": size-wg_width/2, "outer_radius": size+wg_width/2, "angle": 90,
-                 "x": 0, "y": 0, "z": 0, "z_span": wg_height, "rotate_x": 0, "rotate_y": 0, "rotate_z": 0}})
-```
-
-|        Parameters         |     Default     |       Type       |                 Notes                 |
-| :-------------------: | :-----: | :------: | :---------------------------: |
-| geometry.inner_radius |     -    |  float   | The inner radius of arc waveguide. Restrained by condition: >0.  |
-| geometry.outer_radius |    -     |  float   | The outer radius of arc waveguide. Restrained by condition: >0.  |
-|    geometry.angle     |    -     |  float   |   The angle corresponding to the arc length of an arc waveguide.     |
-|      geometry.x       |    -     |  float   |  The x-coordinate of the center point position of arc waveguide.                       |
-|      geometry.y       |    -     |  float   |       The y-coordinate of the center point position of arc waveguide.                        |
-|      geometry.z       |    -     |  float   |     The z-coordinate of the center point position of arc waveguide.        |
-|    geometry.z_span    |     -    |  float   | Setting the height of arc waveguide. Restrained by condition: >0.  |
-|    geometry.z_min     |    -     |  float   | The z-coordinate of the bottom position of the height of arc waveguide.   |
-|    geometry.z_max     |     -    |  float   |   The z-coordinate of the top position of the height of arc waveguide.    |
-|   geometry.rotate_x   |    0    |  float   |    The angle around the x-axis in the rotation operation.     |
-|   geometry.rotate_y   |    0    |  float   |   The angle around the y-axis in the rotation operation.      |
-|   geometry.rotate_z   |    0    |  float   |      The angle around the z-axis in the rotation operation.       |
-|   material.material   |     -    | material |  Material of the geometric structure.     |
-|  material.mesh_order  |     -    | integer  | The order of material coverage when creating a geometric structure.Restrained by condition: >=0. |
-
-Similarly, we offer support for using code  `type="ArcWaveguide3D"` to adjust the arc waveguide structure in the height direction.
-
-```python
-st.add_geometry(name="arc_3d", type="ArcWaveguide3D", property={
-    "material": {"material": mt["Si"], "mesh_order": 2},
-    "geometry": {"radius": size, "angle": 180, "base_height": wg_height,
-                 "top_width": wg_width_top, "bottom_width": wg_width,
-                 "x": space, "y": 0, "z": 0, "rotate_x": 0, "rotate_y": 0, "rotate_z": 0}})
-```
-
-|        Parameters         |   Default   |      Type      |                   Notes                    |
-| :-------------------: | :-----: | :------: | :--------------------------------: |
-|    geometry.radius    |      -   |  float   |    The radius of the central width of the arc. Restrained by condition: >0.    |
-|    geometry.angle     |    -     |  float   | The angle corresponding to the arc length of an arc waveguide. Restrained by condition: >0,<=360. |
-| geometry.base_height  |     -    |  float   |    The height of the arc waveguide. Restrained by condition: >0.    |
-|  geometry.top_width   |    -     |  float   |    The top width of the arc waveguide. Restrained by condition: >0.    |
-| geometry.bottom_width |   -      |  float   |    The bottom width of the arc waveguide. Restrained by condition: >0.    |
-
-### 2.1.3 Bezier curve/ Bezier curve 3D
+### 2.1.2 Bezier wavegudie
 
 Within the project, we can incorporate a Bezier curve structure by employing the code `type="BezierCurve"`.
 
 **Example:**
 
 ```python
-st.add_geometry(name="bezier", type="BezierCurve", property={
+st.add_geometry(name="bezier", type="BezierWaveguide", property={
     "material": {"material": mt["Si"], "mesh_order": 2},
     "geometry": {"x": 2*space, "y": 0, "z": 0, "z_span": wg_height, "width": wg_width,
-                 "rotate_x": 0, "rotate_y": 0, "rotate_z": 0,
-                 "point_1_x": 0, "point_1_y": 0, "point_2_x": 0, "point_2_y": size/2,
-                 "point_3_x": size, "point_3_y": size/2, "point_4_x": size, "point_4_y": size}})
+                  "control_points":
+                        [{"x": 1, "y": 1}, {"x": 1, "y": 2}, {"x": 2, "y": 2}, {"x": 2, "y": 3}],
+                "tilt_angle1": 70, "tilt_position": "bottom", "tilt_angle2": 90,
+                }})
 ```
 
 |       Parameters        |     Default     |       Type       |                 Notes                 |
 | :-----------------: | :-----: | :------: | :---------------------------: |
-| geometry.point_1_x  |    -     |  float   |  The x-coordinate of the first point for generating a Bezier curve.      |
-| geometry.point_1_y  |    -     |  float   | The y-coordinate of the first point for generating a Bezier curve.   |
-| geometry.point_2_x  |    -     |  float   |   The x-coordinate of the second point for generating a Bezier curve.       |
-| geometry.point_2_y  |     -    |  float   | The y-coordinate of the second point for generating a Bezier curve.   |
-| geometry.point_3_x  |     -    |  float   | The x-coordinate of the third point for generating a Béezier curve.   |
-| geometry.point_3_y  |     -    |  float   |The y-coordinate of the third point for generating a Béezier curve.    |
-| geometry.point_4_x  |     -    |  float   |   The x-coordinate of the forth point for generating a Bezier curve.      |
-| geometry.point_4_y  |     -    |  float   | The y-coordinate of the forth point for generating a Bezier curve.   |
+|   geometry.tilt_angle1    |   90   |  float   | First tilt angle of waveguide sidewall.   |
+|  geometry.tilt_position  |   top   |  string  | To ensure that the models are placed at the specified sizes on the different ratio of sidewalls. Selections are ['top', 'TOP', 'Top', 'bottom', 'BOTTOM', 'Bottom', 'middle', 'MIDDLE', 'Middle', 'user_defined']. |
+|   geometry.tilt_angle2    |   90   |  float   | Second tilt angle of waveguide sidewall.   |
+| geometry.control_points  |    -     |  float   |  The coordinate of the points for generating a Bezier curve.      |
 |   geometry.width    |     -    |  float   |  The width of the Bezier curve.     |
 |     geometry.x      |     -    |  float   |  The center point x-coordinate the Bezier curve.    |
 |     geometry.y      |     -    |  float   |    The center point y-coordinate the Bezier curve.     |
@@ -219,34 +130,12 @@ st.add_geometry(name="bezier", type="BezierCurve", property={
 |   geometry.z_span   |     -    |  float   | The thinckness of the Bezier curve. Restrained by condition: >0.  |
 |   geometry.z_min    |     -    |  float   |  The bottom position of the height of the Bezier curve in the z-coordinate.   |
 |   geometry.z_max    |     -    |  float   | The top position of the height of the Bezier curve in the z-coordinate.   |
-|  geometry.rotate_x  |    0    |  float   | The angle around the x-axis in the rotation operation.     |
-|  geometry.rotate_y  |    0    |  float   |  The angle around the y-axis in the rotation operation.  |
-|  geometry.rotate_z  |    0    |  float   |   The angle around the z-axis in the rotation operation.   |
 |  material.material  |     -    | material |  Material of the geometric structure.    |
 | material.mesh_order |     -    | integer  | The order of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
-Similarly, we offer support for using code  `type="BezierCurve3D"` to adjust the Bézier curve structure in the height direction.
-
-```python
-st.add_geometry(name="bezier_3d", type="BezierCurve3D", property={
-    "material": {"material": mt["Si"], "mesh_order": 2},
-    "geometry": {"x": 3*space, "y": 0, "z": 0, "rotate_x": 0, "rotate_y": 0, "rotate_z": 0,
-                 "base_height": wg_height, "top_width": wg_width_top, "bottom_width": wg_width,
-                 "control_points":
-                     [{"x": 0, "y": 0}, {"x": 0, "y": size/2}, {"x": size, "y": size/2}, {"x": size, "y": size}]}})
-```
-
-|           Parameters            |     Default     |       Type       |                 Notes                 |
-| :-------------------------: | :-----: | :------: | :---------------------------: |
-|    geometry.base_height     |   -      |  float   | The height of the Bezier curve. Restrained by condition: >0.  |
-|     geometry.top_width      |    -     |  float   | The top width of the Bezier curve. Restrained by condition: >0.  |
-|    geometry.bottom_width    |    -     |  float   | The bottom width of the Bezier curve. Restrained by condition: >0.  |
-| geometry.[]control_points.x |    -     |  float   | The x-coordinate of the points for generating a Bezier curve.   |
-| geometry.[]control_points.y |    -     |  float   |  The y-coordinate of the points for generating a Bezier curve. |
 
 
-
-### 2.1.4 Circle
+### 2.1.3 Circle
 
 Integrate a circular structure into the simulation project by employing the code `type="Circle"`.
 
@@ -256,12 +145,15 @@ Integrate a circular structure into the simulation project by employing the code
 ```python
 st.add_geometry(name="circle", type="Circle", property={
     "material": {"material": mt["Si"], "mesh_order": 2},
-    "geometry": {"rotate_x": 0, "rotate_y": 0, "rotate_z": 0,
-                 "radius": size, "x": 4*space, "y": 0, "z": 0, "z_span": wg_height}})
+    "geometry": {
+                 "radius": size, "x": 4*space, "y": 0, "z": 0, "z_span": wg_height
+                 "tilt_angle":70, "tilt_position":"middle"}})
 ```
 
 |       Parameters        |     Default     |       Type       |                 Notes                 |
 | :-----------------: | :-----: | :------: | :---------------------------: |
+|   geometry.tilt_angle    |   90   |  float   | Tilt angle of waveguide sidewall.   |
+|  geometry.tilt_position  |   top   |  string  | To ensure that the models are placed at the specified sizes on the different ratio of sidewalls. Selections are ['top', 'TOP', 'Top', 'bottom', 'BOTTOM', 'Bottom', 'middle', 'MIDDLE', 'Middle', 'user_defined']. |
 |   geometry.radius   |    -     |  float   | The radius of the circle. Restrained by condition: >0.  |
 |     geometry.x      |     -    |  float   | The x-coordinate of the center point position of circle.    |
 |     geometry.y      |     -    |  float   |    The y-coordinate of the center point position of circle.      |
@@ -269,46 +161,44 @@ st.add_geometry(name="circle", type="Circle", property={
 |   geometry.z_span   |     -    |  float   | The thinckness of the circle. Restrained by condition: >0.  |
 |   geometry.z_min    |     -    |  float   |The bottom position of the height of the circle in z-coordinate.      |
 |   geometry.z_max    |    -     |  float   |  The top position of the height of the circle in z-coordinate.     |
-|  geometry.rotate_x  |    0    |  float   |    The angle around the x-axis in the rotation operation.        |
-|  geometry.rotate_y  |    0    |  float   |  The angle around the y-axis in the rotation operation.    |
-|  geometry.rotate_z  |    0    |  float   |  The angle around the z-axis in the rotation operation.        |
 |  material.material  |     -    | material | Material of the geometric structure. |
 | material.mesh_order |    -     | integer  | The order of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
 
 
-### 2.1.5 Custom polygon
+### 2.1.4 Polygon
 
-By utilizing the code `type="CustomPolygon"`, it becomes possible to incorporate a custiomized polygon into the project.
+By utilizing the code `type="Polygon"`, it becomes possible to incorporate a custiomized polygon into the project.
 
 **Example:**
 
 ```python
-st.add_geometry(name="custom_polygon", type="CustomPolygon", property={
-    "material": {"material": mt["Si"], "mesh_order": 2},
-    "geometry": {"size": size, "sides": 6,
-                 "x": 4*space, "y": space, "z": 0, "z_span": wg_height,
-                 "rotate_x": 0, "rotate_y": 0, "rotate_z": 0}})
+st.add_geometry(name="polygon", type="Polygon", property={
+        "material": {"material": mt["Si"], "mesh_order": 3},
+        "geometry": {"x": space, "y": 2*space,
+                     "z": 1, "z_span": 2,
+                     "control_points":
+                        [{"x": 1, "y": 2}, {"x": 3, "y": 4}, {"x": 5, "y": 0}, {"x": 0, "y": 0}],
+                    "tilt_angle": 70, "tilt_position": "bottom", 
+        }})
 ```
 
 |       Parameters        |     Default     |       Type       |                 Notes                 |
 | :-----------------: | :-----: | :------: | :---------------------------: |
-|    geometry.size    |    -     |  float   | The side length of the polygon. Restrained by condition: >0.  |
-|   geometry.sides    |    -     | integer  |To set the number of custom polygon sides. Restrained by condition: >=3. |
+|   geometry.tilt_angle    |   90   |  float   | Tilt angle of waveguide sidewall.   |
+|  geometry.tilt_position  |   top   |  string  | To ensure that the models are placed at the specified sizes on the different ratio of sidewalls. Selections are ['top', 'TOP', 'Top', 'bottom', 'BOTTOM', 'Bottom', 'middle', 'MIDDLE', 'Middle', 'user_defined']. |
+| geometry.control_points  |    -     |  float   |  The coordinate of the points for generating a polygon.      |
 |     geometry.x      |    -     |  float   |  The center point x-coordinate the custom polygon.    |
 |     geometry.y      |    -     |  float   |    The center point y-coordinate the custom polygon.     |
 |     geometry.z      |     -    |  float   |  The center point z-coordinate the custom polygon.    |
 |   geometry.z_span   |    -     |  float   | The thinckness of the custom polygon. Restrained by condition: >0.  |
 |   geometry.z_min    |     -    |  float   |  The z-coordinate of the bottom position of the height of the custom polygon.   |
 |   geometry.z_max    |      -   |  float   |  The z-coordinate of the top position of the height of the custom polygon.   |
-|  geometry.rotate_x  |    0    |  float   | The angle around the x-axis in the rotation operation.     |
-|  geometry.rotate_y  |    0    |  float   |  The angle around the y-axis in the rotation operation.  |
-|  geometry.rotate_z  |    0    |  float   |   The angle around the z-axis in the rotation operation.   |
 |  material.material  |      -   | material |  Material around the geometric structure.    |
 | material.mesh_order |      -   | integer  | The order of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
 
-### 2.1.6 Ellipse
+### 2.1.5 Ellipse
 
 Incorporate an ellipse into the project by implementing the code `type="Ellipse"`.
 
@@ -319,11 +209,13 @@ st.add_geometry(name="ellipse", type="Ellipse", property={
     "material": {"material": mt["Si"], "mesh_order": 2},
     "geometry": {"x_radius": size, "y_radius": 1.5*size,
                  "x": 3*space, "y": space, "z": 0, "z_span": wg_height,
-                 "rotate_x": 0, "rotate_y": 0, "rotate_z": 0}})
+                 "tilt_angle": 70, "tilt_position": "bottom"}})
 ```
 
 |       Parameters        |     Default     |       Type       |               Notes                 |
 | :-----------------: | :-----: | :------: | :---------------------------: |
+|   geometry.tilt_angle    |   90   |  float   | Tilt angle of waveguide sidewall.   |
+|  geometry.tilt_position  |   top   |  string  | To ensure that the models are placed at the specified sizes on the different ratio of sidewalls. Selections are ['top', 'TOP', 'Top', 'bottom', 'BOTTOM', 'Bottom', 'middle', 'MIDDLE', 'Middle', 'user_defined']. |
 |  geometry.x_radius  |     -    |  float   | The length in the x direction of the ellipse. Restrained by condition: >0.  |
 |  geometry.y_radius  |    -     |  float   | The width in the y direction of the ellipse.Restrained by condition: >0.  |
 |     geometry.x      |    -     |  float   |  The x-coordinate of the center point position of the ellipse.    |
@@ -332,15 +224,12 @@ st.add_geometry(name="ellipse", type="Ellipse", property={
 |   geometry.z_span   |     -    |  float   | The thinckness of the ellipse. Restrained by condition: >0.  |
 |   geometry.z_min    |     -    |  float   |The z-coordinate of the bottom position of the height of the ellipse.      |
 |   geometry.z_max    |     -    |  float   |  The z-coordinate of the top position of the height of the ellipse.     |
-|  geometry.rotate_x  |    0    |  float   |    The angle around the x-axis in the rotation operation.        |
-|  geometry.rotate_y  |    0    |  float   |  The angle around the y-axis in the rotation operation.    |
-|  geometry.rotate_z  |    0    |  float   |  The angle around the z-axis in the rotation operation.        |
 |  material.material  |     -    | material | Material of the geometric structure. |
 | material.mesh_order |     -    | integer  | The order of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
 
 
-### 2.1.7 Linear trapezoid
+### 2.1.6 Linear trapezoid
 
 Integrate a linear trapezoid shape into the project using the code `type="LinearTrapezoid"`.
 
@@ -349,37 +238,29 @@ Integrate a linear trapezoid shape into the project using the code `type="Linear
 ```python
 st.add_geometry(name="linear_trapezoid", type="LinearTrapezoid", property={
     "material": {"material": mt["Si"], "mesh_order": 2},
-    "geometry": {"point_1_x": 0, "point_1_y": 0, "point_2_x": 0, "point_2_y": size/2,
-                 "point_3_x": size, "point_3_y": size, "point_4_x": size, "point_4_y": 0,
+    "geometry": { "control_points":
+                  [{"x": 1, "y": 1}, {"x": 2, "y": 1}, {"x": 2, "y": 2}, {"x": 1, "y": 1.5}],
                  "x": 2*space, "y": space, "z": 0, "z_span": wg_height,
-                 "rotate_x": 0, "rotate_y": 0, "rotate_z": 0}})
+                 "tilt_angle": 70, "tilt_position": "bottom"}})
 ```
 
 |       Parameters        |     Default     |       Type       |                 Notes                 |
 | :-----------------: | :-----: | :------: | :---------------------------: |
-| geometry.point_1_x  |     -    |  float   |     The x-coordinate of one point when constructing a linear trapezoid structure.          |
-| geometry.point_1_y  |     -    |  float   | The y-coordinate of one point when constructing a linear trapezoid structure.      |
-| geometry.point_2_x  |    -     |  float   |    The x-coordinate of one point when constructing a linear trapezoid structure.      |
-| geometry.point_2_y  |     -    |  float   |  The y-coordinate of one point when constructing a linear trapezoid structure.      |
-| geometry.point_3_x  |     -    |  float   |    The x-coordinate of one point when constructing a linear trapezoid structure.    |
-| geometry.point_3_y  |     -    |  float   |   The y-coordinate of one point when constructing a linear trapezoid structure.    |
-| geometry.point_4_x  |    -     |  float   |       The x-coordinate of one point when constructing a linear trapezoid structure.     |
-| geometry.point_4_y  |   -      |  float   |     The y-coordinate of one point when constructing a linear trapezoid structure.     |
+|   geometry.tilt_angle    |   90   |  float   | Tilt angle of waveguide sidewall.   |
+|  geometry.tilt_position  |   top   |  string  | To ensure that the models are placed at the specified sizes on the different ratio of sidewalls. Selections are ['top', 'TOP', 'Top', 'bottom', 'BOTTOM', 'Bottom', 'middle', 'MIDDLE', 'Middle', 'user_defined']. |
+| geometry.control_points  |    -     |  float   |  The coordinate of the points for generating a polygon.      |
 |     geometry.x      |    -     |  float   |  The x-coordinate of the center point position of the linear trapezoid.    |
 |     geometry.y      |     -    |  float   |  The y-coordinate of the center point position of the linear trapezoid.      |
 |     geometry.z      |     -    |  float   |   The z-coordinate of the center point position of the linear trapezoid.    |
 |   geometry.z_span   |     -    |  float   | The thinckness of the linear trapezoid. Restrained by condition: >0.  |
 |   geometry.z_min    |     -    |  float   |The z-coordinate of the bottom position of the height of the linear trapezoid.      |
 |   geometry.z_max    |     -    |  float   |  The z-coordinate of the top position of the height of the linear trapezoid.     |
-|  geometry.rotate_x  |    0    |  float   |    The angle around the x-axis in the rotation operation.        |
-|  geometry.rotate_y  |    0    |  float   |  The angle around the y-axis in the rotation operation.    |
-|  geometry.rotate_z  |    0    |  float   |  The around the z-axis in the rotation operation.        |
 |  material.material  |     -    | material | Material of the geometric structure. |
 | material.mesh_order |     -    | integer  | The order of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
 
 
-### 2.1.8 Pyramid
+### 2.1.7 Pyramid
 
 Incorporate a pyramid structure into the project by employing the code `type="Pyramid"`.
 
@@ -387,10 +268,10 @@ Incorporate a pyramid structure into the project by employing the code `type="Py
 
 ```python
 st.add_geometry(name="pyramid", type="Pyramid", property={
-    "material": {"material": mt["Si"], "mesh_order": 2},
-    "geometry": {"rotate_x": 0, "rotate_y": 0, "rotate_z": 0,
-                 "x": space, "y": space, "z": 0, "z_span": wg_height, "theta_x": 0, "theta_y": 0,
-                 "x_span_bottom": 2*size, "x_span_top": size, "y_span_bottom": 2*size, "y_span_top": size}})
+    "material": { "material": mt["Si"], "mesh_order": 2 },
+    "geometry": {"x": space, "x_span_top":5,"x_span_bottom":10,
+                  "y": space,"y_span_top":5,"y_span_bottom":15,
+                  "z": 1, "z_span": 1,"delta_x": 1, "delta_y": 1}})
 ```
 
 |         Parameters         |     Default     |       Type       |                 Notes                 |
@@ -399,23 +280,21 @@ st.add_geometry(name="pyramid", type="Pyramid", property={
 | geometry.y_span_bottom |     -    |  float   | The width in the y-direction at the bottom of the pyramid. Restrained by condition: >=0. |
 |  geometry.x_span_top   |    -     |  float   | The length in the x-direction at the top of the pyramid. Restrained by condition: >=0. |
 |  geometry.y_span_top   |    -     |  float   |  The width in the y-direction at the top of the pyramid. Restrained by condition: >=0. |
-|    geometry.theta_x    |    0    |  float   | The tilt angle of the top pyramid structure along the x+ axis.  |
-|    geometry.theta_y    |    0    |  float   | The tilt angle of the top pyramid structure along the y+ axis.                              |
+|    geometry.delta_x    |    0    |  float   | The tilt angle of the top pyramid structure along the x+ axis.  |
+|    geometry.delta_y    |    0    |  float   | The tilt angle of the top pyramid structure along the y+ axis.                              |
 |     geometry.x      |    -     |  float   |  The x-coordinate of the center point position of the pyramid.    |
 |     geometry.y      |     -    |  float   |  The y-coordinate of the center point position of the pyramid.      |
 |     geometry.z      |     -    |  float   |   The z-coordinate of the center point position of the pyramid.    |
 |   geometry.z_span   |     -    |  float   | The thinckness of the pyramid. Restrained by condition: >0.  |
 |   geometry.z_min    |     -    |  float   |The z-coordinate of the bottom position of the height of the pyramid.      |
 |   geometry.z_max    |     -    |  float   |  The z-coordinate of the top position of the height of the pyramid.     |
-|  geometry.rotate_x  |    0    |  float   |    The angle around the x-axis in the rotation operation.        |
-|  geometry.rotate_y  |    0    |  float   |  The angle around the y-axis in the rotation operation.    |
-|  geometry.rotate_z  |    0    |  float   |  The angle around the z-axis in the rotation operation.        |
+
 |  material.material  |    -     | material | Material of the geometric structure. |
 | material.mesh_order |     -    | integer  | The order of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
 
 
-### 2.1.9 Analytical waveguide 
+### 2.1.8 Analytical waveguide 
 
 Integrate an analytical waveguide structure into the project by implementing the code `type='AnalyticalWaveguide'`.  we adopt the following codes to model an analytical waveguide with a function of side wall <InlineMath math="y=A*(L/2-x)^m+1.5" /> ,where A and L are user defined parameters. The str() is used for sweeping the structure, and f'{} is used to call the relative parameters:
 
@@ -424,13 +303,16 @@ Integrate an analytical waveguide structure into the project by implementing the
 ```python
 st.add_geometry(name='taper_symmetric_test', type='AnalyticalWaveguide',
                 property={'geometry': {'x': 0, 'x_span': L, 'y': 0, 'y_span': taper_width, 'z': 0, 'z_span': 0.22,
-                                       'equation1': f'{str(A)}*({str(L/2)}-x)^{str(m)}+1.5', 'nonsymmetric': False,
-                                       'tilt_location': 'user_defined', 'tilt_angle': 80, 'user_defined': 0.5, 'resolution': 1000},
+                                       'equation1': "x^2", 'nonsymmetric': False,
+                                      #  'equation2': "x^2",
+                                       'tilt_position': 'user_defined', 'tilt_angle': 80, 'user_defined': 0.5, 'resolution': 1000,
                           'material': {'material': mt['Si'], 'mesh_order': 2}})
 ```
 
 |Parameters|Default|Type|Notes|                            |
 | :--------------------: | :-----: | :------: | :----------------------------------------------------------: |
+|   geometry.tilt_angle    |   90   |  float   | Tilt angle of waveguide sidewall.   |
+|  geometry.tilt_position  |   top   |  string  | To ensure that the models are placed at the specified sizes on the different ratio of sidewalls. Selections are ['top', 'TOP', 'Top', 'bottom', 'BOTTOM', 'Bottom', 'middle', 'MIDDLE', 'Middle', 'user_defined']. |
 |    geometry.x_span     |     -    |  float   |                 The length of the waveguide in the x-direction. Restrained by condition: >0.                 |
 |     geometry.x_min     |     -    |  float   | The x-coordinate  value of the endpoint for the waveguide length.                                   |
 |     geometry.x_max     |      -   |  float   | The x-coordinate  value of the endpoint for the waveguide length.                                  |
@@ -441,8 +323,6 @@ st.add_geometry(name='taper_symmetric_test', type='AnalyticalWaveguide',
 |   geometry.equation2   |    -   |  string  |  When the geometry is asymmetric(`'nonsymmetric': True`), the customed function 2 used in modeling the analytical waveguide.      |
 | geometry.nonsymmetric  |  false  |   bool   |    To Control whether the waveguide is symmetric.                                 |
 |  geometry.resolution   |   10    | integer  | The resolution in modeling the analytical waveguide when working with functions.                                                             |
-|  geometry.tilt_angle   |   90    |  float   |  Tilt angle of the structure sidewall.        |
-| geometry.tilt_location |   top   |  string  | Different ways of tilting the sidewalls of the waveguide. Selections are ['top', 'TOP', 'Top', 'bottom', 'BOTTOM', 'Bottom', 'middle', 'MIDDLE', 'Middle', 'user_defined']. |
 | geometry.user_defined  |    1    |  float   |            To decide the ratio of sidewalls.                            |
 |     geometry.x      |    0    |  float   |    The x-coordinate of the center point position of the analytical waveguide.          |
 |     geometry.y      |    0    |  float   |    The y-coordinate of the center point position of the analytical waveguide.      |
@@ -450,15 +330,13 @@ st.add_geometry(name='taper_symmetric_test', type='AnalyticalWaveguide',
 |   geometry.z_span   |     -    |  float   | Setting the height of the analytical waveguide. Restrained by condition: >0.  |
 |   geometry.z_min    |      -   |  float   |   The z-coordinate of the bottom position of the height of the analytical waveguide.      |
 |   geometry.z_max    |     -    |  float   |   The z-coordinate of the top position of the height of the analytical waveguide.    |
-|  geometry.rotate_x  |    0    |  float   |    The angle around the x-axis in the rotation operation.        |
-|  geometry.rotate_y  |    0    |  float   |  The angle around the y-axis in the rotation operation.    |
-|  geometry.rotate_z  |    0    |  float   |  The angle around the z-axis in the rotation operation.        |
+
 |  material.material  |      -   | material |     Material of the geometric structure.         |
 | material.mesh_order |      -   | integer  | The order of material coverage when creating a geometric structure.Restrained by condition: >=0. |
 
 
 
-### 2.1.10 Rectangle
+### 2.1.9 Rectangle
 
 Incorporate a rectangle structure into the project by utilizing the code `type="Rectangle"`.
 
@@ -467,8 +345,9 @@ Incorporate a rectangle structure into the project by utilizing the code `type="
 ```python
 st.add_geometry(name="rectangle", type="Rectangle", property={
     "material": {"material": mt["Si"], "mesh_order": 2},
-    "geometry": {"rotate_x": 0, "rotate_y": 0, "rotate_z": 0,
-                 "x": 0, "x_span": size, "y": space, "y_span": wg_width, "z": 0, "z_span": wg_height, }})
+    "geometry": {
+                 "x": 0, "x_span": size, "y": space, "y_span": wg_width, "z": 0, "z_span": wg_height, 
+                 "tilt_angle":70, "tilt_position":"middle",}})
 ```
 
 |       Parameters        |     Default     |       Type       |                 Notes                 |
@@ -485,15 +364,14 @@ st.add_geometry(name="rectangle", type="Rectangle", property={
 |   geometry.z_span   |    -     |  float   | Setting the height of the rectangle. Restrained by condition: >0.  |
 |   geometry.z_min    |     -    |  float   |   The z-coordinate of the bottom position of the height of the rectangle.      |
 |   geometry.z_max    |     -    |  float   |   The z-coordinate of the top position of the height of the rectangle.    |
-|  geometry.rotate_x  |    0    |  float   |    The angle around the x-axis in the rotation operation.        |
-|  geometry.rotate_y  |    0    |  float   |  The angle around the y-axis in the rotation operation.    |
-|  geometry.rotate_z  |    0    |  float   |  The angle around the z-axis in the rotation operation.        |
+|  geometry.tilt_angle   |   90    |  float   |  Tilt angle of the structure sidewall.        |
+| geometry.tilt_position |   top   |  string  | Different ways of tilting the sidewalls of the waveguide. Selections are ['top', 'TOP', 'Top', 'bottom', 'BOTTOM', 'Bottom', 'middle', 'MIDDLE', 'Middle', 'user_defined']. |
 |  material.material  |    -     | material |     Material of the geometric structure.         |
 | material.mesh_order |     -    | integer  | The order of material coverage when creating a geometric structure.Restrained by condition: >=0. |
 
 
 
-### 2.1.11 Ring
+### 2.1.10 Ring
 
 Integrate a ring structure into the project by implementing the code `type="Ring" `. 
 
@@ -503,12 +381,16 @@ Integrate a ring structure into the project by implementing the code `type="Ring
 st.add_geometry(name="ring", type="Ring", property={
     "material": {"material": mt["Si"], "mesh_order": 2},
     "geometry": {"x": 0, "y": 2*space, "z": 0, "z_span": wg_height,
-                 "rotate_x": 0, "rotate_y": 0, "rotate_z": 0,
-                 "inner_radius": size-wg_width/2, "outer_radius": size+wg_width/2,}})
+                 "tilt_angle1": 70, "tilt_position": "bottom", "tilt_angle2": 90,
+                 "angle":70, "inner_radius": size-wg_width/2, "outer_radius": size+wg_width/2,}})
 ```
 
 |        Parameters         |     Default     |       Type       |                 Notes                 |
 | :-------------------: | :-----: | :------: | :---------------------------: |
+|   geometry.tilt_angle1    |   90   |  float   | First tilt angle of waveguide sidewall.   |
+|  geometry.tilt_position  |   top   |  string  | To ensure that the models are placed at the specified sizes on the different ratio of sidewalls. Selections are ['top', 'TOP', 'Top', 'bottom', 'BOTTOM', 'Bottom', 'middle', 'MIDDLE', 'Middle', 'user_defined']. |
+|   geometry.tilt_angle2    |   90   |  float   | Second tilt angle of waveguide sidewall.   |
+|   geometry.angle    |     -    |  float   |     The angle of the ring.         |
 | geometry.inner_radius |    -     |  float   | The inner radius of the ring. Restrained by condition: >0.  |
 | geometry.outer_radius |    -     |  float   | The outer radius of the ring. Restrained by condition: >0.  |
 |     geometry.x      |    0    |  float   |    The x-coordinate of the center point position of the ring.          |
@@ -517,46 +399,12 @@ st.add_geometry(name="ring", type="Ring", property={
 |   geometry.z_span   |     -    |  float   | Setting the height of the ring. Restrained by condition: >0.  |
 |   geometry.z_min    |     -    |  float   |   The z-coordinate of the bottom position of the height of the ring.      |
 |   geometry.z_max    |     -    |  float   |   The z-coordinate of the top position of the height of the ring.    |
-|  geometry.rotate_x  |    0    |  float   |    The angle around the x-axis in the rotation operation.        |
-|  geometry.rotate_y  |    0    |  float   |  The angle around the y-axis in the rotation operation.    |
-|  geometry.rotate_z  |    0    |  float   |  The angle around the z-axis in the rotation operation.        |
 |  material.material  |     -    | material |     Material of the geometric structure.         |
 | material.mesh_order |     -    | integer  | The order of material coverage when creating a geometric structure.Restrained by condition: >=0. |
 
 
 
-### 2.1.12 Sector
-
-Incorporate a sector structure into the project by employing the code `type="Sector"`.
-
-**Example:**
-
-```python
-st.add_geometry(name="sector", type="Sector", property={
-    "material": {"material": mt["Si"], "mesh_order": 2},
-    "geometry": {"radius": size, "angle": 75,
-                 "rotate_x": 0, "rotate_y": 0, "rotate_z": 0,
-                 "x": space, "y": 2*space, "z": 0, "z_span": wg_height}})
-```
-
-|       Parameters        |     Default     |       Type       |                 Notes                 |
-| :-----------------: | :-----: | :------: | :---------------------------: |
-|   geometry.radius   |   -      |  float   | The radius of the sector. Restrained by condition: >0.  |
-|   geometry.angle    |     -    |  float   |   The angle of the sector.        |
-|     geometry.x      |    0    |  float   |    The x-coordinate of the center point position of the sector.          |
-|     geometry.y      |    0    |  float   |    The y-coordinate of the center point position of the sector.      |
-|     geometry.z      |     -    |  float   | The z-coordinate of the center point position of the sector. |
-|   geometry.z_span   |     -    |  float   | Setting the height of the sector. Restrained by condition: >0.  |
-|   geometry.z_min    |     -    |  float   |   The z-coordinate of the bottom position of the height of the sector.      |
-|   geometry.z_max    |     -    |  float   |   The z-coordinate of the top position of the height of the sector.    |
-|  geometry.rotate_x  |    0    |  float   |    The angle around the x-axis in the rotation operation.        |
-|  geometry.rotate_y  |    0    |  float   |  The angle around the y-axis in the rotation operation.    |
-|  geometry.rotate_z  |    0    |  float   |  The angle around the z-axis in the rotation operation.        |
-|  material.material  |     -    | material |     Material of the geometric structure.         |
-| material.mesh_order |     -    | integer  | The order of material coverage when creating a geometric structure.Restrained by condition: >=0. |
-
-
-### 2.1.13 Triangle
+### 2.1.11 Triangle
 
 Integrate a triangle structure into the project by implementing the code `type="Triangle"`.
 
@@ -565,33 +413,26 @@ Integrate a triangle structure into the project by implementing the code `type="
 ```python
 st.add_geometry(name="triangle", type="Triangle", property={
     "material": {"material": mt["Si"], "mesh_order": 2},
-    "geometry": {"point_1_x": 0, "point_1_y": 0, "point_2_x": 0, "point_2_y": size,
-                 "point_3_x": size, "point_3_y": size,
+    "geometry": {"control_points":[{"x": 0, "y": 0}, {"x": 0, "y": 2}, {"x": 2, "y": 2}],
                  "x": 2*space, "y": 2*space, "z": 0, "z_span": wg_height,
-                 "rotate_x": 0, "rotate_y": 0, "rotate_z": 0}})
+                 "tilt_angle":70, "tilt_position":"middle"}})
 ```
 
 |       Parameters        |     Default     |       Type       |                 Notes                 |
 | :-----------------: | :-----: | :------: | :---------------------------: |
-| geometry.point_1_x  |     -    |  float   |     The x-coordinate of endpoint when constructing a triangle.          |
-| geometry.point_1_y  |     -    |  float   | The y-coordinate of endpoint when constructing a triangle.      |
-| geometry.point_2_x  |     -    |  float   |    The x-coordinate of endpoint when constructing a triangle.      |
-| geometry.point_2_y  |     -    |  float   |  The y-coordinate of endpoint when constructing a triangle.      |
-| geometry.point_3_x  |     -    |  float   |    The x-coordinate of endpoint when constructing a triangle.    |
-| geometry.point_3_y  |     -    |  float   |   The y-coordinate of endpoint when constructing a triangle.    |
+| geometry.control_points  |    -     |  float   |  The coordinate of the points for generating a Bezier curve.      |
 |     geometry.x      |    -     |  float   |  The x-coordinate of the center point position of the triangle.    |
 |     geometry.y      |     -    |  float   |  The y-coordinate of the center point position of the triangle.      |
 |     geometry.z      |     -    |  float   |   The z-coordinate of the center point position of the triangle.    |
 |   geometry.z_span   |     -    |  float   | The thinckness of the triangle. Restrained by condition: >0.  |
 |   geometry.z_min    |      -   |  float   |The z-coordinate of the bottom position of the height of the triangle.      |
 |   geometry.z_max    |     -    |  float   |  The z-coordinate of the top position of the height of the triangle.     |
-|  geometry.rotate_x  |    0    |  float   |    The angle around the x-axis in the rotation operation.        |
-|  geometry.rotate_y  |    0    |  float   |  The angle around the y-axis in the rotation operation.    |
-|  geometry.rotate_z  |    0    |  float   |  The angle around the z-axis in the rotation operation.        |
+|   geometry.tilt_angle    |   90   |  float   | Tilt angle of waveguide sidewall.   |
+|  geometry.tilt_position  |   top   |  string  | To ensure that the models are placed at the specified sizes on the different ratio of sidewalls. Selections are ['top', 'TOP', 'Top', 'bottom', 'BOTTOM', 'Bottom', 'middle', 'MIDDLE', 'Middle', 'user_defined']. |
 |  material.material  |     -    | material | Material of the geometric structure. |
 | material.mesh_order |     -    | integer  | The order of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
-### 2.1.14 Mesh order
+### 2.1.12 Mesh order
 
 The mesh order decides the coverage when creating a geometric structure.
 
@@ -654,9 +495,7 @@ st.add_doping(name="Uniform", type="p", property={
 |   geometry.z_span   |     -    |  float   | The thinckness in z direction of doping box. Restrained by condition: >0.  |
 |   geometry.z_min    |    -     |  float   |The z-coordinate of the bottom position of the height of doping box.      |
 |   geometry.z_max    |    -     |  float   |  The z-coordinate of the top position of the height of doping box.     |
-|  geometry.rotate_x  |    0    |  float   |    The angle around the x-axis in the rotation operation.        |
-|  geometry.rotate_y  |    0    |  float   |  The angle around the y-axis in the rotation operation.    |
-|  geometry.rotate_z  |    0    |  float   |  The angle around the z-axis in the rotation operation.        |
+
 | general.distribution_function |      -   |  str  |    To set the type of distribution function for doping region. Selections are ['constant', 'gaussian']. When it's set to 'constant', constant doping is applied and only 'concentration' is required. When it's set to 'gaussian', Gaussian function doping is applied, and 'concentration', 'ref_concentration', 'junction_width', 'source_face'  are required.       |
 |     general.concentration     |     -    |  float |  To set the doping concentration in non-diffusion area.    |
 |      general.source_face      |     -    |  str  | To set the doping source surface. Available when distribution_function is 'gaussian'. Selections are ['low_x', 'low_y','low_z'].'lower_x' means the source face is 'x=x_min'. Similarly for the rest. There is no diffusion area on the edge of source face. As for the other edges, there is a diffusion area respectively within the doping box. |

@@ -153,7 +153,7 @@ simu.add(name=simu_name+'_cal_mode', simulation_name=simu_name, source_name='sou
 
 Calculating beam overlap involves a two-step process within the FDE module.
 
-Firstly, it's necessary to acquire the FDE beam results and extract the relevant data.
+Firstly, it's necessary to acquire the FDE beam results and  extract the relevant data.
 
 ```python
 run_fde_beam_and_extract(self, *, property, export_csv=False, show=False, savepath="")

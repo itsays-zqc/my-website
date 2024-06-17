@@ -10,7 +10,7 @@ In this section, we support to extract simulation result data, exporting data re
 
 |                        **Parameters**                        |                         Description                          |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
-|                       PowerAttributes                        | The following are power related physical attributes. Literal['E', 'Ex', 'Ey', 'Ez', 'H', 'Hx', 'Hy', 'Hz', 'Px', 'Py', 'Pz', 'Energy density'] |
+|                       PowerAttributes                        | The following are power related physical attributes. Literal["E", "Ex", "Ey", "Ez", "H", "Hx", "Hy", "Hz", "Px", "Py", "Pz", "Energy density"] |
 |                        ModeAttributes                        | The following are mode related physical attributes. Literal["a", "b", "n", "p", "N", "P", "t_forward", "t_backward", "T_forward", "T_backward"] |
 |                                                              | The following are other attributes which can be extracted. Literal["TEratio", "neff_real", "neff_imag", "ng_real", "ng_imag", "wavelength_nm", "loss_dBpcm"] |
 
@@ -19,14 +19,14 @@ In this section, we support to extract simulation result data, exporting data re
 |      data      |          To decide what type/field data will be extracted.           |
 |   export_csv   |          Whether to export a csv. Default as False.          |
 |      show      | Whether to show the picture. If set to False, the picture will be saved instead. Default as False. |
-|    savepath    |              The save path of picture . Default as 'a'.              |
+|    savepath    |              The save path of picture . Default as "a".              |
 |     target     |    How the data is organized/displayed. Default as None.     |
 |   attribute    | Which attribute will extracted, in few cases this parameter is not needed. Default as None. |
 |      real      |      Whether to add real part of data. Default as True.      |
-|      imag      | Whether to add imag part of data. If both real and imag is activate, 'ABS' data will be extracted. Default as True. |
+|      imag      | Whether to add imag part of data. If both real and imag is activate, "ABS" data will be extracted. Default as True. |
 |     plot_x     |         The selection of x axis of heatmap or line plot.         |
 |     plot_y     |               The selection of y axis of heatmap.                |
-|     **kwargs     | Other visualization parameters. For example: 'monitor_name' , 'mode_expansion_name' for 'fdtd:mode_expansion'. |
+|     **kwargs     | Other visualization parameters. For example: "monitor_name" , "mode_expansion_name" for "fdtd:mode_expansion". |
 
 
 
@@ -44,13 +44,13 @@ extract(
         self,
         *,
         # target - intensity
-        data: Literal['calculate_modes'],
+        data: Literal["calculate_modes"],
         attribute: PowerAttributes/ModeAttributes/OtherAttributes
         export_csv=False, export_mat=False, export_zbf=False, 
         show=False, 
         real=True, 
         imag=True, 
-        savepath:Any = 'a',
+        savepath:Any = "a",
         mode: int,
     )
 ```
@@ -58,8 +58,8 @@ extract(
 **Example:**
 
 ```python
-result_fde.extract(data='calculate_modes', savepath=f'{plot_path}{k}_mode{m}',
-                   attribute='E', mode=m, real=True, imag=True, **export_options, show=False)
+result_fde.extract(data="calculate_modes", savepath=f"{plot_path}{k}_mode{m}",
+                   attribute="E", mode=m, real=True, imag=True, **export_options, show=False)
 ```
 
 
@@ -73,11 +73,11 @@ extract(
         self,
         *,
         # target - table
-        data: Literal['farfield_fde'],
+        data: Literal["farfield_fde"],
         attribute: PowerAttributes,
         
         show=False, 
-        export_csv=False, export_mat=False, export_zbf=False, real=True, imag=True, savepath: Any = 'a',
+        export_csv=False, export_mat=False, export_zbf=False, real=True, imag=True, savepath: Any = "a",
         mode: int,
     )
 ```
@@ -85,8 +85,8 @@ extract(
 **Example:**
 
 ```python
-fde_res.extract(data='farfield_fde', savepath=f'{plot_path}05_{simu_name}_far_field',
-                                attribute='E', mode=0, export_csv=True)
+fde_res.extract(data="farfield_fde", savepath=f"{plot_path}05_{simu_name}_far_field",
+                                attribute="E", mode=0, export_csv=True)
 ```
 
 
@@ -99,9 +99,9 @@ To extract the result of meshing structure.
 extract(
         self,
         *,
-        data: Literal['mesh_structure'],
-        savepath:Any = 'a',
-        target: Literal['intensity'] = 'intensity',
+        data: Literal["mesh_structure"],
+        savepath:Any = "a",
+        target: Literal["intensity"] = "intensity",
         export_csv=False, export_mat=False, export_zbf=False,
         show=False,
     )
@@ -125,15 +125,15 @@ To extract the result of frequency analysis.
 extract(
         self,
         *,
-        target: Literal['line'] = 'line',
-        data: Literal['frequency_analysis'],
-        attribute: Literal['neff', 'group_index', 'loss', 'polarization'],
+        target: Literal["line"] = "line",
+        data: Literal["frequency_analysis"],
+        attribute: Literal["neff", "group_index", "loss", "polarization"],
         
         export_csv=False, export_mat=False, export_zbf=False, 
         show=False, 
         real=True, 
         imag=True, 
-        savepath:Any = 'a',
+        savepath:Any = "a",
         plot_x: OptStr=None
     )
 ```
@@ -141,7 +141,7 @@ extract(
 **Example:**
 
 ```python
-result_fde.extract(data="frequency_analysis", savepath=f'{plot_path}{k}_freq_sweep_neff',
+result_fde.extract(data="frequency_analysis", savepath=f"{plot_path}{k}_freq_sweep_neff",
                                    attribute="neff", real=True, imag=True, export_csv=True, export_mat=True, show=False)
 
 ```
@@ -161,16 +161,16 @@ extract(
             self,
             *,
             data: Literal[
-                'eme_propagate:facet_data',
+                "eme_propagate:facet_data",
             ],
-            export_csv=False, export_mat=False, export_zbf=False, real=True, imag=True, savepath: Any = 'a',
+            export_csv=False, export_mat=False, export_zbf=False, real=True, imag=True, savepath: Any = "a",
     )
 ```
 
 **Example:**
 
 ```python
-eme_res.extract(data='eme_propagate:facet_data', savepath=plot_path, real=True, imag=True, export_csv=True)
+eme_res.extract(data="eme_propagate:facet_data", savepath=plot_path, real=True, imag=True, export_csv=True)
 ```
 
 
@@ -184,12 +184,12 @@ extract(
         self,
         *,
         data: Literal[
-            'eme_propagate:monitor',
+            "eme_propagate:monitor",
         ],
         attribute: PowerAttributes,
         monitor_name: str,
         
-        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = 'a',
+        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = "a",
         plot_x: OptStr=None, plot_y: OptStr=None,
     )
 ```
@@ -214,11 +214,11 @@ extract(
         self,
         *,
         data: Literal[
-            'propagation_sweep:monitor',
+            "propagation_sweep:monitor",
         ],
         attribute: PowerAttributes,
         monitor_name: str,
-        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = 'a',
+        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = "a",
         plot_x: OptStr=None, plot_y: OptStr=None,
     )
 ```
@@ -242,12 +242,12 @@ extract(
         self,
         *,
         data: Literal[
-            'wavelength_sweep:monitor',
+            "wavelength_sweep:monitor",
         ],
         attribute: PowerAttributes,
         monitor_name: str,
         
-        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = 'a',
+        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = "a",
         plot_x: OptStr=None, plot_y: OptStr=None,
     )
 ```
@@ -270,10 +270,10 @@ extract(
         self,
         *,
         data: Literal[
-            'eme_propagate:smatrix',
+            "eme_propagate:smatrix",
         ],
-        target: Literal['intensity'] = 'intensity',
-        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = 'a',
+        target: Literal["intensity"] = "intensity",
+        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = "a",
         plot_x: OptStr=None, plot_y: OptStr=None,
     )
 ```
@@ -296,12 +296,12 @@ extract(
         self,
         *,
         # target - intensity
-        data: Literal['eme_propagate:port_mode_info'],
-        target: Literal['intensity'] = 'intensity',
-        attribute: Literal['E', 'H'],
+        data: Literal["eme_propagate:port_mode_info"],
+        target: Literal["intensity"] = "intensity",
+        attribute: Literal["E", "H"],
         port_name: str,
         
-        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = 'a',
+        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = "a",
         plot_x: OptStr=None, plot_y: OptStr=None,
         mode: Any = None,
     )
@@ -325,10 +325,10 @@ extract(
         self,
         *,
         # target - intensity
-        data: Literal['eme_propagate:port_mesh_structure'],
+        data: Literal["eme_propagate:port_mesh_structure"],
         port_name: str,
-        target: Literal['line', 'intensity'] = 'intensity',
-        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = 'a',
+        target: Literal["line", "intensity"] = "intensity",
+        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = "a",
         plot_x: OptStr=None, plot_y: OptStr=None,
     )
 ```
@@ -336,10 +336,10 @@ extract(
 **Example:**
 
 ```python
-eme_res.extract(data='eme_propagate:port_mesh_structure',
-                                      savepath=f'{plot_path}{kL[3]}_eme_structure_{port_name}',
-                                      port_name=port_name, target='intensity',
-                                      # plot_x='y', plot_y='z', export_csv=False, show=False
+eme_res.extract(data="eme_propagate:port_mesh_structure",
+                                      savepath=f"{plot_path}{kL[3]}_eme_structure_{port_name}",
+                                      port_name=port_name, target="intensity",
+                                      # plot_x="y", plot_y="z", export_csv=False, show=False
                                       )
 ```
 
@@ -354,12 +354,12 @@ extract(
         self,
         *,
         data: Literal[
-            'eme_propagate:cell_mesh_structure',
+            "eme_propagate:cell_mesh_structure",
         ],
         target: Literal["intensity", "line"],
         cell_params: str,
         
-        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = 'a',
+        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = "a",
         plot_x: OptStr=None, plot_y: OptStr=None,
     )
 ```
@@ -367,9 +367,9 @@ extract(
 **Example:**
 
 ```python
-eme_res.extract(data='eme_propagate:cell_mesh_structure',
-                                      savepath=f'{plot_path}{kL[4]}_eme_c{cell_index}_index',
-                                      cell_params='c' + str(cell_index), target='intensity', plot_x='y', plot_y='z',
+eme_res.extract(data="eme_propagate:cell_mesh_structure",
+                                      savepath=f"{plot_path}{kL[4]}_eme_c{cell_index}_index",
+                                      cell_params="c" + str(cell_index), target="intensity", plot_x="y", plot_y="z",
                                       # export_csv=False, show=False
                                       )
 ```
@@ -383,12 +383,12 @@ def extract(
         self,
         *,
         data: Literal[
-            'eme_propagate:port_overlap',
+            "eme_propagate:port_overlap",
         ],
-        target: Literal['line'] = 'line',
+        target: Literal["line"] = "line",
         port_name: str,
         
-        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = 'a',
+        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = "a",
         plot_x: OptStr=None, plot_y: OptStr=None,
     ) 
 ```
@@ -401,13 +401,13 @@ Get the result of cell mode information of EME propagation.
 extract(
         self,
         *,
-        target: Literal['intensity'] = 'intensity',
+        target: Literal["intensity"] = "intensity",
         data: Literal[
-            'eme_propagate:cell_mode_info',
+            "eme_propagate:cell_mode_info",
         ],
-        attribute: Literal['E', 'H'],
+        attribute: Literal["E", "H"],
         cell_params: str,
-        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = 'a',
+        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = "a",
         plot_x: OptStr=None, plot_y: OptStr=None,
         mode: Any = None,
     )
@@ -422,13 +422,13 @@ extract(
         self,
         *,
         data: Literal[
-            'eme_propagate:prop_field',
+            "eme_propagate:prop_field",
         ],
         # target: intensity",
         attribute:PowerAttributes,
         cell_params: str,
         
-        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = 'a',
+        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = "a",
         plot_x: OptStr=None, plot_y: OptStr=None,
     )
 ```
@@ -444,8 +444,8 @@ extract(
         data: Literal[
             "eme_propagate:internal_s",
         ],
-        target: Literal['intensity'] = 'intensity',
-        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = 'a',
+        target: Literal["intensity"] = "intensity",
+        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = "a",
         plot_x: OptStr=None, plot_y: OptStr=None,
     ) 
 ```
@@ -465,10 +465,10 @@ Get the result of cell p matrix/cell overlap/cell S/propagation S
             "eme_propagate:cell_s",
             "eme_propagate:prop_s",
         ],
-        target: Literal['intensity'] = 'intensity',
+        target: Literal["intensity"] = "intensity",
         cell_params: str,
         
-        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = 'a',
+        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = "a",
         plot_x: OptStr=None, plot_y: OptStr=None,
     )
 ```
@@ -486,12 +486,12 @@ Get the result of power monitor data of FDTD.
 extract(
         self,
         *,
-        data: Literal['fdtd:power_monitor'],
-        target: Literal['intensity', 'line'],
+        data: Literal["fdtd:power_monitor"],
+        target: Literal["intensity", "line"],
         attribute: Union[PowerAttributes, Literal["T"]],
         monitor_name: str,
         
-        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = 'a',
+        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = "a",
         plot_x: OptStr=None, plot_y: OptStr=None,
         wavelength: Optional[Any] = None,
     )
@@ -500,8 +500,13 @@ extract(
 **Example:**
 
 ```python
-fdtd_res.extract(data='fdtd:power_monitor', savepath=f'{plot_path}{kL[6]}_TransVsLambda_power',
-                         monitor_name='through', target='line', plot_x='wavelength', attribute='T', real=True, imag=False, export_csv=True, export_mat=True, show=False)
+
+fdtd_res.extract( data="fdtd:power_monitor", savepath="path_name",
+                target="intensity", attribute="E", real=True, imag=False, monitor_name="monitor_name", plot_x="x", plot_y="y", show=False, export_csv=True)
+
+fdtd_res.extract( data="fdtd:power_monitor", savepath="path_name",
+                target="line", attribute="T", real=True, imag=False, monitor_name="monitor_name", plot_x="wavelength", show=False, export_csv=True)
+            
 ```
 
 
@@ -514,12 +519,12 @@ Get the result of FDTD time monitor data.
 extract(
         self,
         *,
-        data: Literal['fdtd:time_monitor'],
-        target: Literal['intensity', 'line'],
+        data: Literal["fdtd:time_monitor"],
+        target: Literal["intensity", "line"],
         attribute: Union[PowerAttributes, Literal["T"]],
         monitor_name: str,
         
-        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = 'a',
+        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = "a",
         plot_x: OptStr=None, plot_y: OptStr=None,
         wavelength: Optional[Any] = None,
     )
@@ -528,8 +533,19 @@ extract(
 **Example:**
 
 ```python
-fdtd_res.extract(data='fdtd:time_monitor', savepath=f'{plot_path}{kL[6]}_TransVstime',
-                         monitor_name='through', target='line', plot_x='time(fs)', attribute='E', real=True, imag=False, export_csv=True, export_mat=True, show=False)
+
+fdtd_res.extract(data='fdtd:time_monitor', savepath=f'{plot_path}08_TransVstime',
+                         monitor_name='time_monitor_name', target='line', attribute='E',plot_x='time', real=True, imag=False, export_csv=True, show=False)
+
+fdtd_res.extract( data="fdtd:time_monitor", savepath=f"{plot_path}08_linear",
+                target="line", attribute="E", real=True, imag=False, monitor_name="time_monitor_1D", time=f"{0}", plot_x="y", show=False, export_csv=True)
+
+fdtd_res.extract( data="fdtd:time_monitor", savepath=f"{plot_path}08_2D",
+                target="intensity", attribute="E", real=True, imag=False, monitor_name="time_monitor_2D", time=f"{0}", plot_x="y",plot_y="z", show=False, export_csv=True)
+
+fdtd_res.extract( data="fdtd:time_monitor", savepath=f"{plot_path}08_time_3D",
+                target="intensity", attribute="E", real=True, imag=False, monitor_name="time_monitor_3D", time=f"{0}", x=f"{0}", plot_x="y",plot_y="z", show=False, export_csv=True)
+
 ```
 
 
@@ -542,11 +558,11 @@ Get the result of FDTD mode expansion data.
 extract(
         self,
         *,
-        data: Literal['fdtd:mode_expansion'],
+        data: Literal["fdtd:mode_expansion"],
         target: Literal["intensity", "line"],
         attribute: ModeAttributes,
         
-        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = 'a',
+        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = "a",
         plot_x: OptStr=None, plot_y: OptStr=None,
         mode: Optional[Any] = None,
         wavelength: Optional[Any] = None,
@@ -558,10 +574,47 @@ extract(
 **Example:**
 
 ```python
-fdtd_res.extract(data='fdtd:mode_expansion', savepath=f'{plot_path}{kL[5]}_TransVsLambda_mode=0',
-                         monitor_name='through', target='line', plot_x='wavelength', mode=0, attribute='T_forward', real=True, imag=True, export_csv=True, export_mat=True, show=False)
+
+me_res.extract( data="fdtd:mode_expansion", savepath=f"{plot_path}04_TransVsOrder",
+                target="line", attribute="T_forward", real=True, imag=True, monitor_name="through", mode_expansion_name="me_through", wavelength=f"{wavelength}", plot_x="mode", show=False, export_csv=True, )
+me_res.extract( data="fdtd:mode_expansion", savepath=f"{plot_path}05_TransVsLambda_mode=1",
+                target="line", attribute="T_forward", real=True, imag=True, mode_expansion_name="me_through", mode=0, plot_x="wavelength", show=False, export_csv=True, )
+me_res.extract( data="fdtd:mode_expansion", savepath=f"{plot_path}05_mode_expansion",
+                target="intensity", attribute="T_forward", real=True, imag=False, monitor_name="through", mode_expansion_name="me_through", plot_x="mode", plot_y="wavelength", show=False, **export_options, )
+            
 
 ```
+### 8.3.6 FDTD:mode expansion information
+
+Get the result of FDTD mode expansion information.
+
+```python
+extract(
+        self,
+        *,
+        data: Literal["fdtd:mode_expansion_mode_info"],
+        target: Literal["intensity", "line"],
+        attribute: Literal["E", "H", "Loss", "Neff", "TE Polarization Fraction"],
+        
+        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = "a",
+        monitor_name: str,
+        mode_expansion_name: str,
+        plot_x: OptStr=None, plot_y: OptStr=None,
+        mode: Any = None,
+        wavelength: Any = None,
+        )
+```
+
+**Example:**
+
+```python
+me_res.extract( data="fdtd:mode_expansion_mode_info", savepath=f"{plot_path}05_TransVsLambda_modeinfo",
+                target="line", attribute="Neff", real=True, imag=False, monitor_name="through", mode_expansion_name="me_through", plot_x="wavelength", show=False, **export_options, )
+me_res.extract( data="fdtd:mode_expansion_mode_info", savepath=f"{plot_path}03_me_throughmode_info",
+                monitor_name="through", mode_expansion_name="me_through", target="intensity", attribute="E", mode=0, wavelength=f"{wavelength}", real=True, imag=True, **export_options, show=False, )
+           
+```
+
 
 
 
@@ -573,11 +626,11 @@ Get the result of FDTD port mode information.
 extract(
         self,
         *,
-        data: Literal['fdtd:port_mode_info'],
-        target: Literal['intensity', 'line'],
-        attribute: Literal['E', 'H', 'Loss', 'Neff', 'TE Polarization Fraction'],
+        data: Literal["fdtd:port_mode_info"],
+        target: Literal["intensity", "line"],
+        attribute: Literal["E", "H", "Loss", "Neff", "TE Polarization Fraction"],
         
-        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = 'a',
+        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = "a",
         port_name: str,
         mode: Any = None,
         plot_x: OptStr=None, plot_y: OptStr=None,
@@ -587,8 +640,14 @@ extract(
 **Example:**
 
 ```python
-fdtd_res.extract(data='fdtd:port_mode_info', savepath=f'{plot_path}{kL[3]}_left_port_mode',
-                             port_name='left_port', target='intensity', attribute='E', mode=0, export_csv=True)
+""" 02_top_profile """
+fdtd_res.extract(data="fdtd:power_monitor", savepath=f"{plot_path}{kL[2]}_profile", monitor_name="z_normal", 
+                    target="intensity", attribute="E", wavelength=f"{wavelength}",  export_csv=True)
+
+""" 03port1_modeprofile """
+fdtd_res.extract(data="fdtd:port_mode_info", savepath=f"{plot_path}{kL[3]}_port_1_profile",
+                    target="intensity", attribute="E", port_name="port_1", mode=0, export_csv=True)
+                       
 ```
 
 
@@ -601,11 +660,11 @@ Get the result of FDTD mode source information.
 extract(
         self,
         *,
-        data: Literal['fdtd:mode_source_mode_info'],
-        target: Literal['intensity', 'line'],
-        attribute: Literal['E', 'H', 'Loss', 'Neff', 'TE Polarization Fraction'],
+        data: Literal["fdtd:mode_source_mode_info"],
+        target: Literal["intensity", "line"],
+        attribute: Literal["E", "H", "Loss", "Neff", "TE Polarization Fraction"],
         
-        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = 'a',
+        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = "a",
         source_name: str,
         mode: Any = None,
         plot_x: OptStr=None, plot_y: OptStr=None,
@@ -615,40 +674,16 @@ extract(
 **Example:**
 
 ```python
-fdtd_res.extract(data='fdtd:mode_source_mode_info', savepath=f'{plot_path}{kL[2]}_source_modeprofile',
-                         source_name='source', target='intensity', attribute='E', mode=0, real=True, imag=True, **export_options, show=False)
+fdtd_res.extract( data="fdtd:mode_source_mode_info", savepath=f"{plot_path}02_source_modeprofile",
+                target="intensity", attribute="E", real=True, imag=True, source_name="source", show=False, **export_options, )
+
+fdtd_res.extract( data="fdtd:mode_source_mode_info", savepath=f"{plot_path}02_source_modeinfo",
+                target="line", attribute="Neff", real=True, imag=True, source_name="source", plot_x="wavelength", show=False, **export_options, )
+
+            
 
 ```
 
-
-
-### 8.3.6 FDTD:mode expansion information
-
-Get the result of FDTD mode expansion information.
-
-```python
-extract(
-        self,
-        *,
-        data: Literal['fdtd:mode_expansion_mode_info'],
-        target: Literal['intensity', 'line'],
-        attribute: Literal['E', 'H', 'Loss', 'Neff', 'TE Polarization Fraction'],
-        
-        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = 'a',
-        monitor_name: str,
-        mode_expansion_name: str,
-        plot_x: OptStr=None, plot_y: OptStr=None,
-        mode: Any = None,
-        wavelength: Any = None,
-        )
-```
-
-**Example:**
-
-```python
-fdtd_res.extract(data='fdtd:mode_expansion_mode_info', savepath=f'{plot_path}{kL[3]}_me_throughmode_info',
-                         monitor_name='through', target='intensity', attribute='E', mode=0, wavelength=f'{wavelength}', real=True, imag=True, **export_options, show=False)
-```
 
 
 
@@ -666,11 +701,11 @@ Get the result of sweep data.
 extract(
         self,
         *,
-        data: Literal['sweep'],
-        target: Literal['intensity', 'line'],
+        data: Literal["sweep"],
+        target: Literal["intensity", "line"],
         attribute: str,
         monitor_name: Optional[str] = None,
-        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = 'a',
+        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = "a",
         plot_x: OptStr=None,
         **kwargs,
     )
@@ -679,14 +714,14 @@ extract(
 **Example:**
 
 ```python
-swp_res.extract(data='sweep', target='line', attribute='S', plot_x='sweep_gap',
-                        savepath=f'{plot_path}/01 S', export_csv=True)
+swp_res.extract(data="sweep", target="line", attribute="S", plot_x="sweep_gap",
+                        savepath=f"{plot_path}/01 S", export_csv=True)
 
 ```
 
 ```python
-swp_res.extract(data='mode_expansion', target='line', attribute='T_forward', plot_x='sweep_gap', monitor_name='through',
-                savepath=f'{plot_path}/03 {resultL[2]}', export_csv=True, )
+swp_res.extract(data="mode_expansion", target="line", attribute="T_forward", plot_x="sweep_gap", monitor_name="through",
+                savepath=f"{plot_path}/03 {resultL[2]}", export_csv=True, )
 ```
 
 
@@ -699,9 +734,9 @@ Get the result of smatrix sweep data.
 extract(
         self,
         *,
-        data: Literal['smatrix_sweep'],
-        target: Literal['intensity', 'line'],
-        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = 'a',
+        data: Literal["smatrix_sweep"],
+        target: Literal["intensity", "line"],
+        export_csv=False, export_mat=False, export_zbf=False, show=False, real=True, imag=True, savepath:Any = "a",
         plot_x: OptStr=None,
     )
 ```
@@ -709,8 +744,8 @@ extract(
 **Example:**
 
 ```python
-smatrix_res.extract(data='smatrix_sweep', savepath=f'{plot_path}{kL[8]}_smatrix_sweep',
-                            target='line', plot_x='wavelength', real=True, imag=True, export_csv=True, export_mat=True, show=False)
+smatrix_res.extract(data="smatrix_sweep", savepath=f"{plot_path}{kL[8]}_smatrix_sweep",
+                            target="line", plot_x="wavelength", real=True, imag=True, export_csv=True, export_mat=True, show=False)
 ```
 
 </div>

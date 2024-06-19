@@ -384,7 +384,7 @@ if __name__ == "__main__":
                run_options=RunOptions(calculate_modes=True, run=True, run_length_sweep=True, extract=True))
 ```
 
-### 2 Output Results
+### 3. Output Results
 
 #### 2.1 ModeProfile
 

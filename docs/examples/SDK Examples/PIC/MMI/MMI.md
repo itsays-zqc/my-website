@@ -1,7 +1,7 @@
 import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
 
-# 1X2 MMI
+# Multi-Mode Interference
 
 <font face = "Calibri">
 

@@ -1,0 +1,8 @@
+{
+  "label": "Passive Devices",
+  "position":1,
+  "link": {
+    "type": "generated-index",
+    "description": "This is passive devices examples library."
+  }
+}

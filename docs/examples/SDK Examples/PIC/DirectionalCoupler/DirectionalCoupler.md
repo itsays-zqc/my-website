@@ -980,7 +980,7 @@ After running the program, we can obtain a series of corresponding output result
 
 </div>
 
-| ![02_Trans_CrossVsLambda_power](02_trans_crossvslambda_power.png) | ![02_Trans_ThroughVsLambda_power](02_trans_throughvslambda_power.png) |
+| ![02_Trans_CrossVsLambda_power](02_trans_crossvslambda_power1.png) | ![02_Trans_ThroughVsLambda_power](02_trans_throughvslambda_power.png) |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 
 

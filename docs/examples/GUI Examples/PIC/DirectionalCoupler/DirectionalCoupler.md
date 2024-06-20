@@ -551,15 +551,13 @@ After running the program, we can obtain a series of corresponding output result
 
 </div>
 
-| ![02_Trans_CrossVsLambda_power](02_Trans_CrossVsLambda_power.png) | ![02_Trans_ThroughVsLambda_power](02_Trans_ThroughVsLambda_power.png) |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
 
 
 
 <div class="text-justify">
 
 
-4. TE0 mode transmittance at Cross output port and TRU output port for different wavelengths,,from 1.50 *μ*m to 1.60 *μ*m.
+1. TE0 mode transmittance at Cross output port and TRU output port for different wavelengths,,from 1.50 *μ*m to 1.60 *μ*m.
 
 </div>
 

@@ -4,31 +4,45 @@ sidebar_position: 9
 
 # Run
 
-<font face = "Calibri">
-
 <div class="text-justify">
 
-- **Feature description:**
-Run simulation
+<font face = "Calibri">
+
+
+
+## 1 Check Memory
+
+**Feature Entry**: Check Memory button in the Home tab of the Ribbon menu.
+
+**Interaction Logic**: Clicking the Check Memory button prompts the software to display a popup window showing estimated memory information.
+
+|![](../../static/img/tutorial/checkmemory/checkmemory1.png)|
+| :------------------------------------------------------------: |
+
+
+## 2 Run
+
+
+- **Feature description** : Call the "Solver" or "Solver+Analysis" activated in the project for simulation calculation.
+
+|![](../../static/img/tutorial/checkmemory/2.png)|
+| :------------------------------------------------------------: |
 
 - ***Notes:***
 
-1. Please save all the settings, before running simulation.
+1) Save the project project project and then run the simulation. If not saved, the following dialog box will pop up. Click "Conform" to save the project and run the simulation.
 
-2. If user chooses FDE simulation, the work flow is Run->Run FDE -> FDE Analysis -> Calculate modes.
+|![](../../static/img/tutorial/checkmemory/3.png)|
+| :------------------------------------------------------------: |
 
-3. If user chooses EME simulation, the work flow is Run->Run EME -> EME Analysis->EME propagation / EME sweep / Wavelength sweep.
+2) Before the version in the project is completed, new simulations cannot be run, otherwise the following dialog box will pop up.
 
-4. If user chooses FDTD simulation, the work flow is Run->Run FDTD.
+3) If the parameters of the project are incorrect or the excitation source is not set in FDTD simulation, an error will be reported in the message
 
-5. Supports simulation memory requirements check.
+4) The estimated memory of the model is greater than the available memory of the current computing resource, and a warning of insufficient memory will be reported in the message
 
-<div class="centered">
 
-!['run'](../../static/img/tutorial/run/run.png)
-
-</div>
-
-</div>
 
 </font>
+
+</div>

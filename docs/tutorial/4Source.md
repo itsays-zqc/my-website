@@ -1,5 +1,5 @@
 ---
-sidebar_position: 5
+sidebar_position: 4
 ---
 
 # Source
@@ -11,11 +11,11 @@ sidebar_position: 5
 ## 1 Mode Source
 
 **Feature Description:**
-The mode source is used to inject a guided mode into the simulation region in FDTD. Y
+The mode source is used to inject a guided mode into the simulation region in FDTD.
 
 ### 1.1 General tab
 
-|!['Source1'](../../static/img/tutorial/Source/Source1.png)|
+|![](../../static/img/tutorial/Source/Source1.png)|
 | :------------------------------------------------------------: |
 
 
@@ -36,7 +36,7 @@ The mode source is used to inject a guided mode into the simulation region in FD
 ③ Mode Index: This field sets the ID number of mode source calculated modes using FDE Analysis. It is only enabled when "Mode Selection" is "User Select".
 
 
-|!['Source2'](../../static/img/tutorial/Source/1.png )|
+|![](../../static/img/tutorial/Source/1.png )|
 | :------------------------------------------------------------: |
 
 ④ Import Data:When 'Mode Selection' selects 'User Import', a mode field profile can be imported as the mode light source through 'Import Data'. In the pop-up dialog box, use 'Select' to support importing file formats including mat and zbf.
@@ -44,11 +44,11 @@ The mode source is used to inject a guided mode into the simulation region in FD
 ⑤ View Data: You can use this field to check the mode field profile imported by “Import Data”.
 
 
-|!['Source2'](../../static/img/tutorial/Source/2.png )|
+|![](../../static/img/tutorial/Source/2.png )|
 | :------------------------------------------------------------: |
 
 
-6) **Rotations:**
+1) **Rotations:**
 
 ① **Theta:** The angle between the incident direction and the injection axis after the rotation of the mode source. This refers to the angle of propagation measured by degrees, with respect to the incident axis of the source in a 3D simulation. In a 2D simulation, it is the angle of propagation measured by degrees revolved around the global Z-axis in compliance with the right-hand rule, that is, the angle of propagation in the XY plane.
 
@@ -59,7 +59,7 @@ The mode source is used to inject a guided mode into the simulation region in FD
 
 ### 1.2 Geometry tab
 
-|!['Source2'](../../static/img/tutorial/Source/3.png )|
+|![](../../static/img/tutorial/Source/3.png )|
 | :------------------------------------------------------------: |
 
 1) **X, Y, Z**: The center position of the simulation region.
@@ -74,7 +74,7 @@ The mode source is used to inject a guided mode into the simulation region in FD
 
 ### 1.3 Waveform tab
 
-|!['Source2'](../../static/img/tutorial/Source/4.png )|
+|![](../../static/img/tutorial/Source/4.png )|
 | :------------------------------------------------------------: |
 
 1) **Waveform**: This field sets the waveform of the light source. You can use predefined waveforms, such as "Waveform_1550", "Waveform_1310" or "Visible_Light". You can also use 'User Custom' to set a new desired waveform on this interface.
@@ -99,7 +99,7 @@ The mode source is used to inject a guided mode into the simulation region in FD
 
 ④ Bandwidth: Used to set the “FWHM” frequency width of the time-domain pulse.
 
-5) ave to Waveform List: This field is used to save user defined waveforms.
+5) Save to Waveform List: This field is used to save user defined waveforms.
 
 ## 2 Gaussian source
 
@@ -107,7 +107,7 @@ The mode source is used to inject a guided mode into the simulation region in FD
 
 ### 2.1 General tab
 
-|&emsp;&ensp;!['Source7'](../../static/img/tutorial/Source/Source7.png )&emsp;&emsp;|
+|&emsp;&ensp;![](../../static/img/tutorial/Source/Source7.png )&emsp;&emsp;|
 | :------------------------------------------------------------: |
 
 
@@ -141,7 +141,7 @@ The mode source is used to inject a guided mode into the simulation region in FD
 
 ### 2.2 Geometry tab
 
-|!['Source8'](../../static/img/tutorial/Source/Source8.png )|
+|![](../../static/img/tutorial/Source/Source8.png )|
 | :------------------------------------------------------------: |
 
 The geometry tab contains options to change the size and location of the sources.You can set the position and size of the light source through X, X Span, Y, Y Span, Z and Z Span. Note that when the Injection Axis is selected as X-Axis, X Span is automatically set to 0 and cannot be edited.
@@ -149,12 +149,56 @@ The geometry tab contains options to change the size and location of the sources
 
 ### 2.3 Waveform Tab
 
-|!['Source8'](../../static/img/tutorial/Source/5.png )|
+|![](../../static/img/tutorial/Source/5.png )|
 | :------------------------------------------------------------: |
 
-1The waveform of Gaussian light source is similar to that of mode light source, and users can set it by analogy with mode light source.
+The waveform of Gaussian light source is similar to that of mode light source, and users can set it by analogy with mode light source.
 
-## 3 Waveform
+## 3 Dipole Source
+
+**Feature Description:** The dipole source is used to inject a dipole source into the simulation region in FDTD. In general, it can be applied to simulate radiation sources, such as antennas, etc.
+
+
+### 3.1 General tab
+
+|![](../../static/img/tutorial/Source/6.png )|
+| :------------------------------------------------------------: |
+
+1) **Dipole Type:**: Two options are available: “Electric Dipole” and “Magnetic Dipole”.
+
+2) **Amplitude**: Set the amplitude of the source.
+
+3) **Phase**: Set the phase of the source.
+
+4) **Theta**: Set the angle between the source vector and z-aixs.
+
+5) **Phi**: Set the angle between the source vector and x-aixs.
+
+
+### 3.2 Geometry tab
+
+|![](../../static/img/tutorial/Source/7.png )|
+| :------------------------------------------------------------: |
+
+1) **X, Y, Z**: The center position of the simulation region.
+
+2) **X Min, X Max**: X min, X max position.
+
+3) **Y Min, Y Max**: Y min, Y max position.
+
+4) **Z Min, Z Max**: Z min, Z max position.
+
+5) **X Span, Y Span, Z Span**: X, Y, Z span of the simulation region.
+
+### 3.3 Waveform Tab
+
+|![](../../static/img/tutorial/Source/8.png )|
+| :------------------------------------------------------------: |
+
+The waveform of Gaussian light source is similar to that of mode light source, and users can set it by analogy with mode light source.
+
+
+## 4 Waveform
 
 **Features Description:** Global waveforms settings include only one part, the standard waveform list. There are three default waveforms in the standard waveform list, includes Waveform_1550, Waveform_1310 and Visible_Light. The default waveforms in the standard waveform list cannot be edited directly. user can add a new waveform via right-click in the standard waveform list. User only can delete newly added waveforms in the standard waveform list.
 

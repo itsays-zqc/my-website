@@ -57,8 +57,7 @@ We can add an anisotropic material using `add_anisotropy`. In this case, `data=[
 ```python
 mt = pj.Material()
 mt.add_anisotropy(name="LN", fitting=None,
-      data=[(1.55e-06, 2.211, 0, 2.138, 0, 2.211, 0)], order=2
-      )
+      data=[(1.55e-06, 2.211, 0, 2.138, 0, 2.211, 0)], order=2)
 ```
 
 ## 3. How to add geometric structures in SDK simulation?
@@ -84,14 +83,10 @@ As shown in the code below, we can add a structure within the `Structure` functi
 st.add_geometry(name="rectangle", type="Rectangle",
     property={
         "material": {"material": mt["Si"], "mesh_order": 2},
-        "geometry": {
-                    "x": 1, "x_span": size,
-                    "y": space, "y_span": wg_width,
-                    "z": 1, "z_span": wg_height,
+        "geometry": {"x": 1, "x_span": size,"y": space, "y_span": wg_width, "z": 1, "z_span": wg_height,
                     "tilt_position":"user_defined",
                     "tilt_angle":70,
-                    "user_defined_position":0.1,
-                    }})
+                    "user_defined_position":0.1,}})
 ```
 
 ### 3.3 How to add an arc waveguide in SDK simulation?
@@ -101,13 +96,10 @@ Similarly, we can add an arc waveguide structure in SDK. In the `geometry` secti
 ```python
 st.add_geometry(name="ring", type="Ring", property={
         "material": {"material": mt["Si"], "mesh_order": 2},
-        "geometry": {
-                    "x": 1, "y": 2*space,
-                    "z": 1, "z_span": wg_height,
+        "geometry": {"x": 1, "y": 2*space,"z": 1, "z_span": wg_height,
                     "angle":70,
                     "inner_radius": size-wg_width/2, "outer_radius": size+wg_width/2,
-                    "tilt_angle1": 70, "tilt_position": "bottom", "tilt_angle2": 90,
-                    }})
+                    "tilt_angle1": 70, "tilt_position": "bottom", "tilt_angle2": 90,}})
 ```
 
 ### 3.4 How to add a circular structure?
@@ -117,14 +109,9 @@ Next, we'll learn how to add a circular structure using the following code. In t
 ```python
 st.add_geometry(name="circle", type="Circle", property={
     "material": {"material": mt["Si"], "mesh_order": 2},
-    "geometry": {
-        "radius": size,
-        "angle":90,
-        "x": 2*space, "y": 1,
-        "z": 1,"z_span": wg_height,
-        "tilt_angle":70,
-        "tilt_position":"middle",
-    }})
+    "geometry": {"radius": size,"angle":90,
+                 "x": 2*space, "y": 1,"z": 1,"z_span": wg_height,
+                 "tilt_angle":70,"tilt_position":"middle",}})
 ```
 
 ### 3.6 How to add a linear taper (Taper) structure?
@@ -133,16 +120,10 @@ To create a linear taper structure, use the `add_geometry` function with `type="
 
 ```python
 st.add_geometry(name="linear_trapezoid", type="LinearTrapezoid", property={
-    "material": {
-        "material": mt["Si"], "mesh_order": 2
-    },
-    "geometry": {
-                    "x": 2*space, "y": space,
-                    "z": 1, "z_span": wg_height,
-                    "control_points":
-                        [{"x": 1, "y": 1}, {"x": 1, "y": 2}, {"x": 2, "y": 2}, {"x": 2, "y": 0.1}],
-                    "tilt_angle": 70, "tilt_position": "bottom",
-    }})
+    "material": {"material": mt["Si"], "mesh_order": 2},
+    "geometry": {"x": 2*space, "y": space,"z": 1, "z_span": wg_height,
+                 "control_points":[{"x": 1, "y": 1}, {"x": 1, "y": 2}, {"x": 2, "y": 2}, {"x": 2, "y": 0.1}],
+                 "tilt_angle": 70, "tilt_position": "bottom",}})
 ```
 
 ### 3.7 How to add a custom function-based geometric structure?
@@ -150,13 +131,9 @@ st.add_geometry(name="linear_trapezoid", type="LinearTrapezoid", property={
 Let's take the example of a taper structure with a custom function curve. To do this, use the `add_geometry` function with `type="AnalyticalWaveguide"`. In this case, `equation1` represents the expression of the waveguide boundary function. The parameters `x/y/z` denote the center coordinates, `x span/y span` define the domain range, `resolution` sets the resolution, `nonsymmetric` determines whether the structure is non-symmetric.
 
 ```python
-st.add_geometry(
-        name="analytical_waveguide",
-        type="AnalyticalWaveguide",
+st.add_geometry(name="analytical_waveguide",type="AnalyticalWaveguide",
         property={
-            "material": {
-                "material": mt["Si"], "mesh_order": 2
-            },
+            "material": {"material": mt["Si"], "mesh_order": 2},
             "geometry": {
                 "equation1":"x^0.5",
                 "nonsymmetric": True,
@@ -165,29 +142,23 @@ st.add_geometry(
                 "y":5 *space, "y_span":20,
                 "z": 0, "z_span": wg_height,
                 "resolution":20,
-                "tilt_angle":70,"tilt_position":"middle",
-        }})
+                "tilt_angle":70,"tilt_position":"middle",}})
 ```
 
 ### 3.8 How to import a GDS file and create the corresponding model in SDK?
 
-The following code example demonstrates how to import a GDS file and create the corresponding structure in SDK. First, we need to obtain the full file path of the GDS file (`gds_file`). Then, use the `add_geometry` function with `type="GdsFile"` to import the GDS file. The `path` parameter should contain the full path to the GDS file, `cell_name` is the name of the cell to be imported from the GDS file, `layer_name` specifies the layer type and data type to be imported, and `material` is the material associated with the structure.
+The following code example demonstrates how to import a GDS file and create the corresponding structure in SDK. First, we need to obtain the full file path of the GDS file (`gds_file`). Then, use the `add_geometry` function with `type="gds_file"` to import the GDS file. The `path` parameter should contain the full path to the GDS file, `cell_name` is the name of the cell to be imported from the GDS file, `layer_name` specifies the layer type and data type to be imported, and `material` is the material associated with the structure.
 
 
 ```python
 gds_file_root_path = os.path.abspath(os.path.join(path, '..'))
 gds_file = gds_file_root_path + "/examples_gds/fast_fdtd.gds"
-st.add_geometry(
-        name="gds_file_3D",
-        type="GdsFile",
+st.add_geometry(name="gds_file_3D",type="gds_file",
         property={
-        "material": {
-            "material": mt["Si"], "mesh_order": 2},
-        "general": {"path": gds_file, "cell_name": "EXTEND_1", "layer_name": (3, 0)},
-        "geometry": {
-            "tilt_angle": 60,"tilt_position": "bottom",
-            "x": 4*space, "y": 2*space,
-            "z": 0.05, "z_span": 0.1,}})
+            "material": {"material": mt["Si"], "mesh_order": 2},
+            "general": {"path": gds_file, "cell_name": "EXTEND_1", "layer_name": (3, 0)},
+            "geometry": {"x": 4*space, "y": 2*space,"z": 0.05,"z_span": 0.1,
+            "tilt_angle": 60,"tilt_position": "bottom",}})
 ```
 
 During the process of modeling by importing GDS files, it's important to pay attention to the setting of the material's `mesh_order` to ensure that the overlapping structures are covered in the correct order.
@@ -209,23 +180,26 @@ The advantage is that increasing the value of mesh order allows user to make new
 
 Next, we will learn how to add an FDE simulation and set its simulation parameters in SDK using the `Simulation` function.
 
-Within the `simu.add` section, we can set the simulation name `name`, simulation type `type`, and various simulation parameters in the `property` field. Within `property`. And we also need to set the simulation boundary, where `geometry` defines the geometry parameters, and `boundary_conditions` specifies the cross-sectional simulation boundary parameters, we can set the simulation solver type through `general` (with the default value as `2d_x_normal`). In the `mesh_settings` section, we can configure mesh parameters, including setting the grid sizes in different directions using `global_mesh_uniform_grid`.
+Within the `simu.add` section, we can set the simulation name `name`, simulation type `type`, and various simulation parameters in the `property` field. Within `property`. And we also need to set the simulation boundary, where `geometry` defines the geometry parameters, and `boundary_conditions` specifies the cross-sectional simulation boundary parameters, we can set the simulation solver type through `solver_type` (with the default value as `2d_x_normal`). In the `mesh_settings` section, we can configure mesh parameters, including setting the grid sizes in different directions using `global_mesh_uniform_grid`.
 
 ```python
 # region --- Simulation ---
     simu = pj.Simulation()
-    simu.add(
-        name=simu_name,
-        type="FDE",
-        property={
-            "background_material": mt["SiO2"],
-            "geometry": { "x": 0, "x_span": 0, "y": 0, "y_span": yspan_solver, "z": 0, "z_span": zspan_solver, },
-            "boundary_conditions": { "y_min_bc": "PEC", "y_max_bc": "PEC", "z_min_bc": "PEC", "z_max_bc": "PEC", },
-            'general': {'solver_type': '2d_x_normal'},  # default is '2d_x_normal' ['2d_x_normal','2d_y_normal','2d_z_normal']
-            "mesh_settings": {
-                "mesh_refinement": { "mesh_refinement": "curve_mesh" },
-                "mesh_factor": 1.2,
-                "global_mesh_uniform_grid": { "dy": grid, "dz": grid,},},},)
+    simu.add(name=simu_name, type="FDE",
+             property={"background_material": mt["Air"],
+                       "geometry": {"x": 0, "x_span": 0, "y": 0, "y_span": yspan_solver, "z": 0, "z_span": zspan_solver, },
+                       "boundary_conditions": {"y_min_bc": "PML", "y_max_bc": "PML", "z_min_bc": "PML", "z_max_bc": "PML",
+                                               "pml_settings": {"pml_layer": 12, "pml_kappa": 2, "pml_sigma": 5,
+                                                                #   "polynomial_order": 3,
+                                                                }},
+                       # 'mode_removal': {'threshold': 0.02},
+                       'fractional_offset_for_group_delay': 0.0003,
+                       'general': {'solver_type': '2d_x_normal'}, # default is '2d_x_normal' ['2d_x_normal','2d_y_normal','2d_z_normal']
+                       "mesh_settings": {"mesh_refinement": {"mesh_refinement": "curve_mesh"}, "mesh_factor": 1.2,
+                                         "global_mesh_uniform_grid": {"dy": grid, "dz": grid, },
+                                         #    'minimum_mesh_step_settings': {'min_mesh_step': 1.0e-4}
+                                         }})
+    simu_res = simu[simu_name].run()
 # endregion
 ```
 
@@ -235,24 +209,20 @@ Overlap calculations in FDE simulation can be performed by utilizing the followi
 
 ```python
 if run_options.run_overlap:
-    if run_options.run_beam:
-        beam_res = simu[simu_name].run_fde_beam_and_extract(
-            property={
-                "define_gaussian_beam_by": "waist_size_and_position",  # [waist_size_and_position,beam_size_and_divergence],
-                "waist_radius": 5.2, "distance_from_waist": 1.5, "refractive_index": 1.45,
-                "theta": 0, "phi": 0, "polarization_angle": 90,
-                "sample_span": 6, "sample_resolution": 200,},
-            savepath=plot_path + "beam_heatmap",)
-        analysis.add(
-            name="overlap",
-            type="overlap",
-            property={
-                "field_1": {"workflow_id": beam_res.workflow_id, "mode": 0},
-                "field_2": {"workflow_id": fde_res.workflow_id, "mode": 0},
-                "optimize_position": True,},)
-        overlap_res = analysis["overlap"].run()
+        if run_options.run_beam:
+            beam_res = simu[simu_name].run_fde_beam_and_extract(
+                property={"define_gaussian_beam_by": "waist_size_and_position",  # [waist_size_and_position,beam_size_and_divergence],
+                          "waist_radius": 5.2, "distance_from_waist": 1.5, "refractive_index": 1.45, "theta": 0, "phi": 0,
+                          "polarization_angle": 90, "sample_span": 6, "sample_resolution": 200},
+                savepath=plot_path + "beam_heatmap")
+            analysis.add(name="overlap", type="overlap",
+                         property={"field_1": {"workflow_id": beam_res.workflow_id, "mode": 0},
+                                   "field_2": {"workflow_id": fde_res.workflow_id, "mode": 0},
+                                   "optimize_position": True})
+            overlap_res = analysis["overlap"].run()
 
-        overlap_res.extract( export_csv=True, savepath=plot_path + "overlap",)
+            overlap_res.extract(
+                export_csv=True, savepath=plot_path + "overlap")
 ```
 
 ### 4.3 How to view the refractive index profile in the FDE/FDTD/EME modules?
@@ -262,38 +232,30 @@ As demonstrated in the code below, we can visualize the refractive index profile
 
 ```python
 mn = pj.Monitor()
-mn.add(
-    name="index_monitor_1",
-    type="index_monitor",
-    property={
-        "geometry": { "x": 0, "x_span": 0, "y": 0, "y_span": 5, "z": 0, "z_span": 5,}},)
+mn.add(name="index_monitor_1",type="index_monitor",
+    property={"geometry": { "x": 0, "x_span": 0, "y": 0, "y_span": 5, "z": 0, "z_span": 5,}},)
 # results view
-fdtd_res.extract(
-    data="index_monitor",
-    savepath=f"{plot_path}_index_monitor_1",
-    target="intensity",
-    attribute="Index_x", #default is 'Index_x' ['Permittivity_x', 'Conductivity_x']
-    real=True, imag=True, monitor_name="index_monitor_1", plot_x="x", plot_y="y", show=False, export_csv=True,)
+ simu[simu_name].preview_index(monitor_name="x_normal_index", savepath=f"{plot_path}01_IndexPreview_x=0")
 ```
 
 And in the FDE simulation, we can use the mesh structure to preview the index directly.
 
 ```python
 analysis = pj.Analysis()
-    analysis.add_analysis(
-        name="FDE Analysis",
-        type="FDEAnalysis",
-        props={
-            "workflow_id": simu_res.workflow_id,
-            "simulation_name": "FDE",
-            "modal_analysis": { "calculate_modes": True, "mesh_structure": True, "wavelength": wavelength, "wavelength_offset": 0.0001, "number_of_trial_modes": number_of_trial_modes, "search": "max_index",
-            # ['near_n','max_index'] "n": 1, "calculate_group_index": False,
-            },})
-result_fde = analysis["FDE Analysis"].run()
-res = result_fde.extract(
-            data="mesh_structure",
-            savepath=f"{plot_path}{k}_Index_preview",
-            export_csv=True,)
+    analysis.add_analysis(name="fast_FDE_Analysis", type="FDEAnalysis",
+                          props={"workflow_id": simu_res.workflow_id, "simulation_name": "FDE",
+                                 "modal_analysis": {"calculate_modes": run_options.run, "mesh_structure": True,
+                                                    "wavelength": wavelength, "number_of_trial_modes": number_of_trial_modes,
+                                                    "search": "max_index",  # ['near_n','max_index']
+                                                    # "n": 1,
+                                                    "calculate_group_index": False,
+                                                    "bent_waveguide": {"bent_waveguide": False, "radius": 1, "orientation": 0, "location": "simulation_center"}
+                                                    },
+                                 "frequency_analysis": {"frequency_analysis": run_options.run_frequency_sweep,
+                                                        "start_wavelength": 1.50, "stop_wavelength": 1.60, "number_of_points": 3,
+                                                        "effective_index": 1, "detailed_dispersion_calculation": False
+                                                        }})
+    result_fde = analysis["fast_FDE_Analysis"].run()
 ```
 
 ### 4.4 How to retrieve simulation data in the FDE module of SDK?
@@ -302,27 +264,24 @@ To obtain simulation data in the FDE module of SDK, we can first use `result_fde
 
 ```python
 # region --- See Results ---
-if run_options.run:
-        k = kL[2]
-        res = result_fde.extract(
-            data="calculate_modes", savepath=f"{plot_path}{k}_neff_table", export_csv=True, )
-        result_fde.extract(
-            data="mesh_structure", savepath=f"{plot_path}{k}_index", export_csv=True,)
-        print(res.to_string(index=False))
-        for m in range(len(res)):
-            k = kL[3]
+if run_options.extract:
+        if run_options.run:
             result_fde.extract(
-                data="calculate_modes", savepath=f"{plot_path}{k}_mode{m}", attribute="E", mode=m, real=True, imag=True, **export_options, show=False,)
-if run_options.run_frequency_sweep:
-        attr_selections: List[
-            Literal["neff", "loss", "group_index", "polarization"]
-        ] = ["neff", "loss", "group_index", "polarization"]
-        for i, a in enumerate(attr_selections):
-            k = kL[4]
-            result_fde.extract(
-                data="frequency_analysis",
-                savepath=f"{plot_path}{k}_freq_sweep_{a}",
-                attribute=a, real=True, imag=True, export_csv=True, export_mat=True, show=False,)
+                data="mesh_structure", savepath=f"{plot_path}01_index", export_csv=True)
+            res = result_fde.extract(
+                data="calculate_modes", savepath=f"{plot_path}02_neff_table", export_csv=True)
+            print(res.to_string(index=True))
+            for m in range(len(res)):
+                result_fde.extract(data="calculate_modes", savepath=f"{plot_path}03_mode{m}",
+                                   attribute="E", mode=m, real=True, imag=True, **export_options, show=False)
+
+        if run_options.run_frequency_sweep:
+            attr_selections: List[Literal["neff", "loss", "group_index", "polarization"]] = [
+                "neff", "loss", "group_index", "polarization"]
+            for i, a in enumerate(attr_selections):
+                result_fde.extract(data="frequency_analysis", savepath=f"{plot_path}04_freq_sweep_{a}",
+                                   attribute=a, real=True, imag=True, export_csv=True, export_mat=True, show=False)
+
 # endregion
 ```
 
@@ -338,47 +297,41 @@ Additionally, we can select `user_select` to define a custom mode for the port b
 
 ```python
 # region --- Simulation ---
-simu = pj.Simulation()
-simu.add(
-    name=simu_name,
-    type="EME",
-    property={
-        "background_material": mt["SiO2"],
-        "mesh_settings": {"mesh_factor": 1.2, "mesh_refinement": { "mesh_refinement": "curve_mesh",},},
-        "geometry": {"x_min": -1, "y": 0, "y_span": 3, "z": 0, "z_span": 3},
-        "boundary_conditions": {
-            "y_min_bc": "PML", "y_max_bc": "PML", "z_min_bc": "PML", "z_max_bc": "PML",
-            "pml_settings": {
-                "pml_kappa": 2, "pml_sigma": 5, "pml_layer": 12, "pml_polynomial": 3,},},
-        "general": {
-            "wavelength": wavelength, "wavelength_offset": 0.0003, "use_wavelength_sweep": True,},
-        "eme_setup": {
-            "cell_geometry": {
-                "cell_group_definition": [
-                    {
-                        "span": 2, "cell_number": cell_number, "number_of_modes": number_of_modes, "sc": "sub_cell",
-                    }]}},
-        "transverse_mesh_setting": {
-            "global_mesh_uniform_grid": {"dy": grid, "dz": grid}},},)
+    simu = pj.Simulation()
+    simu.add(name=simu_name, type="EME",
+             property={"background_material": mt["SiO2"],
+                       "mesh_settings": {"mesh_factor": 1.2, "mesh_refinement": {"mesh_refinement": "curve_mesh"}},
+                       "geometry": {"x_min": -1, "y": 0, "y_span": 3, "z": 0, "z_span": 3},
+                       "boundary_conditions": {"y_min_bc": "PML", "y_max_bc": "PML", "z_min_bc": "PML", "z_max_bc": "PML",
+                                               "pml_settings": {"pml_kappa": 2, "pml_sigma": 5, "pml_layer": 12, "pml_polynomial": 3}
+                                               },
+                       "general": {"wavelength": wavelength, "wavelength_offset": 0.0003, "use_wavelength_sweep": True},
+                       "eme_setup": {"cell_geometry": {"allow_custom_eigensolver_settings": True,
+                                                       "cell_group_definition": [{"span": 2, "cell_number": cell_number, "number_of_modes": number_of_modes, "sc": "sub_cell"}]}},
+                       "transverse_mesh_setting": {"global_mesh_uniform_grid": {"dy": grid, "dz": grid}}
+                       })
 # endregion
 
 # region --- EME Port ---
-pjp = pj.Port()
-pjp.add(
-        name="eme_in",
-        type="eme_port",
-        property={
-            "modal_analysis": {"wavelength": wavelength,},
-            "geometry": {
-                "port_location": "left",
-                'use_full_simulation_span': True,},
-            "eme_port": {
-                "general": {
-                    "mode_selection": (
-                        "fundamental_TE"),},
-                "advanced": {
-                    "offset": 0,
-                    "number_of_trial_modes": number_of_modes,},},},)
+    pjp = pj.Port()
+    pjp.add(name="eme_in", type="eme_port",
+            property={"modal_analysis": {"wavelength": wavelength},
+                      "geometry": {"port_location": "left",
+                                   # 'use_full_simulation_span': False, # default is 'True' # "y": 0, # "y_span": 3, # "z": 0, # "z_span": 3
+                                    },
+                      "eme_port": {"general": {"mode_selection": ("fundamental_TE"), "number_of_trial_modes": number_of_modes,
+                                               # 'mode_index': 0, 'search': 'max_index'
+                                               }}})
+
+    pjp.add(name="eme_out", type="eme_port",
+            property={"modal_analysis": {"wavelength": wavelength, },
+                      "geometry": {"port_location": "right",
+                                   # 'use_full_simulation_span': False, # default is 'True'
+                                   # "y": 0,"y_span": 3,"z": 0,"z_span": 3
+                                   },
+                      "eme_port": {"general": {"mode_selection": ("fundamental_TE"), "number_of_trial_modes": number_of_modes,
+                                               # 'mode_index': 0, 'search': 'max_index'
+                                               }}})
 # endregion
 ```
 
@@ -389,13 +342,10 @@ As shown in the code below, we can add a new monitor to wer EME simulation. Use 
 ```python
 # region --- Monitor ---
     mn = pj.Monitor()
-    mn.add(
-        name="x_normal",
-        type="profile_monitor",
-        property={
-            "geometry": {
-                "monitor_type": "2d_x_normal",  # 'x_resolution': 100,
-                "x": 0.9, "x_span": 0, "y": 0, "y_span": 3, "z": 0, "z_span": 10,}},)
+    mn.add(name="x_normal", type="profile_monitor",
+           property={"geometry": {"monitor_type": "2d_x_normal",
+                                  # 'x_resolution': 100,
+                                  "x": 0.9, "x_span": 0, "y": 0, "y_span": 3, "z": 0, "z_span": 3}})
 # endregion
 ```
 
@@ -409,28 +359,19 @@ The `transverse_mesh_setting` section allows we to configure the transverse mesh
 
 ```python
 # region --- Simulation ---
-simu = pj.Simulation()
-simu.add(
-    name=simu_name,
-    type="EME",
-    property={
-        "background_material": mt["SiO2"],
-        "mesh_settings": {"mesh_factor": 1.2, "mesh_refinement": { "mesh_refinement": "curve_mesh",},},
-        "geometry": {"x_min": -1, "y": 0, "y_span": 3, "z": 0, "z_span": 3},
-        "boundary_conditions": {
-            "y_min_bc": "PML", "y_max_bc": "PML", "z_min_bc": "PML", "z_max_bc": "PML",
-            "pml_settings": {
-                "pml_kappa": 2, "pml_sigma": 5, "pml_layer": 12, "pml_polynomial": 3,},},
-        "general": {
-            "wavelength": wavelength, "wavelength_offset": 0.0003, "use_wavelength_sweep": True,},
-        "eme_setup": {
-            "cell_geometry": {
-                "cell_group_definition": [
-                    {
-                        "span": 2, "cell_number": cell_number, "number_of_modes": number_of_modes, "sc": "sub_cell",
-                    }]}},
-        "transverse_mesh_setting": {
-            "global_mesh_uniform_grid": {"dy": grid, "dz": grid}},},)
+    simu = pj.Simulation()
+    simu.add(name=simu_name, type="EME",
+             property={"background_material": mt["SiO2"],
+                       "mesh_settings": {"mesh_factor": 1.2, "mesh_refinement": {"mesh_refinement": "curve_mesh"}},
+                       "geometry": {"x_min": -1, "y": 0, "y_span": 3, "z": 0, "z_span": 3},
+                       "boundary_conditions": {"y_min_bc": "PML", "y_max_bc": "PML", "z_min_bc": "PML", "z_max_bc": "PML",
+                                               "pml_settings": {"pml_kappa": 2, "pml_sigma": 5, "pml_layer": 12, "pml_polynomial": 3}
+                                               },
+                       "general": {"wavelength": wavelength, "wavelength_offset": 0.0003, "use_wavelength_sweep": True},
+                       "eme_setup": {"cell_geometry": {"allow_custom_eigensolver_settings": True,
+                                                       "cell_group_definition": [{"span": 2, "cell_number": cell_number, "number_of_modes": number_of_modes, "sc": "sub_cell"}]}},
+                       "transverse_mesh_setting": {"global_mesh_uniform_grid": {"dy": grid, "dz": grid}}
+                       })
 # endregion
 ```
 
@@ -441,11 +382,8 @@ we can preview the EME simulation structure and images using `structure_show`. I
 
 ```python
 # region --- Structure Show ---
-st.structure_show(
-    fig_type="png", show=False,
-    savepath=f"{plot_path}{kL[0]}{simu_name}",
-    celldisplay=True, xyratio=(1, 1),
-)
+st.structure_show(fig_type="png", show=False,
+                      savepath=f"{plot_path}00_{simu_name}", celldisplay=True, xyratio=(1, 1))
 # endregion
 ```
 
@@ -456,15 +394,12 @@ we can retrieve the results of  EME prot mode by using `preview_modes`. In the e
 ```python
 # region --- 11. Calculate Mode ---
 if run_options.calculate_modes:
-    for port in ["eme_in", "eme_out"]:
-        k = kL[2]
-        simu[simu_name].preview_modes(
-            port_name=port,
-            data="calculate_modes",
-            savepath=f"{plot_path}{k}_modeprofile_fdeonly_{port}",
-            attribute="E",
-            mode=0,
-        )
+        for port in ["eme_in", "eme_out"]:
+            simu[simu_name].preview_modes(port_name=port, data="calculate_modes",
+                                          savepath=f"{plot_path}02_modeprofile_fdeonly_{port}", attribute="E", mode=0)
+            simu[simu_name].preview_modes(port_name=port, data="calculate_modes",
+                                          savepath=f"{plot_path}02_Preview_{port}_neff", show=False, export_csv=True)
+
 # endregion
 ```
 
@@ -504,13 +439,10 @@ As shown in the code below, we can generate N x N S-parameter matrix wavelength 
 
 ```python
 # region --- EME Wavelength Sweep Results ---
-if run_options.run_wavelength_sweep:
-    eme_res.extract(
-                    data="wavelength_sweep:sweep",
-                    savepath=plot_path + "06_wavelength_sweep",
-                    plot_x="wavelength",
-                    export_csv=True,
-                )
+ if run_options.run_wavelength_sweep:
+                eme_res.extract(data="wavelength_sweep:sweep", savepath=plot_path +
+                                "06_wavelength_sweep", plot_x="wavelength", export_csv=True)
+
 # endregion
 ```
 
@@ -522,13 +454,18 @@ During EME simulations, when performing wavelength sweeps, the workflow involves
 
 ### 6.1 How to set the wavelength for FDTD simulations?
 
-`Waveform` supports defining wavelength, wavelength span, and related parameters. It includes common communication wavelengths like 1550 nm and 1310 nm, as well as visible light wavelengths. The `name` is the waveform's name, `wavelength_center` is the central wavelength, and `wavelength_span` is the bandwidth.
+`Waveform` supports defining wavelength, wavelength span, and related parameters. It includes common communication wavelengths like 1550 nm and 1310 nm, as well as visible light wavelengths.
 
 ```python
 # region --- Waveform ---
-wv = pj.Waveform()
-wv.add(name=waveform_name, wavelength_center=wavelength, wavelength_span=0.1)
-wv_struct = wv[waveform_name]
+    wv = pj.Waveform()
+    wv.add(name=waveform_name, type='gaussian_waveform',
+           property={'set': 'frequency_wavelength',  # selections are ['frequency_wavelength','time_domain']
+                     'set_frequency_wavelength': {
+                            'range_type': 'wavelength',  # selections are ['frequency','wavelength']
+                            'range_limit': 'center_span',  # selections are ['min_max','center_span']
+                            'wavelength_center': wavelength,
+                            'wavelength_span': 0.1,},})
 # endregion
 ```
 
@@ -539,24 +476,10 @@ we can configure light sources for FDTD simulations using the `source` function,
 ```python
 # region --- ModeSource ---
 src = pj.Source()
-    src.add(
-        name="source",
-        type="mode_source",
-        property={
-            "general": {  # 'amplitude': 1, 'phase': 0, 'mode_index': 0, 'rotations': {'theta': 0, 'phi': 0, 'rotation_offset': 0}
-                "mode_selection": "user_select",
-                "waveform": {"waveform_id_select": wv_struct},
-                "inject_axis": "x",
-                "direction": "forward",},
-            "geometry": {
-                "x": ports["op_0"]["position"][0],
-                "x_span": 0,
-                "y": ports["op_0"]["position"][1],
-                "y_span": monitor_w,
-                "z": 0,
-                "z_span": monitor_h,},
-            "modal_analysis": {
-                "mode_removal": {"threshold": 0.01}}},)
+    src.add(name="source", type="mode_source",
+            property={"general": {"mode_selection": "fundamental_TE", "waveform": {"waveform_id": wv[waveform_name]}, "inject_axis": "x_axis", "direction": "forward"},
+                      "geometry": {"x": -l_input-l_beam/2-l_bend+2, "x_span": 0, "y": 1.35, "y_span": monitor_w, "z": 0.11, "z_span": monitor_h}})
+
 # endregion
 ```
 
@@ -567,13 +490,10 @@ Let's briefly introduce the setup of FDTD monitors, including global monitors, p
 ```python
 # region --- GlobalMonitor ---
 mn = pj.Monitor()
-mn.add(
-    name="Global Option",
-    type="global_option",
-    property={
-        "frequency_power": {  # 'sample_spacing': 'uniform', 'use_wavelength_spacing': True,
-            # ['min_max','center_span']
-            "spacing_type": "wavelength", "spacing_limit": "center_span", "wavelength_center": wavelength, "wavelength_span": 0.1, "frequency_points": 11,}},)
+    mn.add(name="Global Option", type="global_option",
+           property={"frequency_power": {"spacing_type": "wavelength", "spacing_limit": "center_span",
+                                         "wavelength_center": wavelength, "wavelength_span": 0.1, "frequency_points": 11}})
+
 # endregion
 ```
 
@@ -581,20 +501,11 @@ As shown in the following code, we can set up power monitors in FDTD simulations
 
 ```python
 # region --- Through ---
-mn.add(
-    name="through",
-    type="power_monitor",
-    property={
-        "general": {
-            "frequency_profile": {"wavelength_center": wavelength, "wavelength_span": 0.1, "frequency_points": 11,},},
-        "geometry": {
-            "monitor_type": "2d_x_normal",
-            "x": ports["op_1"]["position"][0],
-            "x_span": 0,
-            "y": ports["op_1"]["position"][1],
-            "y_span": monitor_w,
-            "z": 0,
-            "z_span": monitor_h,},},)
+mn.add(name="Znormal", type="power_monitor",
+           property={"general": {"frequency_profile": {"wavelength_center": wavelength, "wavelength_span": 0.1, "frequency_points": 3}},
+                     "geometry": {"monitor_type": "2d_z_normal", "x_min": -(l_input+l_bend+l_beam/2-0.5), "x_max": l_input+l_bend+l_beam/2-0.5, "y": 0, "y_span": 5, "z": 0.11, "z_span": 0}})
+
+
 # endregion
 ```
 
@@ -604,32 +515,13 @@ we can set the parameters related to ports in FDTD simulations as demonstrated i
 
 ```python
 # region --- Port ---
-pt = pj.Port(property={"waveform_id": wv_struct, "source_port": "port_left"})
-if run_options.matrix_sweep:
-    pt.add(
-        name="port_left",
-        type="fdtd_port",
-        property={
-            "geometry": {
-                "x": ports["op_0"]["position"][0], "x_span": 0,
-                "y": ports["op_0"]["position"][1], "y_span": monitor_w,
-                "z": 0, "z_span": monitor_h, },
-            "modal_properties": {
-                "general": {
-                    "inject_axis": "x_axis", "direction": "forward",
-                    "mode_selection": "fundamental",}},},)
-    pt.add(
-        name="port_right",
-        type="fdtd_port",
-        property={
-            "geometry": {
-                "x": ports["op_1"]["position"][0], "x_span": 0,
-                "y": ports["op_1"]["position"][1], "y_span": monitor_w,
-                "z": 0, "z_span": monitor_h, },
-            "modal_properties": {
-                "general": {
-                    "inject_axis": "x_axis",
-                    "direction": "backward", "mode_selection": "fundamental",}},},)
+pt = pj.Port(property={"waveform_id": wv[waveform_name],
+                "source_port": "left_port", "monitor_frequency_points": 11})
+
+pt.add(name="left_port", type="fdtd_port",
+        property={"geometry": {"x": -wg_length / 2 + span, "x_span": 0, "y": 0, "y_span": port_width, "z": 0, "z_span": port_height, },
+                    "modal_properties": {"general": {"inject_axis": "x_axis", "direction": "forward", "mode_selection": "fundamental"}}})
+
 # endregion
 ```
 
@@ -640,38 +532,31 @@ As shown in the following code, we can specify the `savepath` for saving the res
 To extract the mode field at a specific wavelength from a power monitor:
 
 ```python
-fdtd_res.extract(
-                data="fdtd:power_monitor", savepath=f"{plot_path}{k}_monitorT_modeprofile_fdtd",
-                target="intensity", attribute="E", real=True, imag=False, monitor_name="through",
-                wavelength=f"{wavelength}", plot_x="y", plot_y="z", show=False, export_csv=True, )
+fdtd_res.extract(data="fdtd:power_monitor", savepath=f"{plot_path}04_x_normal_abs(E)",
+                             target="intensity", attribute="E", monitor_name="x_normal", wavelength=str(wavelength), export_csv=True)
+
 ```
 
 Extracting the transmittance at different wavelengths from a power monitor:
 
 ```python
-fdtd_res.extract(
-                data="fdtd:power_monitor", savepath=f"{plot_path}{k}_TransVsLambda_power", target="line",
-                attribute="T", real=True, imag=False, monitor_name="through", plot_x="wavelength",
-                show=False, export_csv=True, )
+fdtd_res.extract(data="fdtd:power_monitor", savepath=f"{plot_path}03_x_normal_abs(T)",
+                             target="line", attribute="T", monitor_name="x_normal", plot_x="wavelength", export_csv=True)
+
 ```
 
-Extracting the response of a mode expansion monitor to a specific mode from a power monitor:
+Extracting the response of a mode expansion monitor to a specific mode transmission from a power monitor:
 
 ```python
-me_res.extract(
-                data="fdtd:mode_expansion", savepath=f"{plot_path}{kL[5]}_TransVsOrder", target="line",
-                attribute="T_forward", real=True, imag=True, monitor_name="through",
-                mode_expansion_name="me_through", wavelength=f"{wavelength}", plot_x="mode", show=False,
-                export_csv=True, )
-
+me_res.extract(data="fdtd:mode_expansion", savepath=f"{plot_path}04_TransVsOrder",
+                           target="line", attribute="T_forward", real=True, imag=True, mode_expansion_name="me_through", wavelength=f"{wavelength}", plot_x="mode", show=False, export_csv=True)
 ```
 
  Extracting the S-matrix results from FDTD simulations:
 
 ```python
-smatrix_res.extract(
-                data="smatrix_sweep", savepath=f"{plot_path}{kL[7]}_smatrix_sweep", target="line",
-                real=True, imag=True, plot_x="wavelength", show=False, export_csv=True,)
+smatrix_res.extract(data="smatrix_sweep", savepath=f"{plot_path}05_smatrix_sweep",
+                                target="line", plot_x="wavelength", export_csv=True)
 ```
 
 ### 6.6 Why does the S-matrix in FDTD simulation sometimes exceed 1?

@@ -10,14 +10,14 @@ import { InlineMath, BlockMath } from 'react-katex';
 <div class="text-justify">
 
 
-Directional couplers (DC) are an important category of optical splitters. They are typically composed of two adjacent single-mode waveguides, and the coupling coefficient is determined by both the length of the coupler and the spacing between them. This feature allows for effective control of the splitting ratio.
+Directional couplers (DC) are an important category of optical splitters, typically composed of two adjacent single-mode optical waveguides. The coupling coefficient is determined by both the length of the coupler and the gap between them. This feature allows for effective control of the splitting ratio.This characteristic allows effective control of the power split ratio.
 
 When it comes to directional couplers, we pay close attention to several key parameters, including **insertion loss**, **splitting ratio**, **device dimensions**, and **operating bandwidth**.
 
 </div>
 
-| ![introDC1](introDC1.png) | ![introDC2](introDC2.png) |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![](../../../../../static/img/example/DC_GUI/introDC1.png) |
+ ------------------------------------------------------------ |
 
 
 
@@ -35,12 +35,31 @@ After data processing, it can be obtained that the splitting ratio, insertion lo
 <div class="text-justify">
 
 
-Next, we will learn how to model a Directional Coupler using the SDK and calculate the light propagation in the structure using the FDTD module.
+Next, we will learn how to model a Directional Coupler using the GUI and calculate the light propagation in the structure using the FDTD module.
 
 </div>
 
 ### 1. Simulation Structure
 
+
+As shown in the picture, there is the structure preivew of the directional coupler building in the simulation project. The parameters which are used in this simulation are listed in the table.
+
+| ![](../../../../../static/img/example/DC_GUI/1.png) |
+ ------------------------------------------------------------ |
+
+| Parameters | Value | Unit | Description |
+|------------|-------|------|-------------|
+| h_wg       | 0.22  | um   | waveguide height |
+| w_wg       | 0.5   | um   | waveguide width |
+| tilt_angle | 8     | degree | tilt angle |
+| gap        | 0.45  | um   | gap between two waveguides |
+| l_dc       | 20    | um   | beam length |
+| l_input    | 5     | um   | input wavelength length |
+| h_slab     | 0.09  | um   | slab height |
+| bend_radius|10    |um    | radii of curvature |
+| monitor_w  | 2     | um   | monitor width |
+| monitor_h  | 1     | um   | monitor height |
+| cpw        | 6     | -    | cell per wavelength |
 
 
 <div class="text-justify">
@@ -53,472 +72,98 @@ Next, we will learn how to model a Directional Coupler using the SDK and calcula
 
 <div class="text-justify">
 
+In this chapter, we will learn how to build the whole simulation project of directional coupler by the GUI.
+</div>
 
-Next, we will continue to learn about the specific functionalities corresponding to the code.
+#### 2.1 Add global parameters
+
+<div class="text-justify">
+
+we need to set the relevant parameters for simulation and parameterized modeling in the project. To add a global variable in the “Global Parameter” area, right-click the empty space there and select “Add” In the “Expression” column, you can input functions, and the “Value” column displays the current variable value. You can also provide a description for the variable in the “Description”, as shown in the image below.The "Dependencies Check" can help to check the varible used the in this simulation.
+
+| ![](../../../../../static/img/example/DC_GUI/2.png) |
+ ------------------------------------------------------------ |
 
 </div>
 
-#### 2.1 Define Parameters
+#### 2.2 Materials
 
 <div class="text-justify">
 
 
-Like the operations with the FDE module, after configuring the simulation wavelength, grid precision, and other parameters, we need to set the relevant parameters for simulation and parameterized modeling in Region 0. This includes defining the paths and names for the simulation files and output results and specifying the path for importing the GDS layout.
+Subsequently, before building the structures, we need the materials required for the simulation.
+
+In the material library above the GUI, you can import material data in "Material Library" or creat the  new material using "New Material". Once you’ve selected or customized the material, click “Export to Project” to add it to the Objects Tree. This makes it easier to use the material during subsequent modeling processes.
+
+The steps are illustrated in the image below.
+
+| ![](../../../../../static/img/example/DC_GUI/3.png) |
+ ------------------------------------------------------------ |
+
+#### 2.3 Structures
+
+<div class="text-justify">
+
+Next, we can create the model of directional coupler by the geometries in "Structure" part. In this example, we mainly need the "Rectangle" , "Straight Waveguide" and "Bezier Waveguide",clicking the specific geometry to add it into the Objects Tree.
+
+Moreover, it is conveniently to use the global paramaters  changing the structures of directional coupler.
+
+| ![](../../../../../static/img/example/DC_GUI/4.png) |
+ ------------------------------------------------------------ |
+
 
 </div>
 
-```python
-# region --- 0. General Parameters ---
-l_bend=5.6 # the length of z bend
-l_beam=15 # the length of 2 beams
-l_input=2.5 # the length of input wg
-monitor_w = 3.0
-monitor_h = 2.0
-waveform_name = "wv" + str(round(wavelength * 1000))
-time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime())
-path = kwargs["path"]
-simu_name = "FDTD_DC"
-project_name = f'{simu_name}_{time_str}'
-plot_path = f'{path}/plots/{project_name}/'
-gds_file_root_path = os.path.abspath(os.path.join(path, '..'))
-gds_file = gds_file_root_path + "/examples_gds/DC.gds"
-# endregion
-```
+#### 2.4 FDTD Simulation
 
-#### 2.2 Define Materials
+After adding materials and creating the model, we need to configure the simulation module and its parameters. For this simulation, we primarily use the Finite-Difference Time-Domain (FDTD) algorithm. As shown in the figure below, locate the ‘FDTD Solver’ under the ‘Set Solvers’ module, click to open the pop window, and set the relevant parameters, including the ‘General,’ ‘Geometry,’ ‘Mesh Settings,’ ‘Boundary Condition,’ and ‘Advanced Options’ tabs. Once configured, click ‘OK’/‘Apply’ to add the FDTD solver to the simulation.
+
+| ![](../../../../../static/img/example/DC_GUI/5.png) |
+ ------------------------------------------------------------ |
+
+</div>
+
+#### 2.5 Source
 
 <div class="text-justify">
 
 
-Subsequently, in Region 2, we ues the materials required for the simulation. We also support users to specify the refractive indices of Si (Silicon) and SiO2 (Silicon Dioxide) materials.
+Then we need to establish the light source in the input waveguide.
+
+In the entire GUI interface, locate the ‘Source’ section at the top. Currently, it supports adding four types of sources: Mode Source, Gaussian Source, Dipole Source and Optical Generation. For this simulation, we are using a mode source. Click to open the dialog box for the mode source and set its relevant parameters, including the ‘General,’ ‘Geometry,’ and ‘Waveform’ sections. Once configured, click ‘Apply’ or ‘OK’ to add the light source to the Objects Tree.”
+
+| ![](../../../../../static/img/example/DC_GUI/6.png) |
+ ------------------------------------------------------------ |
 
 </div>
 
-```python
-# region --- 2. Material ---
-mt = pj.Material()
-mt.add_lib(name='Si', data=mo.Material.Si_Palik, order=2)
-mt.add_lib(name='SiO2', data=mo.Material.SiO2_Palik, order=2)
-# mt.add_nondispersion(name="Si", data=[(3.472, 0)], order=2)
-# mt.add_nondispersion(name="SiO2", data=[(1.444, 0)], order=2)
-mt.add_lib(name="Air", data=mo.Material.Air, order=2)
-# endregion
-```
+
+#### 2.6 Monitors
 
 <div class="text-justify">
 
+After adding the simulation light source, we need to include various types of monitors in the simulation to obtain the necessary simulation data. The currently supported monitor types include the following: Index Monitor, Field Time, Frequency-Domain Field and Power, EME Profile Monitor, Doping Monitor, Charge Monitor, Band Monitor, Electrical Monitor, and the Global Option for settings monitor parameters globally.
 
-The `add_nondispersion` function adds a non-dispersion material to the project in the simulation. <br/>The `data`, is specified as a list, typically in the format `[(index real, index imag)]`. This list contains the complex refractive index values for the material, enabling the simulation to model its optical properties accurately.<br/>The function allows users to incorporate non-dispersion materials into the simulation, contributing to a comprehensive and precise optical analysis of the system under investigation.
-
-</div>
-
-#### 2.3 Define Waveform
-
-<div class="text-justify">
-
-
-In Region 3, we define the parameters relevant to the wavelength.
+We primarily utilize the Field Time Monitor and the Frequency-Domain Field and Power Monitor in this simulation.The Field Time Monitor allows us to collect data in the time domain, while the Frequency-Domain Field and Power Monitor extracts field profiles and power.
 
 </div>
 
-```python
-# region --- 3. Waveform ---
-wv = pj.Waveform()
-wv.add(name=waveform_name, wavelength_center=wavelength, wavelength_span=wavelength_span)
-# endregion
-```
+| ![](../../../../../static/img/example/DC_GUI/7.png) |
+ ------------------------------------------------------------ |
 
-<div class="text-justify">
+#### 2.7 Analyses
 
+Subsequently, we can further analyze the simulation results in the ‘Analysis’ section. Currently, the supported analyses include: Far Field, Mode Expansion, Overlap, Generation Rate, FDE Analysis, EME Analysis, Matrix Sweep, and Parameter Sweep. Select the desired module, complete the analysis settings, and click  ‘Apply’ or ‘OK’ to add  it to Objects Tree or Sweep. For this simulation, we primarily use Mode Expansion to obtain the fractional amount of power transmitted into different mode.
 
-The `Waveform` function is used to retrieve the waveform manager for the current project. It allows users to access and manipulate the waveform sources used in the simulation.<br/>The `name` parameter specifies the name of the waveform source.<br/>The `wavelength_center` parameter defines the center of the wavelength range for the source.<br/>The `wavelength_span` parameter determines the span of the wavelength range for the source.
+| ![](../../../../../static/img/example/DC_GUI/8.png) |
+ ------------------------------------------------------------ |
 
+#### 2.8 Check Memory/Run
 
-</div>
+After completing the above steps, we can begin running the simulation. Before running, you can estimate the required memory by using the ‘Check Memory’ feature. Then, in the GUI’s ‘Run’ module, you can execute the simulation and perform the analysis.For FDTD simulations, the software also supports GPU acceleration.
 
-#### 2.4 Create Model\Boundary
-
-<div class="text-justify">
-
-
-Next, similar to the procedure in the FDE module, in Region 4, we create the model by importing the GDS layout. Subsequently, in Region 5, we establish the boundary conditions.
-
-</div>
-
-```python
-# region --- 4. Structure ---
-    st = pj.Structure()
-
-st.add_geometry(
-    name="box",
-    type="gds_file",
-    property={
-        "general": { "path": gds_file, "cell_name": "TOP", "layer_name": (1, 1) },
-        "geometry": {"x": 0, "y": 0, "z": 0.11, "z_span": 6},
-        "material": {"material": mt["SiO2"], "mesh_order": 1} }, )
-st.add_geometry(
-    name="dc",
-    type="gds_file",
-    property={
-        "general": { "path": gds_file, "cell_name": "TOP", "layer_name": (0, 0) },
-        "geometry": {"x": 0, "y": 0, "z": 0.11, "z_span": 0.22},
-        "material": {"material": mt["Si"], "mesh_order": 2} }, )
-st.add_geometry(
-    name='slab',
-    type='Rectangle',
-    property={
-        'geometry': { 'x_min': -l_input-l_bend-l_beam/2-3, 'x_max':l_input+l_bend+l_beam/2+3, 'y': 0, 'y_span': 8, 'z': 0.045, 'z_span': 0.09 },
-        'material': {'material': mt['Si'], 'mesh_order': 2}, } , )
-# endregion
-
-# region --- 5. Boundary ---
-bc = { "pml_layer": 8, "pml_kappa": 2, "pml_sigma": 0.8, "pml_polynomial": 3, "pml_alpha": 0, "pml_alpha_polynomial": 1, }
-# endregion
-```
-
-<div class="text-justify">
-
-In this code segment, we set detailed parameters for the PML boundar.
-</div>
-
-#### 2.5 FDTD Simulation/local mesh
-
-<div class="text-justify">
-
-
-In Region 6, we add the FDTD simulation.  Additionally, in Region 7, we can set the sub-mesh for improved precision.
-
-</div>
-
-```python
-# region --- 6. Simulation ---
-simu = pj.Simulation()
-simu.add(
-    name=simu_name,
-    type="FDTD",
-    property={
-        "background_material": mt["SiO2"],
-        "geometry": { "x": 0, "x_span": 2*(l_input+l_bend+l_beam/2-0.5), "y": 0, "y_span": 6, "z": 0.11, "z_span": monitor_h },
-        "boundary_conditions": { "x_min_bc": "PML", "x_max_bc": "PML", "y_min_bc": "PML", "y_max_bc": "PML", "z_min_bc": "PML", "z_max_bc": "PML",
-            "pml_settings": { "x_min_pml": bc, "x_max_pml": bc, "y_min_pml": bc, "y_max_pml": bc, "z_min_pml": bc, "z_max_pml": bc, }, },
-        "general": { "simulation_time": 10000, },
-        "mesh_settings": {
-            "mesh_factor": 1.2,
-            "mesh_type": "auto_non_uniform",
-            "mesh_accuracy": {"cells_per_wavelength": grids_per_lambda},
-            "minimum_mesh_step_settings": {"min_mesh_step": 1e-4},
-            "mesh_refinement": { "mesh_refinement": "curve_mesh", } },
-        # 'advanced_options': {'auto_shutoff': {'auto_shutoff_min': 1.00e-4, 'down_sample_time': 200}},
-        # 'thread_setting': {'thread': 4}
-    }, )
-# endregion
-
-# region --- 7. Sub Mesh ---
-lm = pj.LocalMesh()
-lm.add(
-    name="sub_mesh",
-    property={
-        "general": { "dx": 0.05, "dy": 0.02, "dz": 0.02 },
-        "geometry": { "x": 0, "x_span": 2*(l_input+l_bend+l_beam/2-0.5), "y": 0, "y_span": 6, "z": 0.11, "z_span": monitor_h }, }, )
-# endregion
-```
-
-<div class="text-justify">
-
-The `Simulation` manager is critical for setting up and running simulations in the current project.<br/>The `name` parameter allows users to assign a unique name to the simulation for identification purposes.<br/>The `type` parameter defines the type of the simulation.<br/>we define the boundary conditions for the simulation using the `boundary` dictionary, where the x ,y and the z directions all have PML boundary conditions.The `simulation_time` parameter specifies the duration of the simulation.<br/>The `mesh_settings` parameter enables users to configure various settings related to the simulation mesh. The `mesh_accuracy` parameter controls the precision of the mesh used in the simulation.<br/>The `cells_per_wavelength` parameter determines the wavelength precision used in the simulation.<br/>The `minimum_mesh_step_settings` parameter sets the minimum mesh step, allowing users to define the smallest allowable size for mesh elements.<br/>Users can tailor the simulation setup to meet their requirements by utilizing these input parameters, enabling accurate and efficient electromagnetic simulations of complex optical structures.
-
-</div>
-
-#### 2.6 Source
-
-<div class="text-justify">
-
-Then we need to establish the light source in the input waveguide, as shown in Region 8.
-
-</div>
-
-```python
-# region --- 8. ModeSource ---
-src = pj.Source()
-src.add(
-    name="source",
-    type="mode_source",
-    # axis="x_forward",
-        property={
-            "general": { "mode_selection": "user_select", "waveform": {"waveform_id_select": wv[waveform_name]}, "inject_axis": "x", "direction": "forward", },
-            "geometry": { "x": -l_input-l_beam/2-l_bend+2, "x_span": 0, "y": 1.35, "y_span": monitor_w, "z": 0.11, "z_span": monitor_h },
-            "modal_analysis": { "mode_removal": {"threshold": 0.01} } , }, )
-# endregion
-```
-
-<div class="text-justify">
-
-
-The `Source` function is utilized to retrieve the source manager for the current project.<br/>The `type` parameter specifies the type of the source and is formatted as either `["mode_source"] or ["gaussian_source"]`.<br/>The `name` parameter represents the name assigned to the source.<br/>The `inject_axis` parameter defines the axis of the source.<br/>The `property` parameter allows for defining specific properties associated with the source.
-
-</div>
-
-#### 2.7 Monitor
-
-<div class="text-justify">
-
-
-In Region 9, we set up the monitors.
-
-</div>
-
-```python
-# region --- 9. Monitor ---
-# region --- 9.0 GlobalMonitor ---
-mn = pj.Monitor()
-mn.add(
-    name="Global Option",
-    type="global_option",
-    property={
-        "frequency_power": {
-            "spacing_type": "wavelength",
-            "spacing_limit": "center_span",
-            "wavelength_center": wavelength,
-            "wavelength_span":wavelength_span,
-            "frequency_points": 3 }, }, )
-# endregion
-
-# region --- 9.1 z_normal ---
-mn.add(
-    name="z_normal",
-    type="power_monitor",
-    property={
-        "general": {
-            "frequency_profile": { "wavelength_center": wavelength, "wavelength_span": 0.1, "frequency_points": 3, },
-        },
-        "geometry": {
-            "monitor_type": "2d_z_normal",
-            "x": 0, "x_span": 2*(l_input+l_bend+l_beam/2-0.5), "y": 0, "y_span": 5, "z": 0.11, "z_span": 0 }, }, )
-# endregion
-
-# region --- 9.2 input ---
-mn.add(
-    type="power_monitor",
-    name="input_reflect",
-    property={
-        "general": {
-            "frequency_profile": { "wavelength_center": wavelength, "wavelength_span": 0.1, "frequency_points": 11 } },
-        "geometry": {
-            "monitor_type": "2d_x_normal",
-            "x": -l_input-l_beam/2-l_bend+1.5, "x_span": 0, "y": 1.35, "y_span": monitor_w, "z": 0.11, "z_span": monitor_h }, } )
-# endregion
-
-# region --- 9.3 through ---
-mn.add(
-    type="power_monitor",
-    name="through",
-    property={
-        "general": {
-            "frequency_profile": { "wavelength_center": wavelength, "wavelength_span": 0.1, "frequency_points": 11 } },
-        "geometry": {
-            "monitor_type": "2d_x_normal",
-            "x": l_input+l_beam/2+l_bend-2, "x_span": 0, "y": 1.35, "y_span": 2, "z": 0.11, "z_span": monitor_h }, }, )
-# endregion
-
-# region --- 9.4 cross ---
-mn.add(
-    name="cross",
-    type="power_monitor",
-    property={
-        "general": {
-            "frequency_profile": { "wavelength_center": wavelength, "wavelength_span": 0.1, "frequency_points": 11 } },
-         "geometry": {
-            "monitor_type": "2d_x_normal",
-            "x": l_input+l_beam/2+l_bend-2,
-            "x_span": 0, "y": -1.35, "y_span": 2, "z": 0.11, "z_span": monitor_h }, } )
-# endregion
-# endregion
-```
-
-<div class="text-justify">
-
-
-For the global monitor, the `Monitor` function is utilized to retrieve the monitor manager for the current project, which allows users to access and manage various types of monitors used during simulation.<br/>The `name` parameter represents the name of the Global Option associated with the monitor.<br/>The `type` parameter defines the type of the Global Option and is formatted as a list containing one of several monitor types. The `property` parameter is used to define and set the relevant parameters specific to the chosen monitor type. These parameters control the monitor's behavior and data collection settings during the simulation.
-
-The power monitor is a configuration setting that allows users to specify various simulation parameters.<br/>The `name` parameter assigns a name to the power monitor.<br/>The `type` parameter defines the type of power monitor.<br/>The `general` parameter pertains to settings related to the frequency domain and frequency-dependent behaviors of the simulation.<br/>The `geometry` parameter is used to define the geometric characteristics of the simulated structure.<br/>
-
-</div>
-
-
-#### 2.8 Calculate Source
-
-<div class="text-justify">
-
-
-To calculate the input mode light and save its electric field intensity data in region 10.
-
-</div>
-
-```python
-# region --- 10. Calculate Mode ---
-if run_options.calculate_modes:
-    simu[simu_name].preview_modes(
-        source_name = "source",
-        savepath=f"{plot_path}00_source_modeprofile_fdeonly",
-        attribute="E", real=True, imag=True, mode=0, show=False, export_csv=True, )
-# endregion
-```
-
-#### 2.9 Run Simulation
-
-<div class="text-justify">
-
-Then, in Region 11, we run the simulation. 
-
-</div>
-
-```python
-# region --- 11. Run ---
-if run_options.run:
-    fdtd_res = simu[simu_name].run()
-# endregion
-```
-#### 2.10 Analysis
-
-<div class="text-justify">
-
-In Region 12, we run the analysis for the simulation.
-The `mode_expansion` parameter involves relevant settings for mode expansion simulations. Users can customize the simulation settings by utilizing these input parameters to achieve accurate and comprehensive results based on their specific simulation requirements.
-
-
-</div>
-
-```python
-# region --- 12. Run ---
-analysis = pj.Analysis()
-analysis.add(
-    name="me_through",
-    type="mode_expansion",
-    property={
-            "workflow_id": fdtd_res.workflow_id,
-            "mode_expansion": {
-                "direction": "positive",
-                "monitors_for_expansion": [ {"name": "me_through", "frequency_monitor": "through"} ],
-                "mode_calculation": {
-                    "mode_selection": "user_select",
-                    "mode_index": [0, 1, 2, 3],
-                    "override_global_monitor_setting": { "wavelength_center": wavelength, "wavelength_span": 0.1, "frequency_points": 11, }, }, }, } )
-analysis.add(
-    name="me_cross",
-    type="mode_expansion",
-    property={
-            "workflow_id": fdtd_res.workflow_id,
-            "mode_expansion": {
-                "direction": "positive",
-                "monitors_for_expansion": [ {"name": "me_cross", "frequency_monitor": "cross"} ],
-                "mode_calculation": {
-                    "mode_selection": "user_select",
-                    "mode_index": [0, 1, 2, 3],
-                    "override_global_monitor_setting": { "wavelength_center": wavelength, "wavelength_span": 0.1, "frequency_points": 11, }, }, }, } )
-me_res1 = analysis["me_through"].run()
-me_res2 = analysis["me_cross"].run()
-# endregion
-```
-
-#### 2.11 Results
-
-<div class="text-justify">
-
-
-In Region 13, we define the desired output results. Lastly, we control the switches of various functional modules at the end of the Python file.
-
-
-</div>
-
-```python
-# region --- 13. See Results ---
-if run_options.extract and run_options.run:
-    # region --- z_normal ---
-    """ 01_top_profile """
-    for λ in [1.5, 1.55, 1.6]:
-        fdtd_res.extract(
-            data="fdtd:power_monitor",
-            savepath=plot_path + "01_top_profile" + str(λ) + "um",
-            monitor_name="z_normal",
-            target="intensity",
-            attribute="E",
-            real=True, imag=True, wavelength=str(λ), plot_x="x", plot_y="y", show=False, export_csv=True, )
-        # endregion
-
-        # # region --- through ---
-        """ 01_monitorThrough_modeprofile_fdtd """
-        fdtd_res.extract(
-            data="fdtd:power_monitor",
-            savepath=plot_path + "01_monitorThrough_modeprofile_fdtd_"+ f"{wavelength}" + "um",
-            monitor_name="through",
-            target="intensity",
-            attribute="E",
-            real=True, imag=False, wavelength=f"{wavelength}", plot_x="y", plot_y="z", show=False, export_csv=True, )
-        # # """ 02_Trans_ThroughVsLambda_power """
-        fdtd_res.extract(
-            data="fdtd:power_monitor",
-            savepath=plot_path + "02_Trans_ThroughVsLambda_power",
-            monitor_name="through",
-            target="line",
-            attribute="T",
-            real=True, imag=False, plot_x="wavelength", show=False, export_csv=True, )
-        # # """ 021_ME_ThroughVsLambda_mode """
-        me_res1.extract(
-            data="fdtd:mode_expansion",
-            savepath=plot_path + "021_ME_ThroughVsLambda_mode",
-            target="line",
-            attribute="T_forward",
-            real=True, imag=True, monitor_name="through", mode_expansion_name="me_through", mode=0, plot_x="wavelength", show=False, export_csv=True, )
-        # # region --- cross ---
-        """ 01_monitorcross_modeprofile_fdtd """
-        fdtd_res.extract(
-            data="fdtd:power_monitor",
-            savepath=plot_path + "01_monitorcross_modeprofile_fdtd_"+ f"{wavelength}" + "um",
-            monitor_name="cross",
-            target="intensity",
-            attribute="E",
-            real=True, imag=False, wavelength=f"{wavelength}", plot_x="y", plot_y="z", show=False, export_csv=True, )
-        # # """ 02_Trans_crossVsLambda_power """
-        fdtd_res.extract(
-            data="fdtd:power_monitor",
-            savepath=plot_path + "02_Trans_crossVsLambda_power",
-            monitor_name="cross",
-            target="line",
-            attribute="T",
-            real=True, imag=False, plot_x="wavelength", show=False, export_csv=True, )
-        # # """ 021_ME_crossVsLambda_mode """
-        me_res2.extract(
-            data="fdtd:mode_expansion",
-            savepath=plot_path + "021_ME_crossVsLambda_mode",
-            target="line",
-            attribute="T_forward",
-            real=True, imag=True, monitor_name="cross", mode_expansion_name="me_cross", mode=0, plot_x="wavelength", show=False, export_csv=True, )
-    # endregion
-
-```
-
-#### 2.12 Switches
-
-<div class="text-justify">
-
-
-At the end of all codes, We control the switches of various functional modules.
-
-</div>
-
-```python
-class RunOptions(NamedTuple):
-    index_preview: bool
-    calculate_modes: bool
-    run: bool
-    extract: bool
-
-
-if __name__ == "__main__":
-    simulation( wavelength=1.55, wavelength_span=0.1 , grids_per_lambda=6,
-        run_options=RunOptions(
-            index_preview=True, run=True, calculate_modes=True, extract=True ), )
-```
+| ![](../../../../../static/img/example/DC_GUI/9.png) |
+ ------------------------------------------------------------ |
 
 ### 3. Output Results
 
@@ -531,8 +176,8 @@ After running the program, we can obtain a series of corresponding output result
 
 </div>
 
-| ![00_source_modeprofile_fdeonly](00_source_modeprofile_fdeonly.png) | ![01_monitorCross_modeprofile_fdtd](01_monitorcross_modeprofile_fdtd_1.55um.png) | ![01_monitorThrough_modeprofile_fdtd](01_monitorThrough_modeprofile_fdtd_1.55um.png) |
-| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![](../../../../../static/img/example/DC_GUI/10.png)  |
+|------------------------------------------------------------ |
 
 <div class="text-justify">
 
@@ -541,34 +186,39 @@ After running the program, we can obtain a series of corresponding output result
 
 </div>
 
-| ![01_top_profile_1.5um](01_top_profile1.5um.png) | ![01_top_profile_1.6um](01_top_profile1.6um.png) | ![01_top_profile_1.55um](01_top_profile1.55um.png) |
-| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![](../../../../../static/img/example/DC_GUI/11.png)  |
+|------------------------------------------------------------ |
 
 <div class="text-justify">
 
 
-1. Cross output port and TRU output port transmittance at different wavelengths,from 1.50 *μ*m to 1.60 *μ*m.
+3. Cross output port and TRU output port transmittance at different wavelengths,from 1.50 *μ*m to 1.60 *μ*m.
+
+</div>
+
+| ![](../../../../../static/img/example/DC_GUI/12.png)  |
+|------------------------------------------------------------ |
+
+
+<div class="text-justify">
+
+
+4. TE0 mode transmittance at Cross output port and TRU output port for different wavelengths,,from 1.50 *μ*m to 1.60 *μ*m.
+
+| ![](../../../../../static/img/example/DC_GUI/13.png)  |
+|------------------------------------------------------------ |
+
+
 
 </div>
 
 
 
 
-<div class="text-justify">
-
-
-1. TE0 mode transmittance at Cross output port and TRU output port for different wavelengths,,from 1.50 *μ*m to 1.60 *μ*m.
-
-</div>
-
-| ![021_ME_CrossVsLambda_mode](ME_crossVsLambda_mode.png) | ![021_ME_ThroughVsLambda_mode](021_ME_ThroughVsLambda_mode.png) |
-| ------------------------------------------------------------ | ------------------------------------------------------------- |
-
-
 
 <div class="text-justify">
 
-Based on the information provided, we can get the following results  when propogating wavelength  is 1.55 *μ*m and the two arm length of directional couper is equal to 15 *μ*m: 1. Insertion Loss: 0.236 dB; 2. Power Split Ratio: 11.2 : 83.3 (or approximately 11.2% to one port and 82.8% to the other port); 3. Dimensions: Approximately 5 *μ*m X 25 *μ*m.
+Based on the information provided, we can get the following results  when propogating wavelength  is 1.55 *μ*m and the two arm length of directional couper is equal to 20 *μ*m: 1. Insertion Loss: 0.013 dB; 2. Power Split Ratio: 64.8 : 35.0 (or approximately 64.8% to one port and 35% to the other port); 3. Dimensions: Approximately 3.5 *μ*m X 44 *μ*m.
 
 </div>
 

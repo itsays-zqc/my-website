@@ -1,5 +1,5 @@
 ---
-sidebar_position: 7
+sidebar_position: 6
 ---
 
 # Monitor
@@ -132,7 +132,7 @@ For 3D simulations, only part of the components are non-vanishing (i.e., for TE 
 
 ## 3 Field Time monitor
 
-**Feature Description**: Frequency domain field monitors work in the frequency domain and extract the field profiles across some spatial regions of the FDTD simulation.
+**Feature Description**: These monitors collect time-domain data for field components over the entire simulation course. Point, line or area monitors can be set and used for collecting such information over various spatial scales inside the simulation regions.
 
 ### 3.1 General Tab
 

@@ -1,5 +1,5 @@
-import 'katex/dist/katex.min.css';
-import { InlineMath, BlockMath } from 'react-katex';
+import "katex/dist/katex.min.css";
+import { InlineMath, BlockMath } from "react-katex";
 
 # Structure
 
@@ -15,145 +15,105 @@ You can choose to create geometry models using GDS files. Meanwhile, you can als
 
 ## 2.1 Add geometry
 
-Add a geometry structure to current project.
+Use `Structure()` to instance a structure into the project, and then use `add_geometry()` to add any geometric structure.
+The types that support adding geometric structures include "Triangle", "Rectangle", "Circle", "Ring", "Polygon", "Ellipse", "LinearTrapezoid", "Pyramid", "AnalyticalWaveguide", "Sphere", "StraightWaveguide", "BezierWaveguide" and "gds_file".
+
+The syntax for adding geometry is as follows. "name" defines the name of the structure, "type" selects the type of the structure, and "property" sets the properties of the structure model. This function does not return any data.
 
 ```python
-add_geometry(
-            self, *,
-            name: str,
-            type: str,
-            property: "StructureGeometryPropertyDict"
+st = Project.Structure()
+st.add_geometry(
+    name: str, 
+    type: Optional[str], 
+    property: dict
     )
 ```
 
- <table align="center">
-  <thead>
-    <tr>
-      <th align="center">Parameters</th>
-      <th align="center">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="center">name</td>
-      <td align="center">The name of a specific geometric structure.</td>
-    </tr>
-    <tr>
-      <td align="center">type</td>
-      <td align="center">The type of a specific geometric structure.</td>
-    </tr>
-    <tr>
-      <td align="center">property</td>
-      <td align="center">The property of a specific geometric structure, including the materials, geometric dimensions, and so on.</td>
-    </tr>
-  </tbody>
-</table>
+note: Set the refractive index of the material for the structure by selecting the material to be added to the project, or use "object_defined_dielectric" to set the material, but require an additional keyword "refractive_index" to set the refractive index of the material. The material setting method for all geometric structures is the same.
+
+### 2.1.1 Triangle
+
+The geometric properties of triangle and an example of adding triangle into the project are shown below.
 
 
-
-
-### 2.1.1 GDS file/GDS file3D
-
-The following codes can import the structure in Max-Optics SDK from GDS layout files.
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+| geometry.x                     | number  |     -    | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.y                     | number  |    -     | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z                     | number  |    -     | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z_span                | number  |     -   | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z_min                 | number  |     -     | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z_max                 | number  |      -  | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.control_points.[x]    | number  |      -  | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.control_points.[y]    | number  |     -    | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.tilt_angle            | number  | 90        | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.tilt_position         | string  | top       | Selections are ["top", "middle", "bottom", "user_defined"]                   |
+| geometry.user_defined_position | number  |      -  | This parameter is required when geometry.tilt_position == "user_defined"     |
+| material.material              | object  |     -   | Select a material object                                                     |
+| material.mesh_order            | integer |     -    |  The order of material coverage when creating a geometric structure. Restrained by condition: >=1.                              |
+| material.refractive_index      | number  |      -  | User-defined index                                                           |
+| material.color                 | string  |     -   | User-defined color , default "#70AD47"                                       |
 
 **Example:**
 
-```python
-st.add_geometry(name="gds_file", type="gds_file", property={
-    "material": {"material": mt["Si"], "mesh_order": 2},
-    "geometry": { "z": 0, "z_span": wg_height},
-    "general": {"path": gds_file, "cell_name": "EXTEND_1", "layer_name": (3, 0)}})
-```
-
-|       Parameters        |     Default     |       Type       |                 Notes                 |
-| :-----------------: | :-----: | :------: | :---------------------------: |
-|     geometry.x      |    0    |  float   |    The x-coordinate of the center point position of structures in the imported GDS file.          |
-|     geometry.y      |    0    |  float   |    The y-coordinate of the center point position of structures in the imported GDS file.      |
-|     geometry.z      |    -   |  float   | The z-coordinate of the center point position of structures in the imported GDS file. |
-|   geometry.z_span   |     -    |  float   | Setting the height of structures in the imported GDS file. Restrained by condition: >0.  |
-|   geometry.z_min    |     -    |  float   |   The z-coordinate of the bottom position of the height of structures in the imported GDS file.      |
-|   geometry.z_max    |     -    |  float   |   The z-coordinate of the top position of the height of structures in the imported GDS file.    |
-|  material.material  |     -    | material |     Material of the geometric structure.         |
-| material.mesh_order |    -     | integer  | The order of material coverage when creating a geometric structure.  Restrained by condition: >=0. |
-|    general.path     |    -     |  string  |    The path of the imported GDS file.   |
-|  general.cell_name  |     -    |  string  |  The cell name of imported GDS file.  |
-| general.layer_name  |     -    |   list   |   The layer name of imported GDS file.     |
-
-Meanwhile, we also offer support for basic operations to GDS layout modeling using `type="gds_file3D"`. The code for this function is provided below:
+The following script adds a triangle to the structure of the instance, with three vertices of (0,0) (0,2) (2,2) um and a thickness of 0.22 um. Select the material of "object_defined_ieleectric" and set the refractive index of the material to 1.4.
 
 ```python
-st.add_geometry(name="gds_file_3D", type="gds_file3D", property={
-    "material": {"material": mt["Si"], "mesh_order": 2},
-    "general": {"path": gds_file, "cell_name": "EXTEND_1", "layer_name": (3, 0)},
-    "geometry": {"tilt_angle": 60,"tilt_position": "bottom",
-                 "x": 4*space, "y": 2*space, "z": 0.05, "z_span": 0.1,
-                 "mirror_normal_z": 0,"mirror_plane_z0": 0}})
+st.add_geometry(name="triangle", type="Triangle", property={  
+    "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},  
+    "geometry": {"control_points":[{"x": 0, "y": 0}, {"x": 0, "y": 2}, {"x": 2, "y": 2}],
+                 "x": 0, "y": 0, "z": 0, "z_span": 0.22,
+                 "tilt_angle": 90, "tilt_position":"middle"}})
 ```
 
-|      **Parameters**      | Default |   Type   |                            Notes                             |
-| :----------------------: | :-----: | :------: | :----------------------------------------------------------: |
-|   geometry.tilt_angle    |   90   |  float   | Tilt angle of waveguide sidewall.   |
-|  geometry.tilt_position  |   top   |  string  | To ensure that the models are placed at the specified sizes on the different ratio of sidewalls. Selections are ['top', 'TOP', 'Top', 'bottom', 'BOTTOM', 'Bottom', 'middle', 'MIDDLE', 'Middle', 'user_defined']. |
-|  geometry.user_defined   |    1    |  float   |      To decide the ratio of sidewalls when importing GDS layout.                                                    |
-| geometry.mirror_normal_z |    0    |  float   | The posiotion of z-normal plane for mirror symmetry.                                      |
-| geometry.mirror_plane_z0 |    0    |  float   |       The center point position of z normal palne.                                                       |
-| general.construct_method |     -    |  string  |     The method around constructing the GDS after choosing to import the GDS file. Selections are ['method1', 'method2']             |
+
+### 2.1.2 Rectangle
+
+The geometric properties of rectangle and an example of adding rectangle into the project are shown below.
 
 
-
-### 2.1.2 Bezier wavegudie
-
-Within the project, we can incorporate a Bezier curve structure by employing the code `type="BezierCurve"`.
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+| geometry.x                     | number  |    -       | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.y                     | number  |      -     | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z                     | number  |      -     | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z_span                | number  |      -     | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z_min                 | number  |       -    | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z_max                 | number  |       -    | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.x_span                | number  |         -  | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.x_min                 | number  |      -     | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.x_max                 | number  |      -     | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.y_span                | number  |        -   | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.y_min                 | number  |       -    | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.y_max                 | number  |    -       | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.tilt_angle            | number  | 90        | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.tilt_position         | string  | top       | Selections are ["top", "middle", "bottom", "user_defined"]                   |
+| geometry.user_defined_position | number  |     -      | This parameter is required when geometry.tilt_position == "user_defined"     |
+| material.material              | object  |     -      | Select a material object                                                     |
+| material.mesh_order            | integer |    -       |  The order of material coverage when creating a geometric structure. Restrained by condition: >=1.                                                     |
+| material.index                 | number  |      -     | User-defined index                                                           |
+| material.color                 | string  |       -    | User-defined color , default "#70AD47"                                       |
 
 **Example:**
 
+The following script adds a rectangle to the structure of the instance, and set the dimension and material of the structure.
+
 ```python
-st.add_geometry(name="bezier", type="BezierWaveguide", property={
-    "material": {"material": mt["Si"], "mesh_order": 2},
-    "geometry": {"x": 2*space, "y": 0, "z": 0, "z_span": wg_height, "width": wg_width,
-                  "control_points":
-                        [{"x": 1, "y": 1}, {"x": 1, "y": 2}, {"x": 2, "y": 2}, {"x": 2, "y": 3}],
-                "tilt_angle1": 70, "tilt_position": "bottom", "tilt_angle2": 90,
-                }})
+st.add_geometry(name="rectangle", type="Rectangle", property={
+    "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},  
+    "geometry": {"x": 0, "x_span": 1, "y": 0, "y_span": 1, "z": 0, "z_span": 1, 
+                 "tilt_angle":90, "tilt_position":"top",}})
 ```
-
-|       Parameters        |     Default     |       Type       |                 Notes                 |
-| :-----------------: | :-----: | :------: | :---------------------------: |
-|   geometry.tilt_angle1    |   90   |  float   | First tilt angle of waveguide sidewall.   |
-|  geometry.tilt_position  |   top   |  string  | To ensure that the models are placed at the specified sizes on the different ratio of sidewalls. Selections are ['top', 'TOP', 'Top', 'bottom', 'BOTTOM', 'Bottom', 'middle', 'MIDDLE', 'Middle', 'user_defined']. |
-|   geometry.tilt_angle2    |   90   |  float   | Second tilt angle of waveguide sidewall.   |
-| geometry.control_points  |    -     |  float   |  The coordinate of the points for generating a Bezier curve.      |
-|   geometry.width    |     -    |  float   |  The width of the Bezier curve.     |
-|     geometry.x      |     -    |  float   |  The center point x-coordinate the Bezier curve.    |
-|     geometry.y      |     -    |  float   |    The center point y-coordinate the Bezier curve.     |
-|     geometry.z      |      -   |  float   |  The center point z-coordinate the Bezier curve.    |
-|   geometry.z_span   |     -    |  float   | The thinckness of the Bezier curve. Restrained by condition: >0.  |
-|   geometry.z_min    |     -    |  float   |  The bottom position of the height of the Bezier curve in the z-coordinate.   |
-|   geometry.z_max    |     -    |  float   | The top position of the height of the Bezier curve in the z-coordinate.   |
-|  material.material  |     -    | material |  Material of the geometric structure.    |
-| material.mesh_order |     -    | integer  | The order of material coverage when creating a geometric structure. Restrained by condition: >=0. |
-
-
 
 ### 2.1.3 Circle
 
-Integrate a circular structure into the simulation project by employing the code `type="Circle"`.
+The geometric properties of circle and an example of adding circle into the project are shown below.
 
 
-**Example:**
-
-```python
-st.add_geometry(name="circle", type="Circle", property={
-    "material": {"material": mt["Si"], "mesh_order": 2},
-    "geometry": {
-                 "radius": size, "x": 4*space, "y": 0, "z": 0, "z_span": wg_height
-                 "tilt_angle":70, "tilt_position":"middle"}})
-```
-
-|       Parameters        |     Default     |       Type       |                 Notes                 |
-| :-----------------: | :-----: | :------: | :---------------------------: |
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
 |   geometry.tilt_angle    |   90   |  float   | Tilt angle of waveguide sidewall.   |
-|  geometry.tilt_position  |   top   |  string  | To ensure that the models are placed at the specified sizes on the different ratio of sidewalls. Selections are ['top', 'TOP', 'Top', 'bottom', 'BOTTOM', 'Bottom', 'middle', 'MIDDLE', 'Middle', 'user_defined']. |
+|  geometry.tilt_position  |   top   |  string  | To ensure that the models are placed at the specified sizes on the different ratio of sidewalls. Selections are ["top", "bottom", "middle", "user_defined"]. |
 |   geometry.radius   |    -     |  float   | The radius of the circle. Restrained by condition: >0.  |
 |     geometry.x      |     -    |  float   | The x-coordinate of the center point position of circle.    |
 |     geometry.y      |     -    |  float   |    The y-coordinate of the center point position of circle.      |
@@ -162,31 +122,63 @@ st.add_geometry(name="circle", type="Circle", property={
 |   geometry.z_min    |     -    |  float   |The bottom position of the height of the circle in z-coordinate.      |
 |   geometry.z_max    |    -     |  float   |  The top position of the height of the circle in z-coordinate.     |
 |  material.material  |     -    | material | Material of the geometric structure. |
-| material.mesh_order |    -     | integer  | The order of material coverage when creating a geometric structure. Restrained by condition: >=0. |
+| material.mesh_order |    -     | integer  | The order of material coverage when creating a geometric structure. Restrained by condition: >=1. |
+
+**Example:**
+The following script adds a circle to the structure of the instance, sets the radius of the circle to 2 μ m, the thickness to 0.5 μ m, and the refractive index of the material to 1.4.
+
+```python
+st.add_geometry(name="circle", type="Circle", property={
+    "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},  
+    "geometry": {"radius": 2, "x": 0, "y": 0, "z": 0, "z_span": 0.5
+                 "tilt_angle":360, "tilt_position":"top"}})
+```
+
+### 2.1.4 Ring
+
+The geometric properties of ring and an example of adding ring into the project are shown below.
 
 
-
-### 2.1.4 Polygon
-
-By utilizing the code `type="Polygon"`, it becomes possible to incorporate a custiomized polygon into the project.
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+| geometry.x                     | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.y                     | number  |  -         | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z                     | number  |   -        | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z_span                | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z_min                 | number  |  -         | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z_max                 | number  |  -         | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.inner_radius          | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.outer_radius          | number  |   -        | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.tilt_angle1           | number  | 90        | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.tilt_angle2           | number  | 90        | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.angle                 | number  | 360       | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.tilt_position         | string  | top       | Selections are ["top", "middle", "bottom", "user_defined"]                   |
+| geometry.user_defined_position | number  | -          | This parameter is required when geometry.tilt_position == "user_defined"     |
+| material.material              | object  |  -         | Select a material object                                                     |
+| material.mesh_order            | integer |   -        |    The order of material coverage when creating a geometric structure. Restrained by condition: >=1.                                   |
+| material.index                 | number  |  -         | User-defined index                                                           |
+| material.color                 | string  |  -         | User-defined color , default "#70AD47"                                       |
 
 **Example:**
 
-```python
-st.add_geometry(name="polygon", type="Polygon", property={
-        "material": {"material": mt["Si"], "mesh_order": 3},
-        "geometry": {"x": space, "y": 2*space,
-                     "z": 1, "z_span": 2,
-                     "control_points":
-                        [{"x": 1, "y": 2}, {"x": 3, "y": 4}, {"x": 5, "y": 0}, {"x": 0, "y": 0}],
-                    "tilt_angle": 70, "tilt_position": "bottom", 
-        }})
-```
+The following script adds a ring to the structure of the instance, sets the inner radius to 4um, the outer radius to 6um, the thickness to 0.5um, and the refractive index of the material to 1.4.
 
-|       Parameters        |     Default     |       Type       |                 Notes                 |
-| :-----------------: | :-----: | :------: | :---------------------------: |
+```python
+st.add_geometry(name="ring", type="Ring", property={
+    "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},  
+    "geometry": {"x": 0, "y": 0, "z": 0, "z_span": 0.5,
+                 "tilt_angle1": 90, "tilt_position": "top", "tilt_angle2": 90,
+                 "angle":360, "inner_radius": 4, "outer_radius": 6,}})
+```
+### 2.1.5 Polygon
+
+The geometric properties of polygon and an example of adding polygon into the project are shown below.
+
+
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
 |   geometry.tilt_angle    |   90   |  float   | Tilt angle of waveguide sidewall.   |
-|  geometry.tilt_position  |   top   |  string  | To ensure that the models are placed at the specified sizes on the different ratio of sidewalls. Selections are ['top', 'TOP', 'Top', 'bottom', 'BOTTOM', 'Bottom', 'middle', 'MIDDLE', 'Middle', 'user_defined']. |
+|  geometry.tilt_position  |   top   |  string  | To ensure that the models are placed at the specified sizes on the different ratio of sidewalls. Selections are ["top", "TOP", "Top", "bottom", "BOTTOM", "Bottom", "middle", "MIDDLE", "Middle", "user_defined"]. |
 | geometry.control_points  |    -     |  float   |  The coordinate of the points for generating a polygon.      |
 |     geometry.x      |    -     |  float   |  The center point x-coordinate the custom polygon.    |
 |     geometry.y      |    -     |  float   |    The center point y-coordinate the custom polygon.     |
@@ -197,240 +189,313 @@ st.add_geometry(name="polygon", type="Polygon", property={
 |  material.material  |      -   | material |  Material around the geometric structure.    |
 | material.mesh_order |      -   | integer  | The order of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
+**Example:**
 
-### 2.1.5 Ellipse
+The following script adds a polygon to the structure of the instance, sets the vertex coordinates of the polygon to (-2, -2) (2, -2) (2, 2) (-2, 2) um, with a thickness of 0.5um., and the refractive index of the material to 1.4.
 
-Incorporate an ellipse into the project by implementing the code `type="Ellipse"`.
+```python
+st.add_geometry(name="polygon", type="Polygon", property={
+        "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2}, 
+        "geometry": {"x": 0, "y": 0,
+                     "z": 0, "z_span": 0.5,
+                     "control_points":
+                        [{"x": -2, "y": -2}, {"x": 2, "y": -2}, {"x": 2, "y": 2}, {"x": -2, "y": 2}],
+                    "tilt_angle": 90, "tilt_position": "top", 
+        }})
+```
+
+### 2.1.6 Ellipse
+
+The geometric properties of ellipse and an example of adding ellipse into the project are shown below.
+
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+| geometry.x                     | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.y                     | number  |-           | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z                     | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z_span                | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z_min                 | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z_max                 | number  |  -         | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.x_radius              | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.y_radius              | number  |  -         | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.tilt_angle            | number  | 90        | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.tilt_position         | string  | top       | Selections are ["top", "middle", "bottom", "user_defined"]                   |
+| geometry.user_defined_position | number  |  -         | This parameter is required when geometry.tilt_position == "user_defined"     |
+| material.material              | object  | -          | Select a material object                                                     |
+| material.mesh_order            | integer |-           |  The order of material coverage when creating a geometric structure. Restrained by condition: >=0.                             |
+| material.index                 | number  | -          | User-defined index                                                           |
+| material.color                 | string  |-           | User-defined color , default "#70AD47"                                       |
 
 **Example:**
+
+The following script adds a ellipse to the structure of the instance, sets the radius in the x direction to 3 um, the radius in the y direction to 5 um, the thickness to 0.5 um, and the refractive index of the material to 1.4.
 
 ```python
 st.add_geometry(name="ellipse", type="Ellipse", property={
-    "material": {"material": mt["Si"], "mesh_order": 2},
-    "geometry": {"x_radius": size, "y_radius": 1.5*size,
-                 "x": 3*space, "y": space, "z": 0, "z_span": wg_height,
-                 "tilt_angle": 70, "tilt_position": "bottom"}})
-```
+    "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2}, 
+    "geometry": {"x_radius": 3, "y_radius": 5,
+                 "x": 0, "y": 0, "z": 0, "z_span": 0.5,
+                 "tilt_angle": 90, "tilt_position": "top"}})
+```  
 
-|       Parameters        |     Default     |       Type       |               Notes                 |
-| :-----------------: | :-----: | :------: | :---------------------------: |
-|   geometry.tilt_angle    |   90   |  float   | Tilt angle of waveguide sidewall.   |
-|  geometry.tilt_position  |   top   |  string  | To ensure that the models are placed at the specified sizes on the different ratio of sidewalls. Selections are ['top', 'TOP', 'Top', 'bottom', 'BOTTOM', 'Bottom', 'middle', 'MIDDLE', 'Middle', 'user_defined']. |
-|  geometry.x_radius  |     -    |  float   | The length in the x direction of the ellipse. Restrained by condition: >0.  |
-|  geometry.y_radius  |    -     |  float   | The width in the y direction of the ellipse.Restrained by condition: >0.  |
-|     geometry.x      |    -     |  float   |  The x-coordinate of the center point position of the ellipse.    |
-|     geometry.y      |     -    |  float   |  The y-coordinate of the center point position of the ellipse.      |
-|     geometry.z      |     -    |  float   |   The z-coordinate of the center point position of the ellipse.    |
-|   geometry.z_span   |     -    |  float   | The thinckness of the ellipse. Restrained by condition: >0.  |
-|   geometry.z_min    |     -    |  float   |The z-coordinate of the bottom position of the height of the ellipse.      |
-|   geometry.z_max    |     -    |  float   |  The z-coordinate of the top position of the height of the ellipse.     |
-|  material.material  |     -    | material | Material of the geometric structure. |
-| material.mesh_order |     -    | integer  | The order of material coverage when creating a geometric structure. Restrained by condition: >=0. |
+### 2.1.7 Linear trapezoid
+
+The geometric properties of linear trapezoid and an example of adding linear trapezoid into the project are shown below.
 
 
-
-### 2.1.6 Linear trapezoid
-
-Integrate a linear trapezoid shape into the project using the code `type="LinearTrapezoid"`.
+| Parameter                | Default   | Type  | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+|   geometry.tilt_angle    |     float |   90  | Tilt angle of waveguide sidewall.   |
+|  geometry.tilt_position  |    string |  top   | To ensure that the models are placed at the specified sizes on the different ratio of sidewalls. Selections are ["top", "bottom","middle", "user_defined"]. |
+| geometry.control_points  |     float |  -  |  The coordinate of the points for generating a polygon.      |
+|     geometry.x      |   float     | - |  The x-coordinate of the center point position of the linear trapezoid.    |
+|     geometry.y      |        float    |- |  The y-coordinate of the center point position of the linear trapezoid.      |
+|     geometry.z      |    float    | -  |   The z-coordinate of the center point position of the linear trapezoid.    |
+|   geometry.z_span   |     float  |   - | The thinckness of the linear trapezoid. Restrained by condition: >0.  |
+|   geometry.z_min    |   float    |  -   |The z-coordinate of the bottom position of the height of the linear trapezoid.      |
+|   geometry.z_max    |    float   |   - |  The z-coordinate of the top position of the height of the linear trapezoid.     |
+|  material.material  |    material  |- | Material of the geometric structure. |
+| material.mesh_order |      integer   | -| The order of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
 **Example:**
+
+The following script adds a linear trapezoid to the structure of the instance, sets the vertex coordinates to (-2, 2) (-4, -2) (4, -2) (2, 2) um, with a thickness of 0.5 um and the refractive index of the material to 1.4.
 
 ```python
 st.add_geometry(name="linear_trapezoid", type="LinearTrapezoid", property={
-    "material": {"material": mt["Si"], "mesh_order": 2},
+    "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2}, 
     "geometry": { "control_points":
-                  [{"x": 1, "y": 1}, {"x": 2, "y": 1}, {"x": 2, "y": 2}, {"x": 1, "y": 1.5}],
-                 "x": 2*space, "y": space, "z": 0, "z_span": wg_height,
-                 "tilt_angle": 70, "tilt_position": "bottom"}})
+                  [{"x": -2, "y": 2}, {"x": -4, "y": -2}, {"x": 4, "y": -2}, {"x": 2, "y": 2}],
+                 "x": 0, "y": 0, "z": 0, "z_span": 0.5,
+                 "tilt_angle": 90, "tilt_position": "top"}})
 ```
 
-|       Parameters        |     Default     |       Type       |                 Notes                 |
-| :-----------------: | :-----: | :------: | :---------------------------: |
-|   geometry.tilt_angle    |   90   |  float   | Tilt angle of waveguide sidewall.   |
-|  geometry.tilt_position  |   top   |  string  | To ensure that the models are placed at the specified sizes on the different ratio of sidewalls. Selections are ['top', 'TOP', 'Top', 'bottom', 'BOTTOM', 'Bottom', 'middle', 'MIDDLE', 'Middle', 'user_defined']. |
-| geometry.control_points  |    -     |  float   |  The coordinate of the points for generating a polygon.      |
-|     geometry.x      |    -     |  float   |  The x-coordinate of the center point position of the linear trapezoid.    |
-|     geometry.y      |     -    |  float   |  The y-coordinate of the center point position of the linear trapezoid.      |
-|     geometry.z      |     -    |  float   |   The z-coordinate of the center point position of the linear trapezoid.    |
-|   geometry.z_span   |     -    |  float   | The thinckness of the linear trapezoid. Restrained by condition: >0.  |
-|   geometry.z_min    |     -    |  float   |The z-coordinate of the bottom position of the height of the linear trapezoid.      |
-|   geometry.z_max    |     -    |  float   |  The z-coordinate of the top position of the height of the linear trapezoid.     |
-|  material.material  |     -    | material | Material of the geometric structure. |
-| material.mesh_order |     -    | integer  | The order of material coverage when creating a geometric structure. Restrained by condition: >=0. |
+### 2.1.8 Pyramid
+
+The geometric properties of pyramid and an example of adding pyramid into the project are shown below.
 
 
-
-### 2.1.7 Pyramid
-
-Incorporate a pyramid structure into the project by employing the code `type="Pyramid"`.
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+| geometry.x_span_bottom | number  |  -         | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.y_span_bottom | number  |-           | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.x_span_top    | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.y_span_top    | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.theta_x       | number  | 0         | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.theta_y       | number  | 0         | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.delta_x       | number  | 0         | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.delta_y       | number  | 0         | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.x             | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.y             | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z             | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z_span        | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z_min         | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z_max         | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| material.material      | object  |-           | Select a material object                                                     |
+| material.mesh_order    | integer |-           |  The order of material coverage when creating a geometric structure. Restrained by condition: >=0.                    |
+| material.index         | number  |-           | User-defined index                                                           |
+| material.color         | string  | -          | User-defined color , default "#70AD47"                                       |
 
 **Example:**
+The following script adds a pyramid to the structure of the instance, sets the top width in the x and y directions to 3 μ m, the bottom width to 5 μ m, the thickness to 0.5 μ m, and the refractive index of the material to 1.4.
 
 ```python
 st.add_geometry(name="pyramid", type="Pyramid", property={
-    "material": { "material": mt["Si"], "mesh_order": 2 },
-    "geometry": {"x": space, "x_span_top":5,"x_span_bottom":10,
-                  "y": space,"y_span_top":5,"y_span_bottom":15,
-                  "z": 1, "z_span": 1,"delta_x": 1, "delta_y": 1}})
+    "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},
+    "geometry": {"x": 0, "x_span_top": 3,"x_span_bottom": 5,
+                  "y": 0,"y_span_top": 3,"y_span_bottom": 5,
+                  "z": 0, "z_span": 0.5,"delta_x": 0, "delta_y": 0}})
+```    
+
+### 2.1.9 Sphere
+
+The geometric properties of sphere and an example of adding sphere into the project are shown below.
+
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+| geometry.radius_x      | number  | 1.5       | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.radius_y      | number  | 1.5       | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.radius_z      | number  | 1.5       | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.x             | number  | 0.0       | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.y             | number  | 0.0       | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z             | number  | 0.0       | A float, or a parameter, or a parameter expression that evaluates to a float |
+| material.material      | object  | -          | Select a material object                                                     |
+| material.mesh_order    | integer | -          |   The order of material coverage when creating a geometric structure. Restrained by condition: >=0.                   |
+| material.index                 | number  | -          | User-defined index                                                   |
+| material.color                 | string  | -          | User-defined color , default "#70AD47"                               |
+
+**Example:**
+The following script adds a sphere to the structure of the instance, sets the radius in the x, y, and z directions to 1.5 um, and the refractive index of the material to 1.4.
+
+```python
+st.add_geometry(name="Sphere", type="Sphere", property={
+            "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},
+            "geometry": {"x": 0, "y": 0, "z": 0, "radius_x": 1.5,
+                         "radius_y": 1.5, "radius_z": 1.5}})
 ```
 
-|         Parameters         |     Default     |       Type       |                 Notes                 |
-| :--------------------: | :-----: | :------: | :---------------------------: |
-| geometry.x_span_bottom |    -     |  float   | The length in the x-direction at the bottom of the pyramid. Restrained by condition: >=0. |
-| geometry.y_span_bottom |     -    |  float   | The width in the y-direction at the bottom of the pyramid. Restrained by condition: >=0. |
-|  geometry.x_span_top   |    -     |  float   | The length in the x-direction at the top of the pyramid. Restrained by condition: >=0. |
-|  geometry.y_span_top   |    -     |  float   |  The width in the y-direction at the top of the pyramid. Restrained by condition: >=0. |
-|    geometry.delta_x    |    0    |  float   | The tilt angle of the top pyramid structure along the x+ axis.  |
-|    geometry.delta_y    |    0    |  float   | The tilt angle of the top pyramid structure along the y+ axis.                              |
-|     geometry.x      |    -     |  float   |  The x-coordinate of the center point position of the pyramid.    |
-|     geometry.y      |     -    |  float   |  The y-coordinate of the center point position of the pyramid.      |
-|     geometry.z      |     -    |  float   |   The z-coordinate of the center point position of the pyramid.    |
-|   geometry.z_span   |     -    |  float   | The thinckness of the pyramid. Restrained by condition: >0.  |
-|   geometry.z_min    |     -    |  float   |The z-coordinate of the bottom position of the height of the pyramid.      |
-|   geometry.z_max    |     -    |  float   |  The z-coordinate of the top position of the height of the pyramid.     |
+### 2.1.10 Straight wavegudie
 
-|  material.material  |    -     | material | Material of the geometric structure. |
-| material.mesh_order |     -    | integer  | The order of material coverage when creating a geometric structure. Restrained by condition: >=0. |
+The geometric properties of straight waveguide and an example of adding staright waveguide into the project are shown below.
+
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+| geometry.x                     | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.y                     | number  |-           | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z                     | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z_span                | number  |  -         | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z_min                 | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z_max                 | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.x_span                | number  |-           | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.x_min                 | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.x_max                 | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.y_span                | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.y_min                 | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.y_max                 | number  |  -         | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.tilt_angle1           | number  | 90        | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.tilt_angle2           | number  | 90        | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.tilt_position         | string  | top       | Selections are ["top", "middle", "bottom", "user_defined"]                   |
+| geometry.user_defined_position | number  | -          | This parameter is required when geometry.tilt_position == "user_defined"     |
+| material.material              | object  |-           | Select a material object                                                     |
+| material.mesh_order            | integer |-           | The order of material coverage when creating a geometric structure. Restrained by condition: >=0.          |
+| material.index                 | number  | -          | User-defined index                                                           |
+| material.color                 | string  |-           | User-defined color , default "#70AD47"                                       |
+
+**Example:**
+The following script adds a straight waveguide to the structure of the instance, sets the size to 10 um * 1 um * 1 um, "tile_angle_1" to 70 degrees, and the refractive index of the material to 1.4.
+
+```python
+st.add_geometry(name="StraightWaveguide", type="StraightWaveguide", property={
+            "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},
+            "geometry": {"x": 0, "x_span": 10, "y": 0, "y_span": 1, "z": 0, "z_span": 1,
+                         "tilt_position": "top", "tilt_angle1": 70, "tilt_angle2": 90
+                         }})
+```
 
 
+### 2.1.11 Bezier wavegudie
 
-### 2.1.8 Analytical waveguide 
 
-Integrate an analytical waveguide structure into the project by implementing the code `type='AnalyticalWaveguide'`.  we adopt the following codes to model an analytical waveguide with a function of side wall <InlineMath math="y=A*(L/2-x)^m+1.5" /> ,where A and L are user defined parameters. The str() is used for sweeping the structure, and f'{} is used to call the relative parameters:
+The geometric properties of bezier waveguide and an example of adding bezier waveguide into the project are shown below.
 
 **Example:**
 
-```python
-st.add_geometry(name='taper_symmetric_test', type='AnalyticalWaveguide',
-                property={'geometry': {'x': 0, 'x_span': L, 'y': 0, 'y_span': taper_width, 'z': 0, 'z_span': 0.22,
-                                       'equation1': "x^2", 'nonsymmetric': False,
-                                      #  'equation2': "x^2",
-                                       'tilt_position': 'user_defined', 'tilt_angle': 80, 'user_defined': 0.5, 'resolution': 1000,
-                          'material': {'material': mt['Si'], 'mesh_order': 2}})
-```
 
-|Parameters|Default|Type|Notes|                            |
-| :--------------------: | :-----: | :------: | :----------------------------------------------------------: |
-|   geometry.tilt_angle    |   90   |  float   | Tilt angle of waveguide sidewall.   |
-|  geometry.tilt_position  |   top   |  string  | To ensure that the models are placed at the specified sizes on the different ratio of sidewalls. Selections are ['top', 'TOP', 'Top', 'bottom', 'BOTTOM', 'Bottom', 'middle', 'MIDDLE', 'Middle', 'user_defined']. |
-|    geometry.x_span     |     -    |  float   |                 The length of the waveguide in the x-direction. Restrained by condition: >0.                 |
-|     geometry.x_min     |     -    |  float   | The x-coordinate  value of the endpoint for the waveguide length.                                   |
-|     geometry.x_max     |      -   |  float   | The x-coordinate  value of the endpoint for the waveguide length.                                  |
-|    geometry.y_span     |      -   |  float   |                 The width of the waveguide in the y-direction. Restrained by condition: >0.                 |
-|     geometry.y_min     |    -     |  float   |  The y-coordinate  value of the endpoint for the waveguide width.                                          |
-|     geometry.y_max     |     -    |  float   |  The y-coordinate  value of the endpoint for the waveguide width.                                    |
-|   geometry.equation1   |    -     |  string  | The customed function 1 used in modeling the analytical waveguide.                                     |
-|   geometry.equation2   |    -   |  string  |  When the geometry is asymmetric(`'nonsymmetric': True`), the customed function 2 used in modeling the analytical waveguide.      |
-| geometry.nonsymmetric  |  false  |   bool   |    To Control whether the waveguide is symmetric.                                 |
-|  geometry.resolution   |   10    | integer  | The resolution in modeling the analytical waveguide when working with functions.                                                             |
-| geometry.user_defined  |    1    |  float   |            To decide the ratio of sidewalls.                            |
-|     geometry.x      |    0    |  float   |    The x-coordinate of the center point position of the analytical waveguide.          |
-|     geometry.y      |    0    |  float   |    The y-coordinate of the center point position of the analytical waveguide.      |
-|     geometry.z      |     -    |  float   | The z-coordinate of the center point position of the analytical waveguide. |
-|   geometry.z_span   |     -    |  float   | Setting the height of the analytical waveguide. Restrained by condition: >0.  |
-|   geometry.z_min    |      -   |  float   |   The z-coordinate of the bottom position of the height of the analytical waveguide.      |
-|   geometry.z_max    |     -    |  float   |   The z-coordinate of the top position of the height of the analytical waveguide.    |
-
-|  material.material  |      -   | material |     Material of the geometric structure.         |
-| material.mesh_order |      -   | integer  | The order of material coverage when creating a geometric structure.Restrained by condition: >=0. |
-
-
-
-### 2.1.9 Rectangle
-
-Incorporate a rectangle structure into the project by utilizing the code `type="Rectangle"`.
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+| geometry.x                     | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.y                     | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z                     | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z_span                | number  |-           | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z_min                 | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z_max                 | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.control_points.[x]    | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.control_points.[y]    | number  |-           | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.tilt_angle1           | number  | 90        | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.tilt_angle2           | number  | 90        | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.width                 | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.tilt_position         | string  | top       | Selections are ["top", "middle", "bottom", "user_defined"]                   |
+| geometry.user_defined_position | number  | -         | This parameter is required when geometry.tilt_position == "user_defined"     |
+| material.material              | object  | -          | Select a material object                                                     |
+| material.mesh_order            | integer | -          |   The order of material coverage when creating a geometric structure. Restrained by condition: >=0.                  |
+| material.index                 | number  | -          | User-defined index                                                           |
+| material.color                 | string  |-           | User-defined color , default "#70AD47"                                       |
 
 **Example:**
 
+The following script adds a bezier waveguide to the structure of the instance, sets the coordinates of the control points on the path to (1,1) (1,2) (2,2) (2,3) um with a width of 0.5 um and a thickness of 0.5 um, and the refractive index of the material to 1.4.
+
 ```python
-st.add_geometry(name="rectangle", type="Rectangle", property={
-    "material": {"material": mt["Si"], "mesh_order": 2},
-    "geometry": {
-                 "x": 0, "x_span": size, "y": space, "y_span": wg_width, "z": 0, "z_span": wg_height, 
-                 "tilt_angle":70, "tilt_position":"middle",}})
+st.add_geometry(name="bezier", type="BezierWaveguide", property={
+    "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},
+    "geometry": {"x": 0, "y": 0, "z": 0, "z_span": 0.5, "width": 0.5,
+                  "control_points":
+                        [{"x": 1, "y": 1}, {"x": 1, "y": 2}, {"x": 2, "y": 2}, {"x": 2, "y": 3}],
+                "tilt_angle1": 90, "tilt_position": "bottom", "tilt_angle2": 90,
+                }})
 ```
 
-|       Parameters        |     Default     |       Type       |                 Notes                 |
-| :-----------------: | :-----: | :------: | :---------------------------: |
-|    geometry.x_span     |         |  float   |                 The length of the rectangle in the x-direction. Restrained by condition: >0.                 |
-|     geometry.x_min     |     -    |  float   | The x-coordinate  value of the endpoint for the rectangle length.                                   |
-|     geometry.x_max     |    -     |  float   | The x-coordinate  value of the endpoint for the rectangle length.                                  |
-|    geometry.y_span     |    -     |  float   |                 The width of the rectangle in the y-direction. Restrained by condition: >0.                 |
-|     geometry.y_min     |     -    |  float   |  The y-coordinate  value of the endpoint for the rectangle width.                                          |
-|     geometry.y_max     |     -    |  float   |  The y-coordinate  value of the endpoint for the rectangle width.                                    |
-|     geometry.x      |    0    |  float   |    The x-coordinate of the center point position of the rectangle.          |
-|     geometry.y      |    0    |  float   |    The y-coordinate of the center point position of the rectangle.      |
-|     geometry.z      |     -    |  float   | The z-coordinate of the center point position of the rectangle. |
-|   geometry.z_span   |    -     |  float   | Setting the height of the rectangle. Restrained by condition: >0.  |
-|   geometry.z_min    |     -    |  float   |   The z-coordinate of the bottom position of the height of the rectangle.      |
-|   geometry.z_max    |     -    |  float   |   The z-coordinate of the top position of the height of the rectangle.    |
-|  geometry.tilt_angle   |   90    |  float   |  Tilt angle of the structure sidewall.        |
-| geometry.tilt_position |   top   |  string  | Different ways of tilting the sidewalls of the waveguide. Selections are ['top', 'TOP', 'Top', 'bottom', 'BOTTOM', 'Bottom', 'middle', 'MIDDLE', 'Middle', 'user_defined']. |
-|  material.material  |    -     | material |     Material of the geometric structure.         |
-| material.mesh_order |     -    | integer  | The order of material coverage when creating a geometric structure.Restrained by condition: >=0. |
+### 2.1.12 Analytical waveguide 
+
+The geometric properties of analytical waveguide and an example of adding analytical waveguide into the project are shown below.
 
 
-
-### 2.1.10 Ring
-
-Integrate a ring structure into the project by implementing the code `type="Ring" `. 
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+| geometry.x_max                 | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.y_span                | number  |-           | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.y_min                 | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.y_max                 | number  | -         | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.equation1             | string  | -          | A string expression like "x^2" or a python expression like x**2 is supported |
+| geometry.equation2             | string  | 1         | A string expression like "x^2" or a python expression like x**2 is supported |
+| geometry.nonsymmetric          | boolean | False     |     Select True to set the equation for y<0 separately.                                                                        |
+| geometry.resolution            | integer | 10        |   Calculate the number of variable values in an equation.                                                                        |
+| geometry.tilt_angle            | number  | 90        | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.tilt_position         | string  | top       | Selections are ["top", "middle", "bottom", "user_defined"]                   |
+| geometry.user_defined_position | number  | -          | This parameter is required when geometry.tilt_position == "user_defined"     |
+| geometry.x                     | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.y                     | number  |-          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z                     | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z_span                | number  |-           | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z_min                 | number  | -         | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z_max                 | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| material.material              | object  |  -         | Select a material object                                                     |
+| material.mesh_order            | integer |  -         |    The order of material coverage when creating a geometric structure. Restrained by condition: >=0.           |
+| material.index                 | number  |     -      | User-defined index                                                           |
+| material.color                 | string  |      -     | User-defined color , default "#70AD47"                                       |
 
 **Example:**
+The following script adds a analytical waveguide to the structure of the instance, sets the size to 3um * 3um * 0.22um, the expression for x>0 (equation1) is "1/{x}", and the refractive index of the material is 1.4
 
 ```python
-st.add_geometry(name="ring", type="Ring", property={
-    "material": {"material": mt["Si"], "mesh_order": 2},
-    "geometry": {"x": 0, "y": 2*space, "z": 0, "z_span": wg_height,
-                 "tilt_angle1": 70, "tilt_position": "bottom", "tilt_angle2": 90,
-                 "angle":70, "inner_radius": size-wg_width/2, "outer_radius": size+wg_width/2,}})
+st.add_geometry(name="analyticalwaveguide", type="AnalyticalWaveguide",property={
+                    "material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},
+                    "geometry": {"x": 0, "x_span": 3, "y": 0, "y_span": 3, "z": 0, "z_span": 0.22,
+                                       "equation1": "1/{x}", "nonsymmetric": False,
+                                      #  "equation2": "x^2",
+                                       "tilt_position": "top", "tilt_angle": 90,  "resolution": 100,
+                          })
 ```
 
-|        Parameters         |     Default     |       Type       |                 Notes                 |
-| :-------------------: | :-----: | :------: | :---------------------------: |
-|   geometry.tilt_angle1    |   90   |  float   | First tilt angle of waveguide sidewall.   |
-|  geometry.tilt_position  |   top   |  string  | To ensure that the models are placed at the specified sizes on the different ratio of sidewalls. Selections are ['top', 'TOP', 'Top', 'bottom', 'BOTTOM', 'Bottom', 'middle', 'MIDDLE', 'Middle', 'user_defined']. |
-|   geometry.tilt_angle2    |   90   |  float   | Second tilt angle of waveguide sidewall.   |
-|   geometry.angle    |     -    |  float   |     The angle of the ring.         |
-| geometry.inner_radius |    -     |  float   | The inner radius of the ring. Restrained by condition: >0.  |
-| geometry.outer_radius |    -     |  float   | The outer radius of the ring. Restrained by condition: >0.  |
-|     geometry.x      |    0    |  float   |    The x-coordinate of the center point position of the ring.          |
-|     geometry.y      |    0    |  float   |    The y-coordinate of the center point position of the ring.      |
-|     geometry.z      |    -     |  float   | The z-coordinate of the center point position of the ring. |
-|   geometry.z_span   |     -    |  float   | Setting the height of the ring. Restrained by condition: >0.  |
-|   geometry.z_min    |     -    |  float   |   The z-coordinate of the bottom position of the height of the ring.      |
-|   geometry.z_max    |     -    |  float   |   The z-coordinate of the top position of the height of the ring.    |
-|  material.material  |     -    | material |     Material of the geometric structure.         |
-| material.mesh_order |     -    | integer  | The order of material coverage when creating a geometric structure.Restrained by condition: >=0. |
+
+### 2.1.13 GDS file
+
+The geometric properties of sphere and an example of adding sphere into the project are shown below.
 
 
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+| geometry.x                     | number  | 0         | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.y                     | number  | 0         | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z                     | number  |      -     | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z_span                | number  |       -    | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z_min                 | number  |      -     | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.z_max                 | number  |       -    | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.tilt_angle            | number  | 90        | A float, or a parameter, or a parameter expression that evaluates to a float |
+| geometry.tilt_position         | string  | top       | Selections are ["top", "middle", "bottom", "user_defined"]                   |
+| geometry.user_defined_position | number  |        -   | This parameter is required when geometry.tilt_position == "user_defined"     |
+| material.material              | object  |     -      | Select a material object                                                     |
+| material.mesh_order            | integer |      -     |    The order of material coverage when creating a geometric structure. Restrained by condition: >=0.       |
+| material.index                 | number  |     -      | User-defined index                                                           |
+| material.color                 | string  |      -     | User-defined color , default "#70AD47"                                       |
+| general.path                   | string  |     -      |      The path name of the gds file.                                                                        |
+| general.cell_name              | string  |      -   | If there is only one cell, a "*" can be input instead of the cell name       |
+| general.layer_name             | array   |    -       |      The layer name of the gds file.                                                                         |
 
-### 2.1.11 Triangle
 
-Integrate a triangle structure into the project by implementing the code `type="Triangle"`.
-
+  
 **Example:**
+The following script import gds file to the structure of the instance, sets import parameters including the path name, cell name and layer name, structure thickness to 0.22 um, and material refractive index to 1.4.
+path_name = "gds_file_path"
+cell_name = "gds_cell_name"
+layer_name = (1,0)
+st.add_geometry(name="gds_file", type="gds_file", property={
+                        "general": {"path": path_name, "cell_name": cell_name "layer_name": layer_name },
+                        "geometry": {"x": 0, "y": 0, "z": 0, "z_span": 0.22},
+                        "material": {"object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2}})
+```    
 
-```python
-st.add_geometry(name="triangle", type="Triangle", property={
-    "material": {"material": mt["Si"], "mesh_order": 2},
-    "geometry": {"control_points":[{"x": 0, "y": 0}, {"x": 0, "y": 2}, {"x": 2, "y": 2}],
-                 "x": 2*space, "y": 2*space, "z": 0, "z_span": wg_height,
-                 "tilt_angle":70, "tilt_position":"middle"}})
-```
 
-|       Parameters        |     Default     |       Type       |                 Notes                 |
-| :-----------------: | :-----: | :------: | :---------------------------: |
-| geometry.control_points  |    -     |  float   |  The coordinate of the points for generating a Bezier curve.      |
-|     geometry.x      |    -     |  float   |  The x-coordinate of the center point position of the triangle.    |
-|     geometry.y      |     -    |  float   |  The y-coordinate of the center point position of the triangle.      |
-|     geometry.z      |     -    |  float   |   The z-coordinate of the center point position of the triangle.    |
-|   geometry.z_span   |     -    |  float   | The thinckness of the triangle. Restrained by condition: >0.  |
-|   geometry.z_min    |      -   |  float   |The z-coordinate of the bottom position of the height of the triangle.      |
-|   geometry.z_max    |     -    |  float   |  The z-coordinate of the top position of the height of the triangle.     |
-|   geometry.tilt_angle    |   90   |  float   | Tilt angle of waveguide sidewall.   |
-|  geometry.tilt_position  |   top   |  string  | To ensure that the models are placed at the specified sizes on the different ratio of sidewalls. Selections are ['top', 'TOP', 'Top', 'bottom', 'BOTTOM', 'Bottom', 'middle', 'MIDDLE', 'Middle', 'user_defined']. |
-|  material.material  |     -    | material | Material of the geometric structure. |
-| material.mesh_order |     -    | integer  | The order of material coverage when creating a geometric structure. Restrained by condition: >=0. |
 
 ### 2.1.12 Mesh order
 
@@ -462,7 +527,7 @@ add_doping(
 |            Parameters         |             Description             |
 | :------------: | :-------------: |
 |      name      |   To set the name of doping in simulation   |
-|      type      |   The method type of setting up doping. Selections are ['type', 'n', 'p'].    |
+|      type      |   The method type of setting up doping. Selections are ["type", "n", "p"].    |
 |    property    | The property of doping. |
 
 ### 2.2.1 Function doping
@@ -496,19 +561,19 @@ st.add_doping(name="Uniform", type="p", property={
 |   geometry.z_min    |    -     |  float   |The z-coordinate of the bottom position of the height of doping box.      |
 |   geometry.z_max    |    -     |  float   |  The z-coordinate of the top position of the height of doping box.     |
 
-| general.distribution_function |      -   |  str  |    To set the type of distribution function for doping region. Selections are ['constant', 'gaussian']. When it's set to 'constant', constant doping is applied and only 'concentration' is required. When it's set to 'gaussian', Gaussian function doping is applied, and 'concentration', 'ref_concentration', 'junction_width', 'source_face'  are required.       |
+| general.distribution_function |      -   |  str  |    To set the type of distribution function for doping region. Selections are ["constant", "gaussian"]. When it"s set to "constant", constant doping is applied and only "concentration" is required. When it"s set to "gaussian", Gaussian function doping is applied, and "concentration", "ref_concentration", "junction_width", "source_face"  are required.       |
 |     general.concentration     |     -    |  float |  To set the doping concentration in non-diffusion area.    |
-|      general.source_face      |     -    |  str  | To set the doping source surface. Available when distribution_function is 'gaussian'. Selections are ['low_x', 'low_y','low_z'].'lower_x' means the source face is 'x=x_min'. Similarly for the rest. There is no diffusion area on the edge of source face. As for the other edges, there is a diffusion area respectively within the doping box. |
-|    general.junction_width     |     -    | float | To set the junction width. Available when distribution_function is 'gaussian' |
-|   general.ref_concentration   |     -    | float | Concentration on the edge of diffusion area (edge of doping box). Available when distribution_function is 'gaussian'. |
-|      volume.volume_type       |  'all'  |  str  |   The default of 'all' means the doping is applied to all the (semiconductor) structures, restricted by the doping box. Selections are ['all', 'material', 'region']    |
-|     volume.material_list      |    -     | list  |     It means the doping is applied to the structures of the specified materials and restricted by the doping box. Available when volume_type is 'material'.      |
-|      volume.region_list       |      -   | list  |    It  means the doping is applied to the specified structures and restricted by the doping box.   Available when volume_type is 'region'       |
+|      general.source_face      |     -    |  str  | To set the doping source surface. Available when distribution_function is "gaussian". Selections are ["low_x", "low_y","low_z"]."lower_x" means the source face is "x=x_min". Similarly for the rest. There is no diffusion area on the edge of source face. As for the other edges, there is a diffusion area respectively within the doping box. |
+|    general.junction_width     |     -    | float | To set the junction width. Available when distribution_function is "gaussian" |
+|   general.ref_concentration   |     -    | float | Concentration on the edge of diffusion area (edge of doping box). Available when distribution_function is "gaussian". |
+|      volume.volume_type       |  "all"  |  str  |   The default of "all" means the doping is applied to all the (semiconductor) structures, restricted by the doping box. Selections are ["all", "material", "region"]    |
+|     volume.material_list      |    -     | list  |     It means the doping is applied to the structures of the specified materials and restricted by the doping box. Available when volume_type is "material".      |
+|      volume.region_list       |      -   | list  |    It  means the doping is applied to the specified structures and restricted by the doping box.   Available when volume_type is "region"       |
 
 
 ### 2.2.2 Imported doping
 
-When type is set to 'ile', doping is imported from a file.
+When type is set to "ile", doping is imported from a file.
 
 **Example:**
 
@@ -520,12 +585,12 @@ st.add_doping(name="import_n", type="file", property={
 
 |       Parameters       |    Default    | &ensp;   Type   &ensp; |                        Notes                         |
 | :------------------: | :-----: | :--: | :------------------------------------------: |
-|    general.format    |    -     | str  |     Set the format of doping file. Only "DOP" is supported currently. Selections are ['DOP']. When it's set to "DOP", the doping file is a text file that stores a doping profile in rectangular grid. There are three columns in the file, which are the first dimension coordinate [um], the second dimension coordinate [um] and the doping concentration [cm^-3] respectively. Doping concentration should be non-negative.         |
+|    general.format    |    -     | str  |     Set the format of doping file. Only "DOP" is supported currently. Selections are ["DOP"]. When it"s set to "DOP", the doping file is a text file that stores a doping profile in rectangular grid. There are three columns in the file, which are the first dimension coordinate [um], the second dimension coordinate [um] and the doping concentration [cm^-3] respectively. Doping concentration should be non-negative.         |
 |  general.file_path   |    -     | str  |  The absolute path of the doping file         |
-|   general.species    |    -     | str  |  To set the doing species. Selections are ['n', 'p'].            |
-|  volume.volume_type  |  'all'  | str  | To set a list of regions or materials for doping. Selections are ['all', 'material', 'region'].  |
-| volume.material_list |    -     | list |   Available when volume_type is 'material'   |
-|  volume.region_list  |    -     | list |    Available when volume_type is 'region'    |
+|   general.species    |    -     | str  |  To set the doing species. Selections are ["n", "p"].            |
+|  volume.volume_type  |  "all"  | str  | To set a list of regions or materials for doping. Selections are ["all", "material", "region"].  |
+| volume.material_list |    -     | list |   Available when volume_type is "material"   |
+|  volume.region_list  |    -     | list |    Available when volume_type is "region"    |
 
 
 
@@ -567,30 +632,30 @@ st.add_electrode(name="cathode", property={
 
 |          Parameters          |      Default       |     Type      |                          Notes                           |
 | :------------------------: | :----------: | :-----: | :------------------------------------------: |
-|        force_ohmic         |     true     |  bool   |   Whether the electrode is ohmic, default to be True. Currently only ohmic contact is supported, so force_ohmic can't be set to False.   |
-|          bc_mode           | steady_state | string  |       To set the type of electircal boundary condition. Selections are ['steady_state',transient].       |
-|   apply_AC_small_signal    |     none     | string  |   Determining whether to apply the small-signal alternating current. Selections are ['none', 'All']. When it's set to "none", no AC small signal is applied at each sweeping voltage. When it's set to "All", the AC small signal is applied after steady state simulation at each sweeping voltage      |
-|         sweep_type         |    single    | string  | To set the voltage type of the electrode. Selections are ['single', 'range', 'value']. |
+|        force_ohmic         |     true     |  bool   |   Whether the electrode is ohmic, default to be True. Currently only ohmic contact is supported, so force_ohmic can"t be set to False.   |
+|          bc_mode           | steady_state | string  |       To set the type of electircal boundary condition. Selections are ["steady_state",transient].       |
+|   apply_AC_small_signal    |     none     | string  |   Determining whether to apply the small-signal alternating current. Selections are ["none", "All"]. When it"s set to "none", no AC small signal is applied at each sweeping voltage. When it"s set to "All", the AC small signal is applied after steady state simulation at each sweeping voltage      |
+|         sweep_type         |    single    | string  | To set the voltage type of the electrode. Selections are ["single", "range", "value"]. |
 |         v_step_max         |     0.5      |  float  |    The maxium step of voltage value.          |
-|          voltage           |      0       |  float  |    The value of voltage. Available when sweep_type is 'single'     |
-|        range_start         |      0       |  float  |     The  start value of a voltage range. Available when sweep_type is 'range'     |
-|         range_stop         |      1       |  float  |     The  stop value of a voltage range. Available when sweep_type is 'range'     |
-|       range_interval       |      1       |  float  |     The  interval value of a voltage range. Available when sweep_type is 'range'     |
-|      range_num_points      |      2       | integer |     The   The number of points within the voltage range. Available when sweep_type is 'range'     |
-| []sweep_value_table.index  |       -       | integer |    The index table of voltage values. Available when sweep_type is 'value'.     |
-| []sweep_value_table.number |       -       |  float  |     The value table of voltage. Available when sweep_type is 'value'.     |
-|        surface_type        |    solid     | string  |     To set the surface type of electrode. Currently only 'solid' is supported, meaning that all the surfaces of a structure are selected.      |
-|           solid            |       -       | string  | Name of the structure to be set as an electrode. Available when surface_type is set to 'solid'.         |
+|          voltage           |      0       |  float  |    The value of voltage. Available when sweep_type is "single"     |
+|        range_start         |      0       |  float  |     The  start value of a voltage range. Available when sweep_type is "range"     |
+|         range_stop         |      1       |  float  |     The  stop value of a voltage range. Available when sweep_type is "range"     |
+|       range_interval       |      1       |  float  |     The  interval value of a voltage range. Available when sweep_type is "range"     |
+|      range_num_points      |      2       | integer |     The   The number of points within the voltage range. Available when sweep_type is "range"     |
+| []sweep_value_table.index  |       -       | integer |    The index table of voltage values. Available when sweep_type is "value".     |
+| []sweep_value_table.number |       -       |  float  |     The value table of voltage. Available when sweep_type is "value".     |
+|        surface_type        |    solid     | string  |     To set the surface type of electrode. Currently only "solid" is supported, meaning that all the surfaces of a structure are selected.      |
+|           solid            |       -       | string  | Name of the structure to be set as an electrode. Available when surface_type is set to "solid".         |
 
 ### 2.3.2 SSAC (Small signal alternating current)
 
 When solving the frequency response of optical signal for the device, transient simulation should be performed. In this case, the bc_mode of the corresponding electrode should be set to "transient", and the solver_mode of OEDevice solver should be set to "transient", too.
 
-In most of other cases, steady state or SSAC simulation is needed, the 'bc_mode' of electrodes should be 'steady_state'.
+In most of other cases, steady state or SSAC simulation is needed, the "bc_mode" of electrodes should be "steady_state".
 
 When solving capacitance and resistance with respect to frequency, SSAC simulation is required. The solver_mode of OEDevice solver should be set to "SSAC", and the apply_AC_small_signal of the corresponding electrode should be set to "All".
 
-When running steady state simulation, just set the solver_mode of OEDevice solver to 'steady_state'.
+When running steady state simulation, just set the solver_mode of OEDevice solver to "steady_state".
 
 **Example:**
 
@@ -626,7 +691,7 @@ st.add_electrode(name="cathode", property={
 |               Parameters               |    Default    |     type      |               Notes                  |
 | :----------------------------------: | :-----: | :-----: | :---------------------------: |
 |             force_ohmic              |  true   |  bool   |                               |
-|               bc_mode                |    -    | string  | Selections are ['transient']. |
+|               bc_mode                |    -    | string  | Selections are ["transient"]. |
 |               voltage                |    0    |  float  | Set the voltage that is applied to the electrode and a steady state simulation is performed first. The transient simulation is based on the steady state result. The optical generation rate is not applied during the steady state simulation.     |
 |                v_step_max            |     -    | string  |   Set the max step of the voltage from the equilibrium state to steady state at the bias of voltage.    |
 |       []time_table.time_start        |    -     |  float  |  Set the start time point of the range. The value of 0 represents the steady state of the earlier simulation.    |
@@ -634,10 +699,10 @@ st.add_electrode(name="cathode", property={
 |      []time_table.initial_step       |    -     |  float  |  Set the initial time step of the range         |
 |        []time_table.max_step         |    -     |  float  |  Set the max time step of the range         |
 |     []time_table.optical.enabled     |    0     | integer |     Whether to apply optical generation rate during the time range. The value of 1 means True, and 0 means False. Selections are [0, 1].     |
-|     []time_table.optical.envelop     |     -    | integer |   The envelop of the scaling factor of the light power during the time range. When it's set to 0, the envelop is uniform.  Selections are [0].  |
+|     []time_table.optical.envelop     |     -    | integer |   The envelop of the scaling factor of the light power during the time range. When it"s set to 0, the envelop is uniform.  Selections are [0].  |
 | []time_table.optical.source_fraction |    -     |  float  | When envelop is set to0, this value is the scaling factor of the light power during the time range.    |
-|             surface_type             |  solid   | string  |   Selections are ['solid'].   |
-|                solid                 |     -    | string  |   Available when surface_type is set to 'solid'.    |
+|             surface_type             |  solid   | string  |   Selections are ["solid"].   |
+|                solid                 |     -    | string  |   Available when surface_type is set to "solid".    |
 
 
 
@@ -673,15 +738,15 @@ st.add_surface_recombination(name="Cathode_Si", property={
 
 |     **Parameters**     |    Default    |   Type   |                            Notes                             |
 | :--------------------: | :-----------: | :------: | :----------------------------------------------------------: |
-|      surface_type      | domain_domain |  string  |    To set the type for calculating surface recombination. Selections are ['domain_domain', 'material_material'].    |
-|     interface_type     |     null      |  string  | To set the  interface type of surface recombination. Selections are ['null', 'InsulatorInterface', 'HomoJunction', 'HeteroJunction', 'MetalOhmicInterface', 'SolderPad']. 'InsulatorInterface' is interface between semiconductor and insulator, 'HomoJunction' means the interface between homogeneous semiconductor and semiconductor,'HeteroJunction' means the interface between heterogeneous semiconductor and semiconductor, 'MetalOhmicInterface' means the interface between semiconductor and conductor, 'SolderPad' means the interface between conductor and insulator. |
+|      surface_type      | domain_domain |  string  |    To set the type for calculating surface recombination. Selections are ["domain_domain", "material_material"].    |
+|     interface_type     |     null      |  string  | To set the  interface type of surface recombination. Selections are ["null", "InsulatorInterface", "HomoJunction", "HeteroJunction", "MetalOhmicInterface", "SolderPad"]. "InsulatorInterface" is interface between semiconductor and insulator, "HomoJunction" means the interface between homogeneous semiconductor and semiconductor,"HeteroJunction" means the interface between heterogeneous semiconductor and semiconductor, "MetalOhmicInterface" means the interface between semiconductor and conductor, "SolderPad" means the interface between conductor and insulator. |
 | infinite_recombination |     true      |   bool   |    Only available when interface_type is "MetalOhmicInterface". The surface recombination velocity of holes and electrons will be available when infinite_recombination is False.    |
-|     velocity_hole      |       0       |  float   | To define surface recombination velocity of holes. Available when interface_type is 'MetalOhmicInterface'/'InsulatorInterface' |
-|   velocity_electron    |       0       |  float   | To define surface recombination velocity of electron. Available when interface_type is 'MetalOhmicInterface'/'InsulatorInterface' |
-|        domain_1        |         -      |  string  |        The region 1 for surface recombination. Available when surface_type is 'domain_domain'        |
-|        domain_2        |        -       |  string  |        The region 2 for surface recombination. Available when surface_type is 'domain_domain'        |
-|       material_1       |        -       | material |       The material 1 for surface recombination. Available when surface_type is 'material_material'      |
-|       material_2       |        -       | material |       The material 2 for surface recombination. Available when surface_type is 'material_material'      |
+|     velocity_hole      |       0       |  float   | To define surface recombination velocity of holes. Available when interface_type is "MetalOhmicInterface"/"InsulatorInterface" |
+|   velocity_electron    |       0       |  float   | To define surface recombination velocity of electron. Available when interface_type is "MetalOhmicInterface"/"InsulatorInterface" |
+|        domain_1        |         -      |  string  |        The region 1 for surface recombination. Available when surface_type is "domain_domain"        |
+|        domain_2        |        -       |  string  |        The region 2 for surface recombination. Available when surface_type is "domain_domain"        |
+|       material_1       |        -       | material |       The material 1 for surface recombination. Available when surface_type is "material_material"      |
+|       material_2       |        -       | material |       The material 2 for surface recombination. Available when surface_type is "material_material"      |
 
 
 </div>

@@ -4,8 +4,6 @@
 
 <div class="text-justify">
 
-In this section, we support to extract simulation result data, exporting data results in various formats, facilitating more efficient data processing. We support the atrributes to extract as below:
-
 
 
 |                        **Parameters**                        |                         Description                          |
@@ -40,18 +38,23 @@ In this section, we will provide examples for extracting simulation result data 
 Get the result of calculated mode.
 
 ```python
+
 extract(
         self,
-        *,
-        # target - intensity
-        data: Literal["calculate_modes"],
-        attribute: PowerAttributes/ModeAttributes/OtherAttributes
-        export_csv=False, export_mat=False, export_zbf=False, 
-        show=False, 
-        real=True, 
-        imag=True, 
-        savepath:Any = "a",
-        mode: int,
+        data: Literal["fdtd:power_monitor"],
+        savepath: str,
+        target: Optional[enums.TargetType],
+        attribute: Optional[str],
+        real: bool,
+        imag: bool,
+        monitor_name: str,
+        wavelength: Optional[Union[StrictInt, StrictStr]] = None,
+        plot_x: Optional[str] = None,
+        plot_y: Optional[str] = None,
+        show: bool = False,
+        export_csv: bool = False,
+        export_mat: bool = False,
+        export_zbf: bool = False,
     )
 ```
 

@@ -54,7 +54,7 @@ simu[simu_name].preview_index(
 
 ```
 
-
+        
 ## 8.2 Preview mode
 
 
@@ -98,7 +98,7 @@ path_name = path + "preview_index"
 
 simu = Project.Simulation()
 simu[simu_name].preview_modes(source_name=s_name, savepath=path_name,
-                                      target="intensity", attribute="E", real=True, imag=True, mode=0, show=False, export_csv=True)
+                                      target="intensity", attribute="E", real=True, imag=True, mode=0, show=False, export_csv=True)   
 ```
 
 
@@ -137,7 +137,7 @@ Show the structure.
 | xyratio                        | tuple   | (1,1)     | Currently invalid                                                            |
 | celldisplay                    | boolean | False     | Currently invalid                                                            |
 
-
+ 
 
 Show 3D structure in a pop up windows.
 

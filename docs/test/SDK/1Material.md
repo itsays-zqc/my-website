@@ -16,8 +16,6 @@ The syntax and properties of adding non dispersive material are shown below. Thi
 
 ```python
 add_nondispersion(
-        self,
-        *,
         name: str,
         data: List[Tuple[float, float]],
         order: int = 2,
@@ -36,8 +34,9 @@ add_nondispersion(
 The following command adds non dispersive material to the material of the instance, sets the material name to "SiO2", data to [(1.444, 0)], mesh order to 1 and color to "#654321".
 
 ```python
+
 mt = Project.Material()
-mt.add_nondispersion(name="SiO2", data=[(1.444, 0)], order=1,color="#654321")
+mt.add_nondispersion(name="nondispersion_material", data=[(1.444, 0)], order=1,color="#654321")
 ```
 
 </div>
@@ -49,13 +48,11 @@ The syntax and properties of adding dispersive material are shown below. This fu
 
 ```python
 add_dispersion(
-            self,
-            *,
-            name: str,
-            data: List[Tuple[float, float, float]],
-            order: int = 2,
-            color: Optional[str] = None
-		)
+        name: str,
+        data: List[Tuple[float, float, float]],
+        order: int = 2,
+        color: Optional[str] = None
+	)
 ```
 
 | parameter      | type    | default   | description    |
@@ -74,9 +71,10 @@ add_dispersion(
 The following command adds dispersive material to the material of the instance, sets the material name to "SiO2", data to [(1.55e-06,, 1.444, 0), (1.30e-06, 1.81, 0.227)], mesh order to 2 and color to "#654321".
 
 ```python
+w_index = [(1.55e-06, 1.444, 0), (1.30e-06, 1.81, 0.227)]
 mt = pj.Material()
-mt.add_dispersion(name="SiO2",
-    data=[(1.55e-06, 1.444, 0), (1.30e-06, 1.81, 0.227)], order=2, color="#654321"
+mt.add_dispersion(name="dispersion",
+    data=w_index, order=2, color="#654321"
     )
 ```
 
@@ -87,12 +85,10 @@ The syntax and properties of adding non anisotropy material are shown below. Thi
 
 ```python
 add_anisotropy(
-            self,
-            *,
-            name: str,
-            data: Union[List],
-            order: int = 2,
-            color: Optional[str] = None,
+        name: str,
+        data: Union[List],
+        order: int = 2,
+        color: Optional[str] = None
    )
 ```
 | Parameter | Type | Default | Description |
@@ -106,9 +102,11 @@ add_anisotropy(
 The following command adds anisotropy material to the material of the instance, sets the material name to "LN", data to [(wavelength * 1e-6, 2.211, 0, 2.138, 0, 2.211, 0)] and mesh order to 2.
 
 ```python
+wavelength = 1.55
+w_xyz = [(wavelength * 1e-6, 2.211, 0, 2.138, 0, 2.211, 0)]
 mt = pj.Material()
-mt.add_anisotropy(name="LN", 
-      data=[(wavelength * 1e-6, 2.211, 0, 2.138, 0, 2.211, 0)], order=2
+mt.add_anisotropy(name="anisotropy_material", 
+      data=w_xyz, order=2
       )
 ```
 
@@ -119,10 +117,8 @@ The syntax and properties of adding material from material library are shown bel
 
 ```python
 add_lib(
-        self,
-        *,
         name: str,
-        data: Any,
+        data: Optional[str],
         order: int = 2
     )
 ```

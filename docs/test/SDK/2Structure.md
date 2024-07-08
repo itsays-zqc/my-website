@@ -20,45 +20,44 @@ The types that support adding geometric structures include "Triangle", "Rectangl
 
 The syntax for adding geometry is as follows. "name" defines the name of the structure, "type" selects the type of the structure, and "property" sets the properties of the structure model. This function does not return any data.
 
-```python
-st = Project.Structure()
-st.add_geometry(
-    name: str, 
-    type: Optional[str], 
-    property: dict
-    )
-```
-
 note: Set the refractive index of the material for the structure by selecting the material to be added to the project, or use "object_defined_dielectric" to set the material, but require an additional keyword "refractive_index" to set the refractive index of the material. The material setting method for all geometric structures is the same.
 
 ### 2.1.1 Triangle
 
 The geometric properties of triangle and an example of adding triangle into the project are shown below.
 
-
+```python
+add_geometry(
+        name: str, 
+        type: Literal["triangle"], 
+        property: dict
+    )
+```
+#### Geometry properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
-| geometry.x                     | number  |     -    | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.y                     | number  |    -     | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z                     | number  |    -     | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_span                | number  |     -   | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_min                 | number  |     -     | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_max                 | number  |      -  | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.control_points.[x]    | number  |      -  | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.control_points.[y]    | number  |     -    | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.tilt_angle            | number  | 90        | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.tilt_position         | string  | top       | Selections are ["top", "middle", "bottom", "user_defined"]                   |
-| geometry.user_defined_position | number  |      -  | This parameter is required when geometry.tilt_position == "user_defined"     |
-| material.material              | object  |     -   | Select a material object                                                     |
-| material.mesh_order            | integer |     -    |  The order of material coverage when creating a geometric structure. Restrained by condition: >=1.                              |
-| material.refractive_index      | number  |      -  | User-defined index                                                           |
-| material.color                 | string  |     -   | User-defined color , default "#70AD47"                                       |
+| x, y, z               | number  |     -    | The center position of the geometry. |
+| z_span                | number  |     -   | Z span of the geometry. |
+| z_min, z_max          | number  |     -     | Z min, Z max position of the geometry. |
+| control_points        | number  |      -  |  The vertices position for generating the geometry. |
+| tilt_angle            | number  | 90        | The tilt angle of the geometry, in degrees. |
+| tilt_position         | string  | top       | Selections tilt position are "top", "middle", "bottom" and "user_defined".                   |
+| user_defined_position | number  |      -  | This parameter is required when tilt position is "user_defined".     |
+
+#### Material properties
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+| material              | object  |     -   | Select a material object in the material database.                                                                    |
+| mesh_order            | integer |     -   |  Select a material in overlapping areas when generating grids, materials with higher mesh order have higher priority.|
+| refractive_index      | number  |      -  | Defined refractive index of the material.                                                                             |
+| color                 | string  |     -   | Defined color of the material, default "#70AD47".                                                                     |
 
 **Example:**
 
 The following script adds a triangle to the structure of the instance, with three vertices of (0,0) (0,2) (2,2) um and a thickness of 0.22 um. Select the material of "object_defined_ieleectric" and set the refractive index of the material to 1.4.
 
 ```python
+st = pj.Structure()
 st.add_geometry(name="triangle", type="Triangle", property={  
     "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},  
     "geometry": {"control_points":[{"x": 0, "y": 0}, {"x": 0, "y": 2}, {"x": 2, "y": 2}],
@@ -71,63 +70,81 @@ st.add_geometry(name="triangle", type="Triangle", property={
 
 The geometric properties of rectangle and an example of adding rectangle into the project are shown below.
 
-
+```python
+add_geometry(
+        name: str, 
+        type: Literal["rectangle"], 
+        property: dict
+    )
+```
+#### Geometry properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
-| geometry.x                     | number  |    -       | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.y                     | number  |      -     | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z                     | number  |      -     | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_span                | number  |      -     | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_min                 | number  |       -    | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_max                 | number  |       -    | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.x_span                | number  |         -  | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.x_min                 | number  |      -     | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.x_max                 | number  |      -     | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.y_span                | number  |        -   | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.y_min                 | number  |       -    | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.y_max                 | number  |    -       | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.tilt_angle            | number  | 90        | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.tilt_position         | string  | top       | Selections are ["top", "middle", "bottom", "user_defined"]                   |
-| geometry.user_defined_position | number  |     -      | This parameter is required when geometry.tilt_position == "user_defined"     |
-| material.material              | object  |     -      | Select a material object                                                     |
-| material.mesh_order            | integer |    -       |  The order of material coverage when creating a geometric structure. Restrained by condition: >=1.                                                     |
-| material.index                 | number  |      -     | User-defined index                                                           |
-| material.color                 | string  |       -    | User-defined color , default "#70AD47"                                       |
+| x, y, z               | number  |     -    | The center position of the geometry. |
+| x_span, y_span, z_span  | number  |     -   | X span, Y span and Z span of the geometry. |
+| x_min, x_max           | number  |     -     | X min, X max position of the geometry. |
+| y_min, y_max           | number  |     -     | Y min, Y max position of the geometry. |
+| z_min, z_max           | number  |     -     | Z min, Z max position of the geometry. |
+| tilt_angle            | number  | 90        | The tilt angle of the geometry, in degrees. |
+| tilt_position         | string  | top       | Selections tilt position are "top", "middle", "bottom" and "user_defined".                   |
+| user_defined_position | number  |      -  | This parameter is required when tilt position is "user_defined".     |
+
+#### Material properties
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+| material              | object  |     -   | Select a material object in the material database.                                                                    |
+| mesh_order            | integer |     -   |  Select a material in overlapping areas when generating grids, materials with higher mesh order have higher priority.|
+| refractive_index      | number  |      -  | Defined refractive index of the material.                                                                             |
+| color                 | string  |     -   | Defined color of the material, default "#70AD47".                                                                     |
 
 **Example:**
 
 The following script adds a rectangle to the structure of the instance, and set the dimension and material of the structure.
 
 ```python
+st = pj.Structure()
 st.add_geometry(name="rectangle", type="Rectangle", property={
     "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},  
     "geometry": {"x": 0, "x_span": 1, "y": 0, "y_span": 1, "z": 0, "z_span": 1, 
-                 "tilt_angle":90, "tilt_position":"top",}})
+                 "tilt_angle":90, "tilt_position":"top"}})
 ```
 
 ### 2.1.3 Circle
 
 The geometric properties of circle and an example of adding circle into the project are shown below.
 
+```python
+add_geometry(
+        name: str, 
+        type: Literal["circle"], 
+        property: dict
+    )
+```
 
+#### Geometry properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
-|   geometry.tilt_angle    |   90   |  float   | Tilt angle of waveguide sidewall.   |
-|  geometry.tilt_position  |   top   |  string  | To ensure that the models are placed at the specified sizes on the different ratio of sidewalls. Selections are ["top", "bottom", "middle", "user_defined"]. |
-|   geometry.radius   |    -     |  float   | The radius of the circle. Restrained by condition: >0.  |
-|     geometry.x      |     -    |  float   | The x-coordinate of the center point position of circle.    |
-|     geometry.y      |     -    |  float   |    The y-coordinate of the center point position of circle.      |
-|     geometry.z      |    -     |  float   |   The z-coordinate of the center point position of circle.       |
-|   geometry.z_span   |     -    |  float   | The thinckness of the circle. Restrained by condition: >0.  |
-|   geometry.z_min    |     -    |  float   |The bottom position of the height of the circle in z-coordinate.      |
-|   geometry.z_max    |    -     |  float   |  The top position of the height of the circle in z-coordinate.     |
-|  material.material  |     -    | material | Material of the geometric structure. |
-| material.mesh_order |    -     | integer  | The order of material coverage when creating a geometric structure. Restrained by condition: >=1. |
+|   radius               |    -     |  float   | The radius of the circle.  |
+| x, y, z               | number  |     -    | The center position of the geometry. |
+| z_span                 | number  |     -   | Z span of the geometry. |
+| z_min, z_max           | number  |     -     | Z min, Z max position of the geometry. |
+| tilt_angle            | number  | 90        | The tilt angle of the geometry, in degrees. |
+| tilt_position         | string  | top       | Selections tilt position are "top", "middle", "bottom" and "user_defined".                   |
+| user_defined_position | number  |      -  | This parameter is required when tilt position is "user_defined".     |
+
+#### Material properties
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+| material              | object  |     -   | Select a material object in the material database.                                                                    |
+| mesh_order            | integer |     -   |  Select a material in overlapping areas when generating grids, materials with higher mesh order have higher priority.|
+| refractive_index      | number  |      -  | Defined refractive index of the material.                                                                             |
+| color                 | string  |     -   | Defined color of the material, default "#70AD47".                                                                     |
 
 **Example:**
 The following script adds a circle to the structure of the instance, sets the radius of the circle to 2 μ m, the thickness to 0.5 μ m, and the refractive index of the material to 1.4.
 
 ```python
+st = pj.Structure()
 st.add_geometry(name="circle", type="Circle", property={
     "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},  
     "geometry": {"radius": 2, "x": 0, "y": 0, "z": 0, "z_span": 0.5
@@ -138,32 +155,42 @@ st.add_geometry(name="circle", type="Circle", property={
 
 The geometric properties of ring and an example of adding ring into the project are shown below.
 
+```python
+add_geometry(
+        name: str, 
+        type: Literal["ring"], 
+        property: dict
+    )
+```
 
+#### Geometry properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
-| geometry.x                     | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.y                     | number  |  -         | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z                     | number  |   -        | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_span                | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_min                 | number  |  -         | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_max                 | number  |  -         | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.inner_radius          | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.outer_radius          | number  |   -        | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.tilt_angle1           | number  | 90        | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.tilt_angle2           | number  | 90        | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.angle                 | number  | 360       | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.tilt_position         | string  | top       | Selections are ["top", "middle", "bottom", "user_defined"]                   |
-| geometry.user_defined_position | number  | -          | This parameter is required when geometry.tilt_position == "user_defined"     |
-| material.material              | object  |  -         | Select a material object                                                     |
-| material.mesh_order            | integer |   -        |    The order of material coverage when creating a geometric structure. Restrained by condition: >=1.                                   |
-| material.index                 | number  |  -         | User-defined index                                                           |
-| material.color                 | string  |  -         | User-defined color , default "#70AD47"                                       |
+| inner_radius          | number  | -          | The inner radius of the ring. |
+| outer_radius          | number  |   -        | The outer radius of the ring. |
+| angle                 | number  | 360       | Define the range of the ring angles, in degrees. |
+| x, y, z               | number  |     -    | The center position of the geometry. |
+| z_span  | number  |     -   | Z span of the geometry. |
+| z_min, z_max           | number  |     -     | Z min, Z max position of the geometry. |
+| tilt_angle1            | number  | 90        | The tilt angle1 of the geometry, in degrees. |
+| tilt_angle2            | number  | 90        | The tilt angle2 of the geometry, in degrees. |
+| tilt_position         | string  | top       | Selections tilt position are "top", "middle", "bottom" and "user_defined".                   |
+| user_defined_position | number  |      -  | This parameter is required when tilt position is "user_defined".     |
+
+#### Material properties
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+| material              | object  |     -   | Select a material object in the material database.                                                                    |
+| mesh_order            | integer |     -   |  Select a material in overlapping areas when generating grids, materials with higher mesh order have higher priority.|
+| refractive_index      | number  |      -  | Defined refractive index of the material.                                                                             |
+| color                 | string  |     -   | Defined color of the material, default "#70AD47".                                                                     |
 
 **Example:**
 
 The following script adds a ring to the structure of the instance, sets the inner radius to 4um, the outer radius to 6um, the thickness to 0.5um, and the refractive index of the material to 1.4.
 
 ```python
+st = pj.Structure()
 st.add_geometry(name="ring", type="Ring", property={
     "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},  
     "geometry": {"x": 0, "y": 0, "z": 0, "z_span": 0.5,
@@ -174,26 +201,39 @@ st.add_geometry(name="ring", type="Ring", property={
 
 The geometric properties of polygon and an example of adding polygon into the project are shown below.
 
+```python
+add_geometry(
+        name: str, 
+        type: Literal["polygon"], 
+        property: dict
+    )
+```
 
+#### Geometry properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
-|   geometry.tilt_angle    |   90   |  float   | Tilt angle of waveguide sidewall.   |
-|  geometry.tilt_position  |   top   |  string  | To ensure that the models are placed at the specified sizes on the different ratio of sidewalls. Selections are ["top", "TOP", "Top", "bottom", "BOTTOM", "Bottom", "middle", "MIDDLE", "Middle", "user_defined"]. |
-| geometry.control_points  |    -     |  float   |  The coordinate of the points for generating a polygon.      |
-|     geometry.x      |    -     |  float   |  The center point x-coordinate the custom polygon.    |
-|     geometry.y      |    -     |  float   |    The center point y-coordinate the custom polygon.     |
-|     geometry.z      |     -    |  float   |  The center point z-coordinate the custom polygon.    |
-|   geometry.z_span   |    -     |  float   | The thinckness of the custom polygon. Restrained by condition: >0.  |
-|   geometry.z_min    |     -    |  float   |  The z-coordinate of the bottom position of the height of the custom polygon.   |
-|   geometry.z_max    |      -   |  float   |  The z-coordinate of the top position of the height of the custom polygon.   |
-|  material.material  |      -   | material |  Material around the geometric structure.    |
-| material.mesh_order |      -   | integer  | The order of material coverage when creating a geometric structure. Restrained by condition: >=0. |
+| x, y, z               | number  |     -    | The center position of the geometry. |
+| z_span         | number  |     -   | Z span of the geometry. |
+| z_min, z_max           | number  |     -     | Z min, Z max position of the geometry. |
+| control_points  |    -     |  float   |  The vertices position for generating the geometry.     |
+| tilt_angle            | number  | 90        | The tilt angle of the geometry, in degrees. |
+| tilt_position         | string  | top       | Selections tilt position are "top", "middle", "bottom" and "user_defined".                   |
+| user_defined_position | number  |      -  | This parameter is required when tilt position is "user_defined".     |
+
+#### Material properties
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+| material              | object  |     -   | Select a material object in the material database.                                                                    |
+| mesh_order            | integer |     -   |  Select a material in overlapping areas when generating grids, materials with higher mesh order have higher priority.|
+| refractive_index      | number  |      -  | Defined refractive index of the material.                                                                             |
+| color                 | string  |     -   | Defined color of the material, default "#70AD47".                                                                     |
 
 **Example:**
 
 The following script adds a polygon to the structure of the instance, sets the vertex coordinates of the polygon to (-2, -2) (2, -2) (2, 2) (-2, 2) um, with a thickness of 0.5um., and the refractive index of the material to 1.4.
 
 ```python
+st = pj.Structure()
 st.add_geometry(name="polygon", type="Polygon", property={
         "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2}, 
         "geometry": {"x": 0, "y": 0,
@@ -208,29 +248,40 @@ st.add_geometry(name="polygon", type="Polygon", property={
 
 The geometric properties of ellipse and an example of adding ellipse into the project are shown below.
 
+```python
+add_geometry(
+        name: str, 
+        type: Literal["ellipse"], 
+        property: dict
+    )
+```
+
+#### Geometry properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
-| geometry.x                     | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.y                     | number  |-           | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z                     | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_span                | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_min                 | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_max                 | number  |  -         | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.x_radius              | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.y_radius              | number  |  -         | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.tilt_angle            | number  | 90        | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.tilt_position         | string  | top       | Selections are ["top", "middle", "bottom", "user_defined"]                   |
-| geometry.user_defined_position | number  |  -         | This parameter is required when geometry.tilt_position == "user_defined"     |
-| material.material              | object  | -          | Select a material object                                                     |
-| material.mesh_order            | integer |-           |  The order of material coverage when creating a geometric structure. Restrained by condition: >=0.                             |
-| material.index                 | number  | -          | User-defined index                                                           |
-| material.color                 | string  |-           | User-defined color , default "#70AD47"                                       |
+| x_radius          | number  | -          | The x-axis radius of the ellipse. |
+| y_radius          | number  |   -        | The y-axis radius of the ellipse. |
+| x, y, z               | number  |     -    | The center position of the geometry. |
+| z_span         | number  |     -   | Z span of the geometry. |
+| z_min, z_max           | number  |     -     | Z min, Z max position of the geometry. |
+| tilt_angle            | number  | 90        | The tilt angle of the geometry, in degrees. |
+| tilt_position         | string  | top       | Selections tilt position are "top", "middle", "bottom" and "user_defined".                   |
+| user_defined_position | number  |      -  | This parameter is required when tilt position is "user_defined".     |
+
+#### Material properties
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+| material              | object  |     -   | Select a material object in the material database.                                                                    |
+| mesh_order            | integer |     -   |  Select a material in overlapping areas when generating grids, materials with higher mesh order have higher priority.|
+| refractive_index      | number  |      -  | Defined refractive index of the material.                                                                             |
+| color                 | string  |     -   | Defined color of the material, default "#70AD47".                                                                     |
 
 **Example:**
 
 The following script adds a ellipse to the structure of the instance, sets the radius in the x direction to 3 um, the radius in the y direction to 5 um, the thickness to 0.5 um, and the refractive index of the material to 1.4.
 
 ```python
+st = pj.Structure()
 st.add_geometry(name="ellipse", type="Ellipse", property={
     "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2}, 
     "geometry": {"x_radius": 3, "y_radius": 5,
@@ -242,26 +293,39 @@ st.add_geometry(name="ellipse", type="Ellipse", property={
 
 The geometric properties of linear trapezoid and an example of adding linear trapezoid into the project are shown below.
 
+```python
+add_geometry(
+        name: str, 
+        type: Literal["linear_trapezoid"], 
+        property: dict
+    )
+```
 
-| Parameter                | Default   | Type  | Description        |
+#### Geometry properties
+| Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
-|   geometry.tilt_angle    |     float |   90  | Tilt angle of waveguide sidewall.   |
-|  geometry.tilt_position  |    string |  top   | To ensure that the models are placed at the specified sizes on the different ratio of sidewalls. Selections are ["top", "bottom","middle", "user_defined"]. |
-| geometry.control_points  |     float |  -  |  The coordinate of the points for generating a polygon.      |
-|     geometry.x      |   float     | - |  The x-coordinate of the center point position of the linear trapezoid.    |
-|     geometry.y      |        float    |- |  The y-coordinate of the center point position of the linear trapezoid.      |
-|     geometry.z      |    float    | -  |   The z-coordinate of the center point position of the linear trapezoid.    |
-|   geometry.z_span   |     float  |   - | The thinckness of the linear trapezoid. Restrained by condition: >0.  |
-|   geometry.z_min    |   float    |  -   |The z-coordinate of the bottom position of the height of the linear trapezoid.      |
-|   geometry.z_max    |    float   |   - |  The z-coordinate of the top position of the height of the linear trapezoid.     |
-|  material.material  |    material  |- | Material of the geometric structure. |
-| material.mesh_order |      integer   | -| The order of material coverage when creating a geometric structure. Restrained by condition: >=0. |
+| x, y, z               | number  |     -    | The center position of the geometry. |
+| z_span         | number  |     -   | Z span of the geometry. |
+| z_min, z_max           | number  |     -     | Z min, Z max position of the geometry. |
+| control_points  |    -     |  float   |  The vertices position for generating the geometry.     |
+| tilt_angle            | number  | 90        | The tilt angle of the geometry, in degrees. |
+| tilt_position         | string  | top       | Selections tilt position are "top", "middle", "bottom" and "user_defined".                   |
+| user_defined_position | number  |      -  | This parameter is required when tilt position is "user_defined".     |
+
+#### Material properties
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+| material              | object  |     -   | Select a material object in the material database.                                                                    |
+| mesh_order            | integer |     -   |  Select a material in overlapping areas when generating grids, materials with higher mesh order have higher priority.|
+| refractive_index      | number  |      -  | Defined refractive index of the material.                                                                             |
+| color                 | string  |     -   | Defined color of the material, default "#70AD47".                                                                     |
 
 **Example:**
 
 The following script adds a linear trapezoid to the structure of the instance, sets the vertex coordinates to (-2, 2) (-4, -2) (4, -2) (2, 2) um, with a thickness of 0.5 um and the refractive index of the material to 1.4.
 
 ```python
+st = pj.Structrure()
 st.add_geometry(name="linear_trapezoid", type="LinearTrapezoid", property={
     "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2}, 
     "geometry": { "control_points":
@@ -274,32 +338,40 @@ st.add_geometry(name="linear_trapezoid", type="LinearTrapezoid", property={
 
 The geometric properties of pyramid and an example of adding pyramid into the project are shown below.
 
+```python
+add_geometry(
+        name: str, 
+        type: Literal["pyramid"], 
+        property: dict
+    )
+```
 
+#### Geometry properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
-| geometry.x_span_bottom | number  |  -         | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.y_span_bottom | number  |-           | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.x_span_top    | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.y_span_top    | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.theta_x       | number  | 0         | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.theta_y       | number  | 0         | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.delta_x       | number  | 0         | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.delta_y       | number  | 0         | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.x             | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.y             | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z             | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_span        | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_min         | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_max         | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| material.material      | object  |-           | Select a material object                                                     |
-| material.mesh_order    | integer |-           |  The order of material coverage when creating a geometric structure. Restrained by condition: >=0.                    |
-| material.index         | number  |-           | User-defined index                                                           |
-| material.color         | string  | -          | User-defined color , default "#70AD47"                                       |
+| x, y, z               | number  |     -    | The center position of the geometry. |
+| z_span         | number  |     -   | Z span of the geometry. |
+| z_min, z_max           | number  |     -     | Z min, Z max position of the geometry. |
+| x_span_bottom, y_span_bottom | number  |  -         | X bottom span , Y bottom span  of geometry. |
+| x_span_top, y_span_top   | number  | -          | X top span, Y top span of geometry. |
+| delta_x, delta_y      | number  | 0         |  X delta, Y delta of geometry.|
+| tilt_angle            | number  | 90        | The tilt angle of the geometry, in degrees. |
+| tilt_position         | string  | top       | Selections tilt position are "top", "middle", "bottom" and "user_defined".                   |
+| user_defined_position | number  |      -  | This parameter is required when tilt position is "user_defined".     |
+
+#### Material properties
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+| material              | object  |     -   | Select a material object in the material database.                                                                    |
+| mesh_order            | integer |     -   |  Select a material in overlapping areas when generating grids, materials with higher mesh order have higher priority.|
+| refractive_index      | number  |      -  | Defined refractive index of the material.                                                                             |
+| color                 | string  |     -   | Defined color of the material, default "#70AD47".                                                                     |
 
 **Example:**
 The following script adds a pyramid to the structure of the instance, sets the top width in the x and y directions to 3 μ m, the bottom width to 5 μ m, the thickness to 0.5 μ m, and the refractive index of the material to 1.4.
 
 ```python
+st = pj.Material()
 st.add_geometry(name="pyramid", type="Pyramid", property={
     "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},
     "geometry": {"x": 0, "x_span_top": 3,"x_span_bottom": 5,
@@ -309,20 +381,29 @@ st.add_geometry(name="pyramid", type="Pyramid", property={
 
 ### 2.1.9 Sphere
 
+```python
+add_geometry(
+        name: str, 
+        type: Literal["sphere"], 
+        property: dict
+    )
+```
 The geometric properties of sphere and an example of adding sphere into the project are shown below.
 
+#### Geometry properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
-| geometry.radius_x      | number  | 1.5       | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.radius_y      | number  | 1.5       | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.radius_z      | number  | 1.5       | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.x             | number  | 0.0       | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.y             | number  | 0.0       | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z             | number  | 0.0       | A float, or a parameter, or a parameter expression that evaluates to a float |
-| material.material      | object  | -          | Select a material object                                                     |
-| material.mesh_order    | integer | -          |   The order of material coverage when creating a geometric structure. Restrained by condition: >=0.                   |
-| material.index                 | number  | -          | User-defined index                                                   |
-| material.color                 | string  | -          | User-defined color , default "#70AD47"                               |
+| x, y, z               | number  |     -    | The center position of the geometry. |
+| radius_x, radius_y, radius_z      | number  | 1.5       | The x, y and z axes radius of the geometry.|
+
+#### Material properties
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+| material              | object  |     -   | Select a material object in the material database.                                                                    |
+| mesh_order            | integer |     -   |  Select a material in overlapping areas when generating grids, materials with higher mesh order have higher priority.|
+| refractive_index      | number  |      -  | Defined refractive index of the material.                                                                             |
+| color                 | string  |     -   | Defined color of the material, default "#70AD47".                                                                     |
+
 
 **Example:**
 The following script adds a sphere to the structure of the instance, sets the radius in the x, y, and z directions to 1.5 um, and the refractive index of the material to 1.4.
@@ -338,33 +419,41 @@ st.add_geometry(name="Sphere", type="Sphere", property={
 
 The geometric properties of straight waveguide and an example of adding staright waveguide into the project are shown below.
 
+```python
+add_geometry(
+        name: str, 
+        type: Literal["straight_waveguide"], 
+        property: dict
+    )
+```
+
+#### Geometry properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
-| geometry.x                     | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.y                     | number  |-           | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z                     | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_span                | number  |  -         | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_min                 | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_max                 | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.x_span                | number  |-           | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.x_min                 | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.x_max                 | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.y_span                | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.y_min                 | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.y_max                 | number  |  -         | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.tilt_angle1           | number  | 90        | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.tilt_angle2           | number  | 90        | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.tilt_position         | string  | top       | Selections are ["top", "middle", "bottom", "user_defined"]                   |
-| geometry.user_defined_position | number  | -          | This parameter is required when geometry.tilt_position == "user_defined"     |
-| material.material              | object  |-           | Select a material object                                                     |
-| material.mesh_order            | integer |-           | The order of material coverage when creating a geometric structure. Restrained by condition: >=0.          |
-| material.index                 | number  | -          | User-defined index                                                           |
-| material.color                 | string  |-           | User-defined color , default "#70AD47"                                       |
+| x, y, z               | number  |     -    | The center position of the geometry. |
+| x_span, y_span, z_span         | number  |     -   | X span, Y span and Z span of the geometry. |
+| x_min, x_max           | number  |     -     | X min, X max position of the geometry. |
+| y_min, y_max           | number  |     -     | Y min, Y max position of the geometry. |
+| z_min, z_max           | number  |     -     | Z min, Z max position of the geometry. |
+| tilt_angle1            | number  | 90        | The tilt angle1 of the geometry, in degrees. |
+| tilt_angle1            | number  | 90        | The tilt angle2 of the geometry, in degrees. |
+| tilt_position         | string  | top       | Selections tilt position are "top", "middle", "bottom" and "user_defined".                   |
+| user_defined_position | number  |      -  | This parameter is required when tilt position is "user_defined".     |
+
+#### Material properties
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+| material              | object  |     -   | Select a material object in the material database.                                                                    |
+| mesh_order            | integer |     -   |  Select a material in overlapping areas when generating grids, materials with higher mesh order have higher priority.|
+| refractive_index      | number  |      -  | Defined refractive index of the material.                                                                             |
+| color                 | string  |     -   | Defined color of the material, default "#70AD47".                                                                     |
+
 
 **Example:**
 The following script adds a straight waveguide to the structure of the instance, sets the size to 10 um * 1 um * 1 um, "tile_angle_1" to 70 degrees, and the refractive index of the material to 1.4.
 
 ```python
+st = pj.Structure()
 st.add_geometry(name="StraightWaveguide", type="StraightWaveguide", property={
             "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},
             "geometry": {"x": 0, "x_span": 10, "y": 0, "y_span": 1, "z": 0, "z_span": 1,
@@ -375,37 +464,43 @@ st.add_geometry(name="StraightWaveguide", type="StraightWaveguide", property={
 
 ### 2.1.11 Bezier wavegudie
 
-
 The geometric properties of bezier waveguide and an example of adding bezier waveguide into the project are shown below.
 
-**Example:**
+```python
+add_geometry(
+        name: str, 
+        type: Literal["bezier_waveguide"], 
+        property: dict
+    )
+```
 
-
+#### Geometry properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
-| geometry.x                     | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.y                     | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z                     | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_span                | number  |-           | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_min                 | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_max                 | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.control_points.[x]    | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.control_points.[y]    | number  |-           | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.tilt_angle1           | number  | 90        | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.tilt_angle2           | number  | 90        | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.width                 | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.tilt_position         | string  | top       | Selections are ["top", "middle", "bottom", "user_defined"]                   |
-| geometry.user_defined_position | number  | -         | This parameter is required when geometry.tilt_position == "user_defined"     |
-| material.material              | object  | -          | Select a material object                                                     |
-| material.mesh_order            | integer | -          |   The order of material coverage when creating a geometric structure. Restrained by condition: >=0.                  |
-| material.index                 | number  | -          | User-defined index                                                           |
-| material.color                 | string  |-           | User-defined color , default "#70AD47"                                       |
+| x, y, z               | number  |     -    | The center position of the geometry. |
+|  z_span         | number  |     -   | Z span of the geometry. |
+| z_min, z_max           | number  |     -     | Z min, Z max position of the geometry. |
+| width                 | number  | -          | The width of the geoemtry. |
+| control_points        | number  |      -  |  The vertices position for generating the geometry. |
+| tilt_angle1            | number  | 90        | The tilt angle1 of the geometry, in degrees. |
+| tilt_angle1            | number  | 90        | The tilt angle2 of the geometry, in degrees. |
+| tilt_position         | string  | top       | Selections tilt position are "top", "middle", "bottom" and "user_defined".                   |
+| user_defined_position | number  |      -  | This parameter is required when tilt position is "user_defined".     |
+
+#### Material properties
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+| material              | object  |     -   | Select a material object in the material database.                                                                    |
+| mesh_order            | integer |     -   |  Select a material in overlapping areas when generating grids, materials with higher mesh order have higher priority.|
+| refractive_index      | number  |      -  | Defined refractive index of the material.                                                                             |
+| color                 | string  |     -   | Defined color of the material, default "#70AD47".                                                                     |
 
 **Example:**
 
 The following script adds a bezier waveguide to the structure of the instance, sets the coordinates of the control points on the path to (1,1) (1,2) (2,2) (2,3) um with a width of 0.5 um and a thickness of 0.5 um, and the refractive index of the material to 1.4.
 
 ```python
+st = pj.Structure()
 st.add_geometry(name="bezier", type="BezierWaveguide", property={
     "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},
     "geometry": {"x": 0, "y": 0, "z": 0, "z_span": 0.5, "width": 0.5,
@@ -419,35 +514,43 @@ st.add_geometry(name="bezier", type="BezierWaveguide", property={
 
 The geometric properties of analytical waveguide and an example of adding analytical waveguide into the project are shown below.
 
+```python
+add_geometry(
+        name: str, 
+        type: Literal["analytical_waveguide"], 
+        property: dict
+    )
+```
 
+#### Geometry properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
-| geometry.x_max                 | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.y_span                | number  |-           | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.y_min                 | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.y_max                 | number  | -         | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.equation1             | string  | -          | A string expression like "x^2" or a python expression like x**2 is supported |
-| geometry.equation2             | string  | 1         | A string expression like "x^2" or a python expression like x**2 is supported |
-| geometry.nonsymmetric          | boolean | False     |     Select True to set the equation for y<0 separately.                                                                        |
-| geometry.resolution            | integer | 10        |   Calculate the number of variable values in an equation.                                                                        |
-| geometry.tilt_angle            | number  | 90        | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.tilt_position         | string  | top       | Selections are ["top", "middle", "bottom", "user_defined"]                   |
-| geometry.user_defined_position | number  | -          | This parameter is required when geometry.tilt_position == "user_defined"     |
-| geometry.x                     | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.y                     | number  |-          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z                     | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_span                | number  |-           | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_min                 | number  | -         | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_max                 | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| material.material              | object  |  -         | Select a material object                                                     |
-| material.mesh_order            | integer |  -         |    The order of material coverage when creating a geometric structure. Restrained by condition: >=0.           |
-| material.index                 | number  |     -      | User-defined index                                                           |
-| material.color                 | string  |      -     | User-defined color , default "#70AD47"                                       |
+| x, y, z               | number  |     -    | The center position of the geometry. |
+|  x_span, y_span, z_span         | number  |     -   | X span, Y span and Z span of the geometry. |
+| x_min, _max           | number  |     -     | X min, X max position of the geometry. |
+| y_min, y_max           | number  |     -     | Y min, Y max position of the geometry. |
+| z_min, z_max           | number  |     -     | Z min, Z max position of the geometry. |
+| equation1             | string  | -          | Define the equation for the region where y>0. |
+| equation2             | string  | 1         | Define the equation for the region where y<0. |
+| nonsymmetric          | boolean | False     |     Select True to set the equation for y<0 separately.                           |
+| resolution            | integer | 10        |   Calculate the number of variable values in an equation.                                |
+| tilt_angle            | number  | 90        | The tilt angle of the geometry, in degrees. |
+| tilt_position         | string  | top       | Selections tilt position are "top", "middle", "bottom" and "user_defined".                   |
+| user_defined_position | number  |      -  | This parameter is required when tilt position is "user_defined".     |
+
+#### Material properties
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+| material              | object  |     -   | Select a material object in the material database.                                                                    |
+| mesh_order            | integer |     -   |  Select a material in overlapping areas when generating grids, materials with higher mesh order have higher priority.|
+| refractive_index      | number  |      -  | Defined refractive index of the material.                                                                             |
+| color                 | string  |     -   | Defined color of the material, default "#70AD47".                                                                     |
 
 **Example:**
 The following script adds a analytical waveguide to the structure of the instance, sets the size to 3um * 3um * 0.22um, the expression for x>0 (equation1) is "1/{x}", and the refractive index of the material is 1.4
 
 ```python
+st = pj.Structure()
 st.add_geometry(name="analyticalwaveguide", type="AnalyticalWaveguide",property={
                     "material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},
                     "geometry": {"x": 0, "x_span": 3, "y": 0, "y_span": 3, "z": 0, "z_span": 0.22,
@@ -462,33 +565,59 @@ st.add_geometry(name="analyticalwaveguide", type="AnalyticalWaveguide",property=
 
 The geometric properties of sphere and an example of adding sphere into the project are shown below.
 
+```python
+add_geometry(
+        name: str, 
+        type: Literal["gds_file"], 
+        property: dict
+    )
+```
 
+#### Geometry properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
-| geometry.x                     | number  | 0         | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.y                     | number  | 0         | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z                     | number  |      -     | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_span                | number  |       -    | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_min                 | number  |      -     | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_max                 | number  |       -    | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.tilt_angle            | number  | 90        | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.tilt_position         | string  | top       | Selections are ["top", "middle", "bottom", "user_defined"]                   |
-| geometry.user_defined_position | number  |        -   | This parameter is required when geometry.tilt_position == "user_defined"     |
-| material.material              | object  |     -      | Select a material object                                                     |
-| material.mesh_order            | integer |      -     |    The order of material coverage when creating a geometric structure. Restrained by condition: >=0.       |
-| material.index                 | number  |     -      | User-defined index                                                           |
-| material.color                 | string  |      -     | User-defined color , default "#70AD47"                                       |
-| general.path                   | string  |     -      |      The path name of the gds file.                                                                        |
-| general.cell_name              | string  |      -   | If there is only one cell, a "*" can be input instead of the cell name       |
-| general.layer_name             | array   |    -       |      The layer name of the gds file.                                                                         |
+| x                     | number  | 0         | A float, or a parameter, or a parameter expression that evaluates to a float |
+| y                     | number  | 0         | A float, or a parameter, or a parameter expression that evaluates to a float |
+| z                     | number  |      -     | A float, or a parameter, or a parameter expression that evaluates to a float |
+| z_span                | number  |       -    | A float, or a parameter, or a parameter expression that evaluates to a float |
+| z_min                 | number  |      -     | A float, or a parameter, or a parameter expression that evaluates to a float |
+| z_max                 | number  |       -    | A float, or a parameter, or a parameter expression that evaluates to a float |
+| tilt_angle            | number  | 90        | A float, or a parameter, or a parameter expression that evaluates to a float |
+| tilt_position         | string  | top       | Selections are ["top", "middle", "bottom", "user_defined"]                   |
+| user_defined_position | number  |        -   | This parameter is required when geometry.tilt_position == "user_defined"     |
+| path                   | string  |     -      |      The path name of the gds file.                                                                        |
+| cell_name              | string  |      -   | If there is only one cell, a "*" can be input instead of the cell name       |
+| layer_name             | array   |    -       |      The layer name of the gds file.                                                                         |
 
+#### Geometry properties
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+| x, y, z               | number  |     -    | The center position of the geometry. |
+|  z_span         | number  |     -   | Z span of the geometry. |
+| z_min, z_max           | number  |     -     | Z min, Z max position of the geometry. |
+| path                   | string  |     -      |      The path name of the gds file.                                                                        |
+| cell_name              | string  |      -   | If there is only one cell, a "*" can be input instead of the cell name       |
+| layer_name             | array   |    -       |      The layer name of the gds file.                                                                         |
+| tilt_angle            | number  | 90        | The tilt angle of the geometry, in degrees. |
+| tilt_position         | string  | top       | Selections tilt position are "top", "middle", "bottom" and "user_defined".                   |
+| user_defined_position | number  |      -  | This parameter is required when tilt position is "user_defined".     |
+
+#### Material properties
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+| material              | object  |     -   | Select a material object in the material database.                                                                    |
+| mesh_order            | integer |     -   |  Select a material in overlapping areas when generating grids, materials with higher mesh order have higher priority.|
+| refractive_index      | number  |      -  | Defined refractive index of the material.                                                                             |
+| color                 | string  |     -   | Defined color of the material, default "#70AD47".                                                                     |
 
   
 **Example:**
+```python
 The following script import gds file to the structure of the instance, sets import parameters including the path name, cell name and layer name, structure thickness to 0.22 um, and material refractive index to 1.4.
 path_name = "gds_file_path"
 cell_name = "gds_cell_name"
 layer_name = (1,0)
+st = pj.Structure()
 st.add_geometry(name="gds_file", type="gds_file", property={
                         "general": {"path": path_name, "cell_name": cell_name "layer_name": layer_name },
                         "geometry": {"x": 0, "y": 0, "z": 0, "z_span": 0.22},

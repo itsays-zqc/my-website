@@ -21,11 +21,6 @@ lm.add(
     )
 ```
 
-| **Parameters** |  Description   |
-| :------------: | :------------: |
-|      name      |  The name of optical mesh in the simulation project.   |
-|    property    | The property of optical mesh in the simulation project. |
-
 **Example:**
 The following command sets the size of the local mesh area to 6 um * 3 um * 3 um and the local mesh size of 0.2 um in the x, y, and z directions.
 
@@ -35,19 +30,31 @@ lm.add(name="sub_mesh",
         property={"general": {"dx": 0.2, "dy": 0.2, "dz": 0.2},
                     "geometry": {"x": 0, "x_span": 6, "y": 0, "y_span":3, "z": 0, "z_span": 3 } } )
 ```
-
-| parameter                      | type    | default   | description                                                                  |
+wget https://github.com/mikefarah/yq/releases/download/v4.16.2/yq_linux_amd64 && chmod +x yq_linux_amd64 && mv yq_linux_amd64 /usr/local/bin/yq
+### General properties
+| Parameter                      | Type    | Default   | Description                                                                  |
 |:-------------------------------|:--------|:----------|:-----------------------------------------------------------------------------|
-| name                           | string  |     -      |       Define the name of the local mesh.                                                                       |
-| general.dx                     | number  |     -      | A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >0.                                |
-| general.dy                     | number  |      -     | A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >0.                |
-| general.dz                     | number  |     -      | A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >0.             |
-| geometry.x                     | number  |     -      | A float, or a parameter, or a parameter expression that evaluates to a float.          |
-| geometry.x_span                | number  |     -      | A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >=0.             |
-| geometry.y                     | number  |      -     | A float, or a parameter, or a parameter expression that evaluates to a float.                 |
-| geometry.y_span                | number  |      -     |A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >=0.                                           |
-| geometry.z                     | number  |     -      | A float, or a parameter, or a parameter expression that evaluates to a float.                                                |
-| geometry.z_span                | number  |      -     |   A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >=0.                           |
+| dx, dy, dz                    | number  |     -      |                        |
+
+#### Geometry properties
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+|  x, y, z               | number  |     -    | The center position of the geometry. |
+|  x_span, y_span, z_span         | number  |     -   | X span, Y span, Z span of the geometry. |
+|  x_min, x_max           | number  |     -     | X min, X max position of the geometry. |
+|  y_min, y_max           | number  |     -     | Y min, Y max position of the geometry. |
+|  z_min, z_max           | number  |     -     | Z min, Z max position of the geometry. |
+
+### 2.1.12 Mesh order
+
+The mesh order decides the coverage when creating a geometric structure.
+
+When the mesh order of two structures are same, the structure which is established later has a higher priority. When the mesh order of two structures are different, the large numerical value of mesh order has greater priority than the small one. That is, The large mesh order of structure is able to cover small mesh order of structure.
+For example, the mesh order=2 structure will cover the mesh order=1.
+
+![](../../../static/img/SDK/structure/mesh_order.png)
+
+The advantage is that increasing the value of mesh order allows user to make new nested structures in the complex model.
 
 
 ## 3.2 Add emesh

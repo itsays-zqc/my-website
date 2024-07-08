@@ -55,7 +55,7 @@ add_dispersion(
 	)
 ```
 
-| parameter      | type    | default   | description    |
+| Parameter      | Type    | Default   | Description    |
 |:---------|:--------|:----------:|:--------------|    
 | name      | string  |  -  |   Define the name of the material.             |
 | data      | tuple |     -      |A list of tuple, format is [(wavelength, index real, index imag), ...]       |
@@ -123,7 +123,7 @@ add_lib(
     )
 ```
 
-| parameter               | type    | default   | description                    |
+| Parameter               | Type    | Default   | Description                    |
 |:-----------------|:--------|:----------:|:---------------------|
 | name         | string  |     -      |    Define the name of the material.    |                  
 | data   | object  | -  | A library material object, format is mo.Material.Air       |

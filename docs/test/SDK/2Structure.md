@@ -576,22 +576,6 @@ add_geometry(
 #### Geometry properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
-| x                     | number  | 0         | A float, or a parameter, or a parameter expression that evaluates to a float |
-| y                     | number  | 0         | A float, or a parameter, or a parameter expression that evaluates to a float |
-| z                     | number  |      -     | A float, or a parameter, or a parameter expression that evaluates to a float |
-| z_span                | number  |       -    | A float, or a parameter, or a parameter expression that evaluates to a float |
-| z_min                 | number  |      -     | A float, or a parameter, or a parameter expression that evaluates to a float |
-| z_max                 | number  |       -    | A float, or a parameter, or a parameter expression that evaluates to a float |
-| tilt_angle            | number  | 90        | A float, or a parameter, or a parameter expression that evaluates to a float |
-| tilt_position         | string  | top       | Selections are ["top", "middle", "bottom", "user_defined"]                   |
-| user_defined_position | number  |        -   | This parameter is required when geometry.tilt_position == "user_defined"     |
-| path                   | string  |     -      |      The path name of the gds file.                                                                        |
-| cell_name              | string  |      -   | If there is only one cell, a "*" can be input instead of the cell name       |
-| layer_name             | array   |    -       |      The layer name of the gds file.                                                                         |
-
-#### Geometry properties
-| Parameter                | Type    | Default   | Description        |
-|:---------------|:--------|:----------:|:----------------------|
 | x, y, z               | number  |     -    | The center position of the geometry. |
 |  z_span         | number  |     -   | Z span of the geometry. |
 | z_min, z_max           | number  |     -     | Z min, Z max position of the geometry. |
@@ -625,17 +609,6 @@ st.add_geometry(name="gds_file", type="gds_file", property={
 ```    
 
 
-
-### 2.1.12 Mesh order
-
-The mesh order decides the coverage when creating a geometric structure.
-
-When the mesh order of two structures are same, the structure which is established later has a higher priority. When the mesh order of two structures are different, the large numerical value of mesh order has greater priority than the small one. That is, The large mesh order of structure is able to cover small mesh order of structure.
-For example, the mesh order=2 structure will cover the mesh order=1.
-
-![](../../../static/img/SDK/structure/mesh_order.png)
-
-The advantage is that increasing the value of mesh order allows user to make new nested structures in the complex model.
 
 ## 2.2 Add doping
 

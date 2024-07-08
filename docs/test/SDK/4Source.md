@@ -26,24 +26,28 @@ wv.add(
 
 ```
 
-| parameter                                 | type    | default   | description                                                                  |
-|:------------------------------------------|:--------|:----------|:-----------------------------------------------------------------------------|
-| set                                       | string  |  -         | selections are ['frequency_wavelength','time_domain']                        |
-| set_frequency_wavelength.range_type       | string  |  -         | selections are ['frequency','wavelength']                                    |
-| set_frequency_wavelength.range_limit      | string  |  -         | selections are ['min_max','center_span']                                     |
-| set_frequency_wavelength.wavelength_center| number  |-          | A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >0.                         |
-| set_frequency_wavelength.wavelength_span  | number  |  -         | A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >=0.               |
-| set_frequency_wavelength.wavelength_min   | number  | -          |     A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >0.          |
-| set_frequency_wavelength.wavelength_max   | number  | -          |  A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >0.   |
-| set_frequency_wavelength.frequency_center | number  | -          |   A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >0.  |
-| set_frequency_wavelength.frequency_span   | number  |-           |   A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >=0.    |
-| set_frequency_wavelength.frequency_min    | number  | -          |    A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >0. |
-| set_frequency_wavelength.frequency_max    | number  |  -         |    A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >0.  |
-| set_time_domain.pulse_type                | string  |   -        | selections are ['standard','broadband']                                      |
-| set_time_domain.frequency                 | number  |      -     | A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >0. |
-| set_time_domain.pulselength               | number  |    -       |   A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >0.  |
-| set_time_domain.offset                    | number  |     -      |  A float, or a parameter, or a parameter expression that evaluates to a float. |
-| set_time_domain.bandwidth                 | number  |      -     |  A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >0. |
+#### Set frequency wavelength properties
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+| range_type       | string  |  -         | selections are ['frequency','wavelength']                                    |
+| range_limit      | string  |  -         | selections are ['min_max','center_span']                                     |
+| wavelength_center| number  |-          | A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >0.                         |
+| wavelength_span  | number  |  -         | A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >=0.               |
+| wavelength_min   | number  | -          |     A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >0.          |
+| wavelength_max   | number  | -          |  A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >0.   |
+| frequency_center | number  | -          |   A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >0.  |
+| frequency_span   | number  |-           |   A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >=0.    |
+| frequency_min    | number  | -          |    A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >0. |
+| frequency_max    | number  |  -         |    A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >0.  |
+
+#### Set time domain properties
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+| pulse_type                | string  |   -        | selections are ['standard','broadband']                                      |
+| frequency                 | number  |      -     | A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >0. |
+| pulselength               | number  |    -       |   A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >0.  |
+| offset                    | number  |     -      |  A float, or a parameter, or a parameter expression that evaluates to a float. |
+| bandwidth                 | number  |      -     |  A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >0. |
 
 
 Example:
@@ -77,17 +81,18 @@ add(
     )
 ```
 
-| title                                           | type    | default           | description                                                                                     |
-|:------------------------------------------------|:--------|:------------------|:------------------------------------------------------------------------------------------------|
-| general.inject_axis                             | string  |                   | Selections are ['x_axis', 'y_axis', 'z_axis']                                                   |
-| general.direction                               | string  | forward           | Selections are ['forward', 'backward']                                                          |
-| general.amplitude                               | number  | 1.0               |Specify the peak amplitude of the electric field, with the unit in V/m.            |
-| general.phase                                   | number  | 0.0               |  pecify the initial phase of the  source, with the unit in degrees.                                             |
-| general.mode_selection                          | string  |                   | Selections are ['fundamental', 'fundamental_TE', 'fundamental_TM', 'user_select', 'user_import']|
-| general.mode_index                              | integer | 0                 |         Select the mode number from the list of calculated modes.                                                  |
-| general.search                                  | string  | max_index         | Selections are ['max_index', 'near_n']                                                          |
-| general.n                                       | number  | 1.0               |  Search mode near the specified effective refractive index.                        |
-| general.number_of_trial_modes                   | integer | 20                |  Record the maximum number of modes in the mode list.    |
+#### General properties
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+| inject_axis                             | string  |                   | Selections are ['x_axis', 'y_axis', 'z_axis']                                                   |
+| direction                               | string  | forward           | Selections are ['forward', 'backward']                                                          |
+| amplitude                               | number  | 1.0               |Specify the peak amplitude of the electric field, with the unit in V/m.            |
+| phase                                   | number  | 0.0               |  pecify the initial phase of the  source, with the unit in degrees.                                             |
+| mode_selection                          | string  |                   | Selections are ['fundamental', 'fundamental_TE', 'fundamental_TM', 'user_select', 'user_import']|
+| mode_index                              | integer | 0                 |         Select the mode number from the list of calculated modes.                                                  |
+| search                                  | string  | max_index         | Selections are ['max_index', 'near_n']                                                          |
+| n                                       | number  | 1.0               |  Search mode near the specified effective refractive index.                        |
+| number_of_trial_modes                   | integer | 20                |  Record the maximum number of modes in the mode list.    |
 | general.waveform.waveform_id                    | object  |                   |  Select the ID of the added source pulse waveform.                                                                        |
 | general.rotations.theta                         | number  | 0                 |   The angle between the propagation direction and the injection axis of source, with the unit in degrees.                  |
 | general.rotations.phi                           | number  | 0                 |    In a right-hand coordinate system, the angle of propagation is rotated around the injection axis of the source.    |
@@ -96,19 +101,19 @@ add(
 | bent_waveguide.radius                           | number  | 1                 |  A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >0.                   |
 | bent_waveguide.orientation                      | number  | 0                 |                                                                                                 |
 | bent_waveguide.location                         | string  | simulation_center | Selections are ['simulation_center']                                                            |
-| geometry.x                                      | number  |                   | A float, or a parameter, or a parameter expression that evaluates to a float                    |
-| geometry.y                                      | number  |                   | A float, or a parameter, or a parameter expression that evaluates to a float                    |
-| geometry.z                                      | number  |                   | A float, or a parameter, or a parameter expression that evaluates to a float                    |
-| geometry.z_span                                 | number  |                   | A float, or a parameter, or a parameter expression that evaluates to a float                    |
-| geometry.z_min                                  | number  |                   | A float, or a parameter, or a parameter expression that evaluates to a float                    |
-| geometry.z_max                                  | number  |                   | A float, or a parameter, or a parameter expression that evaluates to a float                    |
-| geometry.x_span                                 | number  |                   | A float, or a parameter, or a parameter expression that evaluates to a float                    |
-| geometry.x_min                                  | number  |                   | A float, or a parameter, or a parameter expression that evaluates to a float                    |
-| geometry.x_max                                  | number  |                   | A float, or a parameter, or a parameter expression that evaluates to a float                    |
-| geometry.y_span                                 | number  |                   | A float, or a parameter, or a parameter expression that evaluates to a float                    |
-| geometry.y_min                                  | number  |                   | A float, or a parameter, or a parameter expression that evaluates to a float                    |
-| geometry.y_max                                  | number  |                   | A float, or a parameter, or a parameter expression that evaluates to a float                    |
+
+#### Geometry properties
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+|  x, y, z               | number  |     -    | The center position of the geometry. |
+|  x_span, y_span, z_span         | number  |     -   | X span, Y span, Z span of the geometry. |
+|  x_min, x_max           | number  |     -     | X min, X max position of the geometry. |
+|  y_min, y_max           | number  |     -     | Y min, Y max position of the geometry. |
+|  z_min, z_max           | number  |     -     | Z min, Z max position of the geometry. |
+
+
 | override_default_boundary_conditions            | boolean | False             |                                                                                                 |
+
 | boundary_conditions.x_min_bc                    | string  | PEC               | Selections are ['PEC', 'PMC', 'PML', 'periodic']                                                |
 | boundary_conditions.x_max_bc                    | string  | PEC               | Selections are ['PEC', 'PMC', 'PML', 'periodic']                                                |
 | boundary_conditions.y_min_bc                    | string  | PEC               | Selections are ['PEC', 'PMC', 'PML', 'periodic']                                                |
@@ -152,42 +157,32 @@ add(
             property: dict,
     )
 ```
-
-| Parameters |      Description      |
-| :------------: | :-------------------: |
-|      name      |   Assigning a name to the added source allows for differentiation between all sources that have been incorporated. |
-|      type      |    Select the type of source, with options "mode_source" and "gaussian_source" available.|
-|    property    | Enter the basic properties that define the source; if not entered, default parameters will be referenced.|
-
-
+#### General properties
 | Parameter                                 | Type    | Default                  | Description                                                                  |
 |:------------------------------------------|:--------|:-------------------------|:-----------------------------------------------------------------------------|
-| general.inject_axis                       | string  |                          | Selections are ['x_axis', 'y_axis', 'z_axis']                                |
-| general.direction                         | string  | forward                  | Selections are ['forward', 'backward']                                       |
-| general.amplitude                         | number  | 1.0                      |  Specify the peak amplitude of the electric field, with the unit in V/m.               |
-| general.phase                             | number  | 0.0                      |   Specify the initial phase of the source, with the unit in degrees.     |
+|  inject_axis                       | string  |                          | Selections are ['x_axis', 'y_axis', 'z_axis']                                |
+|  direction                         | string  | forward                  | Selections are ['forward', 'backward']                                       |
+|  amplitude                         | number  | 1.0                      |  Specify the peak amplitude of the electric field, with the unit in V/m.               |
+|  phase                             | number  | 0.0                      |   Specify the initial phase of the source, with the unit in degrees.     |
 | general.waveform.waveform_id              | object  |  -                        | Select a waveform object                                                     |
-| general.angle_theta                       | number  | 0                        | The angle between the propagation direction and the injection axis of source, with the unit in degrees.           |
-| general.angle_phi                         | number  | 0                        |  In a right-hand coordinate system, the angle of propagation is rotated around the injection axis of the source.  |
-| general.rotation_offset                   | number  | 0                        |   |
-| general.polarization_angle                | number  | 0                        |  The polarization angle defines the orientation of the injected electric field. A polarization angle of zero degrees indicates P-polarized radiation, while an angle of 90 degrees indicates S-polarized radiation.                                                                              |
+|  angle_theta                       | number  | 0                        | The angle between the propagation direction and the injection axis of source, with the unit in degrees.           |
+|  angle_phi                         | number  | 0                        |  In a right-hand coordinate system, the angle of propagation is rotated around the injection axis of the source.  |
+|  rotation_offset                   | number  | 0                        |   |
+|  polarization_angle                | number  | 0                        |  The polarization angle defines the orientation of the injected electric field. A polarization angle of zero degrees indicates P-polarized radiation, while an angle of 90 degrees indicates S-polarized radiation.                                                                              |
 | general.beam_settings.beam_parameters     | string  | waist_size_and_position  | Selections are ['waist_size_and_position', 'beam_size_and_divergence']       |
 | general.beam_settings.waist_radius        | number  |  -                        |     1/e field (1/e2 power) radius of the beam for a Gaussian beam .    |
 | general.beam_settings.distance_from_waist | number  |  -                        | The distance between the injection plane and the beam waist. A positive distance indicates a diverging beam, while a negative distance indicates a converging beam.    |
 | general.beam_settings.beam_radius         | number  | -                         |  1/e field (1/e2 power) radius of the beam for a Gaussian beam .   |
 | general.beam_settings.divergence_angle    | number  |  -                        | The radiation divergence angle measured in the far field. A positive angle indicates a diverging beam, while a negative angle indicates a converging beam. |
-| geometry.x                                | number  |   -                       | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.y                                | number  |  -                        | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z                                | number  | -                         | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_span                           | number  | -                         | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_min                            | number  | -                         | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_max                            | number  | -                         | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.x_span                           | number  |  -                        | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.x_min                            | number  | -                         | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.x_max                            | number  |  -                        | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.y_span                           | number  | -                         | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.y_min                            | number  |  -                        | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.y_max                            | number  |-                          | A float, or a parameter, or a parameter expression that evaluates to a float |
+
+#### Geometry properties
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+|  x, y, z               | number  |     -    | The center position of the geometry. |
+|  x_span, y_span, z_span         | number  |     -   | X span, Y span, Z span of the geometry. |
+|  x_min, x_max           | number  |     -     | X min, X max position of the geometry. |
+|  y_min, y_max           | number  |     -     | Y min, Y max position of the geometry. |
+|  z_min, z_max           | number  |     -     | Z min, Z max position of the geometry. |
 
 Example:
 
@@ -233,42 +228,40 @@ add(
 ```
 
  # FDTDPort
-        | title                                           | type    | default           | description                                                                      |
-        |:------------------------------------------------|:--------|:------------------|:---------------------------------------------------------------------------------|
-        | geometry.x                                      | number  |-                   | A float, or a parameter, or a parameter expression that evaluates to a float.       |
-        | geometry.x_span                                 | number  | -                  |  A float, or a parameter, or a parameter expression that evaluates to a float.     |
-        | geometry.x_min                                  | number  | -                  |  A float, or a parameter, or a parameter expression that evaluates to a float.   |
-        | geometry.x_max                                  | number  | -                  |  A float, or a parameter, or a parameter expression that evaluates to a float.   |
-        | geometry.y                                      | number  |  -                 |  A float, or a parameter, or a parameter expression that evaluates to a float.   |
-        | geometry.y_span                                 | number  | -                  |    A float, or a parameter, or a parameter expression that evaluates to a float.    |
-        | geometry.y_min                                  | number  | -                  |  A float, or a parameter, or a parameter expression that evaluates to a float.   |
-        | geometry.y_max                                  | number  |-                   |  A float, or a parameter, or a parameter expression that evaluates to a float.   |
-        | geometry.z                                      | number  |-                   |   A float, or a parameter, or a parameter expression that evaluates to a float.   |
-        | geometry.z_span                                 | number  | -                  |    A float, or a parameter, or a parameter expression that evaluates to a float.   |
-        | geometry.z_min                                  | number  |-                   |   A float, or a parameter, or a parameter expression that evaluates to a float.      |
-        | geometry.z_max                                  | number  |  -                 |  A float, or a parameter, or a parameter expression that evaluates to a float.   |
-        | override_default_boundary_conditions            | boolean | False             |       |
-        | boundary_conditions.x_min_bc                    | string  | PEC               | Selections are ['PEC', 'PMC', 'PML', 'periodic']                                 |
-        | boundary_conditions.x_max_bc                    | string  | PEC               | Selections are ['PEC', 'PMC', 'PML', 'periodic']                                 |
-        | boundary_conditions.y_min_bc                    | string  | PEC               | Selections are ['PEC', 'PMC', 'PML', 'periodic']                                 |
-        | boundary_conditions.y_max_bc                    | string  | PEC               | Selections are ['PEC', 'PMC', 'PML', 'periodic']                                 |
-        | boundary_conditions.z_min_bc                    | string  | PEC               | Selections are ['PEC', 'PMC', 'PML', 'periodic']                                 |
-        | boundary_conditions.z_max_bc                    | string  | PEC               | Selections are ['PEC', 'PMC', 'PML', 'periodic']                                 |
-        | modal_properties.general.inject_axis            | string  | x_axis            |  To set the  inject axis of FDTD port source. Selections are ["x_axis", "y_axis", "z_axis"].    |
-        | modal_properties.general.direction              | string  | forward           | To set the inject axis of FDTD port source. Selections are ["forward","banckward"]          |
-        | modal_properties.general.amplitude              | number  | 1                 |                                                                                  |
-        | modal_properties.general.phase                  | number  | 0                 |                                                                                  |
-        | modal_properties.general.mode_selection         | string  | -                  | Selections are ['fundamental', 'fundamental_TE', 'fundamental_TM', 'user_select']|
-        | modal_properties.general.mode_index             | integer | 0                 |                                                                                  |
-        | modal_properties.general.search                 | string  | max_index         | Selections are ['max_index', 'near_n']                                           |
-        | modal_properties.general.n                      | number  | 1.0               |                                                                                  |
-        | modal_properties.general.number_of_trial_modes  | integer | 20                |                                                                                  |
-        | modal_properties.bent_waveguide.bent_waveguide  | boolean | False             |                                                                                  |
-        | modal_properties.bent_waveguide.radius          | number  | 1                 |   Set the waveguide radius for curved waveguide.                            |
-        | modal_properties.bent_waveguide.orientation     | number  | 0                 |                                                                                  |
-        | modal_properties.bent_waveguide.location        | string  | simulation_center | Set the bent center position of bent waveguides. Selections are ['simulation_center']  |
-        | modal_analysis.calculate_group_index            | boolean | False             |                                                                                  |
-        | modal_analysis.mode_removal.threshold           | number  |  -                 | A float, or a parameter, or a parameter expression that evaluates to a float     |
+
+#### Geometry properties
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+|  x, y, z               | number  |     -    | The center position of the geometry. |
+|  x_span, y_span, z_span         | number  |     -   | X span, Y span, Z span of the geometry. |
+|  x_min, x_max           | number  |     -     | X min, X max position of the geometry. |
+|  y_min, y_max           | number  |     -     | Y min, Y max position of the geometry. |
+|  z_min, z_max           | number  |     -     | Z min, Z max position of the geometry. |
+| override_default_boundary_conditions            | boolean | False             |       |
+#### Boundary conditions properties
+| x_min_bc                    | string  | PEC               | Selections are ['PEC', 'PMC', 'PML', 'periodic']                                 |
+| x_max_bc                    | string  | PEC               | Selections are ['PEC', 'PMC', 'PML', 'periodic']                                 |
+| y_min_bc                    | string  | PEC               | Selections are ['PEC', 'PMC', 'PML', 'periodic']                                 |
+| y_max_bc                    | string  | PEC               | Selections are ['PEC', 'PMC', 'PML', 'periodic']                                 |
+| z_min_bc                    | string  | PEC               | Selections are ['PEC', 'PMC', 'PML', 'periodic']                                 |
+| z_max_bc                    | string  | PEC               | Selections are ['PEC', 'PMC', 'PML', 'periodic']                                 |
+
+#### Modal properties
+|  inject_axis            | string  | x_axis            |  To set the  inject axis of FDTD port source. Selections are ["x_axis", "y_axis", "z_axis"].    |
+|  direction              | string  | forward           | To set the inject axis of FDTD port source. Selections are ["forward","banckward"]          |
+|  amplitude              | number  | 1                 |                                                                                  |
+|  phase                  | number  | 0                 |                                                                                  |
+|  mode_selection         | string  | -                  | Selections are ['fundamental', 'fundamental_TE', 'fundamental_TM', 'user_select']|
+|  ode_index             | integer | 0                 |                                                                                  |
+|  search                 | string  | max_index         | Selections are ['max_index', 'near_n']                                           |
+|  n                      | number  | 1.0               |                                                                                  |
+|  number_of_trial_modes  | integer | 20                |                                                                                  |
+|  bent_waveguide  | boolean | False             |                                                                                  |
+|  radius          | number  | 1                 |   Set the waveguide radius for curved waveguide.                            |
+|  orientation     | number  | 0                 |                                                                                  |
+|  location        | string  | simulation_center | Set the bent center position of bent waveguides. Selections are ['simulation_center']  |
+|  calculate_group_index            | boolean | False             |                                                                                  |
+|  threshold           | number  |  -                 | A float, or a parameter, or a parameter expression that evaluates to a float     |
 
 **Example:**
 

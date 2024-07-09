@@ -49,16 +49,16 @@ As shown in the picture, there is the structure preivew of the directional coupl
 
 | Parameters | Value | Unit | Description |
 |------------|-------|------|-------------|
-| h_wg       | 0.22  | um   | waveguide height |
-| w_wg       | 0.5   | um   | waveguide width |
+| h_wg       | 0.22  | *μ*m   | waveguide height |
+| w_wg       | 0.5   | *μ*m   | waveguide width |
 | tilt_angle | 8     | degree | tilt angle |
-| gap        | 0.45  | um   | gap between two waveguides |
-| l_dc       | 20    | um   | beam length |
-| l_input    | 5     | um   | input wavelength length |
-| h_slab     | 0.09  | um   | slab height |
-| bend_radius|10    |um    | radii of curvature |
-| monitor_w  | 2     | um   | monitor width |
-| monitor_h  | 1     | um   | monitor height |
+| gap        | 0.45  | *μ*m   | gap between two waveguides |
+| l_dc       | 20    | *μ*m   | beam length |
+| l_input    | 5     | *μ*m   | input wavelength length |
+| h_slab     | 0.09  | *μ*m   | slab height |
+| bend_radius|10    |*μ*m    | radii of curvature |
+| monitor_w  | 2     | *μ*m   | monitor width |
+| monitor_h  | 1     | *μ*m   | monitor height |
 | cpw        | 6     | -    | cell per wavelength |
 
 
@@ -79,7 +79,7 @@ In this chapter, we will learn how to build the whole simulation project of dire
 
 <div class="text-justify">
 
-we need to set the relevant parameters for simulation and parameterized modeling in the project. To add a global variable in the “Global Parameter” area, right-click the empty space there and select “Add” In the “Expression” column, you can input functions, and the “Value” column displays the current variable value. You can also provide a description for the variable in the “Description”, as shown in the image below.The "Dependencies Check" can help to check the varible used the in this simulation.
+we need to set the relevant parameters for simulation and parameterized modeling in the project. To add a global variable in the “Global Parameter” area, right-click there and select “Add”. In the “Expression” column, you can input functions, and the “Value” column displays the current variable value. You can also provide a description for the variable in the “Description”, as shown in the image below.The "Dependencies Check" can help to check the varible used the in this simulation.
 
 | ![](../../../../../static/img/example/DC_GUI/2.png) |
  ------------------------------------------------------------ |
@@ -203,7 +203,7 @@ After running the program, we can obtain a series of corresponding output result
 <div class="text-justify">
 
 
-4. TE0 mode transmittance at Cross output port and TRU output port for different wavelengths,,from 1.50 *μ*m to 1.60 *μ*m.
+4. TE0 mode transmission at Cross output port and TRU output port for different wavelengths,,from 1.50 *μ*m to 1.60 *μ*m.
 
 | ![](../../../../../static/img/example/DC_GUI/13.png)  |
 |------------------------------------------------------------ |

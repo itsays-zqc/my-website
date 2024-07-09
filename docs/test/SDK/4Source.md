@@ -16,13 +16,12 @@ In FDTD simulations, waveforms are utilized to control the bandwidth of the sour
 The syntax and properties for adding waveform is as follows. This function does not return any data.
 
 ```python
-wv = Project.Waveform()
-wv.add(        
+add(        
         self,
         name: str,
         type: Optional[str],
         property: dict
-    ):
+    )
 
 ```
 
@@ -31,14 +30,10 @@ wv.add(
 |:---------------|:--------|:----------:|:----------------------|
 | range_type       | string  |  -         | selections are ['frequency','wavelength']                                    |
 | range_limit      | string  |  -         | selections are ['min_max','center_span']                                     |
-| wavelength_center| number  |-          | A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >0.                         |
-| wavelength_span  | number  |  -         | A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >=0.               |
-| wavelength_min   | number  | -          |     A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >0.          |
-| wavelength_max   | number  | -          |  A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >0.   |
-| frequency_center | number  | -          |   A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >0.  |
-| frequency_span   | number  |-           |   A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >=0.    |
-| frequency_min    | number  | -          |    A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >0. |
-| frequency_max    | number  |  -         |    A float, or a parameter, or a parameter expression that evaluates to a float. Restrained by condition: >0.  |
+|  wavelength center, wavelength center  | number  |-                | A float, or a parameter, or a parameter expression that evaluates to a float |
+|  wavelength span, frequency span  | number  |-                | A float, or a parameter, or a parameter expression that evaluates to a float |
+|  wavelength min, wavelength max        | number  | -               | A float, or a parameter, or a parameter expression that evaluates to a float |
+|  frequency_min, frequency max          | number  |-                | A float, or a parameter, or a parameter expression that evaluates to a float |
 
 #### Set time domain properties
 | Parameter                | Type    | Default   | Description        |
@@ -73,11 +68,9 @@ The syntax and properties for adding mode source is as follows. This function do
 
 ```python
 add(
-            self,
-            *,
-            name: str,
-            type: Optional[str],
-            property: dict,
+        name: str,
+        type: Literal["mode_source"],
+        property: dict,
     )
 ```
 
@@ -150,11 +143,9 @@ The syntax and properties for adding gaussian source are as follows. This functi
 
 ```python
 add(
-            self,
-            *,
-            name: str,
-            type: Optional[str],
-            property: dict,
+        name: str,
+        type: Literial["gaussian_source"],
+        property: dict,
     )
 ```
 #### General properties
@@ -198,38 +189,20 @@ so.add(name="source", type="gaussian_source", axis="z_backward",
                      "geometry": {"x": 4, "x_span": 20, "y": 0, "y_span": 20, "z": 1.5, "z_span": 0}})
 
 ```
-
-# DipoleSource
-
-| Parameter                                    | Type    | Default                  | Description                                                                  |
-|:------------------------------------------|:--------|:-------------------------|:-----------------------------------------------------------------------------|
-| general.dipole_type                       | string  |  -                        | Selections are ['electric_dipole', 'magnetic_dipole']                        |
-| general.amplitude                         | number  |   -                       |                                                                              |
-| general.phase                             | number  |  -                        |                                                                              |
-| general.rotations.theta                   | number  | -                         |                                                                              |
-| general.rotations.phi                     | number  | -                         |                                                                              |
-| geometry.x                                | number  |-                          |                                                                              |
-| geometry.y                                | number  |-                          |                                                                              |
-| geometry.z                                | number  | -                         |                                                                              |
-| waveform.waveform_id                      | object  |-                         | Select a waveform object                                                     |
-      
+     
 ## 4.3 FDTD port
 
 Incorporate a port into the current FDTD simulation project. 
 
 ```python
 add(
-            self,
-            *,
-            type: Literal["fdtd_port"],
-            name: str,
-            property: dict,
+        type: Literal["fdtd_port"],
+        name: str,
+        property: dict,
     )
 ```
 
- # FDTDPort
-
-#### Geometry properties
+### Geometry properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
 |  x, y, z               | number  |     -    | The center position of the geometry. |
@@ -238,7 +211,7 @@ add(
 |  y_min, y_max           | number  |     -     | Y min, Y max position of the geometry. |
 |  z_min, z_max           | number  |     -     | Z min, Z max position of the geometry. |
 | override_default_boundary_conditions            | boolean | False             |       |
-#### Boundary conditions properties
+### Boundary conditions properties
 | x_min_bc                    | string  | PEC               | Selections are ['PEC', 'PMC', 'PML', 'periodic']                                 |
 | x_max_bc                    | string  | PEC               | Selections are ['PEC', 'PMC', 'PML', 'periodic']                                 |
 | y_min_bc                    | string  | PEC               | Selections are ['PEC', 'PMC', 'PML', 'periodic']                                 |
@@ -281,11 +254,9 @@ Incorporate a port into the current EME simulation project.
 
 ```python
 add(
-            self,
-            *,
-            type: Literal["eme_port"],
-            name: str,
-            property: dict,
+        type: Literal["eme_port"],
+        name: str,
+        property: dict,
     )
 ```
 
@@ -297,28 +268,23 @@ add(
 
          |
 
-# EMEPort
-| Parameter                                        | Type    | Default           | Description                                                                                                              |
-|:---------------------------------------------|:--------|:------------------|:-------------------------------------------------------------------------------------------------------------------------|
-| geometry.port_location                       | string  |  -                 |  Set the location of EME port. Selections are ['left', 'right']                      |
-| geometry.use_full_simulation_span            | boolean | True              |   Set whether the port uses the full simulation area. Selections are ['True', 'False']                         |
-| geometry.x                                      | number  |-                   | A float, or a parameter, or a parameter expression that evaluates to a float.       |
-| geometry.x_span                                 | number  | -                  |  A float, or a parameter, or a parameter expression that evaluates to a float.     |
-| geometry.x_min                                  | number  | -                  |  A float, or a parameter, or a parameter expression that evaluates to a float.   |
-| geometry.x_max                                  | number  | -                  |  A float, or a parameter, or a parameter expression that evaluates to a float.   |
-| geometry.y                                      | number  |  -                 |  A float, or a parameter, or a parameter expression that evaluates to a float.   |
-| geometry.y_span                                 | number  | -                  |    A float, or a parameter, or a parameter expression that evaluates to a float.    |
-| geometry.y_min                                  | number  | -                  |  A float, or a parameter, or a parameter expression that evaluates to a float.   |
-| geometry.y_max                                  | number  |-                   |  A float, or a parameter, or a parameter expression that evaluates to a float.   |
-| geometry.z                                      | number  |-                   |   A float, or a parameter, or a parameter expression that evaluates to a float.   |
-| geometry.z_span                                 | number  | -                  |    A float, or a parameter, or a parameter expression that evaluates to a float.   |
-| geometry.z_min                                  | number  |-                   |   A float, or a parameter, or a parameter expression that evaluates to a float.      |
-| geometry.z_max                                  | number  |  -                 |  A float, or a parameter, or a parameter expression that evaluates to a float.   | 
-| eme_port.general.mode_selection              | string  |  -                 | Selections are ['fundamental', 'fundamental_TE', 'fundamental_TM', 'fundamental_TE_and_TM', 'user_select', 'user_import']|
-| eme_port.general.mode_index                  | integer | 0                 |    Under the "user_select" condition, use this parameter to decide the source mode.                             |
-| eme_port.general.number_of_trial_modes       | integer | 20                |                                                                                                                          |
-| eme_port.general.search                      | string  | max_index         | Selections are ['max_index', 'near_n']                                                                                   |
-| eme_port.general.n                           | number  | 1.0               |                                                                                                                          |
+### Geometry properties
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+| port_location                       | string  |  -                 |  Set the location of EME port. Selections are ['left', 'right']                      |
+| use_full_simulation_span            | boolean | True              |   Set whether the port uses the full simulation area. Selections are ['True', 'False']                         |
+| x, y, z               | number  |     -    | The center position of the geometry. |
+| x span, y span, z span | number  |     -   | Xspan, Y span, Z span of the geometry. |
+| x min, x_max           | number  |     -     | X min, X max position of the geometry. |
+| y min, y max           | number  |     -     | Y min, Y max position of the geometry. |
+| z min, z max           | number  |     -     | Z min, Z max position of the geometry. |
+
+### EME port properties
+|  mode_selection              | string  |  -                 | Selections are ['fundamental', 'fundamental_TE', 'fundamental_TM', 'fundamental_TE_and_TM', 'user_select', 'user_import']|
+|  general.mode_index                  | integer | 0                 |    Under the "user_select" condition, use this parameter to decide the source mode.                             |
+|  number_of_trial_modes       | integer | 20                |                                                                                                                          |
+|  search                      | string  | max_index         | Selections are ['max_index', 'near_n']                                                                                   |
+|  n                           | number  | 1.0               |                                                                                                                          |
 | eme_port.bent_waveguide.bent_waveguide       | boolean | False             |                                                                                                                          |
 | eme_port.bent_waveguide.radius               | number  | 1                 |  Set the waveguide radius for curved waveguide.                                                     |
 | eme_port.bent_waveguide.orientation          | number  | 0                 |                                                                                                                          |

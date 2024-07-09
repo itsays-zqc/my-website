@@ -22,49 +22,58 @@ simu.add(
         property: dict
     )
 ```
-| Parameter                                              | Type    | Default          | Description                                                                                                                       |
-|:-------------------------------------------------------|:--------|:-----------------|:----------------------------------------------------------------------------------------------------------------------------------|
+### General
 | general.solver_type                                    | string  | 2d_x_normal      | Selections are ['2d_x_normal','2d_y_normal','2d_z_normal', 'x_y_prop', 'x_z_prop', 'y_x_prop', 'y_z_prop', 'z_x_prop', 'z_y_prop']|
-| geometry.x                                             | number  | -                 | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-| geometry.y                                             | number  | -                 | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-| geometry.z                                             | number  | -                 | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-| geometry.z_span                                        | number  | -                 | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-| geometry.z_min                                         | number  | -                 | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-| geometry.z_max                                         | number  | -                 | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-| geometry.x_span                                        | number  |-                  | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-| geometry.x_min                                         | number  | -                | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-| geometry.x_max                                         | number  | -                 | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-| geometry.y_span                                        | number  |-                  | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-| geometry.y_min                                         | number  |-                  | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-| geometry.y_max                                         | number  |-                  | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-| mesh_settings.mesh_type                                | string  | uniform          | Selections are ['uniform']                                                                                                        |
-| mesh_settings.mesh_accuracy.cells_per_wavelength       | integer | 15               |                                                                                                                                   |
-| mesh_settings.mesh_step_settings.dx                    | number  | 0.1              | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-| mesh_settings.mesh_step_settings.dy                    | number  | 0.1              | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-| mesh_settings.mesh_step_settings.dz                    | number  | 0.1              | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-| mesh_settings.mesh_refinement.mesh_refinement          | string  | curve_mesh       | Selections are ['curve_mesh', 'staircase']                                                                                        |
-| mesh_settings.grading.grading                          | boolean | True             |                                                                                                                                   |
-| mesh_settings.grading.grading_factor                   | number  | 1.2              | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-| mesh_settings.global_mesh_uniform_grid.dx              | number  | 0.02             | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-| mesh_settings.global_mesh_uniform_grid.dy              | number  | 0.02             | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-| mesh_settings.global_mesh_uniform_grid.dz              | number  | 0.02             | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-| mesh_settings.minimum_mesh_step_settings.min_mesh_step | number  | 0.0001           | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-| mesh_settings.mesh_factor                              | number  | 1.2              | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-| mesh_settings.mesh_grading.grading_factor              | number  | 1.2              | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-| thread_setting.thread                                  | integer | 4                |                                                                                                                                   |
-| boundary_conditions.x_min_bc                           | string  | PEC              | Selections are ['PEC','PMC', 'PML', 'symmetric', 'anti_symmetric', 'periodic']                                                    |
-| boundary_conditions.x_max_bc                           | string  | PEC              | Selections are ['PEC','PMC', 'PML', 'periodic']                                                                                   |
-| boundary_conditions.y_min_bc                           | string  | PEC              | Selections are ['PEC','PMC', 'PML', 'symmetric', 'anti_symmetric', 'periodic']                                                    |
-| boundary_conditions.y_max_bc                           | string  | PEC              | Selections are ['PEC','PMC', 'PML', 'periodic']                                                                                   |
-| boundary_conditions.z_min_bc                           | string  | PEC              | Selections are ['PEC','PMC', 'PML', 'symmetric', 'anti_symmetric', 'periodic']                                                    |
-| boundary_conditions.z_max_bc                           | string  | PEC              | Selections are ['PEC','PMC', 'PML', 'periodic']                                                                                   |
-| boundary_conditions.pml_settings.pml_kappa             | number  | 2                | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-| boundary_conditions.pml_settings.pml_sigma             | number  | 5                | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-| boundary_conditions.pml_settings.pml_layer             | integer | 12               |                                                                                                                                   |
-| boundary_conditions.pml_settings.pml_polynomial        | integer | 3                |                                                                                                                                   |
-| type_name                                              | string  | FDE              |                                                                                                                                   |
+
+#### Geometry properties
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+| x, y, z               | number  |     -    | The center position of the geometry. |
+| x_span, y_span, z_span  | number  |     -   | X span, Y span and Z span of the geometry. |
+| x_min, x_max           | number  |     -     | X min, X max position of the geometry. |
+| y_min, y_max           | number  |     -     | Y min, Y max position of the geometry. |
+| z_min, z_max           | number  |     -     | Z min, Z max position of the geometry. |
+
 | background_material                                    | object  |-                  | Select a material object                                                                                                          |
 | refractive_index                                       | number  | 1                | If not selecting a material, the refractive index is required                                                                     |
+
+#### Mesh setting
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+|  mesh_type                                | string  | uniform          | Selections are ['uniform']                                                                                                        |
+|  mesh_accuracy.cells_per_wavelength       | integer | 15               |                                                                                                                                   |
+|  mesh_step_settings.dx                    | number  | 0.1              | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
+|  mesh_step_settings.dy                    | number  | 0.1              | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
+|  mesh_step_settings.dz                    | number  | 0.1              | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
+|  mesh_refinement.mesh_refinement          | string  | curve_mesh       | Selections are ['curve_mesh', 'staircase']                                                                                        |
+|  grading.grading                          | boolean | True             |                                                                                                                                   |
+|  grading.grading_factor                   | number  | 1.2              | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
+|  global_mesh_uniform_grid.dx              | number  | 0.02             | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
+|  global_mesh_uniform_grid.dy              | number  | 0.02             | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
+|  global_mesh_uniform_grid.dz              | number  | 0.02             | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
+|  minimum_mesh_step_settings.min_mesh_step | number  | 0.0001           | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
+|  mesh_factor                              | number  | 1.2              | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
+|  mesh_grading.grading_factor              | number  | 1.2              | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
+
+| thread_setting.thread                                  | integer | 4                |                                                                                                                                   |
+
+#### Boundary conditions
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+
+|  x min bc                           | string  | PEC              | Selections are ['PEC','PMC', 'PML', 'symmetric', 'anti_symmetric', 'periodic']                                                    |
+|  x max bc                           | string  | PEC              | Selections are ['PEC','PMC', 'PML', 'periodic']                                                                                   |
+|  y min bc                           | string  | PEC              | Selections are ['PEC','PMC', 'PML', 'symmetric', 'anti_symmetric', 'periodic']                                                    |
+|  y max bc                           | string  | PEC              | Selections are ['PEC','PMC', 'PML', 'periodic']                                                                                   |
+|  z min bc                           | string  | PEC              | Selections are ['PEC','PMC', 'PML', 'symmetric', 'anti_symmetric', 'periodic']                                                    |
+|  z max bc                           | string  | PEC              | Selections are ['PEC','PMC', 'PML', 'periodic']                                                                                   |
+
+|  pml_settings.pml_kappa             | number  | 2                | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
+|  pml_settings.pml_sigma             | number  | 5                | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
+|  pml_settings.pml_layer             | integer | 12               |                                                                                                                                   |
+|  pml_settings.pml_polynomial        | integer | 3                |                                                                                                                                   |
+
+
 | mode_removal.threshold                                 | number  |-                 | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
 
 **Example:**
@@ -96,58 +105,48 @@ simu.add(
     )
 ```
 
-| title                                                                                                | type    | default          | description                                                                  |
-|:-----------------------------------------------------------------------------------------------------|:--------|:-----------------|:-----------------------------------------------------------------------------|
-| general.wavelength                                                                                   | number  | -                 | A float, or a parameter, or a parameter expression that evaluates to a float |
-| general.wavelength_offset                                                                            | number  | 0.002            | A float, or a parameter, or a parameter expression that evaluates to a float |
-| general.use_wavelength_sweep                                                                         | boolean | False            |                                                                              |
+### General
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+|  wavelength                                                                                   | number  | -                 | A float, or a parameter, or a parameter expression that evaluates to a float |
+|  wavelength offset                                                                            | number  | 0.002            | A float, or a parameter, or a parameter expression that evaluates to a float |
+|  use wavelength sweep                                                                         | boolean | False            |                                                                              |
+
+### Geometry properties
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
 | geometry.x                                                                                           | number  | -                 | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.x_span                                                                                      | number  | -                 | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.x_min                                                                                       | number  |-                  | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.x_max                                                                                       | number  |-                  | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.y                                                                                           | number  | -                 | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.y_span                                                                                      | number  | -                 | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.y_min                                                                                       | number  | -                | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.y_max                                                                                       | number  | -                 | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z                                                                                           | number  |-                  | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_span                                                                                      | number  | -                 | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_min                                                                                       | number  | -                 | A float, or a parameter, or a parameter expression that evaluates to a float |
-| geometry.z_max                                                                                       | number  | -                 | A float, or a parameter, or a parameter expression that evaluates to a float |
-| eme_setup.cell_geometry.number_of_modes_for_all_cell_group                                           | integer | 20               |                                                                              |
-| eme_setup.cell_geometry.allow_custom_eigensolver_settings                                            | boolean | False            |                                                                              |
-| eme_setup.cell_geometry.display_groups                                                               | boolean | False            |                                                                              |
-| eme_setup.cell_geometry.display_cells                                                                | boolean | False            |                                                                              |
-| eme_setup.cell_geometry.cell_group_definition.[span]                                                 | number  | -                 | A float, or a parameter, or a parameter expression that evaluates to a float |
-| eme_setup.cell_geometry.cell_group_definition.[cell_number]                                          | integer | 5                |                                                                              |
-| eme_setup.cell_geometry.cell_group_definition.[number_of_modes]                                      | integer | 10               |                                                                              |
-| eme_setup.cell_geometry.cell_group_definition.[sc]                                                   | string  | none             | Selections are ['none', 'sub_cell']                                          |
-| eme_setup.cell_geometry.cell_group_definition.[search]                                               | string  | max_index        |                                                                              |
-| eme_setup.cell_geometry.cell_group_definition.[custom_settings_for_cell_group.bent_location]         | integer | 0                | 0: Simulation Center                                                         |
-| eme_setup.cell_geometry.cell_group_definition.[custom_settings_for_cell_group.bent_orientation]      | number  | 0                | A float, or a parameter, or a parameter expression that evaluates to a float |
-| eme_setup.cell_geometry.cell_group_definition.[custom_settings_for_cell_group.bent_radius]           | number  | 1                | A float, or a parameter, or a parameter expression that evaluates to a float |
-| eme_setup.cell_geometry.cell_group_definition.[custom_settings_for_cell_group.bent_waveguide]        | boolean | False            |                                                                              |
-| eme_setup.cell_geometry.cell_group_definition.[custom_settings_for_cell_group.name]                  | string  | cellGroup        |                                                                              |
-| eme_setup.cell_geometry.cell_group_definition.[custom_settings_for_cell_group.calculate_group_index] | boolean | False            |                                                                              |
-| eme_setup.cell_geometry.cell_group_definition.[custom_settings_for_cell_group.n]                     | number  | 1.0              | A float, or a parameter, or a parameter expression that evaluates to a float |
-| transverse_mesh_setting.global_mesh_uniform_grid.dx                                                  | number  | 0.02             | A float, or a parameter, or a parameter expression that evaluates to a float |
+
+### Background material
+| background_material                                                                                  | string  |                  | Select a material object                                                     |
+| refractive_index                                                                                     | number  | 1                | If not selecting a material, the refractive index is required                |
+
+#### EME setup
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+|  cell_geometry.number_of_modes_for_all_cell_group                                           | integer | 20               |                                                                              |
+|  cell_geometry.allow_custom_eigensolver_settings                                            | boolean | False            |                                                                              |
+|  cell_geometry.display_groups                                                               | boolean | False            |                                                                              |
+|  cell_geometry.display_cells                                                                | boolean | False            |                                                                              |
+|  cell_geometry.cell_group_definition.[span]                                                 | number  | -                 | A float, or a parameter, or a parameter expression that evaluates to a float |
+|  cell_geometry.cell_group_definition.[cell_number]                                          | integer | 5                |                                                                              |
+|  cell_geometry.cell_group_definition.[number_of_modes]                                      | integer | 10               |                                                                              |
+|  cell_geometry.cell_group_definition.[sc]                                                   | string  | none             | Selections are ['none', 'sub_cell']                                          |
+|  cell_geometry.cell_group_definition.[search]                                               | string  | max_index        |                                                                              |
+|  cell_geometry.cell_group_definition.[custom_settings_for_cell_group.bent_location]         | integer | 0                | 0: Simulation Center                                                         |
+|  cell_geometry.cell_group_definition.[custom_settings_for_cell_group.bent_orientation]      | number  | 0                | A float, or a parameter, or a parameter expression that evaluates to a float |
+|  cell_geometry.cell_group_definition.[custom_settings_for_cell_group.bent_radius]           | number  | 1                | A float, or a parameter, or a parameter expression that evaluates to a float |
+|  cell_geometry.cell_group_definition.[custom_settings_for_cell_group.bent_waveguide]        | boolean | False            |                                                                              |
+|  cell_geometry.cell_group_definition.[custom_settings_for_cell_group.name]                  | string  | cellGroup        |                                                                              |
+|  cell_geometry.cell_group_definition.[custom_settings_for_cell_group.calculate_group_index] | boolean | False            |                                                                              |
+|  cell_geometry.cell_group_definition.[custom_settings_for_cell_group.n]                     | number  | 1.0              | A float, or a parameter, or a parameter expression that evaluates to a float |
+
+### Transverse mesh setting
+|transverse_mesh_setting.global_mesh_uniform_grid.dx                                                  | number  | 0.02             | A float, or a parameter, or a parameter expression that evaluates to a float |
 | transverse_mesh_setting.global_mesh_uniform_grid.dy                                                  | number  | 0.02             | A float, or a parameter, or a parameter expression that evaluates to a float |
 | transverse_mesh_setting.global_mesh_uniform_grid.dz                                                  | number  | 0.02             | A float, or a parameter, or a parameter expression that evaluates to a float |
 | transverse_mesh_setting.minimum_mesh_step_settings.min_mesh_step                                     | number  | 0.0001           | A float, or a parameter, or a parameter expression that evaluates to a float |
 | transverse_mesh_setting.mesh_grading.grading_factor                                                  | number  | 1.2              | A float, or a parameter, or a parameter expression that evaluates to a float |
-| boundary_conditions.y_min_bc                                                                         | string  | PEC              | Selections are ['PEC','PMC', 'PML', 'symmetric', 'anti_symmetric', 'periodic']|
-| boundary_conditions.y_max_bc                                                                         | string  | PEC              | Selections are ['PEC','PMC', 'PML', 'periodic']                              |
-| boundary_conditions.z_min_bc                                                                         | string  | PEC              | Selections are ['PEC','PMC', 'PML', 'symmetric', 'anti_symmetric', 'periodic']|
-| boundary_conditions.z_max_bc                                                                         | string  | PEC              | Selections are ['PEC','PMC', 'PML', 'periodic']                              |
-| boundary_conditions.pml_settings.pml_kappa                                                           | number  | 2                | A float, or a parameter, or a parameter expression that evaluates to a float |
-| boundary_conditions.pml_settings.pml_sigma                                                           | number  | 5                | A float, or a parameter, or a parameter expression that evaluates to a float |
-| boundary_conditions.pml_settings.pml_layer                                                           | integer | 12               |                                                                              |
-| boundary_conditions.pml_settings.pml_polynomial                                                      | integer | 3                |                                                                              |
-| advanced.eme_settings.max_stored_modes                                                               | integer | 1000             |                                                                              |
-| thread_settings.thread                                                                               | integer | 4                |                                                                              |
-| override_default_boundary_conditions                                                                 | boolean | False            |                                                                              |
-| type_name                                                                                            | string  | EME              |                                                                              |
-| background_material                                                                                  | string  |                  | Select a material object                                                     |
-| refractive_index                                                                                     | number  | 1                | If not selecting a material, the refractive index is required                |
 | mesh_settings.mesh_type                                                                              | string  | uniform          | Selections are ['uniform']                                                   |
 | mesh_settings.mesh_accuracy.cells_per_wavelength                                                     | integer | 15               |                                                                              |
 | mesh_settings.mesh_step_settings.dx                                                                  | number  | 0.1              | A float, or a parameter, or a parameter expression that evaluates to a float |
@@ -162,6 +161,20 @@ simu.add(
 | mesh_settings.minimum_mesh_step_settings.min_mesh_step                                               | number  | 0.0001           | A float, or a parameter, or a parameter expression that evaluates to a float |
 | mesh_settings.mesh_factor                                                                            | number  | 1.2              | A float, or a parameter, or a parameter expression that evaluates to a float |
 | mesh_settings.mesh_grading.grading_factor                                                            | number  | 1.2              | A float, or a parameter, or a parameter expression that evaluates to a float |
+
+### Boundary conditions
+| boundary_conditions.y_min_bc                                                                         | string  | PEC              | Selections are ['PEC','PMC', 'PML', 'symmetric', 'anti_symmetric', 'periodic']|
+| boundary_conditions.y_max_bc                                                                         | string  | PEC              | Selections are ['PEC','PMC', 'PML', 'periodic']                              |
+| boundary_conditions.z_min_bc                                                                         | string  | PEC              | Selections are ['PEC','PMC', 'PML', 'symmetric', 'anti_symmetric', 'periodic']|
+| boundary_conditions.z_max_bc                                                                         | string  | PEC              | Selections are ['PEC','PMC', 'PML', 'periodic']                              |
+| boundary_conditions.pml_settings.pml_kappa                                                           | number  | 2                | A float, or a parameter, or a parameter expression that evaluates to a float |
+| boundary_conditions.pml_settings.pml_sigma                                                           | number  | 5                | A float, or a parameter, or a parameter expression that evaluates to a float |
+| boundary_conditions.pml_settings.pml_layer                                                           | integer | 12               |                                                                              |
+| boundary_conditions.pml_settings.pml_polynomial                                                      | integer | 3                |                                                                              |
+
+| advanced.eme_settings.max_stored_modes                                                               | integer | 1000             |                                                                              |
+| thread_settings.thread                                                                               | integer | 4                |                                                                              |
+| override_default_boundary_conditions                                                                 | boolean | False            |                                                                              |
 
 **Example:**
 
@@ -194,45 +207,52 @@ simu.add(
     )
 ```
 
-| Parameter                                                               | Type    | Default          | Description                                                                                                    |
-|:------------------------------------------------------------------------|:--------|:-----------------|:---------------------------------------------------------------------------------------------------------------|
+### General
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
 | extra.fdtd_port_group.source_port                                       | string  |-                  |                                                                                                                |
 | general.dimension                                                       | string  | 3d               | Selections are ['2d', '3d']                                                                                    |
 | general.using_optical_path_estimate_time                                | boolean | False            |                                                                                                                |
 | general.simulation_time                                                 | integer | 1000             |                                                                                                                |
-| geometry.x                                                              | number  | -                 | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| geometry.y                                                              | number  |-                  | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| geometry.z                                                              | number  | -                 | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| geometry.z_span                                                         | number  | -                 | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| geometry.z_min                                                          | number  | -                 | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| geometry.z_max                                                          | number  |-                  | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| geometry.x_span                                                         | number  |-                  | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| geometry.x_min                                                          | number  | -                 | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| geometry.x_max                                                          | number  |-                  | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| geometry.y_span                                                         | number  |-                  | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| geometry.y_min                                                          | number  |-                  | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| geometry.y_max                                                          | number  | -                 | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| mesh_settings.mesh_type                                                 | string  | auto_non_uniform | Selections are ['auto_non_uniform', 'uniform']                                                                 |
-| mesh_settings.mesh_accuracy.cells_per_wavelength                        | integer | 15               |                                                                                                                |
-| mesh_settings.mesh_step_settings.dx                                     | number  | 0.1              | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| mesh_settings.mesh_step_settings.dy                                     | number  | 0.1              | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| mesh_settings.mesh_step_settings.dz                                     | number  | 0.1              | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| mesh_settings.mesh_refinement.mesh_refinement                           | string  | curve_mesh       | Selections are ['curve_mesh', 'staircase']                                                                     |
-| mesh_settings.grading.grading                                           | boolean | True             |                                                                                                                |
-| mesh_settings.grading.grading_factor                                    | number  | 1.2              | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| mesh_settings.global_mesh_uniform_grid.dx                               | number  | 0.02             | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| mesh_settings.global_mesh_uniform_grid.dy                               | number  | 0.02             | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| mesh_settings.global_mesh_uniform_grid.dz                               | number  | 0.02             | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| mesh_settings.minimum_mesh_step_settings.min_mesh_step                  | number  | 0.0001           | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| mesh_settings.mesh_factor                                               | number  | 1.2              | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| mesh_settings.mesh_grading.grading_factor                               | number  | 1.2              | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| boundary_conditions.x_min_bc                                            | string  | PML              | Selections are ['PEC', 'PML', 'symmetric', 'anti_symmetric', 'bloch']                                                   |
-| boundary_conditions.x_max_bc                                            | string  | PML              | Selections are ['PEC', 'PML', 'bloch']                                                                                  |
-| boundary_conditions.y_min_bc                                            | string  | PML              | Selections are ['PEC', 'PML', 'symmetric', 'anti_symmetric', 'bloch']                                                   |
-| boundary_conditions.y_max_bc                                            | string  | PML              | Selections are ['PEC', 'PML', 'bloch']                                                                                  |
-| boundary_conditions.z_min_bc                                            | string  | PML              | Selections are ['PEC', 'PML', 'symmetric', 'anti_symmetric', 'bloch']                                                   |
-| boundary_conditions.z_max_bc                                            | string  | PML              | Selections are ['PEC', 'PML', 'bloch']                                                                                  |
-| boundary_conditions.pml_settings.all_pml.layers                         | integer | 8.0              | (property of PMLSettingsForFDTD1)                                                                              |
+
+
+### Geometry
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+
+| background_material                                                     | object  | -                 | Select a material object                                                                                       |
+| refractive_index                                                        | number  | 1                | If not selecting a material, the refractive index is required                                                  |
+
+
+### Mesh settings
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+|  mesh_type                                                 | string  | auto_non_uniform | Selections are ['auto_non_uniform', 'uniform']                                                                 |
+|  mesh_accuracy.cells_per_wavelength                        | integer | 15               |                                                                                                                |
+
+| mesh_step_settings.dx                                     | number  | 0.1              | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
+| mesh_step_settings.dy                                     | number  | 0.1              | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
+|mesh_step_settings.dz                                     | number  | 0.1              | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
+| mesh_refinement.mesh_refinement                           | string  | curve_mesh       | Selections are ['curve_mesh', 'staircase']                                                                     |
+| grading.grading                                           | boolean | True             |                                                                                                                |
+| grading.grading_factor                                    | number  | 1.2              | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
+| global_mesh_uniform_grid.dx                               | number  | 0.02             | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
+| global_mesh_uniform_grid.dy                               | number  | 0.02             | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
+| global_mesh_uniform_grid.dz                               | number  | 0.02             | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
+| minimum_mesh_step_settings.min_mesh_step                  | number  | 0.0001           | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
+| mesh_factor                                               | number  | 1.2              | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
+| mesh_grading.grading_factor                               | number  | 1.2              | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
+
+### Boundary conditions
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+|  x_min_bc                                            | string  | PML              | Selections are ['PEC', 'PML', 'symmetric', 'anti_symmetric', 'bloch']                                                   |
+|  x_max_bc                                            | string  | PML              | Selections are ['PEC', 'PML', 'bloch']                                                                                  |
+|  y_min_bc                                            | string  | PML              | Selections are ['PEC', 'PML', 'symmetric', 'anti_symmetric', 'bloch']                                                   |
+|  y_max_bc                                            | string  | PML              | Selections are ['PEC', 'PML', 'bloch']                                                                                  |
+|  z_min_bc                                            | string  | PML              | Selections are ['PEC', 'PML', 'symmetric', 'anti_symmetric', 'bloch']                                                   |
+|  z_max_bc                                            | string  | PML              | Selections are ['PEC', 'PML', 'bloch']                                                                                  |
+|  pml_settings.all_pml.layers                         | integer | 8.0              | (property of PMLSettingsForFDTD1)                                                                              |
 | boundary_conditions.pml_settings.all_pml.kappa                          | number  | 2.0              | A float, or a parameter, or a parameter expression that evaluates to a float (property of PMLSettingsForFDTD1) |
 | boundary_conditions.pml_settings.all_pml.sigma                          | number  | 0.8              | A float, or a parameter, or a parameter expression that evaluates to a float (property of PMLSettingsForFDTD1) |
 | boundary_conditions.pml_settings.all_pml.polynomial                     | integer | 3.0              | (property of PMLSettingsForFDTD1)                                                                              |
@@ -301,10 +321,6 @@ simu.add(
 | advanced_options.live_slice_filed_display_settings.time_interval        | number  | 200              | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
 | advanced_options.live_slice_filed_display_settings.position             | number  | 0                | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
 | thread_setting.thread                                                   | integer | 4                |                                                                                                                |
-| type_name                                                               | string  | FDTD             |                                                                                                                |
-| background_material                                                     | object  | -                 | Select a material object                                                                                       |
-| refractive_index                                                        | number  | 1                | If not selecting a material, the refractive index is required                                                  |
-
 
 
 **Example:**
@@ -342,22 +358,27 @@ simu.add(
         property: dict
     )
 ```
+### Simulation name
+| simulation_name               | string  | -          | The specified FDE solver name                                                |
+
+### Sweep type
+| sweep_type                    | string  | ranges    |                                                                              |
+
+### Parameters
+| variable       | Any     | -          | A parameter that evaluates to a float                                        |
+| start           | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| stop            | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
+| number_of_points | integer | -          |                                                                              |
+| values           | array   |  -         |                                                                              |
+| type             | string  | Number    |                                                                              |
+
+### result 
 
 | Parameter                     | type    | default   | description                                                                  |
 |:------------------------------|:--------|:----------|:-----------------------------------------------------------------------------|
-| simulation_name               | string  | -          | The specified FDE solver name                                                |
-| sweep_type                    | string  | ranges    |                                                                              |
-| parameters.[variable]         | Any     | -          | A parameter that evaluates to a float                                        |
-| parameters.[start]            | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| parameters.[stop]             | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| parameters.[number_of_points] | integer | -          |                                                                              |
-| parameters.[values]           | array   |  -         |                                                                              |
-| parameters.[type]             | string  | Number    |                                                                              |
-| result.[name]                 | string  |-           |                                                                              |
-| result.[result]               | string  | -          |                                                                              |
-| result.[component]            | string  | -          |                                                                              |
-| name                          | string  | FDE Sweep |                                                                              |
-| type_name                     | string  | FDESweep  |                                                                              |
+| name                 | string  |-           |                                                                              |
+| result               | string  | -          |                                                                              |
+| component            | string  | -          |                                                                              |
 
 **Example:**
 The following script adds a FDESweep solver to obtain the effective refractive index of FDE analysis results, where the sweep range must be set through global parameters. This script assumes that the FDE solver and FDE analysis have been set up. 
@@ -371,8 +392,9 @@ width = para.add(name="width", expression=0.5, description='')  # The setting of
 simu = pj.Simulation()
 simu.add(name=sweep_name, type="FDESweep",
              property={"simulation_name": simu_name,
-                       "sweep_type": "ranges", 'parameters': [ {'variable': width, 'number_of_points': 3, 'start': 0.5, 'stop': 0.6} ],
-                                                "result": [{"name": "Neff", "result": analysis_name, "component": "mode0/neff"}]})
+                       "sweep_type": "ranges", 
+                       'parameters': [ {'variable': width, 'number_of_points': 3, 'start': 0.5, 'stop': 0.6} ],
+                        "result": [{"name": "Neff", "result": analysis_name, "component": "mode0/neff"}]})
 swp_res = simu["FDESweep"].run()
 ```
 
@@ -419,7 +441,8 @@ gap = para.add(name="gap", expression=0.45, description='')  # The setting of pa
 simu = pj.Simulation()
 simu.add(name=sweep_name, type="EMESweep", 
             property={"simulation_name": simu_name,
-                    "sweep_type": "values", "parameters": [{"variable": gap, "values": [0.45, 0.55, 0.65]}],
+                    "sweep_type": "values", 
+                    "parameters": [{"variable": gap, "values": [0.45, 0.55, 0.65]}],
                     "result": [{"name": "SMatrix", "component": "S", "result": "S-Matrix"}]})
 swp_res = simu["EMESweep"].run()
 

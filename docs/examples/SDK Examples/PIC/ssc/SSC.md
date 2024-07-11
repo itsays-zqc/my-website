@@ -73,7 +73,7 @@ The `path` variable is used to store the path of this Python file.<br/>The `simu
 we create a new project using the `Project` function of Max's software development toolkit.
 ```python
 # region --- 1. Project ---
-pj = mo.Project(name=project_name, location=run_mode,)
+pj = mo.Project(name=project_name)
 # endregion
 ```
 
@@ -86,11 +86,11 @@ pj = mo.Project(name=project_name, location=run_mode,)
 
 ```python
 # region --- 2. Material ---
-mt = pj.Material()
-mt.add_nondispersion(name="Si", data=[(3.476, 0)], order=2)
-mt.add_nondispersion(name="SiO2", data=[(1.465, 0)], order=2)
-mt.add_nondispersion(name="SiON", data=[(1.50, 0)], order=2)
-mt.add_lib(name="Air", data=mo.Material.Air, order=2)
+    mt = pj.Material()
+    mt.add_nondispersion(name="Si", data=[(3.476, 0)], order=2, color="#BF2C2C")
+    mt.add_nondispersion(name="SiO2", data=[(1.465, 0)], order=2, color="#D4E5FE")
+    mt.add_nondispersion(name="SiON", data=[(1.50, 0)], order=2, color="#FBBBBB")
+    mt.add_lib(name="Air", data=mo.Material.Air, order=2)
 # endregion
 ```
 
@@ -109,19 +109,20 @@ The structure is composed of silicon dioxide substrate, adiabatic tapered silico
 
 ```python
 # region --- 3. Structure ---
-st = pj.Structure(mesh_type="curve_mesh", mesh_factor=1.2, background_material=mt["SiO2"])
+st = pj.Structure()
+
 st.add_geometry(name="sub", type="gds_file",
-                    property={"general": {"path": gds_file, "cell_name": "SSC", "layer_name": (1, 0)},
-                              "geometry": {"x": 0, "y": 0, "z": -1.5, "z_span": 3},
-                              "material": {"material": mt["SiO2"], "mesh_order": 1}})
+                property={"general": {"path": gds_file, "cell_name": "SSC", "layer_name": (1, 0)},
+                            "geometry": {"x": 0, "y": 0, "z": -1.5, "z_span": 3},
+                            "material": {"material": mt["SiO2"], "mesh_order": 1}})
 st.add_geometry(name="ssc", type="gds_file",
                 property={"general": {"path": gds_file, "cell_name": "SSC", "layer_name": (2, 0)},
-                              "geometry": {"x": 0, "y": 0, "z": 0.1, "z_span": 0.2},
-                              "material": {"material": mt["Si"], "mesh_order": 2}})
+                            "geometry": {"x": 0, "y": 0, "z": 0.1, "z_span": 0.2},
+                            "material": {"material": mt["Si"], "mesh_order": 2}})
 st.add_geometry(name="cover", type="gds_file",
                 property={"general": {"path": gds_file, "cell_name": "SSC", "layer_name": (3, 0)},
-                              "geometry": {"x": 0, "y": 0, "z": 1.5, "z_span": 3},
-                              "material": {"material": mt["SiON"], "mesh_order": 1}})
+                            "geometry": {"x": 0, "y": 0, "z": 1.5, "z_span": 3},
+                            "material": {"material": mt["SiON"], "mesh_order": 1}})
 # endregion
 ```
 |Key| Value |type|Description|
@@ -129,7 +130,7 @@ st.add_geometry(name="cover", type="gds_file",
 |name|sub|string|name the added geometry|
 |type|gds_file|string|select the type of structure |
 |path|gds_file|string|file path of GDS file|
-|cell_name|SSC|string| name of the GDS cell |
+|cell_name|SSC|string| The cell name of the GDS. |
 |layer_name|(1,0)|list|name of the GDS layer |
 |x&emsp;&emsp;&emsp;&emsp;|0&emsp;&emsp;&emsp;&emsp;|float&emsp;&emsp;&emsp;&emsp;|center position in the x-direction of the geometric structure &nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
 |y|0|float|center position in the y-direction of the geometric structure|
@@ -147,8 +148,22 @@ Set the boundary size of the simulation structure using optical boundary conditi
 </div>
 
 ```python
-# region --- 4. Boundary ---
-st.OBoundary(property={"geometry": {"x": 0, "x_span": 206, "y": 0, "y_span": 5.5, "z": 0.5, "z_span": 7}})
+# region --- 4. Simulation ---
+simu = pj.Simulation()
+simu.add(name=simu_name, type="EME",
+            property={"general": {"wavelength": wavelength, "wavelength_offset": 0.0003, "use_wavelength_sweep": True},
+                    "background_material": mt["SiO2"],
+                    "mesh_settings": {"mesh_factor": 1.2, "mesh_refinement": {"mesh_refinement": "curve_mesh"}},
+                    "geometry": {"x_min": -103, "y": 0, "y_span": 5.5, "z": 0.5, "z_span": 7},
+                    "boundary_conditions": {"y_min_bc": "PEC", "y_max_bc": "PEC", "z_min_bc": "PEC", "z_max_bc": "PEC"},
+                    "eme_setup": {"cell_geometry": {"allow_custom_eigensolver_settings": True,
+                                "cell_group_definition": [
+                                    {"span": 2, "cell_number": 1, "number_of_modes": number_of_modes, "sc": "none"},
+                                    {"span": 1, "cell_number": 1, "number_of_modes": number_of_modes, "sc": "none"},
+                                    {"span": 200, "cell_number": 30, "number_of_modes": number_of_modes, "sc": "sub_cell"},
+                                    {"span": 3, "cell_number": 1, "number_of_modes": number_of_modes, "sc": "none"}]}},
+                    "transverse_mesh_setting": {"global_mesh_uniform_grid": {"dy": grid, "dz": grid}}
+                    })
 # endregion
 ```
 
@@ -175,17 +190,23 @@ You can use the `port` function to create a port and use the "source_port" prope
 </div>
 
 ```python
-# region --- 6. Port ---
-pjp = pj.Port(property={"source_port": "left_port"})
-pjp.add(name="left_port", type="eme_port",
-            property={"geometry": {"port_location": "left", "y": 0, "y_span": 5.5, "z": 0.5, "z_span": 7},
-                      "eme_port": {"general": {"mode_selection": "fundamental_TE"},
-                                   "advanced": {"number_of_trial_modes":  15}}})
-pjp.add(name="right_port", type="eme_port",
-            property={"geometry": {"port_location": "right", "y": 0, "y_span": 5.5, "z": 0.5, "z_span": 7},
-                      "eme_port": {"general": {"mode_selection": "fundamental_TE"},
-                                   "advanced": {"number_of_trial_modes":  15}}})
-# endregion
+# region --- 5. Port ---
+    pjp = pj.Port()
+    pjp.add(name="left_port", type="eme_port",
+            property={"geometry": {"port_location": "left"},
+                      "eme_port": {"general": {"mode_selection": "fundamental_TE", "number_of_trial_modes": number_of_modes}},
+                      "modal_analysis": {"mode_removal": {"threshold": 0.01}}        
+                        })
+                       
+
+    pjp.add(name="right_port", type="eme_port",
+            property={"geometry": {"port_location": "right"},
+                      "eme_port": {"general": {"mode_selection": "fundamental_TE", "number_of_trial_modes": number_of_modes}},
+                      "modal_analysis": {"mode_removal": {"threshold": 0.01}}
+                      })
+                      
+    # endregion
+ 
 ```
 | key | value | type | description |
 |-----------| ----- | ---- | -------------------------|
@@ -204,19 +225,23 @@ pjp.add(name="right_port", type="eme_port",
 
 The `Monitor`function is used to create monitor and `add` function is used to add a monitor. Select profile_monitor `type` monitor from the added monitors to view the mode field distribution.
 ```python
-# region --- 7. Monitor ---
-mn = pj.Monitor()
-for i, _pos in enumerate([-102, -99, 102]):
-    mn.add(name="section"+str(i+1), type="profile_monitor",
-            property={"geometry": {"monitor_type": "2d_x_normal", "x_resolution": 100,
-                                  "x": _pos, "x_span": 0, "y": 0, "y_span": 5.5, "z": 0.5, "z_span": 7}})
-mn.add(name="y_normal", type="profile_monitor",
-           property={"geometry": {"monitor_type": "2d_y_normal", "x_resolution": 100,
-                                  "x": 0, "x_span": 206, "y": 0, "y_span": 0, "z": 0.5, "z_span": 7}})
-mn.add(name="z_normal", type="profile_monitor",
-           property={"geometry": {"monitor_type": "2d_z_normal", "x_resolution": 100,
-                                  "x": 0, "x_span": 206, "y": 0, "y_span": 5.5, "z": 0.1, "z_span": 0}})
+# region --- 5. Port ---
+pjp = pj.Port()
+pjp.add(name="left_port", type="eme_port",
+        property={"geometry": {"port_location": "left"},
+                    "eme_port": {"general": {"mode_selection": "fundamental_TE", "number_of_trial_modes": number_of_modes}},
+                    "modal_analysis": {"mode_removal": {"threshold": 0.01}}        
+                    })
+                    
+
+pjp.add(name="right_port", type="eme_port",
+        property={"geometry": {"port_location": "right"},
+                    "eme_port": {"general": {"mode_selection": "fundamental_TE", "number_of_trial_modes": number_of_modes}},
+                    "modal_analysis": {"mode_removal": {"threshold": 0.01}}
+                    })
+                    
 # endregion
+ 
 ```
 
 #### 1.11 Add EME solver
@@ -228,25 +253,18 @@ We use the `Simulation` function to create a simulation and the `add` function t
 
 
 ```python
-# region --- 8. solver ---
-simu = pj.Simulation()
-simu.add(name=simu_name, type="EME",
-        property={"general": {"wavelength": wavelength, "use_wavelength_sweep": True},
-            "eme_setup": {
-                "cell_geometry": {
-                    "energy_conservation": "make_passive",  # ["none","make_passive"]
-                    "cell_group_definition": [
-                        {"span": 2, "cell_number": 1, "number_of_modes": 15, "sc": "none"},
-                        {"span": 1, "cell_number": 1, "number_of_modes":  15, "sc": "none"},
-                        {"span": 200, "cell_number": 50, "number_of_modes":  15, "sc": "sub_cell"},
-                        {"span": 3, "cell_number": 1, "number_of_modes":  15, "sc": "none"}]}},
-            "transverse_mesh_setting": {"global_mesh_uniform_grid": {"dy": grid, "dz": grid}},
-            "eme_analysis": {
-                "eme_propagate": run,
-                "propagation_sweep": {"propagation_sweep": run_length_sweep,
-                                        "parameter": "group_span_3", "start": 50, "stop": 250, "number_of_points": 100},
-                "select_source": {"phase": 0, "select_mode": "TE"}}})
-
+# region --- 8. Analysis ---
+eme_base_res = simu[simu_name].run()
+analysis = pj.Analysis()
+analysis.add(name="eme_propagate", type="eme_analysis",
+                property={"workflow_id": eme_base_res.workflow_id, "eme_propagate": run_options.run,
+                        "energy_conservation":"make_passive",
+                        "periodicity": {"periodicity": False},
+                        "group_span_sweep": {"group_span_sweep": run_options.run_length_sweep, "parameter": "group_span_1", "start": 50, "stop": 250, "number_of_points": 5},
+                        "wavelength_sweep": {"wavelength_sweep": run_options.run_wavelength_sweep, "start": 1.5, "stop": 1.6, "number_of_wavelength_points": 11},
+                        # "override_wavelength":{ "wavelength": 1.55 }
+                        })
+eme_res = analysis["eme_propagate"].run()
 # endregion
 ```
 | key | value | type | description |
@@ -302,14 +320,12 @@ You can create a new simulation using `simu.add` function and run the simulation
 # region --- 10. Calculate Mode ---
 if run_options.calculate_modes:
     for port in ["left_port", "right_port"]:
-        simu.add(name=port + "_cal_mode", simulation_name=simu_name, source_name=port, type="mode_selection:user_select",
-                    property={"modal_analysis": {
-                        "mesh_structure": True, "calculate_modes": True,
-                        "wavelength": wavelength, "number_of_trial_modes": number_of_modes, "search": "max_index", "calculate_group_index": True,
-                        "bent_waveguide": {"bent_waveguide": False, "radius": 1, "orientation": 0, "location": "simulation_center"}}})
-        port_res = simu[port + "_cal_mode"].run()
-        for m in [0, 1]:
-            port_res.extract(data="calculate_modes", savepath=plot_path + "00_modeprofile_fdeonly_" + port + "_mode#" + str(m), mode=m, attribute="E", real=True, imag=True, export_csv=False, show=False)
+        simu[simu_name].preview_modes(port_name=port, data="calculate_modes",
+                                        savepath=f"{plot_path}02_modeprofile_fdeonly_{port}", attribute="E", mode=0)
+                            
+        simu[simu_name].preview_modes(port_name=port, data="calculate_modes",
+                                        savepath=f"{plot_path}02_Preview_{port}_neff", show=False, export_csv=True)
+
 # endregion
 ```
 
@@ -331,7 +347,17 @@ if run_options.calculate_modes:
 Pass in the name of the simulation and use `simu[simu_name].run` function to run the simulation, and assign the result to `eme_res`.
 ```python
 # region --- 11. Run ---
-eme_res = simu[simu_name].run()
+eme_base_res = simu[simu_name].run()
+analysis = pj.Analysis()
+analysis.add(name="eme_propagate", type="eme_analysis",
+                property={"workflow_id": eme_base_res.workflow_id, "eme_propagate": run_options.run,
+                        "energy_conservation":"make_passive",
+                        "periodicity": {"periodicity": False},
+                        "group_span_sweep": {"group_span_sweep": run_options.run_length_sweep, "parameter": "group_span_1", "start": 50, "stop": 250, "number_of_points": 5},
+                        "wavelength_sweep": {"wavelength_sweep": run_options.run_wavelength_sweep, "start": 1.5, "stop": 1.6, "number_of_wavelength_points": 11},
+                        # "override_wavelength":{ "wavelength": 1.55 }
+                        })
+eme_res = analysis["eme_propagate"].run()
 # endregion
 ```
 

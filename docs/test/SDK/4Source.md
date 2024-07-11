@@ -46,7 +46,7 @@ add(
 
 **Example:**
 
-The following script adds a Gaussian waveform by setting the wavelength to 1.55 um and the wavelength span to 0.1 um. This script assumes that project has been added to the simulation environment, and the pj is an instance of the project.
+The following script adds a Gaussian waveform by setting the wavelength to 1.55 um and the wavelength span to 0.1 um. This script assumes that FDTD solver has been added to the simulation environment, and the pj is an instance of the project.
 
 ```python
 waveform name = "wv1550"
@@ -106,7 +106,7 @@ If the fraction of magnetic field intensity in PML is greater than the specified
 
 **Example:**
 
-The following script adds a mode source in FDTD simulation, sets the position and dimension of the light source, as well as the mode profile and waveform. This script assumes that project has been added to the simulation environment, and the pj is an instance of the project.
+The following script adds a mode source in FDTD simulation, sets the position and dimension of the light source, as well as the mode profile and waveform. This script assumes that FDTD solver has been added to the simulation environment, and the pj is an instance of the project.
 
 ```python
 wv_id = wv["waveform_name"]     # Selects the waveform ID from source pulse waveform list.
@@ -146,7 +146,7 @@ add(
 
 **waist_size_and_position**
 
-*waist radius*: 1/e field (1/e2 power) radius of the beam for a Gaussian beam .
+*waist radius*: 1/e field (1/e2 power) radius of the beam for a Gaussian beam.
 
 *distance from waist*: The distance between the injection plane and the beam waist. A positive distance indicates a diverging beam, while a negative distance indicates a converging beam.
 
@@ -167,7 +167,7 @@ add(
 
 **Example:**
 
-The following script adds a gaussian source in FDTD, sets the position and dimension of the light source, as well as the mode profile and waveform. This script assumes that project has been added to the simulation environment, and the pj is an instance of the project.
+The following script adds a gaussian source in FDTD, sets the position and dimension of the light source, as well as the mode profile and waveform. This script assumes that FDTD solver has been added to the simulation environment, and the pj is an instance of the project.
 
 
 ```python
@@ -212,7 +212,7 @@ If the fraction of magnetic field intensity in PML is greater than the specified
 
 **Example:**
 
-The following script adds a port in FDTD simulation, sets the position and dimension of the light source, as well as the mode profile and waveform. This script assumes that project has been added to the simulation environment, and the pj is an instance of the project.
+The following script adds a port in FDTD simulation, sets the position and dimension of the light source, as well as the mode profile and waveform. This script assumes that FDTD solver has been added to the simulation environment, and the pj is an instance of the project.
 
 ```python
 wv_id = wv["waveform_name"]     # Selects the waveform ID from source pulse waveform list.
@@ -263,19 +263,18 @@ If the fraction of magnetic field intensity in PML is greater than the specified
  
 
 **Example:**
-The following script adds ports in EME simulation, selects the mode of "port1" as the source, and sets the calculation fundamental mode and the size is the span of the full simulation area.  This script assumes that project has been added to the simulation environment, and the pj is an instance of the project.
+The following script adds ports in EME simulation, selects the mode of "port1" as the source, and sets the calculation fundamental mode and the size is the span of the full simulation area.  This script assumes that EME solver has been added to the simulation environment, and the pj is an instance of the project.
 
 
 ```python
 pjp = pj.Port(property={"source_port": "port1"})
 pjp.add(name="port1", type="eme_port",
         property={"geometry": {"port_location": "left", "use_full_simulation span": True},
-                  "eme_port": {"general": {"mode_selection": "user_select", "mode_index": 0},
-                               "advanced": {"offset": 0, "number_of_trial_modes": 20}}})
+                  "eme_port": {"general": {"mode_selection": "user_select", "mode_index": 0, "number_of_trial_modes": 20}}})
 pjp.add(name="port2", type="eme_port",
         property={"geometry": {"port_location": "right", "use_full_simulation_span": True},
-                  "eme_port": {"general": {"mode_selection": "user_select", "mode_index": 0},
-                               "advanced": {"offset": 0, "number_of_trial_modes": 20}}})                         
+                  "eme_port": {"general": {"mode_selection": "user_select", "mode_index": 0, "number_of_trial_modes": 20}}})    
+
 ```
 
 </div>

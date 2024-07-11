@@ -5,12 +5,13 @@
 
 <div class="text-justify">
 
-This section provides guidance on adding a monitor to your simulation project. We offer a variety of monitors designed to enhance your ability to gather simulation data. The subsequent content will be presented below, offering an introduction to each monitor.
 
-Type of the monitor, Selections are ['index_monitor', 'time_monitor', 'power_monitor', 'profile_monitor', 'global_option']
+Type of the monitor, Selections are ["index_monitor", "time_monitor", "power_monitor", "profile_monitor", "global_option"]
 
 
 ## 5.1 Index Monitor
+
+The syntax and properties for adding index monitor are as follows. This function does not return any data.
 
 ```python
 add(
@@ -23,23 +24,22 @@ add(
 #### Geometry properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
-| monitor_type      | string  | -          | Selections are ['2d_x_normal','2d_y_normal','2d_z_normal']                   |
-| x, y, z               | number  |     -    | The center position of the geometry. |
-| X span, Y span, z_span | number  |     -   | Xspan, Y span, Z span of the geometry. |
-| x_min, x_max           | number  |     -     | X min, X max position of the geometry. |
-| y_min, y_max           | number  |     -     | Y min, Y max position of the geometry. |
-| z_min, z_max           | number  |     -     | Z min, Z max position of the geometry. |
+| monitor_type          | string  | -          | The types of index monitor that can be selected are "2d_x_normal","2d_y_normal" and "2d_z_normal".   |
+| x, y, z                | number  |     -    | The center position of the index monitor. |
+| X span, Y span, z_span | number  |     -   | Xspan, Y span, Z span of the index monitor. |
+| x_min, x_max           | number  |     -     | X min, X max position of the index monitor. |
+| y_min, y_max           | number  |     -     | Y min, Y max position of the index monitor. |
+| z_min, z_max           | number  |     -     | Z min, Z max position of the index monitor. |
 
 **Example:**
-The following script add a 2D index monitor and set its dimension and position.
+The following script add a 2D index monitor and set its dimension and position. This script assumes that FDTD or EME solver has been added to the simulation environment, and the pj is an instance of the project.
 
 ```python
-mn = Project.Monitor()
+mn = pj.Monitor()
 mn.add(name="x_normal_index", type="index_monitor",
         property={"geometry": {"monitor_type": "2d_x_normal",
                               "x": 0, "x_span": 0, "y": 0, "y_span": 3, "z": 0, "z_span": 6}
                     })
-
 ```
 
 ## 5.2 Time monitor
@@ -51,41 +51,42 @@ add(
         property: dict,
     ):
 ```
-### General properties
+### General
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
-|  stop_method                | string  | end_of_simulation | Selections are ['end_of_simulation', 'choose_stop_time', 'choose_number_of_snapshots']                                      |
+|  stop_method                | string  | "end_of_simulation" | Selects "end_of_simulation", "choose_stop_time" or "choose_number_of_snapshots" to stop  |
 |  start_time                | number  | 0                 | A float, or a parameter, or a parameter expression that evaluates to a float                                                |
 |   stop_time               | number  | 1000             | A float, or a parameter, or a parameter expression that evaluates to a float                                                |
 |  number_of_snapshots       | integer |0 |                                                                                                       |
 
-### Geometry properties
+### Geometry 
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
-| monitor_type    | string | -          | Selections are ['point', '2d_x_normal','2d_y_normal','2d_z_normal', 'x_linear', 'y_linear', 'z_linear', '3d']                   |
-| x, y, z               | number  |     -    | The center position of the geometry. |
-| X span, Y span, z_span | number  |     -   | Xspan, Y span, Z span of the geometry. |
-| x_min, x_max           | number  |     -     | X min, X max position of the geometry. |
-| y_min, y_max           | number  |     -     | Y min, Y max position of the geometry. |
-| z_min, z_max           | number  |     -     | Z min, Z max position of the geometry. |
+| monitor_type    | string | -          | The types of time monitor that can be selected are "point", "2d_x_normal","2d_y_normal","2d_z_normal", "x_linear", "y_linear", "z_linear", "three_dimension"|
+| x, y, z               | number  |     -    | The center position of the time monitor. |
+| x_span,  y_span, z_span | number  |     -   | X span, Y span, Z span of the time monitor. |
+| x_min, x_max           | number  |     -     | X min, X max position of the time monitor. |
+| y_min, y_max           | number  |     -     | Y min, Y max position of the time monitor. |
+| z_min, z_max           | number  |     -     | Z min, Z max position of the time monitor. |
 
-### Data to record properties
+### Data to record 
 | output_ex    | boolean | True  |                                                                                                                             |
 | output_py | boolean | False             |                                                                                                                             |
 | output_pz | boolean | False             |                                                                                                                             |
 
-#### Advancd properties
+### Advancd 
 | advanced.sampling_rate.min_sampling_per_cycle      | integer | 10                |            
 
 **Example:**
+The following script add a time monitor and set its dimension and position. This script assumes that FDTD solver has been added to the simulation environment, and the pj is an instance of the project.
 
 ```python
 mn = pj.Monitor()
-mn.add(name='time_monitor1', type='time_monitor',
-           property={'general': {
-               'stop_method': 'end_of_simulation', 'start_time': 0, 'stop_time': 100, 'number_of_snapshots': 10},
-               'geometry': {'monitor_type': 'point', 'x': 0, 'x_span': 0, 'y': 0, 'y_span': 0, 'z': 0, 'z_span': 0},
-               'advanced': {'sampling_rate': {'min_sampling_per_cycle': 10}}})
+mn.add(name="time_monitor1", type="time_monitor",
+           property={"general": {
+               "stop_method": "end_of_simulation", "start_time": 0, "stop_time": 100, "number_of_snapshots": 10},
+               "geometry": {"monitor_type": "point", "x": 0, "x_span": 0, "y": 0, "y_span": 0, "z": 0, "z_span": 0},
+               "advanced": {"sampling_rate": {"min_sampling_per_cycle": 10}}})
 ```
 
 ## 5.3 Power monitor
@@ -97,7 +98,7 @@ add(
         property: dict,
     ):
 ```
-| override_global_options                                     | boolean | False             |                                                                                                                             |
+
 
 ### Frequency profile properties
 | Parameter                | Type    | Default   | Description        |
@@ -105,8 +106,8 @@ add(
 |  sample spacing                            | integer | 0                 |                                                                                                                             |
 |  use_wavelength_spacing                    | boolean | True              |                                                                                                                             |
 |  use source limits                         | boolean | False             |                                                                                                                             |
-|   spacing type                              | string  | wavelength        | Selections are ['wavelength', 'frequency']                                                                                  |
-|   spacing_limit                             | string  | min_max           | Selections are ['min_max', 'center_span']                                                                                   |
+|   spacing type                              | string  | wavelength        | Selections are ["wavelength", "frequency"]                                                                                  |
+|   spacing_limit                             | string  | min_max           | Selections are ["min_max", "center_span"]                                                                                   |
 | wavelength center, frequency center                         | number  |                   | A float, or a parameter, or a parameter expression that evaluates to a float                                                |
 |  wavelength span, frequency span                           | number  |-                   | A float, or a parameter, or a parameter expression that evaluates to a float                                                |
 |  wavelength min, wavelength wax                            | number  | -                  | A float, or a parameter, or a parameter expression that evaluates to a float                                                |
@@ -116,12 +117,12 @@ add(
 ### Geometry properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
-| monitor_type    | string | -          | Selections are ['point', '2d_x_normal','2d_y_normal','2d_z_normal', 'x_linear', 'y_linear', 'z_linear', 'three_dimensional']                   |
-| x, y, z               | number  |     -    | The center position of the geometry. |
-| X span, Y span, z_span | number  |     -   | Xspan, Y span, Z span of the geometry. |
-| x_min, x_max           | number  |     -     | X min, X max position of the geometry. |
-| y_min, y_max           | number  |     -     | Y min, Y max position of the geometry. |
-| z_min, z_max           | number  |     -     | Z min, Z max position of the geometry. |
+| monitor_type    | string | -          | The types of power monitor that can be selected are "point", "2d_x_normal","2d_y_normal","2d_z_normal", "x_linear", "y_linear", "z_linear". |
+| x, y, z               | number  |     -    | The center position of the power monitor. |
+| X span, Y span, z_span | number  |     -   | Xspan, Y span, Z span of the power monitor. |
+| x_min, x_max           | number  |     -     | X min, X max position of the power monitor. |
+| y_min, y_max           | number  |     -     | Y min, Y max position of the power monitor. |
+| z_min, z_max           | number  |     -     | Z min, Z max position of the power monitor. |
 
 ### Data to record properties
 | data_to_record.fields.output_ex                                     | boolean | True              |                                                                                                                             |
@@ -129,6 +130,8 @@ add(
 
 | advanced.sampling_frequency.min_sampling_per_cycle                  | integer | 2                 |                                                                                                                             |
 
+**Example:**
+The following script add a power monitor and set its dimension and position. This script assumes that FDTD solver has been added to the simulation environment, and the pj is an instance of the project.
 
 ```python
 mn = pj.Monitor()
@@ -138,19 +141,19 @@ mn.add(name="z_normal", type="power_monitor",
 
 ## 5.4 Profile monitor
 
-
 ### Geometry properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
-| monitor type    | string | -          | Selections are ['2d_x_normal','2d_y_normal','2d_z_normal']                   |
-| x resolution | integer | 100       |   The resolution of output simulation results of profile monitor.        |
-| x, y, z               | number  |     -    | The center position of the geometry. |
-| x span, y span, z span | number  |     -   | Xspan, Y span, Z span of the geometry. |
-| x min, x_max           | number  |     -     | X min, X max position of the geometry. |
-| y min, y max           | number  |     -     | Y min, Y max position of the geometry. |
-| z min, z max           | number  |     -     | Z min, Z max position of the geometry. |
+| monitor type    | string | -          | The types of profile monitor that can be selected are "2d_x_normal","2d_y_normal" and "2d_z_normal".        |
+| x_resolution | integer | 100       |   The resolution of output simulation results of profile monitor.        |
+| x, y, z               | number  |     -    | The center position of the profile monitor. |
+| x_span, y_span, z_span | number  |     -   | Xspan, Y span, Z span of the profile monitor. |
+| x_min, x_max           | number  |     -     | X min, X max position of the profile monitor. |
+| y_min, y_max           | number  |     -     | Y min, Y max position of the profile monitor. |
+| z_min, z_max           | number  |     -     | Z min, Z max position of the profile monitor. |
 
 **Example:**
+The following script add a profile monitor and set its dimension and position. This script assumes that EME solver has been added to the simulation environment, and the pj is an instance of the project.
 
 ```python
 mn = pj.Monitor()
@@ -164,11 +167,11 @@ mn.add(name="y_normal", type="profile_monitor",
 ### Frequency power properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
-|  sample spacing          | integer | 0              |  Set the type of frequency interval for the frequency monitor. Selections are ['uniform'].  |
+|  sample spacing          | integer | 0              |  Set the type of frequency interval for the frequency monitor. |
 |  use wavelength_spacing  | boolean | True           |                                                                              |
 |  use source limits       | boolean | False          |                                                                              |
-|  spacing type            | string  | wavelength     | Selections are ['wavelength', 'frequency']                                   |
-|  spacing limit           | string  | min_max        | Selections are ['min_max', 'center_span']                                    |
+|  spacing type            | string  | wavelength     | Selections are ["wavelength", "frequency"]                                   |
+|  spacing limit           | string  | min_max        | Selections are ["min_max", "center_span"]                                    |
 |  wavelength center, wavelength center  | number  |-                | A float, or a parameter, or a parameter expression that evaluates to a float |
 |  wavelength span, frequency span  | number  |-                | A float, or a parameter, or a parameter expression that evaluates to a float |
 |  wavelength min, wavelength max        | number  | -               | A float, or a parameter, or a parameter expression that evaluates to a float |
@@ -179,18 +182,16 @@ mn.add(name="y_normal", type="profile_monitor",
 | advanced.min_sampling_per_cycle         | integer | 2              |                                                                              |
 
 **Example:**
+The following script add the global monitor and set its frequency domain range and number of frequency points. This script assumes that FDTD solver has been added to the simulation environment, and the pj is an instance of the project.
 
 ```python
 mn = pj.Monitor()
-mn.add(name='Global Option', type='global_option',
-       property={'frequency_power': {  # 'sample_spacing': 'uniform', 'use_wavelength_spacing': True,
-           # ['min_max','center_span']
-           'spacing_type': 'wavelength', 'spacing_limit': 'center_span',
-           'wavelength_center': 1.5, 'wavelength_span': 0.1, 'frequency_points': 11}})
+mn.add(name="Global Option", type="global_option",
+       property={"frequency_power": {  # "sample_spacing": "uniform", "use_wavelength_spacing": True,
+           # ["min_max","center_span"]
+           "spacing_type": "wavelength", "spacing_limit": "center_span",
+           "wavelength_center": 1.5, "wavelength_span": 0.1, "frequency_points": 11}})
 ```
-
-
-
 
 
 ## 5.5 Band monitor
@@ -231,7 +232,7 @@ mn.add(name="band_line", type="band_monitor", property={
 |      general.record_efn       |  true   |  bool   |   The electron quasi-Fermi energy.                                                   |
 |      general.record_efp       |  true   |  bool   |  The hole quasi-Fermi energy.                                                    |
 |      general.record_evac      |  true   |  bool   |                                                      |
-|     geometry.monitor_type     |         | string  | Set the dimension type of the monitor. For electrical monitors, only 1D type and 2D type are available currently. Selections are ['linear_x', 'linear_y', 'linear_z']. |
+|     geometry.monitor_type     |         | string  | Set the dimension type of the monitor. For electrical monitors, only 1D type and 2D type are available currently. Selections are ["linear_x", "linear_y", "linear_z"]. |
 |     geometry.x      |    -     |  float   |  The x-coordinate of the center point position of the band monitor.    |
 |   geometry.x_span   |     -    |  float   | The length in x direction of the band monitor. Restrained by condition: >0.  |
 |   geometry.x_min    |    -     |  float   | The minimum x-coordinate endpoint data of the band monitor.      |
@@ -244,7 +245,7 @@ mn.add(name="band_line", type="band_monitor", property={
 |   geometry.z_span   |     -    |  float   | The height in z direction of the band monitor. Restrained by condition: >0.  |
 |   geometry.z_min    |     -    |  float   | The z-coordinate of the bottom position of the height of the band monitor.      |
 |   geometry.z_max    |      -   |  float   |  The z-coordinate of the top position of the height of the band monitor.     |
-| geometry.interpolate_accuracy |    1    | integer |  Set the accuracy of the rectangular grid for extracting the monitor result.  Restrained by condition: >=1 && <= 10. Here 1 means the grid size is 10nm, and 10 means the grid size is 1nm, and the grid size varies uniformly with the variation in 'interpolate_accuracy'.         |
+| geometry.interpolate_accuracy |    1    | integer |  Set the accuracy of the rectangular grid for extracting the monitor result.  Restrained by condition: >=1 && <= 10. Here 1 means the grid size is 10nm, and 10 means the grid size is 1nm, and the grid size varies uniformly with the variation in "interpolate_accuracy".         |
 
 
 
@@ -282,8 +283,8 @@ mn.add(name="np_line_080nm", type="charge_monitor", property={
 | :----------------------------: | :-----: | :-----: | :----------------------------------------------------------: |
 |    general.record_electrons    |  true   |  bool   | The distribution of electron concentration in monitor. |
 |      general.record_holes      |  true   |  bool   |  The distribution of hole concentration in monitor.     |
-| general.integrate_total_charge |  true   |  bool   | Available when monitor_type is in ['2d_x_normal', '2d_y_normal', '2d_z_normal']. |
-|     geometry.monitor_type      |         | string  | Selections are ['linear_x', 'linear_y', 'linear_z', '2d_x_normal', '2d_y_normal', '2d_z_normal']. |
+| general.integrate_total_charge |  true   |  bool   | Available when monitor_type is in ["2d_x_normal", "2d_y_normal", "2d_z_normal"]. |
+|     geometry.monitor_type      |         | string  | Selections are ["linear_x", "linear_y", "linear_z", "2d_x_normal", "2d_y_normal", "2d_z_normal"]. |
 |     geometry.x      |    -     |  float   |  The x-coordinate of the center point position of the charge monitor.    |
 |   geometry.x_span   |     -    |  float   | The length in x direction of the charge monitor. Restrained by condition: >0.  |
 |   geometry.x_min    |    -     |  float   | The minimum x-coordinate endpoint data of the charge monitor.      |
@@ -333,8 +334,8 @@ add(
 | :------------------------------------: | :-----: | :-----: | :----------------------------------------------------------: |
 |     general.record_electrics_field     |  true   |  bool   | The distribution of electric field in monitor.       |
 | general.record_electrostatic_potential |  true   |  bool   |  The distribution of electric potential in monitor.        |
-|      general.calculate_net_charge      |  true   |  bool   | Available when monitor_type is in ['2d_x_normal', '2d_y_normal', '2d_z_normal']. |
-|         geometry.monitor_type          |         | string  | Selections are ['linear_x', 'linear_y', 'linear_z', '2d_x_normal', '2d_y_normal', '2d_z_normal']. |
+|      general.calculate_net_charge      |  true   |  bool   | Available when monitor_type is in ["2d_x_normal", "2d_y_normal", "2d_z_normal"]. |
+|         geometry.monitor_type          |         | string  | Selections are ["linear_x", "linear_y", "linear_z", "2d_x_normal", "2d_y_normal", "2d_z_normal"]. |
 |     geometry.x      |    -     |  float   |  The x-coordinate of the center point position of the electric monitor.    |
 |   geometry.x_span   |     -    |  float   | The length in x direction of the electric monitor. Restrained by condition: >0.  |
 |   geometry.x_min    |    -     |  float   | The minimum x-coordinate endpoint data of the electric monitor.      |

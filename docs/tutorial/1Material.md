@@ -29,7 +29,7 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 <div class="text-justify">
 
-The standard material database includes three parts, one is material list, the another is material property plot, and the another one is the material type. The material list includes a number of common materials, when creating a new simulation, the standard database will be loaded. And the materials in the standard material database can be imported into “User” material database. The default materials cannot be edited directly.
+The standard material database includes three parts, one is material list, the another is material property plot, and the another one is the material type. The material list includes a number of common materials, when creating a new simulation, the standard database will be loaded. And the materials in the standard material database can be imported into **“User”** material database. The default materials cannot be edited directly.
 
 </div>
 
@@ -44,11 +44,11 @@ The standard material database includes three parts, one is material list, the a
 
 <div class="text-justify">
 
-1. __ID__ : ID
+1. __ID__ : Data ranking index
 2. __Name__ : Material Name
 3. __Mesh Oder__: Decides how overlapping objects are meshed in the simulation.
-4. __Color__ : Material Color
-5. __Type__ : Types of material, three types are included, there are Lossy material, Lossless material and List data as follows.
+4. __Color__ : Material Color.You can set the colors according to your own preferences.
+5. __Type__ : Types of material, including two types, Normal Material and List Data.
 
     Normal Material: Non-dispersive materials.
 
@@ -383,11 +383,11 @@ __Feature Description__:The User material database, a database that stores mater
 
 <div class="text-justify">
 
-1. __ID__ : ID
+1. __ID__ : Data ranking index
 2. __Name__ : Material Name
 3. __Mesh Oder__: Decides how overlapping objects are meshed in the simulation.
-4. __Color__ : Material Color
-5. __Type__ : Types of material, three types are included, there are Lossy material, Lossless material and List data as follows.
+4. __Color__ : Material Color. You can set the colors according to your own preferences.
+5. __Type__ : Types of material, including two types, Normal Material and List Data.
 
     Normal Material: Non-dispersive materials.
 
@@ -406,12 +406,12 @@ __Feature Description__:The User material database, a database that stores mater
 
 <div class="text-justify">
 
-**_Plot_** : User can view each material property in this plot area via clicking a certain material in material list, also can view properties they are interested in via two options in the bottom of plot.
+**_Plot_** : User can view each material property in this plot area via clicking a certain material in material list, also can view properties they are interested in via two options in the bottom of plot, Such as **"Wavelength"**, **"Frequency"**,__“n,k”__-Re(refractive index) & Im(refractive index), __“εr′,εr″__-Re(relative permittivity) & Im(relative permittivity), __“εr′,σ”__-Re(relative permittivity) & conductivity.
 
 
 #### 2.2.1 Material Data & Model Fitting
 
-__Material Data Tab:__ User can view each material property in this list via double clicking a certain material in material list.
+__Material Data Tab:__ User can view each material property in this list via double clicking a certain material in material list.Material properties include __“Color”__, __“Name”__, __“Mesh Order”__, __“Wavelength”__, __“Frequency”__, __“n,k”__-Re(refractive index) & Im(refractive index), __“εr′,εr″__-Re(relative permittivity) & Im(relative permittivity), __“εr′,σ”__-Re(relative permittivity) & conductivity.
 
 **_Anisotropy_** : Two options in this drop-down menu, “None” and “Diagonal”, when diagonal option is checked, user can create FDTD, FDE, or EME anisotropic optical material in the “User Material Database” window.
 

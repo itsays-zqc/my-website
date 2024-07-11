@@ -35,7 +35,7 @@ sidebar_position: 2
 
 **Go to Material Library**: If selected, user can go to standard material database to set background material according to needs. And the selected material relative property from standard material database will be displayed in the material data list.
 
-7) **Refractive Index**: The refractive index of the surrounding, background medium in the simulation region.（Default: 1)
+7) **Refractive Index**: The refractive index of the surrounding, background medium in the simulation region.(Default: 1)
 
 
 
@@ -74,7 +74,9 @@ sidebar_position: 2
 4) **Mesh Refinement:** Select an approach to calculate refined mesh properties.
 
 ①　**Staircase**: Any point inside a Yee cell might be evaluated to determine of which material it is consisted, and the properties for that single material are used for depicting the E field at that point. As a consequence, the discretized structure hardly accounts for structure variations that arises inside a single Yee cell, therefore leading to a “Staircase” permittivity grid which agrees exactly with the Cartesian grid. Besides, all layers are effectively shifted to the closest E field position inside the Yee cell, implying that there is no way for the thickness to be resolved as finer than dx.thickness cannot be resolved to better than dx.
+
 ②　**Curve Mesh**: Effective permittivities can be derived via a contour path recipe, which effectively takes the dielectric interface shapes, as well as material weight inside a cell into account.
+
 ③　**Grading**: The Grading factor specifies the biggest ratio of the neighboring spatial grids. (Default: 1.2)
 
 
@@ -85,8 +87,7 @@ sidebar_position: 2
 
 1) **PML:** A PML (Perfectly Matched Layer) mimics in essence an ideally open (or reflectionless) boundary upon which is  designed to absorb all the incident electromagnetic waves with impedance matched materials to eliminate reflections.
 
-
-2) **PEC:** PEC boundary conditions are introduced to mimic boundaries that behave exactly like a Perfect Electric Conductor (PEC). Metal boundaries reflect all the electromagnetic waves, and hence no energy can get through a simulation volume bounded by metals.
+2) **PEC:** PEC boundary conditions are introduced to mimic boundaries that behave exactly like a Perfect Electric Conductor (PEC). Metal boundaries reflect all the electromagnetic waves, and hence no energy can get through a simulation volume bounded by metals, simulating ideal metal boundaries, such as metal waveguide, reflector antenna, etc.
 
 3) **Symmetric/Anti-Symmetric**: The Symmetric or Anti-Symmetric Boundary condition is used for reducing simulation time by the Electromagnetic fields which is symmetric through the middle plane of the simulation region. The specific selection between “Symmetric” and “Anti-Symmetric” is according to the relationship of source polarization and symmetric plane. If the normal of symmetric plane is tangential to source polarization, choose the “Symmetric” option. Otherwise, choose the “Anti-symmetric” option.
 

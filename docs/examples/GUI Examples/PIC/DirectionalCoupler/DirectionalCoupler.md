@@ -218,7 +218,7 @@ After running the program, we can obtain a series of corresponding output result
 
 <div class="text-justify">
 
-Based on the information provided, we can get the following results  when propogating wavelength  is 1.55 *μ*m and the two arm length of directional couper is equal to 20 *μ*m: 1. Insertion Loss: 0.013 dB; 2. Power Split Ratio: 64.8 : 35.0 (or approximately 64.8% to one port and 35% to the other port); 3. Dimensions: Approximately 3.5 *μ*m X 44 *μ*m.
+Based on the information provided, we can get the following results  when propogating wavelength  is 1.55 *μ*m and the two arm length of directional couper is equal to 20 *μ*m: 1. Insertion Loss: 0.076 dB; 2. Power Split Ratio: 60.5 : 37.8 (or approximately 60.5% to one port and 37.8% to the other port); 3. Dimensions: Approximately 3.5 *μ*m X 44 *μ*m.
 
 </div>
 

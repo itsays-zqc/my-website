@@ -31,12 +31,22 @@ First, import `maxoptics_sdk` and other packages.
 [1]
 ```
 ```python
+import sys
+
+# encoding: utf-8
+
+from moapi.v3.aggregate import AggregatedUIService as Project
 import maxoptics_sdk.all as mo
+from maxoptics_sdk.helper import timed, with_path
 import os
 import time
-from maxoptics_sdk.helper import timed
-from pathlib import Path
-from VPD_material import *
+from typing import NamedTuple
+import sys
+current_dir = os.path.dirname(__file__)
+sys.path.extend([current_dir])
+from VPD_material_Si import elec_Si_properties
+from VPD_material_Ge import elec_Ge_properties
+
 ```
 The script file `VPD_material.py` stores some modified electronic parameters of the materials, which are referenced to override default parameters in the modeling script.
 
@@ -54,19 +64,11 @@ Set some general parameters before modeling. At the beginning are those that nee
 # region --- 0. General Parameters ---
 wavelength_center = 1.55    # um
 wavelength_span = 0.1   # um
-source_fraction = 0.001
 temperature = 298.15    # K
 normal_length = 20  # um
-egrid_local = 0.1  # um egrid_global is not supported so far
-egrid_genrate = 0.02 # um
-egrid_interface = 0.002 # um
-remesh_thickness = 0.004 # um
-omesh_grid_Ge = 0.02 # um
-omesh_grid_Si = 0.025    # um
-cells_per_wavelength = 14
 Ge_SiO2_recombination_velocity = 225000    # cm/s
 run_mode = "local"
-simu_name = "VPD00_struc"
+simu_name = "VPD02_Id"
 ```
 Wavelength, temperature, the mesh grid size and some other parameters are defined above. They will be detailed in the subsequent settings.
 
@@ -234,7 +236,13 @@ A function is defined for creating a project, setting materials, modeling, dopin
 [7]
 ```
 ```python
-def pd_project(project_name, run_mode, material_property):
+class RunOptions(NamedTuple):
+    high_field: bool
+    index_preview: bool
+    run: bool
+    extract: bool
+
+def create_project(project_name, run_options: RunOptions) -> Project:
 ```
 
 
@@ -251,6 +259,7 @@ Create a new simulation project.
 	# region --- 1. Project ---
     pj = mo.Project(name=project_name, location=run_mode)
 	# endregion
+    return pj
 ```
 
 `mo.Project()` parameters:
@@ -267,20 +276,16 @@ Create a new simulation project.
 [9]
 ```
 ```python
-	# region --- 2. Material ---
-    if material_property == "normal":
-        si_override = elec_Si_properties
-        ge_override = elec_Ge_properties
+def create_structures(pj: Project, run_options: RunOptions):
+    # region --- 2. Material ---
+    mt = pj.Material()
 
-    elif material_property == "transient":
-        si_override = elec_Si_properties
-        ge_override = elec_Ge_properties_for_transient
-    else:
-        print("material_property must be chosen from 'normal', 'transient'")
-        raise
+    if run_options.high_field:
+        elec_Ge_properties["mobility"]["mun"]["high_field"]["model"]="canali"
+        elec_Ge_properties["mobility"]["mup"]["high_field"]["model"]="canali"
 ```
 
-The `elec_Si_properties` and `elec_Ge_properties` are both variables imported from `VPD_material.py`, storing the modified electronic parameters for Silicon and Germanium respectively. Besides, more physics models for Germanium are applied in transient simulation, with the `elec_Ge_properties_for_transient` specified for it. The `material_property` is used to determine which type of material parameters to choose. For details of the physics model and electronic parameter settings, please refer to the appendix.
+The `pj.Material` variable imported from `VPD_material.py`, storing the modified electronic parameters for Silicon and Germanium. The `material_property` is used to determine which type of material parameters to choose. For details of the physics model and electronic parameter settings, please refer to the appendix.
 
 <br/>
 
@@ -290,22 +295,14 @@ The `elec_Si_properties` and `elec_Ge_properties` are both variables imported fr
 [10]
 ```
 ```python
-    mt = pj.Material()
-    mt.add_lib(name="mat_sio2", data=mo.OE_Material.SiO2, order=1)
-    mt.add_lib(name="mat_air", data=mo.OE_Material.Air, order=1)
-    mt.add_lib(name="pec", data=mo.OE_Material.Al, order=2, override={
-               "basic": {"model": "Default", "Default": {"affinity": 4.28}, "print": 1}})
-    mt.add_lib(name="mat_si", data=mo.OE_Material.Si,
-               order=2, override=si_override)
-    mt.add_lib(name="mat_ge", data=mo.OE_Material.Ge,
-               order=2, override=ge_override)
-
-    mt["mat_sio2"].set_optical_material(data=mo.Material.SiO2_Palik)
-    mt["mat_air"].set_optical_material(data=mo.Material.Air)
-    mt["pec"].set_optical_material(data=mo.Material.PEC)
+    mt.add_lib(name="mat_sio2", data=mo.OE_Material.SiO2, order=2)
+    mt.add_lib(name="mat_al", data=mo.OE_Material.Al, order=2, override={"work_function": 4.28})
+    mt.add_lib(name="mat_si", data=mo.OE_Material.Si, order=2, override=elec_Si_properties)
+    mt.add_lib(name="mat_ge", data=mo.OE_Material.Ge, order=2, override=elec_Ge_properties)   
+    mt["mat_al"].set_optical_material(data=mo.Material.PEC)
     mt["mat_si"].set_optical_material(data=mo.Material.Si_Palik)
     mt["mat_ge"].set_optical_material(data=mo.Material.Ge_Palik)
-	# endregion
+    # endregion
 ```
 
 When adding materials, start by using the `add_lib` function to add electrical materials from the material library.
@@ -333,9 +330,8 @@ Then, use the `set_optical_material` function to set the optical property for th
 [11]
 ```
 ```python
-mt.add_lib(name="mat_sio2", data=mo.OE_Material.SiO2, order=1)
-mt.add_nondispersion(name="mat_sio2_op", data=[(1.444, 0)], order=1)
-mt["mat_sio2"].set_optical_material(data=mt["mat_sio2_op"].passive_material)
+    mt.add_lib(name="mat_sio2", data=mo.OE_Material.SiO2, order=2)
+    mt["mat_sio2"].set_optical_material(data=mo.Material.SiO2_Palik)
 ```
 
 <br/>
@@ -357,10 +353,7 @@ First, initialize an object of `pj.Structure()`.
 ```
 [12]
 ```
-```python
-# region --- 3. Structure ---
-    st = pj.Structure(mesh_type="curve_mesh", mesh_factor=1.4, background_material=mt["mat_sio2"])
-```
+
 
 `pj.Structure()` parameters:
 
@@ -375,6 +368,9 @@ First, initialize an object of `pj.Structure()`.
 [13]
 ```
 ```python
+# region --- 3. Structure ---
+    st = pj.Structure()
+
     st.add_geometry(name="BOX", type="Rectangle", property={
         "material": {"material": mt["mat_sio2"]},
         "geometry": {"x": SiO2_x_center, "x_span": SiO2_x_span, "y": SiO2_y_center, "y_span": SiO2_y_span, "z_min": -SiO2_z_span/2, "z_max": SiO2_z_center}})
@@ -389,9 +385,12 @@ First, initialize an object of `pj.Structure()`.
 
     st.add_geometry(name="Si_taper", type="LinearTrapezoid", property={
         "material": {"material": mt["mat_si"]},
-        "geometry": {"point_1_x": taper_x_min+taper_length, "point_1_y": taper_width/2, "point_2_x": taper_x_min+taper_length, "point_2_y": -taper_width/2,
-                     "point_3_x": taper_x_min, "point_3_y": -input_wg_width/2, "point_4_x": taper_x_min, "point_4_y": input_wg_width/2,
-                     "z_min": 0, "z_max": Si_z_span, "x": 0, "y": 0}})
+        "geometry": {"control_points":
+                        [{"x": -40, "y": -0.25},
+                         {"x": -40, "y": 0.25}, 
+                         {"x": 0, "y": 2}, 
+                         {"x": 0, "y": -2}],
+                    "z_min": 0, "z_max": 0.22, "x": 0, "y": 0}})
 
     st.add_geometry(name="Si_base", type="Rectangle", property={
         "material": {"material": mt["mat_si"]},
@@ -403,16 +402,17 @@ First, initialize an object of `pj.Structure()`.
                      "y": 0, "y_span_bottom": Ge_y_span_bottom, "y_span_top": Ge_y_span_top, "z": Ge_z_center, "z_span": Ge_z_span}})
 
     st.add_geometry(name="Cathode", type="Pyramid", property={
-        "material": {"material": mt["pec"]},
+        "material": {"material": mt["mat_al"]},
         "geometry": {"x": cathode_x_center, "x_span_bottom": cathode_x_span, "x_span_top": cathode_x_span,
                      "y": cathode_y_center, "y_span_bottom": cathode_y_span_bottom, "y_span_top": cathode_y_span_top,
                      "z": cathode_z_center, "z_span": cathode_z_span}})
 
     st.add_geometry(name="Anode", type="Pyramid", property={
-        "material": {"material": mt["pec"]},
+        "material": {"material": mt["mat_al"]},
         "geometry": {"x": anode_x_center, "x_span_bottom": anode_x_span, "x_span_top": anode_x_span,
                      "y": anode_y_center, "y_span_bottom": anode_y_span_bottom, "y_span_top": anode_y_span_top,
                      "z": anode_z_center, "z_span": anode_z_span}})
+    # endregion
 ```
 
 `add_geometry()` parameters:
@@ -517,26 +517,27 @@ Note:
 [14]
 ```
 ```python
-    st.add_doping(name="Uniform", type="p", property={
+def add_ddm_settings(pj: Project, run_options: RunOptions):
+    mt = pj.Material()
+    st = pj.Structure()
+    # region --- 4. DDM:Doping ---
+    dp = pj.Doping()
+    dp.add(name="p_uniform", type="constant_doping", property={
+        "dopant": {"dopant_type": "p", "concentration": p_uniform_con},
         "geometry": {"x": p_uniform_x_center, "x_span": p_uniform_x_span,
                      "y": p_uniform_y_center, "y_span": p_uniform_y_span,
-                     "z": p_uniform_z_center, "z_span": p_uniform_z_span},
-        "general": {"distribution_function": "constant", "concentration": p_uniform_con}})
-    st.add_doping(name="p_well", type="p", property={
-        "geometry": {"x": p_well_x_center, "x_span": p_well_x_span, "y": p_well_y_center, "y_span": p_well_y_span,
-                     "z": p_well_z_center, "z_span": p_well_z_span},
-        "general": {"distribution_function": "gaussian", "source_face": "upper_z", "junction_width": p_well_junction_width,
-                    "concentration": p_well_con, "ref_concentration": 1e6}})
-    st.add_doping(name="p_pplus", type="p", property={
-        "geometry": {"x": p_pplus_x_center, "x_span": p_pplus_x_span, "y": p_pplus_y_center, "y_span": p_pplus_y_span,
-                     "z": p_pplus_z_center, "z_span": p_pplus_z_span},
-        "general": {"distribution_function": "gaussian", "source_face": "upper_z", "junction_width": p_pplus_junction_width,
-                    "concentration": p_pplus_con, "ref_concentration": 1e6}})
-    st.add_doping(name="n_pplus", type="n", property={
-        "geometry": {"x": n_pplus_x_center, "x_span": n_pplus_x_span, "y": n_pplus_y_center, "y_span": n_pplus_y_span,
-                     "z": n_pplus_z_center, "z_span": n_pplus_z_span},
-        "general": {"distribution_function": "gaussian", "source_face": "upper_z", "junction_width": n_pplus_junction_width,
-                    "concentration": n_pplus_con, "ref_concentration": n_pplus_ref}})
+                     "z": p_uniform_z_center, "z_span": p_uniform_z_span,
+                     "applicable_regions": "all_regions",
+                     },})
+    
+    dp.add(name="p_well", type="diffusion_doping", property={
+        "dopant": {"dopant_type": "p", "concentration": p_well_con, "ref_concentration": 1e6,
+                   "source_face": "upper_z", "diffusion_function":"gaussian","junction_width": p_well_junction_width,},
+        "geometry": {"x": p_well_x_center, "x_span": p_well_x_span, 
+                     "y": p_well_y_center, "y_span": p_well_y_span,
+                     "z": p_well_z_center, "z_span": p_well_z_span,
+                     "applicable_regions": "all_regions",
+                     },})
 ```
 
 
@@ -547,7 +548,7 @@ Note:
 - `type`--Doping type. Options are `"n"` or `"p"` for n-type, p-type doping respectively
 - `property`--Other properties
 
-According to the selection of `general.distribution_function`, doping is divided into constant doping and gaussian doping. Detailed properties are listed below.
+According to the selection of `general.type`, doping is divided into constant doping and gaussian doping. Detailed properties are listed below.
 
 <br/>
 
@@ -571,14 +572,14 @@ Doping property list:
 | geometry.y_max                |         | float |                                                    |
 | geometry.z_min                |         | float |                                                    |
 | geometry.z_max                |         | float |                                                    |
-| general.distribution_function |         | str   | Selections are ['constant', 'gaussian']            |
+| general.type |         | str   | Selections are ['constant', 'gaussian']            |
 | general.concentration         |         | float |                                                    |
-| general.source_face           |         | str   | Available when distribution_function is 'gaussian' |
-| general.junction_width        |         | float | Available when distribution_function is 'gaussian' |
-| general.ref_concentration     |         | float | Available when distribution_function is 'gaussian' |
-| volume.volume_type            | 'all'   | str   | Selections are ['all', 'material', 'region']       |
-| volume.material_list          |         | list  | Available when volume_type is 'material'           |
-| volume.region_list            |         | list  | Available when volume_type is 'region'             |
+| general.source_face           |         | str   | Available when type is 'gaussian' |
+| general.junction_width        |         | float | Available when type is 'gaussian' |
+| general.ref_concentration     |         | float | Available when type is 'gaussian' |
+| geometry.applicable_regions            | 'all_regions'   | str   | Selections are ['all_regions', 'material', 'region']       |
+| geometry.material_list          |         | list  | Available when geometry.applicable_regions is 'material'           |
+| geometry.solid_list            |         | list  | Available when geometry.applicable_regions is 'region'             |
 
 Description:
 
@@ -586,7 +587,7 @@ Description:
 
 - `general`--Set the distribution function, concentration and so on
 
-  - `distribution_function`:
+  - `type`:
     - When it's set to `"constant"`, only `concentration` is required
     - When it's set to `"gaussian"`: `concentration`, `ref_concentration`, `junction_width`, `source_face` are required
   - `concentration`--Concentration in the non-diffusion area
@@ -594,15 +595,15 @@ Description:
   - `junction_width`--Diffusion junction width
   - `source_face`--The doping source face. Options are `"lower_x"`, `"lower_y"`, `"lower_z"`, `"upper_x"`, `"upper_y"` or `"upper_z"`. `"lower_x"` means the source face is `x=x_min`. Similarly for the rest. There is no diffusion area on the edge of source face. As for the other edges, there is a diffusion area within the doping box.
 
-- `volume`--Set a list of regions or materials to be doped
+- `applicable_regions`--Set a list of regions or materials to be doped
 
-  - `volume_type`:
+  - `geometry.applicable_regions`:
 
-    - When it's set to `"all"`(by default)，the doping is applied to all the (semiconductor) structures, restricted by the doping box
+    - When it's set to `"all_regions"`(by default)，the doping is applied to all the (semiconductor) structures, restricted by the doping box
 
     - When it's set to `"material"`, `material_list` is required, which means the doping is applied to the structures with one of the specified materials and restricted by the doping box
 
-    - When it's set to `"region"`, `region_list` is required, which means the doping is applied to the specified structures and restricted by the doping box
+    - When it's set to `"solid"`, `solid_list` is required, which means the doping is applied to the specified structures and restricted by the doping box
 
 <br/>
 
@@ -614,18 +615,23 @@ Description:
 ```
 
 ```python
-st.add_doping(name="p_pplus", type="p", property={
-    "geometry": {"x": p_pplus_x_center, "x_span": p_pplus_x_span, "y": p_pplus_y_center, "y_span": p_pplus_y_span,
-                 "z": p_pplus_z_center, "z_span": p_pplus_z_span},
-    "general": {"distribution_function": "gaussian", "source_face": "upper_z", "junction_width": p_pplus_junction_width,
-                "concentration": p_pplus_con, "ref_concentration": 1e6},
-    "volume": {"volume_type": "material", "material_list": [mt["mat_si"], mt["mat_ge"]]}})
-st.add_doping(name="n_pplus", type="n", property={
-    "geometry": {"x": n_pplus_x_center, "x_span": n_pplus_x_span, "y": n_pplus_y_center, "y_span": n_pplus_y_span,
-                 "z": n_pplus_z_center, "z_span": n_pplus_z_span},
-    "general": {"distribution_function": "gaussian", "source_face": "upper_z", "junction_width": n_pplus_junction_width,
-                "concentration": n_pplus_con, "ref_concentration": n_pplus_ref},
-    "volume": {"volume_type": "region", "region_list": ["Si_base", "Ge"]}})
+    dp.add(name="p_pplus", type="diffusion_doping", property={
+        "dopant": {"dopant_type": "p", "concentration": p_pplus_con, "ref_concentration": 1e6,
+                   "source_face": "upper_z", "diffusion_function":"gaussian","junction_width": p_pplus_junction_width},
+        "geometry": {"x": p_pplus_x_center, "x_span": p_pplus_x_span, 
+                     "y": p_pplus_y_center, "y_span": p_pplus_y_span,
+                     "z": p_pplus_z_center, "z_span": p_pplus_z_span,
+                     "applicable_regions": "all_regions",
+                     },})
+    dp.add(name="n_pplus", type="diffusion_doping", property={
+        "dopant": {"dopant_type": "n", "concentration": n_pplus_con, "ref_concentration": n_pplus_ref,
+                   "source_face": "upper_z", "diffusion_function":"gaussian","junction_width": n_pplus_junction_width},
+        "geometry": {"x": n_pplus_x_center, "x_span": n_pplus_x_span, 
+                     "y": n_pplus_y_center, "y_span": n_pplus_y_span,
+                     "z": n_pplus_z_center, "z_span": n_pplus_z_span,
+                     "applicable_regions": "all_regions",
+                     },})
+    # endregion
 ```
 
 
@@ -637,22 +643,33 @@ st.add_doping(name="n_pplus", type="n", property={
 [16]
 ```
 ```python
-	# surface recombination
-    st.add_surface_recombination(name="Cathode_Ge", property={
-        "surface_type": "domain_domain", "interface_type": "MetalOhmicInterface",
-        "domain_1": "Cathode", "domain_2": "Ge", "infinite_recombination": False, "velocity_electron": 1e7, "velocity_hole": 1e7})
-
-    st.add_surface_recombination(name="Anode_Si", property={
-        "surface_type": "domain_domain", "interface_type": "MetalOhmicInterface",
-        "domain_1": "Anode", "domain_2": "Si_base", "infinite_recombination": False, "velocity_electron": 1e7, "velocity_hole": 1e7})
-
-    st.add_surface_recombination(name="Ge_SiO2", property={
-        "surface_type": "domain_domain", "interface_type": "InsulatorInterface",
-        "domain_1": "Ge", "domain_2": "SOX", "velocity_electron": Ge_SiO2_recombination_velocity, "velocity_hole": Ge_SiO2_recombination_velocity})
-
-    st.add_surface_recombination(name="Ge_Si", property={
-        "surface_type": "domain_domain", "interface_type": "HeteroJunction", "domain_1": "Ge", "domain_2": "Si_base"})
-	# endregion
+# region --- 5. DDM:Surface Recombination ---
+    bd = pj.BoundaryCondition()
+    bd.add(name="Cathode_Ge", type="surface_recombination", property={
+        "general": {"electron": {"s0": 1e7},
+                    "hole": {"s0": 1e7}},
+        "geometry": {"surface_type": "solid_solid",  
+                     "solid_1": st["Cathode"],
+                     "solid_2": st["Ge"],
+                     }
+    })
+    bd.add(name="Anode_Si", type="surface_recombination", property={
+        "general": {"electron": {"s0": 1e7},
+                    "hole": {"s0": 1e7}},
+        "geometry": {"surface_type": "solid_solid",  
+                     "solid_1": st["Anode"],
+                     "solid_2": st["Si_base"],
+                     }
+    })
+    bd.add(name="Ge_SiO2", type="surface_recombination", property={
+        "general": {"electron": {"s0": Ge_SiO2_recombination_velocity},
+                    "hole": {"s0": Ge_SiO2_recombination_velocity}},
+        "geometry": {"surface_type": "solid_solid",  
+                     "solid_1": st["SOX"],
+                     "solid_2": st["Ge"],
+                     }
+    })
+    # endregion
 ```
 
 `add_surface_recombination()` parameters：
@@ -665,155 +682,121 @@ st.add_doping(name="n_pplus", type="n", property={
 
 Surface recombination property list:
 
-|                        | default             | type   | notes                                                                                                                |
+|                        | default             | type   | notes                                                                                                                 |
 |:-----------------------|:--------------------|:-------|:---------------------------------------------------------------------------------------------------------------------|
-| surface_type           | domain_domain       | string | Selections are ['domain_domain', 'material_material'].                                                               |
-| interface_type         | null                | string | Selections are ['null', 'InsulatorInterface', 'HomoJunction', 'HeteroJunction', 'MetalOhmicInterface', 'SolderPad']. |
-| infinite_recombination | true                | bool   | Available when interface_type is 'MetalOhmicInterface'                                                               |
-| velocity_hole          | 0                   | float  | Available when interface_type is 'MetalOhmicInterface'/'InsulatorInterface'                                          |
-| velocity_electron      | 0                   | float  | Available when interface_type is 'MetalOhmicInterface'/'InsulatorInterface'                                          |
-| domain_1               |                     | string | Available when surface_type is 'domain_domain'                                                                       |
-| domain_2               |                     | string | Available when surface_type is 'domain_domain'                                                                       |
+| surface_type           |   solid_solid       | string | Selections are ['solid_solid', 'material_material'].                                                               |
+| general.hole.s0          | 0                   | float  | Surface recombination velocity of holes.                                          |
+| general.electron.s0       | 0                   | float  | -Surface recombination velocity of electrons.                                          |
+| solid_1               |                     | string | Available when surface_type is 'solid_solid'                                                                       |
+| solid_2               |                     | string | Available when surface_type is 'solid_solid'                                                                       |
 | material_1             |                     | material | Available when surface_type is 'material_material'                                                                 |
 | material_2             |                     | material | Available when surface_type is 'material_material'                                                                 |
 
 Description:
 
 - `surface_type`--Type of selection for the surface
-  - When `surface_type` is `"domain_domain"`, the surface is the interface between two structures 
+  - When `surface_type` is `"solid_solid"`, the surface is the interface between two structures 
   - When `surface_type` is "material_material"`, the surface is the interface between two materials
 
-- `interface_type`--Type of contact for the surface
-  - `"InsulatorInterface"`--Semiconductor-insulator interface
-  - `"HomoJunction"`--Homogeneous semiconductor-semiconductor interface
-  - `"HeteroJunction"`--Heterogeneous semiconductor-semiconductor interface
-  - `"MetalOhmicInterface"`--Semiconductor-conductor interface
-  - `"SolderPad"`--Conductor-insulator interface
+- `hole.s0`, `electron.s0`--Surface recombination velocity of holes and electrons. 
 
-- `infinite_recombination`--Only available when `interface_type` is `"MetalOhmicInterface"`. The surface recombination velocity of holes and electrons will be available when `infinite_recombination` is `False`
-
-- `velocity_hole`, `velocity_electron`--Surface recombination velocity of holes and electrons. Available when `interface_type` is `"MetalOhmicInterface"` or `"InsulatorInterface"`
-
-- `domain_1`, `domain_2`--Names of the two structures at the interface. They must be set explicitly when `surface_type` is `"domain_domain"`
+- `solid_1`, `solid_2`--Names of the two structures at the interface. They must be set explicitly when `surface_type` is `"solid_solid"`
 
 - `material_1`, `material_2`--The two materials at the interface. They must be set explicitly when `surface_type` is `"material_material"`
 
 
 <br/>
 
-#### 2.3.6 Set waveform
 
-```
-[17]
-```
-```python
-	# region --- 4. Waveform ---
-    wv = pj.Waveform()
-    wv.add(name="waveform", wavelength_center=wavelength_center, wavelength_span=wavelength_span)
-	# endregion
-```
-
-`wv.add()` parameters：
-
-- `name`--Name of the waveform
-- `wavelength_center`--Center of wavelength
-- `wavelength_span`--Span of wavelength
-- `unit`--Unit of wavelength. Options are`"um"` and `"nm"`，default to be`"um"`
-
-
-<br/>
-
-#### 2.3.7 Set boundary conditions of optical simulation
-
-```
-[18]
-```
-```python
-	# region --- 5. oboundary --- for FDTD simulation
-    st.OBoundary(property={
-        "geometry": {"x": x_mean, "y": y_mean, "z": z_mean, "x_span": x_span, "y_span": y_span, "z_span": z_span}})
- 	# endregion
-```
-<br/>
-
-
-Boundary conditions of optical simulation property list:
-
-|                                  | default   | type    | notes                                                                                     |
-|:---------------------------------|:----------|:--------|:------------------------------------------------------------------------------------------|
-| general_pml.pml_same_settings    | true      | bool    |                                                                                           |
-| general_pml.pml_profile          | standard  | string  |                                                                                           |
-| general_pml.pml_layer            |           | integer |                                                                                           |
-| general_pml.pml_kappa            |           | float   |                                                                                           |
-| general_pml.pml_sigma            |           | float   |                                                                                           |
-| general_pml.pml_polynomial       |           | integer |                                                                                           |
-| general_pml.pml_alpha            |           | float   |                                                                                           |
-| general_pml.pml_alpha_polynomial |           | integer |                                                                                           |
-| general_pml.pml_min_layers       |           | integer |                                                                                           |
-| general_pml.pml_max_layers       |           | integer |                                                                                           |
-| geometry.x                       |           | float   |                                                                                           |
-| geometry.x_span                  |           | float   | Restrained by condition: >=0.                                                             |
-| geometry.x_min                   |           | float   |                                                                                           |
-| geometry.x_max                   |           | float   |                                                                                           |
-| geometry.y                       |           | float   |                                                                                           |
-| geometry.y_span                  |           | float   | Restrained by condition: >=0.                                                             |
-| geometry.y_min                   |           | float   |                                                                                           |
-| geometry.y_max                   |           | float   |                                                                                           |
-| geometry.z                       |           | float   |                                                                                           |
-| geometry.z_span                  |           | float   | Restrained by condition: >=0.                                                             |
-| geometry.z_min                   |           | float   |                                                                                           |
-| geometry.z_max                   |           | float   |                                                                                           |
-| boundary.x_max                   |           | string  | Selections are ['PML', 'PEC', 'metal', 'PMC', 'periodic'].                                |
-| boundary.x_min                   |           | string  | Selections are ['PML', 'PEC', 'metal', 'PMC', 'symmetric', 'anti_symmetric', 'periodic']. |
-| boundary.y_max                   |           | string  | Selections are ['PML', 'PEC', 'metal', 'PMC', 'periodic'].                                |
-| boundary.y_min                   |           | string  | Selections are ['PML', 'PEC', 'metal', 'PMC', 'symmetric', 'anti_symmetric', 'periodic']. |
-| boundary.z_max                   |           | string  | Selections are ['PML', 'PEC', 'metal', 'PMC', 'periodic'].                                |
-| boundary.z_min                   |           | string  | Selections are ['PML', 'PEC', 'metal', 'PMC', 'symmetric', 'anti_symmetric', 'periodic']. |
-
-Description:
-
-- `geometry`--Set the optical simulation region
-
-- `boundary`--Set the optical boundary conditions, default to be `"PML"` for all the boundaries
-
-- `general_pml`--Set pml-related parameters
-
-
-<br/>
-
-#### 2.3.8 Set local mesh
+#### 2.3.6 Set local mesh
 
 ```
 [19]
 ```
 ```python
-	# region --- 6. mesh ---
-    st.add_mesh(name="OMesh_Ge", property={
-        "geometry": {"x": x_min+1, "x_span": 0, "y": 0, "y_span": 0, "z": Ge_z_center, "z_span": Ge_z_span},
-        "general": {"dz": omesh_grid_Ge}})
-
-    st.add_mesh(name="OMesh_Si", property={
-        "geometry": {"x": x_min+1, "x_span": 0, "y": 0, "y_span": 0, "z": Si_z_span/2, "z_span": Si_z_span},
-        "general": {"dz": omesh_grid_Si}})
-
-    st.add_emesh(name="EMesh_Local", property={
-        "y_min": oe_y_min, "y_max": oe_y_max, "z_min": oe_z_min, "z_max": oe_z_max, "mesh_size": egrid_local})
+# region --- 6. DDM:Mesh ---
+    lm = pj.LocalMesh()
     
-    st.add_emesh(name="EMesh_Genrate", property={
-        "y_min": oe_y_min, "y_max": Ge_y_span_top/2, "z_min": Si_z_span, "z_max": Ge_z_span+Si_z_span, "mesh_size": egrid_genrate})
+    lm.add(name="EMesh_Ge", type="EMesh", property={
+        "general": {"mesh_size": 0.01},
+        "geometry": {"geometry_type": "solid", "solid": st["Ge"]}
+    })
+    lm.add(name="EMesh_Si", type="EMesh", property={
+        "general": {"mesh_size": 0.02},
+        "geometry": {"geometry_type": "solid", "solid": st["Si_base"]}
+    })
+    lm.add(name="Ge_Boundary", type="EMesh", property={
+        "general": {"mesh_size": 0.002},
+        "geometry": {"geometry_type": "solid_solid", 
+                     "solid_1": st["Ge"],
+                     "solid_2": st["Ge"],
+                     "growth_ratio": 2}
+    })
 
-    st.add_emesh(name="EMesh_Ge_SiO2_Interface", property={
-        "y": 0, "y_span": Ge_y_span_top, "z": Si_z_span+Ge_z_span, "z_span": remesh_thickness, "mesh_size": egrid_interface})
-
-    st.add_emesh(name="EMesh_Ge_Si_Interface", property={
-        "y": 0, "y_span": Si_slab_width, "z": Si_z_span, "z_span": remesh_thickness, "mesh_size": egrid_interface})
-    
-    st.add_emesh_along_line(name="EMesh_Ge_SiO2_Slope_Interface", property={
-        "start_x": oe_x_mean, "start_y": Ge_y_span_bottom/2, "start_z": Si_z_span, "end_x": oe_x_mean, "end_y": Ge_y_span_top/2, "end_z": Si_z_span+Ge_z_span, "mesh_size": egrid_interface})
-	# endregion
+    lm.add(name="Si_Boundary", type="EMesh", property={
+        "general": {"mesh_size": 0.002},
+        "geometry": {"geometry_type": "solid_solid", 
+                     "solid_1": st["Si_base"],
+                     "solid_2": st["Si_base"],
+                     "growth_ratio": 2}
+    })
+    # endregion
 ```
 
-`add_mesh()` set the local mesh for optical simulation, parameters:
+`Emesh` set a rectangle region for local mesh of electrical simulation. Parameters:
+
+- `name`--Custom name
+- `property`--Other properties
+
+<br/>
+
+|                   | default | type  | notes                                          |
+| :----------------: | :------: | :----: | :-----------------------------------------: |
+| general.mesh_size |  0.01   | float |  The minimum value of the local mesh region.   |
+| general.geometry_type | directly defined | string | Selections are ['directly defined', 'solid','solid_solid']  |
+| solid_solid           |                     |string  |Names of the two structures at the interface.|
+| solid_1               |                     | string | Available when geometry_type is 'solid_solid'                                                                       |
+| solid_2               |                     | string | Available when geometry_type is 'solid_solid'                                                                       |
+
+Local mesh of electrical simulation in rectangle region property list, when `geometry_type` is `directly defined`:
+
+|           | default | type  | notes                                  |
+| :-------- | :------ | :---- | :------------------------------------- |
+| x         |         | float |                                        |
+| x_span    |         | float | Restrained by condition: >=0.          |
+| x_min     |         | float |                                        |
+| x_max     |         | float |                                        |
+| y         |         | float |                                        |
+| y_span    |         | float | Restrained by condition: >=0.          |
+| y_min     |         | float |                                        |
+| y_max     |         | float |                                        |
+| z         |         | float |                                        |
+| z_span    |         | float | Restrained by condition: >=0.          |
+| z_min     |         | float |                                        |
+| z_max     |         | float |                                        |
+| mesh_size |         | float | max size of electrical simulation mesh |
+
+Note:
+
+1. When the simulation region is in the xy plane, only the parameters in the x, y direction are effective, and parameters in the z direction will be ignored. Similarly for the rest.
+
+<br/>
+
+```python
+    # region --- 10. FDTD:Mesh ---
+    lm = pj.LocalMesh()
+    lm.add(name="Mesh_Ge", type="Mesh", property={
+        "general": {"dz": 0.02},
+        "geometry": {"x": -42, "x_span": 0, "y": 0, "y_span": 0, "z": 0.47, "z_span": 0.5}
+    })
+    lm.add(name="Mesh_Si", type="Mesh", property={
+        "general": {"dz": 0.025},
+        "geometry": {"x": -42, "x_span": 0, "y": 0, "y_span": 0, "z": 0.11, "z_span": 0.22}
+    })
+    # endregion
+```
+
+`Mesh` set the local mesh for optical simulation, parameters:
 
 - `name`--Custom name
 - `property`--Other properties
@@ -851,93 +834,68 @@ Description:
 <br/>
 
 
-`add_emesh()` set a rectangle region for local mesh of electrical simulation. Parameters:
-
-- `name`--Custom name
-- `property`--Other properties
-
 <br/>
 
+#### 2.3.7 Set waveform
 
-Local mesh of electrical simulation in rectangle region property list:
+```
+[17]
+```
+```python
+def add_fdtd_settings(pj: Project, run_options: RunOptions):
+    waveform_name = f"wv{wavelength_center*1e3}"
 
-|           | default | type  | notes                                  |
-| :-------- | :------ | :---- | :------------------------------------- |
-| x         |         | float |                                        |
-| x_span    |         | float | Restrained by condition: >=0.          |
-| x_min     |         | float |                                        |
-| x_max     |         | float |                                        |
-| y         |         | float |                                        |
-| y_span    |         | float | Restrained by condition: >=0.          |
-| y_min     |         | float |                                        |
-| y_max     |         | float |                                        |
-| z         |         | float |                                        |
-| z_span    |         | float | Restrained by condition: >=0.          |
-| z_min     |         | float |                                        |
-| z_max     |         | float |                                        |
-| mesh_size |         | float | max size of electrical simulation mesh |
+    # region --- 7. FDTD:Waveform ---
+    wv = pj.Waveform()
+    wv.add(name=waveform_name, type='gaussian_waveform',
+           property={'set': 'frequency_wavelength',  
+                     'set_frequency_wavelength': {
+                            'range_type': 'wavelength',  
+                            'range_limit': 'center_span', 
+                            'wavelength_center': wavelength_center,
+                            'wavelength_span': wavelength_span,
+                     },
+                     }
+           )
+    # endregion
+```
 
+`pj.Waveform()` parameters：
 
-
-Note:
-
-1. When the simulation region is in the xy plane, only the parameters in the x, y direction are effective, and parameters in the z direction will be ignored. Similarly for the rest.
-
-<br/>
-
-
-`add_emesh_along_line()` set a line region for local mesh of electrical simulation. Parameters：
-
-- `name`--Custom name
-- `property`--Other properties
-
-<br/>
-
-
-Local mesh of electrical simulation in line region property list:
-
-|           | default | type  | notes                         |
-| :-------- | :------ | :---- | :---------------------------- |
-| start_x   | 0       | float |                               |
-| start_y   | 0       | float | Restrained by condition: >=0. |
-| start_z   | 0       | float |                               |
-| end_x     | 1       | float |                               |
-| end_y     | 1       | float |                               |
-| end_z     | 1       | float | Restrained by condition: >=0. |
-| mesh_size | 0.01    | float |                               |
-
-
-
-Note:
-
-1. When the simulation region is in the xy plane, besides `start_x`, `start_y`, `end_x` and  `end_y`, it is also required to set the `start_z` and  `end_z`, which should both be the same as the z coordinate of the plane. Similarly for the rest.
+- `name`--Name of the waveform
+- `range_type`-- Selections are `frequency` or `wavelength`
+- `wavelength_center`--Center of wavelength
+- `wavelength_span`--Span of wavelength
 
 
 <br/>
 
-#### 2.3.9 Set optical sources
+#### 2.3.8 Set optical sources
 
 ```
 [20]
 ```
 
 ```python
-	# region --- 7. source ---
+    # region --- 8. FDTD:ModeSource ---
     src = pj.Source()
-    src.add(name="Mode Source", axis="x_forward", type="mode_source", property={
-        "geometry": {"x": x_min+1, "x_span": 0, "y": y_mean, "y_span": y_span, "z": z_mean, "z_span": z_span},
-        "general": {"mode_selection": "user_select", "waveform": {"waveform_id_select": wv["waveform"]}}})
-	# endregion
+    if run_options.run:
+        src.add(name="source", type="mode_source",
+                property={"general": {"inject_axis": "x_axis", "direction": "forward",'amplitude': 1, 'phase': 0,
+                    "waveform": {"waveform_id": wv[waveform_name]},   
+                    "mode_selection": "user_select",'mode_index': 0,'rotations': {'theta': 0, 'phi': 0, 'rotation_offset': 0}},
+                    "geometry": {"x": x_min + 1, "x_span": 0, "y": y_mean, "y_span": y_span, "z": z_mean, "z_span": z_span},
+                    "modal_analysis": {"mode_removal": {"threshold": 0.01}}})
+    # endregion
 ```
 
 
-
-`src.add()` parameters：
+`pj.Source()` parameters：
 
 - `name`--Name of the source
-- `axis`--Direction of the source. `"x_forward"` means light propagating along x axis and in the direction of increasing x coordinate. `"x_forward"` means the opposite direction. Similarly for the rest
 - `type`--Type of the source. It is mode source in this example
 - `property`--Other properties
+- `inject_axis`--Direction of the source. `"x_axis"` means light propagating along x axis and in the direction of increasing x coordinate. `"x_axis"` means the opposite direction. Similarly for the rest
 
 <br/>
 
@@ -989,29 +947,26 @@ Description:
 
 <br/>
 
-#### 2.3.10 Set monitors
+#### 2.3.9 Set monitors
 
 ```
 [21]
 ```
 ```python
-	# region ---8.monitor ---
+    # region --- 9. FDTD:Monitor ---
+
     mn = pj.Monitor()
-    mn.add(name="Power Monitor", type="power_monitor", property={
-        "general": {"frequency_profile": {"wavelength_center": wavelength_center, "wavelength_span": wavelength_span}},
-        "geometry": {"monitor_type": "3d", "x_min": Ge_x_center-Ge_x_span_bottom/2, "x_max": Ge_x_center+Ge_x_span_bottom/2,
-                     "y": 0, "y_span": Ge_y_span_bottom, "z": Ge_z_center, "z_span": Ge_z_span}})
-    
-    mn.add(name="y=0", type="power_monitor", property={
-        "general": {"frequency_profile": {"wavelength_center": wavelength_center, "wavelength_span": wavelength_span}},
-        "geometry": {"monitor_type": "2d_y_normal", "x_min": Ge_x_center-Ge_x_span_bottom/2, "x_max": Ge_x_center+Ge_x_span_bottom/2,
-                     "y": 0, "y_span": 0, "z": Ge_z_center, "z_span": Ge_z_span}})
-    
-    mn.add(name="z=0.47", type="power_monitor", property={
-        "general": {"frequency_profile": {"wavelength_center": wavelength_center, "wavelength_span": wavelength_span}},
-        "geometry": {"monitor_type": "2d_z_normal", "x_min": Ge_x_center-Ge_x_span_bottom/2, "x_max": Ge_x_center+Ge_x_span_bottom/2,
-                     "y": 0, "y_span": Ge_y_span_bottom, "z": Ge_z_center, "z_span": 0}})
-	# endregion
+    mn.add(name="power_monitor", type="power_monitor",
+           property={"general": {"frequency_profile": {"wavelength_center": wavelength_center, "wavelength_span": 0.1, "frequency_points": 5, }, },
+                     "geometry": {"monitor_type": "3d", "x": 10.75, "x_span": 20, "y": 0, "y_span": 4, "z": 0.47, "z_span": 0.5}})
+    mn.add(name="y=0", type="power_monitor",
+           property={"general": {"frequency_profile": {"wavelength_center": wavelength_center, "wavelength_span": 0.1, "frequency_points": 5, }, },
+                     "geometry": {"monitor_type": "2d_y_normal", "x": 10.75, "x_span": 20, "y": 0, "y_span": 0, "z": 0.47, "z_span": 0.5}})
+    mn.add(name="z=0.47", type="power_monitor",
+           property={"general": {"frequency_profile": {"wavelength_center": wavelength_center, "wavelength_span": 0.1, "frequency_points": 5, }, },
+                     "geometry": {"monitor_type": "2d_z_normal", "x": 10.75, "x_span": 20, "y": 0, "y_span": 4, "z": 0.47, "z_span": 0}})
+
+    # endregion
 ```
 
 The monitor `"Power Monitor"` is of the 3D type, set to record the optical field profile in the `"Ge"` structure, which will be used to calculate the optical generation rate. The monitors `"y=0"` and `"z=0.47"` are both of the 2D type, set to visualize the optical field profile at the specified cross-sections.
@@ -1066,216 +1021,12 @@ Description:
 
   - `frequency_profile`:
 
-    - `sample_spacing`--Only support `"uniform"` currently, which means the frequency points are uniformly sampled in either wavelength or frequency
-
     - `use_wavelength_spacing`--Default to be `True`. When it' `True`, the frequency points in sampled in wavelength, otherwise, in frequency.
 
     - `spacing_type`--Default to be `"wavelength"`. When it's `"wavelength"`, the frequency range is set in wavelength; When it's `"frequency"`, the frequency range is set in frequency
 
     - `frequency_points`--Number of frequency points
 
-
-
-<br/>
-
-#### 2.3.11 Preview the structures
-
-
-<br/>
-
-##### 2.3.11.1 Define the preview function
-```
-[22]
-```
-```python
-# -------------    preview    --------------
-time_str = time.strftime("%Y%m%d_%H%M%S/", time.localtime())
-
-@timed
-def preview():
-    pj = pd_project(project_name=simu_name + time_str, run_mode="local", material_property="normal")
-
-    plot_path = str(Path(__file__).parent.as_posix()) + "/plots/"
-    if not os.path.exists(plot_path):
-        os.makedirs(plot_path)
-```
-
-Call the `pd_project` function defined earlier to create a new project `pj`. `simu_name` is set in the general parameters. `time_str` is the time stamp when the function started running and is added to the project name, to make the project name unique for each simulation and the simulation results not overwritten by each other.
-
-`plot_path` will be set to the save path of the result extraction. Here, it is set to the 'plots' folder located in the same directory as this script. If the path doesn't exist, `os.makedirs()` should be called to create it.
-
-
-<br/>
-
-##### 2.3.11.2 Add solvers
-
-Optical and electrical solvers are added within the preview function. The corresponding structure preview is only available when the solvers are present.
-
-```
-[23]
-```
-```python
-    simu = pj.Simulation()
-    simu.add(name="preview_fdtd", type="AFDTD", property={
-        "mesh_settings": {"mesh_accuracy": {"cells_per_wavelength": cells_per_wavelength}}})
-
-    simu.add(name="preview_oedevice", type="OEDevice", property={
-        "geometry": {"dimension": "2d_x_normal", "x": oe_x_mean, "x_span": 0, "y": oe_y_mean, "y_span": oe_y_span, "z_min": oe_z_min, "z_max": oe_z_max},
-        "genrate": {"genrate_path": "", "coordinate_unit": "m", "field_length_unit": "m", "source_fraction": source_fraction},
-        "general": {"norm_length": normal_length, "solver_mode": "steady_state", "simulation_temperature": temperature},
-        "advanced": {"non_linear_solver": "Newton", "linear_solver": "MUMPS", "max_iterations": 50}})
-```
-
-`simu.add()` parameters：
-
-- `name`--Name of the solver
-- `type`--Type of the solver. For active device simulation, the type of FDTD solver is `"AFDTD"`, and the type of carrier transport solver is `"OEDevice"`
-- `property`--Other properties
-
-<br/>
-
-
-For `AFDTD`，`mesh_settings.mesh_accuracy.cells_per_wavelength` means the number of mesh cells per wavelength. The larger the number, the smaller the mesh size and the longer the simulation time.
-
-For `OEDevice`，other properties are not necessary. So `property` can be empty. Detailed parameter settings for `OEDevice` can be found in the appendix.
-
-
-<br/>
-
-##### 2.3.11.3 Preview doping profile
-
-Preview the doping profile by the `run_doping` function of the `OEDevice` solver.
-
-```
-[24]
-```
-
-```python
-    simu["preview_oedevice"].run_doping(name="x_in", property={
-        "geometry": {"dimension": "2d_x_normal", "x": oe_x_mean, "x_span": 0, "y": oe_y_mean, "y_span": oe_y_span, "z_min": oe_z_min, "z_max": oe_z_max}},
-        norm="log", scale="equal", superimpose=False, show=False,
-        material_list=["Ge", "Si"], cmin=8e5, savepath=plot_path + simu_name + "_" + time_str + "doping_x_in")
-```
-
-`run_doping()` parameters:
-
-- `name`--Custom name
-- `norm`--Set the normalization method for the intensity plot, default to be `"linear"`, which means linear normalization. It can also be set to `"log"`, which means taking the logarithm of the intensity first, and then performing linear normalization. The net doping is calculated as $N_D-N_A$, where $N_D$ denotes the donor concentration and $N_A$ denotes the acceptor concentration
-- `scale`--Set the scaling method of the vertical and horizontal axes, default to be `"equal"`, which means the two axes are scaled proportional. It can also be set to `"auto"`, which means the two axes are scaled automatically
-- `superimpose`--Set whether the structure plot and the doping plot superimpose or not, default to be `"True"`
-- `show`--Set whether the result plot should be displayed in a popup window, default to be `False`, which means not and it will be saved to the `savepath` automatically. When it is `True`, the result plot won't pop up and will not be saved unless operated manually
-- `material_list`--Specify a list of materials to preview the doping profile. And each item in the list should be the chemical formula of the material. Default to be empty, which means all the materials will be previewed
-- `region_list`--Specify a list of structures to preview the doping profile. And each item in the list is the name of the structure. Default to be empty, which means all the structures will be previewed. When it's not empty, it will override the `material_list` setting
-- `cmax`--Set the maximum of the colorbar for the intensity plot. When the concentration is greater than this value, it will be displayed as this value. It is ineffective for net doping
-- `cmin`--Set the minimum of the colorbar for the intensity plot. When the concentration is smaller than this value, it will be displayed as this value. It is ineffective for net doping
-- `savepath`--The save path for the result
-- `property`--Other properties
-
-<br/>
-
-
-`run_doping` property list:
-
-|                    | default | type   | notes                                                        |
-| :----------------- | :------ | :----- | :----------------------------------------------------------- |
-| geometry.dimension |         | string | Selections are ['2d_x_normal', '2d_y_normal', '2d_z_normal']. |
-| geometry.x         |         | float  |                                                              |
-| geometry.x_span    |         | float  | Restrained by condition: >=0.                                |
-| geometry.x_min     |         | float  |                                                              |
-| geometry.x_max     |         | float  |                                                              |
-| geometry.y         |         | float  |                                                              |
-| geometry.y_span    |         | float  | Restrained by condition: >=0.                                |
-| geometry.y_min     |         | float  |                                                              |
-| geometry.y_max     |         | float  |                                                              |
-| geometry.z         |         | float  |                                                              |
-| geometry.z_span    |         | float  | Restrained by condition: >=0.                                |
-| geometry.z_min     |         | float  |                                                              |
-| geometry.z_max     |         | float  |                                                              |
-
-Description:
-
-- `geometry`--Set the region of doping preview
-
-  - `dimension`--Set the dimension of doping preview. The electrical simulation only supports the 2D type currently, so the doping and its preview are all considered in a plane. When `dimension` is `"2d_x_normal"`, it means the preview is in the yz plane. Similarly for the rest.
-
-<br/>
-
-
-*Result show of the doping preview*
-
-![Net doping preview](./img/netdoping.jpg)
-<center>Fig 1. Net doping</center>
-
-<!-- import image01 from "./img/image01.jpg"
-<img src={image01} width='300' height='200' align='middle' />
-<center>Fig 1. Net doping</center> -->
-
-
-<br/>
-
-##### 2.3.11.4 Preview index profile
-
-Preview the index profile by the `run_index` function of the `AFDTD` solver.
-
-```
-[25]
-```
-
-```python
-    simu["preview_fdtd"].run_index(name="index_preview_x_10", property={
-        "geometry": {"x": 10, "x_span": 0, "y": 0, "y_span": 4, "z_min": -0.5, "z_max": 0.72}},
-        savepath=plot_path + simu_name + "_" + time_str + "MeshView/" + "x=10", export_csv=False, show=False)
-
-    simu["preview_fdtd"].run_index(name="index_preview_z_0.11", property={
-        "geometry": {"x_min": -43, "x_max": 19, "y": 0, "y_span": 6.4, "z": 0.11, "z_span": 0}},
-        savepath=plot_path + simu_name + "_" + time_str + "MeshView/" + "z=0.11", export_csv=False, show=False)
-```
-
-`run_index()` parameters：
-
-- `name`--Custom name
-- `export_csv`--Whether to export csv file, default to be `False`
-- `savepath`--Save path of the result extraction
-- `show`--Whether to show the plot in a popup window, default to be `False`
-- `export_n`--Whether to export nx, ny, nz, default to be `True`
-- `export_c`--Whether to export σx, σy, σz, default to be `False`
-- `max_index`--Set the maximum of the intensity plot of index, default to be `None`
-- `max_sigma`--Set the maximum of the intensity plot of conductivity, default to be `None`
-- `property`--Other properties
-
-<br/>
-
-
-`run_index` property list：
-
-|                       | default | type   | notes                                                        |
-| :-------------------- | :------ | :----- | :----------------------------------------------------------- |
-| geometry.monitor_type |         | string | Selections are ['2d_x_normal', '2d_y_normal', '2d_z_normal']. |
-| geometry.x            |         | float  |                                                              |
-| geometry.x_span       |         | float  | Restrained by condition: >=0.                                |
-| geometry.x_min        |         | float  |                                                              |
-| geometry.x_max        |         | float  |                                                              |
-| geometry.y            |         | float  |                                                              |
-| geometry.y_span       |         | float  | Restrained by condition: >=0.                                |
-| geometry.y_min        |         | float  |                                                              |
-| geometry.y_max        |         | float  |                                                              |
-| geometry.z            |         | float  |                                                              |
-| geometry.z_span       |         | float  | Restrained by condition: >=0.                                |
-| geometry.z_min        |         | float  |                                                              |
-| geometry.z_max        |         | float  |                                                              |
-
-Description:
-
-- `geometry`--Set the region of index preview. The `run_index` function currently only supports the index preview in a 2D plane. If `x_span` is set to `0`, the preview will be performed in the yz plane. Similarly for the rest.
-
-<br/>
-
-
-*Result show of the index preview*
-
-![Index Preview](./img/nx.png)
-
-<center>Fig 2. nx</center>
 
 
 <br/>
@@ -1287,7 +1038,7 @@ Description:
 
 ### 3.1 Dark current
 
-This section performs the simulation of dark current in the `VPD0B_Id.py` script by invoking the `pd_project` function.
+This section performs the simulation of dark current in the `VPD0A_Id.py` script by invoking the `pd_project` function.
 
 
 <br/>
@@ -1299,10 +1050,18 @@ This section performs the simulation of dark current in the `VPD0B_Id.py` script
 ```
 
 ```python
-from VPD00_structure import *
-import time
+import sys
+
+# encoding: utf-8
+
+from maxoptics_sdk.helper import timed, with_path
 import os
-from pathlib import Path
+import time
+from typing import NamedTuple
+import sys
+current_dir = os.path.dirname(__file__)
+sys.path.extend([current_dir])
+from VPD00_structure import *
 ```
 
 All the variables and functions from `VPD00_structure.py` are imported.
@@ -1317,24 +1076,26 @@ All the variables and functions from `VPD00_structure.py` are imported.
 ```
 
 ```python
-start = time.time()
-time_str = time.strftime("%Y%m%d_%H%M%S/", time.localtime())
+@timed
+@with_path
+def simulation(*, run_options: "RunOptions", **kwargs, ):
+    # region --- 0. General Parameter ---
 
-# region --- 0. General Parameters ---
-tcad_vmin = 0  # unit:Volt
-tcad_vmax = 4      # unit:Volt
-tcad_vstep = 0.5   # unit:Volt
-# endregion
+    vsource = "Cathode"
+    gnd = "Anode"
 
-# ----------------------   set project_path
-simu_name = "VPD0B_Id"
-project_name = simu_name + "_" + run_mode + "_" + time_str
-material_property = "normal"
-genrate_file_path = ""
-# --- set path ---
-plot_path = str(Path(__file__).parent.as_posix()) + "/plots/"
-if not os.path.exists(plot_path):
-    os.makedirs(plot_path)
+    sweep_vstart = 0
+    sweep_vstop = 4
+    sweep_vstep = 0.5
+
+    path = kwargs["path"]
+    simu_name = "VPD0A_Id"
+    time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime())
+    project_name = f"{simu_name}_local_{time_str}"
+    plot_path = f"{path}/plots/{project_name}/"
+    current_file_path = os.path.abspath(__file__)
+
+    # endregion
 ```
 
 
@@ -1347,38 +1108,18 @@ if not os.path.exists(plot_path):
 ```
 
 ```python
-pj = pd_project(project_name, run_mode, material_property)
+# region --- 1. Project ---
+    pj: Project = create_project(project_name, run_options)
+    # endregion
+     create_structures(pj, run_options)
+
+    mt = pj.Material()
+    st = pj.Structure()
 ```
 
 
 <br/>
 
-#### 3.1.4 Add electrodes
-
-```
-[29]
-```
-
-```python
-st = pj.Structure()
-
-st.add_electrode(name="cathode", property={
-    "solid": "Cathode", "bc_mode": "steady_state", "sweep_type": "range",
-    "range_start": tcad_vmin, "range_stop": tcad_vmax, "range_interval": tcad_vstep, "apply_AC_small_signal": "none"})
-st.add_electrode(name="anode", property={
-    "solid": "Anode", "bc_mode": "steady_state",
-    "sweep_type": "single", "voltage": 0, "apply_AC_small_signal": "none"})
-```
-
-`add_electrode()` parameters:
-
-- `name`--Name of the electrode
-- `property`--Other properties
-
-The detailed property list of electrode can be found in the appendix. Here a range of voltage from 0V to 4V is applied to the electrode `"cathode"`, and the step of the voltage is 0.5V.
-
-
-<br/>
 
 #### 3.1.5 Add the solver
 
@@ -1386,23 +1127,35 @@ The detailed property list of electrode can be found in the appendix. Here a ran
 [30]
 ```
 ```python
-# ----------------------   set simu
-simu = pj.Simulation()
+ # region --- 2. Simulation ---
+    simu = pj.Simulation()
+    simu.add(name=simu_name, type="DDM", property={
+        "background_material": mt["mat_sio2"], 
+        "general": {"solver_mode": "steady_state", 
+                    "norm_length": 20,
+                    "temperature_dependence": "isothermal",
+                    "temperature": 298.15,
+                    },
+        "geometry": {"dimension": "2d_x_normal", "x": 10, "x_span": 0, "y_min": 0, "y_max": 3.7, "z_min": -0.15, "z_max": 1.25},
+        "mesh_settings": {"mesh_size": 0.06},
+        "advanced": {"non_linear_solver": "newton",
+                     "linear_solver": "mumps",
+                     "fermi_statistics": "disabled", # or "enabled"
+                     "damping": "potential", # or "none"
+                     "potential_update": 1.0,
+                     "max_iterations": 15,
+                     "relative_tolerance": 1e-5,
+                     "tolerance_relax": 1e5,
+                     "divergence_factor": 1e25
+                     }
+    })
 
-simu.add(name="oedevice", type="OEDevice", property={
-    "geometry": {"dimension": "2d_x_normal", "x": oe_x_mean, "x_span": oe_x_span, "y": oe_y_mean, "y_span": oe_y_span, "z_min": oe_z_min, "z_max": oe_z_max},
-    "genrate": {"genrate_path": genrate_file_path, "coordinate_unit": "m", "field_length_unit": "m", "source_fraction": source_fraction},
-    "general": {"norm_length": normal_length, "solver_mode": "steady_state", "simulation_temperature": temperature},
-    "advanced": {"non_linear_solver": "Newton", "linear_solver": "MUMPS", "max_iterations": 50}})
+    # endregion
 ```
 
 Description:
 
-The detailed property list of `OEDevice` solver can be found in the appendix. Here:
-
-- `genrate`--Set the properties for optical generation rate
-
-  - `genrate_path`--It's set to `genrate_file_path`, which is `""`, an empty string. That means no optical generation rate is imported to the `OEDevice` solver. Therefore, the simulation is for dark current. And the rest properties in `genrate` is ineffective in this case
+The detailed property list of `DDM` solver can be found in the appendix. 
 
 - `geometry`--Set the geometric parameters for the simulation region
 
@@ -1416,6 +1169,54 @@ The detailed property list of `OEDevice` solver can be found in the appendix. He
 
 <br/>
 
+#### 3.1.4 Add electrodes
+
+```
+[29]
+```
+
+```python
+
+
+    # region --- 3. Simulation Settings ---
+    add_ddm_settings(pj, run_options)
+
+    bd = pj.BoundaryCondition()
+
+    bd.add(name=vsource,type="Electrode", property={
+        "geometry": {"surface_type": "solid", "solid": st[vsource]},
+        "general": {"electrode_mode": "steady_state",  
+                    "contact_type": "ohmic_contact",
+                    "sweep_type": "range", "range_start": sweep_vstart, "range_stop": sweep_vstop, "range_step": sweep_vstep,
+                    "apply_ac_small_signal": "none", 
+                    "envelop": "uniform",
+                    }
+    })
+    bd.add(name=gnd,type="Electrode", property={
+        "geometry": {"surface_type": "solid", "solid": st[gnd]},
+        "general": {"electrode_mode": "steady_state",  
+                    "contact_type": "ohmic_contact",
+                    "sweep_type": "single", "voltage": 0,
+                    "apply_ac_small_signal": "none",
+                    "envelop": "uniform",
+                    }
+    })
+
+    # endregion
+
+```
+
+`pj.BoundaryCondition()` parameters:
+
+- `name`--Name of the electrode
+- `property`--Other properties
+
+The detailed property list of electrode can be found in the appendix. Here a range of voltage from 0V to 4V is applied to the electrode `"cathode"`, and the step of the voltage is 0.5V.
+
+
+<br/>
+
+
 #### 3.1.6 Run the solver
 
 ```
@@ -1423,9 +1224,12 @@ The detailed property list of `OEDevice` solver can be found in the appendix. He
 ```
 
 ```python
-# --- Run ---
-# check license and print version before & after simulation.
-result_device = simu["oedevice"].run()
+    # region --- 4. Run ---
+    if run_options.run:
+        result_ddm = simu[simu_name].run(
+            # resources={"compute_resources": "gpu", "gpu_devices": [{"id": 0}]}
+        )
+    # endregion
 
 ```
 
@@ -1442,14 +1246,24 @@ result_device = simu["oedevice"].run()
 
 ```python
 # --- Extract ---
-result_device.extract(data="I", electrode="cathode", export_csv=True,
-                      show=False, savepath=plot_path + project_name + "IV_cathode")
+# region --- 5. Extract ---
+    if run_options.extract:
+        export_options = {"export_csv": True,
+                          "export_mat": True, "export_zbf": True}
+        slice_options = {f"v_{gnd.lower()}": 0.0}
+
+        result_ddm.extract(data="ddm:electrode", electrode_name=vsource, savepath=f"{plot_path}I_{vsource}",
+                           target="line", attribute="I", plot_x=f"v_{vsource.lower()}", real=True, imag=False, log=False, show=False, **slice_options, export_csv=True
+                           )  # attribute = "I", "In", "Ip", "Id", "Vs"
+    # endregion
+
+
 ```
 
-`result_device.extract()` parameters：
+`run_options.extract()` parameters：
 
 - `data`--Type of the result. Here it's set to `"I"` to extract the I-V curve from the simulation result
-- `electrode`--Name of an electrode, which means the current data is from the electrode
+- `electrode_name`--Name of an electrode, which means the current data is from the electrode
 - `export_csv`--Whether to export the csv result
 - `show`--Whether to show the plot in a popup window
 - `savepath`--The save path for the result extraction
@@ -1473,7 +1287,9 @@ result_device.extract(data="I", electrode="cathode", export_csv=True,
 ```
 
 ```python
-print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - start)/60, 2)} + "\x1b[0m")
+    return project_name
+if __name__ == "__main__":
+    simulation(run_options=RunOptions(high_field=False, index_preview=False, run=True, extract=True))
 ```
 
 
@@ -1493,61 +1309,127 @@ This simulation applies a forward bias to the electrode `"anode"`. And then the 
 ```
 
 ```python
-from VPD00_structure import *
-import time
+import sys
+
+# encoding: utf-8
+
+from maxoptics_sdk.helper import timed, with_path
 import os
-from pathlib import Path
-import numpy as np
-from matplotlib import pyplot as plt
+import time
+import sys
+current_dir = os.path.dirname(__file__)
+sys.path.extend([current_dir])
+from VPD00_structure import *
 
-# region --- 0. General Parameters ---
-tcad_vmin = 0  # unit:Volt
-tcad_vmax = 1.5      # unit:Volt
-tcad_vstep = 0.25   # unit:Volt
-# endregion
 
-start = time.time()
-time_str = time.strftime("%Y%m%d_%H%M%S/", time.localtime())
+@timed
+@with_path
+def simulation(*, run_options: "RunOptions", **kwargs, ):
+    # region --- 0. General Parameter ---
 
-# ----------------------   set project_path
-simu_name = "VPD0C_Rs"
-material_property = "normal"
-project_name = simu_name + "_" + run_mode + "_" + time_str
-genrate_file_path = ""
+    vsource = "Anode"
+    gnd = "Cathode"
 
-# --- set path ---
-plot_path = str(Path(__file__).parent.as_posix()) + "/plots/"
-if not os.path.exists(plot_path):
-    os.makedirs(plot_path)
+    sweep_vstart = 0
+    sweep_vstop = 1.5
+    sweep_vstep = 0.25
 
-# --- Project from pd_structure.py ---
-pj = pd_project(project_name, run_mode, material_property)
-st = pj.Structure()
+    path = kwargs["path"]
+    simu_name = "VPD0C_Rs"
+    time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime())
+    project_name = f"{simu_name}_local_{time_str}"
+    plot_path = f"{path}/plots/{project_name}/"
+    current_file_path = os.path.abspath(__file__)
 
-st.add_electrode(name="anode", property={
-    "solid": "Anode", "bc_mode": "steady_state", "sweep_type": "range",
-    "range_start": tcad_vmin, "range_stop": tcad_vmax, "range_interval": tcad_vstep, "apply_AC_small_signal": "none"})
-st.add_electrode(name="cathode", property={
-    "solid": "Cathode", "bc_mode": "steady_state",
-    "sweep_type": "single", "voltage": 0, "apply_AC_small_signal": "none"})
+    # endregion
+    # region --- 1. Project ---
+    pj: Project = create_project(project_name, run_options)
+    # endregion
+    create_structures(pj, run_options)
 
-# ----------------------   set simu
-simu = pj.Simulation()
+    mt = pj.Material()
+    st = pj.Structure()
 
-simu.add(name="oedevice", type="OEDevice", property={
-    "geometry": {"dimension": "2d_x_normal", "x": oe_x_mean, "x_span": oe_x_span, "y": oe_y_mean, "y_span": oe_y_span, "z_min": oe_z_min, "z_max": oe_z_max},
-    "genrate": {"genrate_path": genrate_file_path, "coordinate_unit": "m", "field_length_unit": "m", "source_fraction": source_fraction},
-    "general": {"norm_length": normal_length, "solver_mode": "steady_state", "simulation_temperature": temperature},
-    "advanced": {"non_linear_solver": "Newton", "linear_solver": "MUMPS", "max_iterations": 50}})
 
-# --- Run ---
-# check license and print version before & after simulation.
-result_device = simu["oedevice"].run()
+    # region --- 2. Simulation ---
+    simu = pj.Simulation()
+    simu.add(name=simu_name, type="DDM", property={
+        "background_material": mt["mat_sio2"], 
+        "general": {"solver_mode": "steady_state", 
+                    "norm_length": 20,
+                    "temperature_dependence": "isothermal",
+                    "temperature": 298.15,
+                    },
+        "geometry": {"dimension": "2d_x_normal", "x": 10, "x_span": 0, "y_min": 0, "y_max": 3.7, "z_min": -0.15, "z_max": 1.25},
+        "mesh_settings": {"mesh_size": 0.06},
+        "advanced": {"non_linear_solver": "newton",
+                     "linear_solver": "mumps",
+                     "fermi_statistics": "disabled", # or "enabled"
+                     "damping": "potential", # or "none"
+                     "potential_update": 1.0,
+                     "max_iterations": 15,
+                     "relative_tolerance": 1e-5,
+                     "tolerance_relax": 1e5,
+                     "divergence_factor": 1e25
+                     }
+    })
 
-# --- Extract IV ---
-IV_file_folder = plot_path + project_name + "IV_anode"
-result_device.extract(data="I", electrode="anode",
-                      export_csv=True, show=False, savepath=IV_file_folder)
+    # endregion
+
+    # region --- 3. Electrode ---
+
+    add_ddm_settings(pj, run_options)
+
+    bd = pj.BoundaryCondition()
+
+    bd.add(name=vsource,type="Electrode", property={
+        "geometry": {"surface_type": "solid", "solid": st[vsource]},
+        "general": {"electrode_mode": "steady_state",  
+                    "contact_type": "ohmic_contact",
+                    "sweep_type": "range", "range_start": sweep_vstart, "range_stop": sweep_vstop, "range_step": sweep_vstep,
+                    "apply_ac_small_signal": "none", 
+                    "envelop": "uniform",
+                    }
+    })
+    bd.add(name=gnd,type="Electrode", property={
+        "geometry": {"surface_type": "solid", "solid": st[gnd]},
+        "general": {"electrode_mode": "steady_state",  
+                    "contact_type": "ohmic_contact",
+                    "sweep_type": "single", "voltage": 0,
+                    "apply_ac_small_signal": "none",
+                    "envelop": "uniform",
+                    }
+    })
+
+    # endregion
+
+
+
+    # region --- 4. Run ---
+    if run_options.run:
+        result_ddm = simu[simu_name].run(
+            # resources={"compute_resources": "gpu", "gpu_devices": [{"id": 0}]}
+        )
+    # endregion
+
+
+    # region --- 5. Extract ---
+    if run_options.extract:
+        export_options = {"export_csv": True,
+                          "export_mat": True, "export_zbf": True}
+        slice_options = {f"v_{gnd.lower()}": 0.0}
+
+        result_ddm.extract(data="ddm:electrode", electrode_name=vsource, savepath=f"{plot_path}I_{vsource}",
+                           target="line", attribute="I", plot_x=f"v_{vsource.lower()}", real=True, imag=False, log=False, show=False, **slice_options, export_csv=True
+                           )  # attribute = "I", "In", "Ip", "Id", "Vs"
+    # endregion
+
+    return project_name
+
+
+if __name__ == "__main__":
+    simulation(run_options=RunOptions(high_field=False, index_preview=False, run=True, extract=True))
+
 ```
 
 A range of voltage from 0V to 1.5V is applied to the electrode `"anode"`, with a step of 0.25V. No optical generation rate is applied. And a steady state simulation is performed to extract the I-V curve, which is saved to the folder `IV_file_folder`.
@@ -1664,72 +1546,134 @@ This section performs a SSAC simulation, and extracts the capacitance. The scrip
 ```
 
 ```python
-from VPD00_structure import *
-import time
+import sys
+
+# encoding: utf-8
+
+from maxoptics_sdk.helper import timed, with_path
 import os
-from pathlib import Path
+import time
+import sys
+current_dir = os.path.dirname(__file__)
+sys.path.extend([current_dir])
+from VPD00_structure import *
 
-# region --- 0. General Parameters ---
-tcad_vmin = 0  # unit:Volt
-tcad_vmax = 3      # unit:Volt
-tcad_vstep = 0.5   # unit:Volt
-# endregion
 
-start = time.time()
-time_str = time.strftime("%Y%m%d_%H%M%S/", time.localtime())
-simu_name = "VPD0A_C"
-project_name = simu_name + "_" + run_mode + "_" + time_str
+@timed
+@with_path
+def simulation(*, run_options: "RunOptions", **kwargs, ):
+    # region --- 0. General Parameter ---
 
-# --- set path ---
-plot_path = str(Path(__file__).parent.as_posix()) + "/plots/"
-if not os.path.exists(plot_path):
-    os.makedirs(plot_path)
+    vsource = "Cathode"
+    gnd = "Anode"
 
-# ----------------------   set project_path
-material_property = "normal"
-genrate_file_path = ""
-# --- Project from pd_structure.py ---
-pj = pd_project(project_name, run_mode, material_property)
-st = pj.Structure()
+    sweep_vstart = 0
+    sweep_vstop = 3
+    sweep_vstep = 0.5
 
-st.add_electrode(name="cathode", property={
-    "solid": "Cathode", "bc_mode": "steady_state",
-    "sweep_type": "range", "range_start": tcad_vmin, "range_stop": tcad_vmax, "range_interval": tcad_vstep, "apply_AC_small_signal": "All"})
-st.add_electrode(name="anode", property={
-    "solid": "Anode", "bc_mode": "steady_state",
-    "sweep_type": "single", "voltage": 0, "apply_AC_small_signal": "none"})
+    path = kwargs["path"]
+    simu_name = "VPD0B_C"
+    time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime())
+    project_name = f"{simu_name}_local_{time_str}"
+    plot_path = f"{path}/plots/{project_name}/"
+    current_file_path = os.path.abspath(__file__)
 
-# ----------------------   set simu
-simu = pj.Simulation()
+    # endregion
+    # region --- 1. Project ---
+    pj: Project = create_project(project_name, run_options)
+    # endregion
+    create_structures(pj, run_options)
 
-simu.add(name="oedevice", type="OEDevice", property={
-    "geometry": {"dimension": "2d_x_normal", "x": oe_x_mean, "x_span": oe_x_span, "y": oe_y_mean, "y_span": oe_y_span, "z_min": oe_z_min, "z_max": oe_z_max},
-    "genrate": {"genrate_path": genrate_file_path, "coordinate_unit": "m", "field_length_unit": "m", "source_fraction": source_fraction},
-    "general": {"norm_length": normal_length, "solver_mode": "SSAC", "simulation_temperature": temperature},
-    "small_signal_ac": {"frequency_spacing": "single", "frequency": 1e8},
-    # "small_signal_ac": {"frequency_spacing": "log", "log_start_frequency": 1e6, "log_stop_frequency": 1e10, "log_num_frequency_points": 3},
-    "advanced": {"non_linear_solver": "Newton", "linear_solver": "MUMPS", "max_iterations": 50}})
+    mt = pj.Material()
+    st = pj.Structure()
 
-# ----------------------   run
-# check license and print version before & after simulation.
-result_device = simu["oedevice"].run()
 
-# ----------------------   extract
-result_device.extract(data="C", electrode="cathode", export_csv=True, show=False, savepath=plot_path + project_name + "C")
+    # region --- 2. Simulation ---
+    simu = pj.Simulation()
+    simu.add(name=simu_name, type="DDM", property={
+        "background_material": mt["mat_sio2"], 
+        "general": {"solver_mode": "ssac",
+                    "norm_length": 20,
+                    "temperature_dependence": "isothermal",
+                    "temperature": 298.15,
+                    "perturbation_amplitude": 0.001, "frequency_spacing": "single", "frequency": 1e8
+                    },
+        "geometry": {"dimension": "2d_x_normal", "x": 10, "x_span": 0, "y_min": 0, "y_max": 3.7, "z_min": -0.15, "z_max": 1.25},
+        "mesh_settings": {"mesh_size": 0.06},
+        "advanced": {"non_linear_solver": "newton",
+                     "linear_solver": "mumps",
+                     "fermi_statistics": "disabled", # or "enabled"
+                     "damping": "potential", # or "none"
+                     "potential_update": 1.0,
+                     "max_iterations": 15,
+                     "relative_tolerance": 1e-5,
+                     "tolerance_relax": 1e5,
+                     "divergence_factor": 1e25
+                     }
+    })
 
-print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - start)/60, 2)} + "\x1b[0m")
+    # endregion
+
+    # region --- 3. Simulation Settings ---
+
+    add_ddm_settings(pj, run_options)
+
+    bd = pj.BoundaryCondition()
+
+    bd.add(name=vsource,type="Electrode", property={
+        "geometry": {"surface_type": "solid", "solid": st[vsource]},
+        "general": {"electrode_mode": "steady_state",  
+                    "contact_type": "ohmic_contact",
+                    "sweep_type": "range", "range_start": sweep_vstart, "range_stop": sweep_vstop, "range_step": sweep_vstep,
+                    "apply_ac_small_signal": "all", 
+                    "envelop": "uniform",
+                    }
+    })
+    bd.add(name=gnd,type="Electrode", property={
+        "geometry": {"surface_type": "solid", "solid": st[gnd]},
+        "general": {"electrode_mode": "steady_state",  
+                    "contact_type": "ohmic_contact",
+                    "sweep_type": "single", "voltage": 0,
+                    "apply_ac_small_signal": "none",
+                    "envelop": "uniform",
+                    }
+    })
+
+    # endregion
+
+
+
+    # region --- 4. Run ---
+    if run_options.run:
+        result_ddm = simu[simu_name].run(
+            # resources={"compute_resources": "gpu", "gpu_devices": [{"id": 0}]}
+        )
+    # endregion
+
+
+    # region --- 5. Extract ---
+    if run_options.extract:
+        export_options = {"export_csv": True,
+                          "export_mat": True, "export_zbf": True}
+
+        result_ddm.extract(data="ddm:electrode_ac", electrode_name=vsource, savepath=f"{plot_path}C",
+                           target="line", attribute="C", plot_x=f"v_{vsource.lower()}", real=True, imag=False, frequency=1e8, show=False, export_csv=True)
+    # endregion
+
+    return project_name
+
+if __name__ == "__main__":
+    simulation(run_options=RunOptions(high_field=False, index_preview=False, run=True, extract=True))
 ```
 
 Description:
 
-For `OEDevice` solver, the detailed properties can be found in the appendix. Here:
+For `DDM` solver, the detailed properties can be found in the appendix. Here:
 
 - `general`:
 
   - `solver_mode`--It's set to `"SSAC"`, which means a SSAC simulation
-  
-  - `small_signal_ac`--Set the frequency points
-    
+
     - `frequency_spacing`--It's set to `"single"`, which means a single frequency point
     
     - `frequency`--Set the value of the single frequency
@@ -1772,10 +1716,17 @@ This section performs a FDTD simulation to obtain the optical field profile in t
 ```
 
 ```python
-from VPD00_structure import *
-import time
+import sys
+
+# encoding: utf-8
+from maxoptics_sdk.helper import timed, with_path
 import os
-from pathlib import Path
+import time
+import sys
+current_dir = os.path.dirname(__file__)
+sys.path.extend([current_dir])
+
+from VPD00_structure import *
 ```
 
 
@@ -1792,15 +1743,19 @@ start = time.time()
 time_str = time.strftime("%Y%m%d_%H%M%S/", time.localtime())
 
 # ----------------------   set project_path
-simu_name = "VPD01_FDTD"
-material_property = "normal"
-project_name = simu_name + "_" + run_mode + "_" + time_str
+@timed
+@with_path
+def simulation(*, run_options: "RunOptions", **kwargs, ):
+    # region --- 0. General Parameter ---
 
-# --- set path ---
-plot_path = str(Path(__file__).parent.as_posix()) + "/plots/"
-genrate_file_folder = plot_path + project_name + "genrate"
-if not os.path.exists(plot_path):
-    os.makedirs(plot_path)
+    path = kwargs["path"]
+    simu_name = "VPD01_FDTD"
+    time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime())
+    project_name = f"{simu_name}_local_{time_str}"
+    plot_path = f"{path}/plots/{project_name}/"
+    current_file_path = os.path.abspath(__file__)
+
+    # endregion
 ```
 
 
@@ -1813,8 +1768,14 @@ if not os.path.exists(plot_path):
 ```
 
 ```python
-# --- Project from pd_structure.py ---
-pj = pd_project(project_name, run_mode, material_property)
+    # region --- 1. Project ---
+    pj: Project = create_project(project_name, run_options)
+    # endregion
+    
+    create_structures(pj, run_options)
+
+    mt = pj.Material()
+    st = pj.Structure()
 ```
 
 
@@ -1827,19 +1788,30 @@ pj = pd_project(project_name, run_mode, material_property)
 ```
 
 ```python
-# ----------------------   set simu
-simu = pj.Simulation()
+   # region --- 2. Simulation ---
+    simu = pj.Simulation()
+    simu.add(name=simu_name, type="FDTD",
+             property={"background_material": mt["mat_sio2"],
+                       "geometry": {"x": x_mean, "x_span": x_span, "y": y_mean, "y_span": y_span, "z": z_mean, "z_span": z_span, },
+                       "general": {"simulation_time": 2000, },
+                       "mesh_settings": {"mesh_factor": 1.2, "mesh_type": "auto_non_uniform",
+                                         "mesh_accuracy": {"cells_per_wavelength": 14},
+                                         "minimum_mesh_step_settings": {"min_mesh_step": 1e-4},
+                                         "mesh_refinement": {"mesh_refinement": "curve_mesh", }},
+                       "boundary_conditions": {"x_min_bc": "PML", "x_max_bc": "PML", "y_min_bc": "PML", "y_max_bc": "PML", "z_min_bc": "PML", "z_max_bc": "PML",
+                                               "pml_settings": {"all_pml": {"profile":"standard","layer": 8, "kappa": 2, "sigma": 0.8, "polynomial": 3, "alpha": 0, "alpha_polynomial": 1, }}},
+                       'advanced_options': {'auto_shutoff': {'auto_shutoff_min': 1.00e-4, 'down_sample_time': 200}},
+                       })
+    # endregion
+    # region --- 3. Simulation Settings ---
+    add_fdtd_settings(pj, run_options)
 
-simu.add(name="fdtd", type="FDTD", property={
-    "general": {"simulation_time": 2000},
-    "mesh_settings": {"mesh_accuracy": {"cells_per_wavelength": cells_per_wavelength}}})
+    mn = pj.Monitor()
 
-simu.add(name="afdtd", type="AFDTD", property={
-    "general": {"simulation_time": 2000},
-    "mesh_settings": {"mesh_accuracy": {"cells_per_wavelength": cells_per_wavelength}}})
+    # endregion
 ```
 
-The `AFDTD` solver for active device simulation can be used to extract the optical generation rate, but can't export the optical field profile. And the usage of the `FDTD` solver is exactly the opposite. Therefore, both solvers are added here to serve the different purposes.
+The `FDTD` solver for active device simulation can be used to extract the optical generation rate.
 
 
 <br/>
@@ -1851,40 +1823,47 @@ The `AFDTD` solver for active device simulation can be used to extract the optic
 ```
 
 ```python
-# --- Run ---
-# check license and print version before & after simulation.
-# result_fdtd = simu["fdtd"].run()
+   # region --- 4. Run ---
+    if run_options.run:
+        result_fdtd = simu[simu_name].run(
+            # resources={"compute_resources": "gpu", "gpu_devices": [{"id": 0}]}
+        )
 
-# result_fdtd.extract(data="fdtd:power_monitor", monitor_name="y=0", savepath=plot_path + project_name + "E_y=0",
-#                     attribute="E", target="intensity", wavelength=str(wavelength_center), export_csv=True)
+        """ Analysis """
+        analysis = pj.Analysis()
+        analysis.add(name="generation_rate", type="generation_rate",
+                     property={"power_monitor": "power_monitor", "average_dimension": "x", "light_power": 1, "workflow_id": result_fdtd.workflow_id})
+        gen_res = analysis["generation_rate"].run()
+    # endregion
 
-# result_fdtd.extract(data="fdtd:power_monitor", monitor_name="z=0.47", savepath=plot_path + project_name + "E_z=0.47",
-#                     attribute="E", target="intensity", wavelength=str(wavelength_center), export_csv=True)
+    # region --- 5. Extract ---
+        export_options = {"export_csv": True,
+                          "export_mat": True, "export_zbf": True}
+        gen_res.extract(data="fdtd:generation_rate", savepath=f"{plot_path}genrate", generation_rate_name="generation_rate",
+                        target="intensity", attribute="G", real=True, imag=False, **export_options, show=False)
+        gen_res.extract(data="fdtd:generation_rate", savepath=f"{plot_path}pabs_total", generation_rate_name="generation_rate",
+                        target="line", attribute="Pabs_total", plot_x="frequency", real=True, imag=False, show=False, export_csv=True)
+        gen_res.extract(data="fdtd:generation_rate", savepath=f"{plot_path}jsc", generation_rate_name="generation_rate",
+                        target="line", attribute="Jsc", plot_x="frequency", real=True, imag=False, show=False, export_csv=True)
+    # endregion
 
+    return project_name
 
-result_afdtd = simu["afdtd"].run()
-result_genrate = result_afdtd.run_generation_rate_analysis(name="genrate", monitor="Power Monitor", average_dimension="x", light_power=1, 
-                                                          coordinate_unit="m", field_length_unit="m")  # unit： m, cm, um, nm #average_dimension: x/y/z
-result_genrate.extract(data="generation_rate", export_csv=True, show=False, log=False, savepath=genrate_file_folder)
-result_genrate.extract(data="pabs_total", export_csv=True, show=False, log=False, savepath=genrate_file_folder)
-
-
-print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - start)/60, 2)} + "\x1b[0m")
+if __name__ == "__main__":
+    simulation(run_options=RunOptions(high_field=False, index_preview=False, run=True, extract=True))
 ```
 
-`run_generation_rate_analysis()` parameters：
+`pj.analysis()` parameters：
 
 - `name`--Custom name
 - `monitor`--Name of the `power_monitor` for calculating optical generation rate. The `power_monitor` is required to be of 3D type
 - `average_dimension`--Set the direction to take the average of the optical generate rate
 - `light_power`--Set the power of the light source, measured in W. The optical generation rate will be scaled based on the power
-- `coordinate_unit`--Set the coordinate unit in the optical generation rate file (gfile)
-- `field_length_unit`--Set the length unit in the generation rate unit in the optical generation rate file (gfile).  If it's set to `"m"`, the generation rate unit in the gfile will be `/m^3/s`. Similarly for the rest
 
 <br/>
 
 
-`result_genrate.extract()` parameters：
+`gen_res.extract()` parameters：
 
 - `data`--Type of the result
   - When `data` is set to `"generation_rate"`, besides an image file and a csv file, the result files also include a text file in `.gfile` format. The coordinate unit in the csv and the image file is `um`, and the generation rate unit in the two files is `/cm^3/s`. These units can't be modified when extracting the result. However, the units in the gfile are controlled by `coordinate_unit`、`field_length_unit`. And only the gfile can be imported to the OEDevice solver
@@ -1892,8 +1871,6 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 
 - `export_csv`--Whether to export csv file
 - `show`--Whether to show the plot in a popup window
-- `log`--Whether to apply a logarithmic normalization in the intensity plot
-- `savepath`--The save path of the result extraction
 
 
 <br/>
@@ -1907,7 +1884,7 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 
 ### 3.5 Photo current
 
-This section imports the optical generation rate to the `OEDevice` solver, and performs a steady state simulation to obtain the photo current. The script is in the `VPD02_Ip.py` file.
+This section imports the optical generation rate to the `DDM` solver, and performs a steady state simulation to obtain the photo current. The script is in the `VPD02_Ip.py` file.
 
 
 <br/>
@@ -1919,10 +1896,17 @@ This section imports the optical generation rate to the `OEDevice` solver, and p
 ```
 
 ```python
-from VPD00_structure import *
-import time
+import sys
+
+# encoding: utf-8
+
+from maxoptics_sdk.helper import timed, with_path
 import os
-from pathlib import Path
+import time
+import sys
+current_dir = os.path.dirname(__file__)
+sys.path.extend([current_dir])
+from VPD00_structure import *
 ```
 
 
@@ -1945,19 +1929,31 @@ tcad_vstep = 0.5   # unit:Volt
 # endregion
 
 # ----------------------   set project_path
-simu_name = "VPD02_Ip"
-project_name = simu_name + "_" + run_mode + "_" + time_str
-material_property = "normal"
-genrate_file_folder = str(Path(__file__).parent.as_posix())
-genrate_file_path = genrate_file_folder + "/VPD01_FDTD.gfile"
+@timed
+@with_path
+def simulation(*, run_options: "RunOptions", **kwargs, ):
+    # region --- 0. General Parameter ---
 
-# --- set path ---
-plot_path = str(Path(__file__).parent.as_posix()) + "/plots/"
-if not os.path.exists(plot_path):
-    os.makedirs(plot_path)
+    vsource = "Cathode"
+    gnd = "Anode"
+
+    sweep_vstart = 0
+    sweep_vstop = 4
+    sweep_vstep = 0.5
+
+    path = kwargs["path"]
+    simu_name = "VPD02_Ip"
+    time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime())
+    project_name = f"{simu_name}_local_{time_str}"
+    plot_path = f"{path}/plots/{project_name}/"
+    current_file_path = os.path.abspath(__file__)
+
+    gen_rate_file = os.path.join(os.path.dirname(__file__), "VPD01_FDTD_1550.gfile")
+    
+    # endregion
 ```
 
-`genrate_file_path` is the absolute path of the gfile to be imported to the `OEDevice` solver. Here it's set to the absolute path of `VPD01_FDTD.gfile` in the same directory. And  this can be changed to the path of the gfile extracted by the `AFDTD` simulation.
+`genrate_file_path` is the absolute path of the gfile to be imported to the `DDM` solver. Here it's set to the absolute path of `VPD01_FDTD_1550.gfile` in the same directory. And  this can be changed to the path of the gfile extracted by the `FDTD` simulation.
 
 
 <br/>
@@ -1969,31 +1965,14 @@ if not os.path.exists(plot_path):
 ```
 
 ```python
-# --- Project from pd_structure.py ---
-pj = pd_project(project_name, run_mode, material_property)
+    # region --- 1. Project ---
+    pj: Project = create_project(project_name, run_options)
+    # endregion
+    create_structures(pj, run_options)
+
+    mt = pj.Material()
+    st = pj.Structure()
 ```
-
-
-<br/>
-
-#### 3.5.4 Add electrodes
-
-```
-[47]
-```
-
-```python
-st = pj.Structure()
-
-st.add_electrode(name="cathode", property={
-    "solid": "Cathode", "bc_mode": "steady_state", "sweep_type": "range",
-    "range_start": tcad_vmin, "range_stop": tcad_vmax, "range_interval": tcad_vstep, "apply_AC_small_signal": "none"})
-st.add_electrode(name="anode", property={
-    "solid": "Anode", "bc_mode": "steady_state",
-    "sweep_type": "single", "voltage": 0, "apply_AC_small_signal": "none"})
-```
-
-
 <br/>
 
 #### 3.5.5 Add the solver
@@ -2003,28 +1982,91 @@ st.add_electrode(name="anode", property={
 ```
 
 ```python
-# ----------------------   set simu
-simu = pj.Simulation()
+   # region --- 2. Simulation ---
+    simu = pj.Simulation()
+    simu.add(name=simu_name, type="DDM", property={
+        "background_material": mt["mat_sio2"], 
+        "general": {"solver_mode": "steady_state", 
+                    "norm_length": 20,
+                    "temperature_dependence": "isothermal",
+                    "temperature": 298.15,
+                    },
+        "geometry": {"dimension": "2d_x_normal", "x": 10, "x_span": 0, "y_min": 0, "y_max": 3.7, "z_min": -0.15, "z_max": 1.25},
+        "mesh_settings": {"mesh_size": 0.06},
+        "advanced": {"non_linear_solver": "newton",
+                     "linear_solver": "mumps",
+                     "fermi_statistics": "disabled", # or "enabled"
+                     "damping": "potential", # or "none"
+                     "potential_update": 1.0,
+                     "max_iterations": 15,
+                     "relative_tolerance": 1e-5,
+                     "tolerance_relax": 1e5,
+                     "divergence_factor": 1e25
+                     }
+    })
 
-simu.add(name="oedevice", type="OEDevice", property={
-    "geometry": {"dimension": "2d_x_normal", "x": oe_x_mean, "x_span": oe_x_span, "y": oe_y_mean, "y_span": oe_y_span, "z_min": oe_z_min, "z_max": oe_z_max},
-    "genrate": {"genrate_path": genrate_file_path, "coordinate_unit": "m", "field_length_unit": "m", "source_fraction": source_fraction},
-    "general": {"norm_length": normal_length, "solver_mode": "steady_state", "simulation_temperature": temperature},
-    "advanced": {"non_linear_solver": "Newton", "linear_solver": "MUMPS", "max_iterations": 50}})
+    # endregion
+    
+    # region --- 3. Simulation Settings ---
+    add_ddm_settings(pj, run_options)
+
+    ds = pj.DataSpace()
+
+    ds.import_data(name="gen", type="generation", property={
+        "path": gen_rate_file
+    })
+
+    src = pj.Source()
+    src.add(name="gen", type="optical_generation", property={
+        "general": {"generation_data": ds["gen"], "source_fraction": 0.001},
+        "transient": {"envelop": "uniform"}
+    })
 ```
 
 Description:
 
-- `genrate`:
+- `add_ddm_settings`:
 
-  - `genrate_path`--Here it's not empty, meaning that the file at the path will be imported to the `OEDevice` solver
-  - `coordinate_unit`--Set the coordinate unit in the gfile
-  - `field_length_unit`--Set the length unit in the generation rate unit in the gfile
+  - `import_data.path`--Here it's not empty, meaning that the file at the path will be imported to the `DDM` solver
+
   - `source_fraction`--Set the scaling factor for the light power. The imported optical generation rate will be multiplied by this factor first, and then be used to solve the carrier transport
 
 
 <br/>
+#### 3.5.4 Add electrodes
 
+```
+[47]
+```
+
+```python
+
+    bd = pj.BoundaryCondition()
+
+    bd.add(name=vsource,type="Electrode", property={
+        "geometry": {"surface_type": "solid", "solid": st[vsource]},
+        "general": {"electrode_mode": "steady_state",  
+                    "contact_type": "ohmic_contact",
+                    "sweep_type": "range", "range_start": sweep_vstart, "range_stop": sweep_vstop, "range_step": sweep_vstep,
+                    "apply_ac_small_signal": "none", 
+                    "envelop": "uniform",
+                    }
+    })
+    bd.add(name=gnd,type="Electrode", property={
+        "geometry": {"surface_type": "solid", "solid": st[gnd]},
+        "general": {"electrode_mode": "steady_state",  
+                    "contact_type": "ohmic_contact",
+                    "sweep_type": "single", "voltage": 0,
+                    "apply_ac_small_signal": "none",
+                    "envelop": "uniform",
+                    }
+    })
+
+    # endregion
+```
+
+
+<br/>
 #### 3.5.6 Run and extract the result
 
 ```
@@ -2032,15 +2074,30 @@ Description:
 ```
 
 ```python
-# --- Run ---
-# check license and print version before & after simulation.
-result_device = simu["oedevice"].run()
+   # region --- 4. Run ---
+    if run_options.run:
+        result_ddm = simu[simu_name].run(
+            # resources={"compute_resources": "gpu", "gpu_devices": [{"id": 0}]}
+        )
+    # endregion
 
-# --- Extract ---
-result_device.extract(data="I", electrode="cathode", export_csv=True,
-                      show=False, savepath=plot_path + project_name + "IV_cathode")
 
-print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - start)/60, 2)} + "\x1b[0m")
+    # region --- 5. Extract ---
+    if run_options.extract:
+        electrode_name = "cathode"
+        export_options = {"export_csv": True,
+                          "export_mat": True, "export_zbf": True}
+        slice_options = {f"v_{gnd.lower()}": 0.0}
+
+        result_ddm.extract(data="ddm:electrode", electrode_name=vsource, savepath=f"{plot_path}I_{vsource}",
+                           target="line", attribute="I", plot_x=f"v_{vsource.lower()}", real=True, imag=False, log=False, show=False, **slice_options, export_csv=True
+                           )  # attribute = "I", "In", "Ip", "Id", "Vs"
+    # endregion
+
+    return project_name
+
+if __name__ == "__main__":
+    simulation(run_options=RunOptions(high_field=False, index_preview=False, run=True, extract=True))
 ```
 
 
@@ -2066,13 +2123,18 @@ This section performs a transient simulation to extract the step response of the
 ```
 
 ```python
-from VPD00_structure import *
-import time
+import sys
+
+# encoding: utf-8
+
+from maxoptics_sdk.helper import timed, with_path
 import os
-from pathlib import Path
-import numpy as np
-from scipy import interpolate as scip, fft as scfft
-from matplotlib import pyplot as plt
+import time
+from typing import NamedTuple
+import sys
+current_dir = os.path.dirname(__file__)
+sys.path.extend([current_dir])
+from VPD00_structure import *
 ```
 
 
@@ -2085,27 +2147,21 @@ from matplotlib import pyplot as plt
 ```
 
 ```python
-start = time.time()
-time_str = time.strftime("%Y%m%d_%H%M%S/", time.localtime())
+@timed
+@with_path
+def simulation(*, run_options: "RunOptions", **kwargs, ):
+    # region --- 0. General Parameter ---
 
-# region --- 0. General Parameters ---
-tcad_vbias = 1       # the bias voltage on cathode
-source_fraction = 1e-4   # the source generation rate is multiplied by this factor
-# endregion
+    path = kwargs["path"]
+    simu_name = "VPD03_bw"
+    time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime())
+    project_name = f"{simu_name}_local_{time_str}"
+    plot_path = f"{path}/plots/{project_name}/"
+    current_file_path = os.path.abspath(__file__)
 
-# ----------------------   set project_path
-simu_name = "VPD03_bw"
-project_name = simu_name + "_" + run_mode + "_" + time_str
-material_property = "transient"
-genrate_file_folder = str(Path(__file__).parent.as_posix())
-genrate_file_path = genrate_file_folder + "/VPD01_FDTD.gfile"
-
-# --- set path ---
-plot_path = str(Path(__file__).parent.as_posix()) + "/plots/"
-if not os.path.exists(plot_path):
-    os.makedirs(plot_path)
+    gen_rate_file = os.path.join(os.path.dirname(__file__), "VPD01_FDTD_1550.gfile")
+    # endregion
 ```
-
 
 <br/>
 
@@ -2116,9 +2172,84 @@ if not os.path.exists(plot_path):
 ```
 
 ```python
-# --- Project from pd_structure.py ---
-pj = pd_project(project_name, run_mode, material_property)
+ # region --- 1. Project ---
+    pj: Project = create_project(project_name, run_options)
+    # endregion
+    create_structures(pj, run_options)
+
+    mt = pj.Material()
+    st = pj.Structure()
 ```
+
+<br/>
+
+
+#### 3.6.4 Add the solver
+
+```
+[54]
+```
+
+```python
+   # region --- 2. Simulation ---
+    simu = pj.Simulation()
+    simu.add(name=simu_name, type="DDM", property={
+        "background_material": mt["mat_sio2"], 
+        "general": {"solver_mode": "transient", 
+                    "norm_length": 20,
+                    "temperature_dependence": "isothermal",
+                    "temperature": 298.15,
+                    },
+        "geometry": {"dimension": "2d_x_normal", "x": 10, "x_span": 0, "y_min": 0, "y_max": 3.7, "z_min": -0.15, "z_max": 1.25},
+        "mesh_settings": {"mesh_size": 0.06},
+        "advanced": {"non_linear_solver": "newton",
+                     "linear_solver": "mumps",
+                     "fermi_statistics": "disabled", # or "enabled"
+                     "damping": "potential", # or "none"
+                     "potential_update": 1.0,
+                     "max_iterations": 15,
+                     "relative_tolerance": 1e-5,
+                     "tolerance_relax": 1e5,
+                     "divergence_factor": 1e25
+                     }
+    })
+
+    # endregion
+
+    # region --- 3. Simulation Settings ---
+    add_ddm_settings(pj, run_options)
+
+    ds = pj.DataSpace()
+
+    ds.import_data(name="gen", type="generation", property={
+        "path": gen_rate_file
+    })
+
+    src = pj.Source()
+    src.add(name="gen", type="optical_generation", property={
+        "general": {"generation_data": ds["gen"], "source_fraction": 0.001},
+        "transient": {"envelop": "pulse", "high_amplitude": 0.1, "low_amplitude": 0,
+                      "time_delay": 2e-12, "rising_edge": 1e-13, "falling_edge": 1e-13, "pulse_width": 6e-10, "period": 1e-6}
+    })
+
+```
+
+Description:
+
+- `general`:
+
+  - `solver_mode`--Here it's set to `"transient"`, which means a transient simulation
+
+- `advanced`:
+
+  - `max_iterations`--Set the max iterations during the initialization of solving the Poisson equations.
+  - `fermi_statistics`--Whether to directly solve for the quasi-Fermi potential instead of carrier concentration as unkowns. `"enabled"` means `True`, and `"disabled"` means `False`
+  - `damping`--Set the nonlinear update damping scheme. `"potential"` means the damping is based on the potential variation
+  - `potential_update`--Set the threshold potential for potential damping. The large value will reduce the strength of damping effect
+  - `relative_tolerance`--Set the relative update tolerance
+  - `tolerance_relax`--Set the tolerance relaxation factor for convergence on relative tolerance criteria
+  - `source_fraction`--When `envelop` is set to`uniform`, this value is the scaling factor of the light power during the time range
+
 
 
 <br/>
@@ -2130,43 +2261,54 @@ pj = pd_project(project_name, run_mode, material_property)
 ```
 
 ```python
-st = pj.Structure()
+    bd = pj.BoundaryCondition()
 
-st.add_electrode(name="cathode", property={
-    "solid": "Cathode", "bc_mode": "transient", "voltage": tcad_vbias, "v_step_max": 0.5,
-    "time_table": [{"time_start": 0, "time_stop": 2e-12, "initial_step": 1e-12, "max_step": 5e-12},
-                   {"time_start": 2e-12, "time_stop": 2.001e-12, "initial_step": 30e-18, "max_step": 30e-18,
-                    "optical": {"enabled": 1, "envelop": 0, "source_fraction": source_fraction}},
-                   {"time_start": 2.001e-12, "time_stop": 2.01e-12, "initial_step": 30e-18, "max_step": 60e-18,
-                    "optical": {"enabled": 1, "envelop": 0, "source_fraction": source_fraction}},
-                   {"time_start": 2.01e-12, "time_stop": 2.03e-12, "initial_step": 60e-18, "max_step": 2e-15,
-                    "optical": {"enabled": 1, "envelop": 0, "source_fraction": source_fraction}},
-                   {"time_start": 2.03e-12, "time_stop": 10e-12, "initial_step": 2e-15, "max_step": 50e-15,
-                    "optical": {"enabled": 1, "envelop": 0, "source_fraction": source_fraction}},
-                   {"time_start": 10e-12, "time_stop": 500e-12, "initial_step": 50e-15, "max_step": 10e-12,
-                    "optical": {"enabled": 1, "envelop": 0, "source_fraction": source_fraction}}]})
+    bd.add(name="cathode",type="Electrode", property={
+        "geometry": {"surface_type": "solid", "solid": st["Cathode"]},
+        "general": {"electrode_mode": "transient",  
+                    "contact_type": "ohmic_contact",
+                    "sweep_type": "range", "range_start": 0, "range_stop": 4, "range_step": 0.5,
+                    "apply_ac_small_signal": "none", 
+                    "envelop": "uniform", "amplitude": 1, "time_delay": 0,
+                    "transient_time_control": [
+                        {"time_start": 0, "time_stop": 2e-12, "initial_step": 1e-12, "max_step": 5e-12},
+                        {"time_start": 2e-12, "time_stop": 2.001e-12, "initial_step": 3e-17, "max_step": 3e-17},
+                        {"time_start": 2.001e-12, "time_stop": 2.01e-12, "initial_step": 3e-17, "max_step": 6e-17},
+                        {"time_start": 2.01e-12, "time_stop": 2.03e-12, "initial_step": 6e-17, "max_step": 2e-15},
+                        {"time_start": 2.03e-12, "time_stop": 1e-11, "initial_step": 2e-15, "max_step": 5e-14},
+                        {"time_start": 1e-11, "time_stop": 5e-10, "initial_step": 5e-14, "max_step": 1e-11},
+                    ]
+                    }
+    })
+    bd.add(name="anode",type="Electrode", property={
+        "geometry": {"surface_type": "solid", "solid": st["Anode"]},
+        "general": {"electrode_mode": "steady_state",  
+                    "contact_type": "ohmic_contact",
+                    "sweep_type": "single", "voltage": 0,
+                    "apply_ac_small_signal": "none",
+                    "envelop": "uniform",
+                    }
+    })
 
-st.add_electrode(name="anode", property={
-    "solid": "Anode", "bc_mode": "steady_state",
-    "sweep_type": "single", "voltage": 0, "apply_AC_small_signal": "none"})
+    # endregion
 ```
 
 Description:
 
 For the electrode `"cathode"`:
 
-- `bc_mode`--Here it's set to `"transient"`, which means a transient boundary condition is applied to this electrode. Then the time dependence of the optical generation rate can be set at this electrode
-- `voltage`--Here it's set to `tcad_vbias`, which is `1`, meaning that the voltage is applied to the electrode and a steady state simulation is performed first. The transient simulation is based on the steady state result. The optical generation rate is not applied during the steady state simulation.
-- `v_step_max`--Set the max step of the voltage from the equilibrium state to steady state at the bias of `voltage`.
-- `time_table`--Set the time dependence of optical generation rate. It's of a list type, whose item is of a dictionary type. In each of its item:
+- `electrode_mode`--Here it's set to `"transient"`, which means a transient boundary condition is applied to this electrode. Then the time dependence of the optical generation rate can be set at this electrode
+- `range_stop`--Here it's set to `tcad_voltage`, meaning that the voltage is applied to the electrode and a steady state simulation is performed first. The transient simulation is based on the steady state result. The optical generation rate is not applied during the steady state simulation.
+- `range_step`--Set the max step of the voltage from the equilibrium state to steady state at the bias of `voltage`.
+- `transient_time_control`--Set the time dependence of optical generation rate. It's of a list type, whose item is of a dictionary type. In each of its item:
   - `time_start`--Set the start time point of the range. The value of `0` represents the steady state of the earlier simulation.
   - `time_stop`--Set the stop time point of the range
   - `initial_step`--Set the initial time step of the range
   - `max_step`--Set the max time step of the range
   - `optical`--Set the optical generation rate during the time range
     - `enabled`--Whether to apply optical generation rate during the time range. The value of `1` means `True`, and `0` means `False`
-    - `envelop`--The envelop of the scaling factor of the light power during the time range. When it's set to `0`, the envelop is uniform
-    - `source_fraction`--When `envelop` is set to`0`, this value is the scaling factor of the light power during the time range
+    - `envelop`--The envelop of the scaling factor of the light power during the time range. 
+
 
 
 Note:
@@ -2175,46 +2317,6 @@ Note:
 
 
 <br/>
-
-#### 3.6.5 Add the solver
-
-```
-[54]
-```
-
-```python
-# ----------------------   set simu
-simu = pj.Simulation()
-
-simu.add(name="oedevice", type="OEDevice", property={
-    "geometry": {"dimension": "2d_x_normal", "x": oe_x_mean, "x_span": oe_x_span, "y": oe_y_mean, "y_span": oe_y_span, "z_min": oe_z_min, "z_max": oe_z_max},
-    "genrate": {"genrate_path": genrate_file_path, "coordinate_unit": "m", "field_length_unit": "m", "source_fraction": 0},
-    "general": {"norm_length": normal_length, "solver_mode": "transient", "simulation_temperature": temperature},
-    "advanced": {"non_linear_solver": "Newton", "linear_solver": "MUMPS", "use_global_max_iterations": False, "poisson_max_iterations": 50, "ddm_max_iterations": 20,
-                 "use_quasi_fermi": "enabled", "damping": "potential", "potential_update": 2, "relative_tolerance": 1e-5, "tolerance_relax": 1e7}})
-```
-
-Description:
-
-- `general`:
-
-  - `solver_mode`--Here it's set to `"transient"`, which means a transient simulation
-
-- `advanced`:
-
-  - `use_global_max_iterations`--Whether to use global max iterations during the initialization of solving the Poisson equations and the subsequent computing for solving the drift-diffusion equations coupling with Poisson equations
-  - `poisson_max_iterations`--Set the max iterations during the initialization of solving the Poisson equations, available when `use_global_max_iterations` is `False`
-  - `ddm_max_iterations`--Set the max iterations during the subsequent computing for solving the drift-diffusion equations coupling with Poisson equations, available when `use_global_max_iterations` is `False`
-  - `use_quasi_fermi`--Whether to directly solve for the quasi-Fermi potential instead of carrier concentration as unkowns. `"enabled"` means `True`, and `"disabled"` means `False`
-  - `damping`--Set the nonlinear update damping scheme. `"potential"` means the damping is based on the potential variation
-  - `potential_update`--Set the threshold potential for potential damping. The large value will reduce the strength of damping effect
-  - `relative_tolerance`--Set the relative update tolerance
-  - `tolerance_relax`--Set the tolerance relaxation factor for convergence on relative tolerance criteria
-
-
-
-<br/>
-
 #### 3.6.6 Run the solver
 
 ```
@@ -2222,9 +2324,12 @@ Description:
 ```
 
 ```python
-# --- Run ---
-# check license and print version before & after simulation.
-result_device = simu["oedevice"].run()
+    # region --- 4. Run ---
+    if run_options.run:
+        result_ddm = simu[simu_name].run(
+            # resources={"compute_resources": "gpu", "gpu_devices": [{"id": 0}]}
+        )
+    # endregion
 ```
 
 
@@ -2239,11 +2344,22 @@ The I-t curve is extracted. Because the dependency of the light power on time is
 ```
 
 ```python
-# --- Extract ---
-It_file_folder = plot_path + project_name + "I"
-result_device.extract(data="I", electrode="cathode", show=False, export_csv=True, savepath=It_file_folder)
-# result_device.extract(data="In", electrode="cathode", show=False, export_csv=True, savepath=plot_path + project_name + "In")
-# result_device.extract(data="Ip", electrode="cathode", show=False, export_csv=True, savepath=plot_path + project_name + "Ip")
+   # region --- 5. Extract ---
+    if run_options.extract:
+        electrode_name = "cathode"
+        export_options = {"export_csv": True,
+                          "export_mat": True, "export_zbf": True}
+
+        result_ddm.extract(data="ddm:electrode", electrode_name=electrode_name, savepath=f"{plot_path}I",
+                           target="line", attribute="I", plot_x="time", real=True, imag=False, log=False, show=False, export_csv=True
+                           )  # attribute = "I", "In", "Ip", "Id", "Vs"
+    # endregion
+
+    return project_name
+
+
+if __name__ == "__main__":
+    simulation(run_options=RunOptions(high_field=True, index_preview=True, run=True, extract=True))
 ```
 
 
@@ -2404,265 +2520,6 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 <br/>
 
 
-### 3.7 Saturation power
-
-This section scans the input light power and obtains the I-P curve, thereby roughly determining the saturation light power. The script is in the `VPD04_Psat.py` file.
-
-
-<br/>
-
-#### 3.7.1 Import simulation toolkit
-
-```
-[61]
-```
-
-```python
-from VPD00_structure import *
-import time
-import os
-from pathlib import Path
-import numpy as np
-from matplotlib import pyplot as plt
-```
-
-
-<br/>
-
-#### 3.7.2 Set general parameters
-
-```
-[62]
-```
-
-```python
-# region --- 0. General Parameters ---
-sweep_parameter_name = "source_fraction"
-sweep_value_table = np.linspace(0.001, 0.02, 20)
-vbias = 1  # unit:Volt, voltage on cathode
-# endregion
-
-start = time.time()
-time_str = time.strftime("%Y%m%d_%H%M%S/", time.localtime())
-
-# --- set path ---
-plot_path = str(Path(__file__).parent.as_posix()) + "/plots/"
-if not os.path.exists(plot_path):
-    os.makedirs(plot_path)
-
-simu_name = "VPD04_Psat"
-material_property = "normal"
-genrate_file_folder = str(Path(__file__).parent.as_posix())
-genrate_file_path = genrate_file_folder + "/VPD01_FDTD.gfile"
-```
-
-
-<br/>
-
-#### 3.7.3 Define a sweeping function
-
-```
-[63]
-```
-
-```python
-def sweep_simulation(sweep_value):
-```
-
-
-<br/>
-
-##### 3.7.3.1 Set the sweeping parameter
-
-```
-[64]
-```
-
-```python
-    # ----------------------   set sweep parameter
-    if not sweep_parameter_name in globals():
-        raise Exception(f"Parameter {sweep_parameter_name} not found!")
-    exec(f"global {sweep_parameter_name}; {sweep_parameter_name} = sweep_value")
-
-```
-
-Using the features of Python, modify the value of parameter `source_fraction` corresponding to `sweep_parameter_name` to the value of `sweep_value`  which is passed from the `sweep_simulation` function.
-
-
-<br/>
-
-##### 3.7.3.2 Create a new project
-
-```
-[65]
-```
-
-```python
-    # ----------------------   set project_path
-    project_name = simu_name + "_" + run_mode + "_" + time_str + sweep_parameter_name + "_" + str(sweep_value) + "/"
-
-    # --- Project from pd_structure.py ---
-    pj = pd_project(project_name, run_mode, material_property)
-```
-
-
-<br/>
-
-##### 3.7.3.3 Add electrodes
-
-```
-[66]
-```
-
-```python
-    st = pj.Structure()
-
-    st.add_electrode(name="cathode", property={
-        "solid": "Cathode", "bc_mode": "steady_state",
-        "sweep_type": "single", "voltage": vbias, "apply_AC_small_signal": "none"})
-    st.add_electrode(name="anode", property={
-        "solid": "Anode", "bc_mode": "steady_state",
-        "sweep_type": "single", "voltage": 0, "apply_AC_small_signal": "none"})
-```
-
-Apply a voltage of 1V to the electrode `"cathode"` to perform a steady state simulation.
-
-
-<br/>
-
-##### 3.7.3.4 Add the solver
-
-```
-[67]
-```
-
-```python
-    # ----------------------   set simu
-    simu = pj.Simulation()
-
-    simu.add(name="oedevice", type="OEDevice", property={
-        "geometry": {"dimension": "2d_x_normal", "x": oe_x_mean, "x_span": oe_x_span, "y": oe_y_mean, "y_span": oe_y_span, "z_min": oe_z_min, "z_max": oe_z_max},
-        "genrate": {"genrate_path": genrate_file_path, "coordinate_unit": "m", "field_length_unit": "m", "source_fraction": source_fraction},
-        "general": {"norm_length": normal_length, "solver_mode": "steady_state", "simulation_temperature": temperature},
-        "advanced": {"non_linear_solver": "Newton", "linear_solver": "MUMPS", "max_iterations": 50}})
-
-```
-
-
-<br/>
-
-##### 3.7.3.5 Run the solver
-
-```
-[68]
-```
-
-```python
-    # --- Run ---
-    # check license and print version before & after simulation.
-    result_device = simu["oedevice"].run()
-```
-
-
-<br/>
-
-##### 3.7.3.6 Extract and return the I-V result
-
-```
-[69]
-```
-
-```python
-    # --- Extract ---
-    IV_file_folder = plot_path + project_name + "IV_cathode"
-    result_device.extract(data="I", electrode="cathode", export_csv=True,
-                        show=False, savepath=IV_file_folder)
-    
-    IV_file = os.path.join(IV_file_folder, "0_I_Real.csv")
-    for i in range(10):
-        IV_file = os.path.join(IV_file_folder, str(i) + "_I_Real.csv")
-        if os.path.exists(IV_file):
-            break
-    
-    data = np.genfromtxt(IV_file, skip_header=3, delimiter=',')
-
-    return data
-```
-
-
-<br/>
-
-
-#### 3.7.4 Run the sweeping function and export the result
-
-```
-[70]
-```
-
-```python
-# region --- sweep result postprocess ---
-fontsize = 20
-linewidth = 1
-sweep_parameter_label = sweep_parameter_name
-sweep_parameter_unit = ""
-
-Isweep = []
-voltages = np.zeros(0)
-for sweep_value in sweep_value_table:
-    data = sweep_simulation(sweep_value)
-    if len(data.shape) == 1:
-        data = data.reshape((1, len(data)))
-    voltages = data[:,0]
-    Isweep.append(data[:, 1])
-
-Isweep_folder = os.path.join(plot_path, simu_name + "_" + run_mode + "_" + time_str + "Isweep")
-if not os.path.exists(Isweep_folder):
-    os.makedirs(Isweep_folder)
-
-Isweep = np.array(Isweep)
-sweep_value_table = np.array(sweep_value_table)
-
-plt.rcParams.update({"font.size": fontsize})
-for i in range(len(voltages)):
-    Isweep_fig = os.path.join(Isweep_folder, "Isweep_" + str(voltages[i]) + "V.jpg")
-    Isweep_file = os.path.join(Isweep_folder, "Isweep_" + str(voltages[i]) + "V.csv")
-    Iresp = Isweep[:,i]
-
-    with open(Isweep_file, "w") as fp:
-        fp.write(f"Vbias={voltages[i]}V,\n")
-        fp.write(f"{sweep_parameter_name}" + (f"[{sweep_parameter_unit}]" if sweep_parameter_unit else "") + ",Current[A]\n")
-        for j in range(len(Iresp)):
-            fp.write(f"{sweep_value_table[j]:.15e},{Iresp[j]:.15e}\n")
-
-    fig, ax = plt.subplots()
-    fig.set_size_inches(12, 8)
-    ax.plot(sweep_value_table, Iresp, c='b', linewidth=0.5, label=f"Vbias={voltages[i]}V")
-    ax.plot(sweep_value_table, Iresp, 'bo')
-    ax.set_ylabel("I[A]")
-    ax.set_xlabel(f"{sweep_parameter_name}" + (f"[{sweep_parameter_unit}]" if sweep_parameter_unit else ""))
-    plt.legend()
-    plt.ticklabel_format(style="sci", scilimits=(-1, 2))
-    ax.grid()
-    plt.savefig(Isweep_fig)
-    plt.close()
-
-# endregion
-
-print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - start)/60, 2)} + "\x1b[0m")
-```
-
-
-
-
-<br/>
-
-*Result show of the I-P curve*
-![I-P curve](./img/sweeppower.jpg)
-<center>Fig 12. I-P curve</center>
-
-<br/>
-
-
 ## 4. Appendix
 
 
@@ -2670,88 +2527,239 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 
 ### 4.1 Electronic parameters of the materials
 
-The parameter settings in the `VPD_material.py` file:
+The parameter settings in the `VPD_material_Si.py` file:
 
 ```
 [71]
 ```
 
 ```python
-elec_Si_properties = {"basic": {"model": "Default",
-                                "Default": {"affinity": 4.59-1.11452/2.0, "permitti": 11.7}, "print": 1},
-                      "mobility": {"model": "Masetti",
-                                   "Masetti": {"mu_min2_h": 44.9, "mumax_e": 1471, "mumax_h": 470.5, "pc_h": 0}, "print": 1},
-                      "band": {"model": "Default",
-                               "Default": {
-                                   # DOS
-                                   "dos_formula": 2, "nc300": 3.21657e19, "nv300": 1.82868e19,
-                                   # Bandgap
-                                   "eg0": 1.16, "chi0": 4.59-1.16/2,
-                                   # Bandgap Narrowing
-                                   "bgn_model": "OldSlotboom", "e0_bgn_oldslotboom": 0.0045, "n0_bgn_oldslotboom": 1.00e17, "deg0_oldslotboom": 0,
-                                   # Auger Recombination
-                                   "augan": 2.8e-31, "augap": 9.9e-32, "augbn": 0, "augbp": 0, "augcn": 0, "augcp": 0, "aughn": 0, "aughp": 0,
-                                   # SRH Recombination
-                                   "taunmax": 1.5e-9, "taupmax": 1.5e-9, "nsrh_n": 7.1e15, "nsrh_p": 7.1e15, "nc_f": 1.5, "nv_f": 1.5,
-                                   # Radiative Recombination
-                                   "c_direct": 1.6e-14}, "print": 1}}
-elec_Ge_properties = {"model": {"high_field": False},
-                      "basic": {"model": "Default",
-                                "Default": {"affinity": 4.5-0.65969/2.0, "permitti": 16.0}, "print": 1},
-                      "mobility": {"model": "Analytic",
-                                   "Analytic": {"alphan": 0.56, "alphap": 1.0, "mun_max": 3900, "mun_min": 850, "mup_max": 1800, "mup_min": 300,
-                                                "nrefn": 2.6e17, "nrefp": 1e17, "nun": -1.66, "nup": -2.33}, "print": 1},
-                      "band": {"model": "Default",
-                               "Default": {
-                                   # DOS
-                                   "nc300": 1.0516e19, "nv300": 3.9189e+18,
-                                   # Bandgap
-                                   "eg300": 0.65969, "chi300": 4.5-0.65969/2.0,
-                                   # Bandgap Narrowing
-                                   "v0_bgn": 0,
-                                   # Auger Recombination
-                                   "augan": 1e-30, "augap": 1e-30, "augbn": 0, "augbp": 0, "augcn": 0, "augcp": 0, "aughn": 0, "aughp": 0,
-                                   # SRH Recombination
-                                   "taunmax": 1.5e-9, "taupmax": 1.5e-9, "nsrhn": 7.1e15, "nsrhp": 7.1e15,
-                                   # Radiative Recombination
-                                   "c_direct": 6.41e-14}, "print": 1}}
-elec_Ge_properties_for_transient = {"model": {"high_field": True, "mobility_force": "EQF"},
-                                    "basic": {"model": "Default",
-                                              "Default": {"affinity": 4.5-0.65969/2.0, "permitti": 16.0}, "print": 1},
-                                    "mobility": {"model": "Masetti",
-                                                 "Masetti": {"pc_e": 0, "mu_min1_e": 850, "mu_min2_e": 850, "mu1_e": 0, "mumax_e": 3900,
-                                                             "cr_e": 2.6e17, "alpha_e": 0.56, "pc_h": 0, "mu_min1_h": 300,
-                                                             "mu_min2_h": 300, "mu1_h": 0, "mumax_h": 1800, "cr_h": 1e17, "alpha_h": 1}, "print": 1},
-                                    "band": {"model": "Default",
-                                             "Default": {
-                                                 # DOS
-                                                 "nc300": 1.1372e+19, "nv300": 3.9189e+18,
-                                                 # Bandgap
-                                                 "eg300": 0.65969, "chi300": 4.5-0.65969/2.0,
-                                                 # Bandgap Narrowing
-                                                 "v0_bgn": 0,
-                                                 # Auger Recombination
-                                                 "augan": 1e-30, "augap": 1e-30, "augbn": 0, "augbp": 0, "augcn": 0, "augcp": 0, "aughn": 0, "aughp": 0,
-                                                 # SRH Recombination
-                                                 "taunmax": 1.5e-9, "taupmax": 1.5e-9, "nsrhn": 7.1e15, "nsrhp": 7.1e15,
-                                                 # Radiative Recombination
-                                                 "c_direct": 6.41e-14}, "print": 1},
-                                    "vsat": {"model": "Canali",
-                                             "Canali": {"beta0n": 2, "beta0p": 1, "betaexpn": 0, "betaexpp": 0, "alpha": 0, "vsatn0": 6e6, "vsatp0": 5.4e6,
-                                                        "vsatn_exp": 0, "vsatp_exp": 0}, "print": 1}}
+elec_Si_properties = {
+    "permittivity": {
+        "permittivity": 11.7,
+    },
+    "work_function":4.59,
+    "fundamental": {
+        "electron": "density_of_states",  
+        "hole": "density_of_states",  
+        "nc": {
+            # "constant": 3.21657e19,
+            "enable_model": True,
+            "nc300": 3.21657e19
+        },
+        "nv": {
+            # "constant": 1.82868e19,
+            "enable_model": True,
+            "nv300": 1.82868e19
+        },
+        "eg": {
+            # "constant": 1.12416,
+            "enable_model": True,
+            "alpha": 0.000473,
+            "beta": 636,
+            "eg0": 1.16
+        },
+        "narrowing": {
+            "model": "slotboom",  
+            "slotboom": {
+                "e0": 0.0045,
+                "n0": 1.0e17
+            }
+        },
+    },
+    "recombination":{
+        "trap_assisted": {
+            "enabled": True,
+            "taun": {
+                "enable_model": True,
+                # "constant": 1e-5,
+                "alpha": -1.5,
+                "dopant": {
+                    "model": "scharfetter",  
+                    "scharfetter": {
+                        "nref": 7.1e15,
+                        "taumax": 1.5e-9,
+                        "taumin":0
+                    }
+                },
+                "field": {
+                    "model": "none",  
+                    # "schenk": {
+                    #     "hbar_omega": 0.068,
+                    #     "mt": 0.258,
+                    #     "s": 3.5
+                    # }
+                }
+            },
+            "taup": {
+                "enable_model": True,
+                # "constant": 3e-6,
+                "alpha": -1.5,
+                "dopant": {
+                    "model": "scharfetter",  
+                    "scharfetter": {
+                        "nref": 7.1e15,
+                        "taumax": 1.5e-9,
+                        "taumin": 0
+                    }
+                },
+                "field": {
+                    "model": "none",  # or "none"
+                    # "schenk": {
+                    #     "hbar_omega": 0.068,
+                    #     "mt": 0.24,
+                    #     "s": 3.5
+                    # }
+                }
+            },
+            "ei_offset": 0.0
+        },
+        "radiative": {
+            "enabled": True,
+            "copt": 1.6e-14
+        },
+        "auger": {
+            "enabled": True,
+            "caun": {
+                "constant": 2.8e-31,
+                "enable_model": False,
+                # "a": 6.7e-32,
+                # "b": 2.45e-31,
+                # "c": -2.2e-32,
+                # "h": 3.46667,
+                # "n0": 1e18 
+            },
+            "caup": {
+                "constant": 9.9e-32,
+                "enable_model": False,
+                # "a": 7.2e-32,
+                # "b": 4.5e-33,
+                # "c": 2.63e-32,
+                # "h": 8.25688,
+                # "n0": 1e18
+            }
+        },
+        "band_to_band_tunneling": {
+            "enabled": False,
+            # "model": "hurkx",  # or "schenk"
+            # "hurkx": {
+            #     "agen": 3.5e21,
+            #     "arec": 3.5e21,
+            #     "bgen": 2.25e7,
+            #     "brec": 2.25e7,
+            #     "pgen": 2.0,
+            #     "prec": 2.0,
+            #     "alpha": 0
+            # },
+            # "schenk": {
+            #     "a": 8.977e20,
+            #     "b": 2.1466e7,
+            #     "hbar_omega": 0.0186
+            # }
+        }
+
+    },
+    "mobility":{
+        "mun": {
+            "lattice": {
+                # "constant": 1417,
+                "enable_model": True,
+                "eta": -2.5,
+                "mumax": 1471
+            },
+            "impurity": {
+                "model": "masetti", 
+                "masetti": {
+                    "alpha": 0.68,
+                    "beta": 2,
+                    "cr": 9.68e16,
+                    "cs": 3.43e20,
+                    "mu1": 43.4,
+                    "mumin1": 52.2,
+                    "mumin2": 52.2,
+                    "pc": 0
+                }
+            },
+            "high_field": {
+                "model": "none",  
+                # "canali": {
+                #     "alpha": 0,
+                #     "beta0": 1.109,
+                #     "eta": 0.66
+                # },
+                # "driving_field": {
+                #     "model": "e_dot_j",  # or "grad_phi",
+                #     "grad_phi": {
+                #         "nref": 1e5
+                #     }
+                # },
+                # "vsat": {
+                #     "constant": 1.07e7,
+                #     "enable_model": False,
+                #     "gamma": 0.87,
+                #     "vsat0": 1.07e7
+                # }
+            }
+        },
+        "mup": {
+            "lattice": {
+                # "constant": 470.5,
+                "enable_model": True,
+                "eta": -2.2,
+                "mumax": 470.5
+            },
+            "impurity": {
+                "model": "masetti",  # or "none"
+                "masetti": {
+                    "alpha": 0.719,
+                    "beta": 2,
+                    "cr": 2.23e17,
+                    "cs": 6.1e20,
+                    "mu1": 29,
+                    "mumin1": 44.9,
+                    "mumin2": 44.9,
+                    "pc": 0
+                }
+            },
+            "high_field": {
+                "model": "none",  
+                # "canali": {
+                #     "alpha": 0,
+                #     "beta0": 1.213,
+                #     "eta": 0.17
+                # },
+                # "driving_field": {
+                #     "model": "e_dot_j",  # or "grad_phi",
+                #     "grad_phi": {
+                #         "nref": 1e5
+                #     }
+                # },
+                # "vsat": {
+                #     "constant": 8.37e6,
+                #     "enable_model": True,
+                #     "gamma": 0.52,
+                #     "vsat0": 8.37e6
+                # },
+            },
+        },
+    },
+}
+
 ```
 
 Description:
 
-- `basic`--Set the permittivity and affinity
+- `permittivity `--Set the permittivity and affinity
 
-- `band`--Set models and parameters of the band and the recombination
+- `fundamental`--Set models and parameters of the band and the density of state
 
-- `mobility`--Set the model and parameters of mobility
+- `recombination`--Set models and parameters of recombination of electron and hole
 
-- `model`--Set the switch of high field mobility model and Fermi-Dirac statistics model
+- `mobility`--Set the model and parameters of mobility,
 
-- `vsat`--Set the model and parameters of velocity saturation
+    - `high_field`--Set the switch of high field mobility model and Fermi-Dirac statistics model
+
+    - `vsat`--Set the model and parameters of velocity saturation
 
 
 
@@ -2760,30 +2768,29 @@ For the detailed introduction about electronic parameters, please refer to the d
 
 <br/>
 
-### 4.2 OEDevice settings
+### 4.2 DDM settings
 
-`OEDevice` property list：
+`DDM` property list：
 
 |                                          | default           | type    | notes                                                        |
 | :--------------------------------------- | :---------------- | :------ | :----------------------------------------------------------- |
 | general.norm_length                      | 1.0               | float   |                                                              |
-| general.solver_mode                      | steady_state      | string  | Selections are ['steady_state', 'transient', 'SSAC'].        |
+| general.solver_mode                      | steady_state      | string  | Selections are ['steady_state', 'transient'].        |
 | general.temperature_dependence           | Isothermal        | string  | Selections are ['Isothermal'].                               |
 | general.simulation_temperature           | 300               | float   |                                                              |
+| general.background_material              |                   | string  |                                                              |
 | advanced.non_linear_solver               | Newton            | string  | Selections are ['Newton'].                                   |
 | advanced.linear_solver                   | MUMPS             | string  | Selections are ['MUMPS', 'LU', 'BCGS'].                      |
-| advanced.use_quasi_fermi                 | disabled          | string  | Selections are ['disabled', 'enabled'].                      |
+| advanced.fermi_statistics                | disabled          | string  | Selections are ['disabled', 'enabled'].                      |
 | advanced.damping                         | none              | string  | Selections are ['none', 'potential'].                        |
 | advanced.potential_update                | 1.0               | float   |                                                              |
 | advanced.multi_threads                   | let_solver_choose | string  | Selections are ['let_solver_choose', 'set_thread_count'].    |
 | advanced.thread_count                    | 4                 | integer |                                                              |
-| advanced.max_iterations                  | 30                | integer |                                                              |
-| advanced.use_global_max_iterations       | true              | bool    |                                                              |
-| advanced.poisson_max_iterations          | 30                | integer |                                                              |
-| advanced.ddm_max_iterations              | 30                | integer |                                                              |
+| advanced.max_iterations                  | 15                | integer |                                                              |
 | advanced.relative_tolerance              | 1.0e-5            | float   |                                                              |
 | advanced.tolerance_relax                 | 1.0e+5            | float   |                                                              |
 | advanced.divergence_factor               | 1.0e+25           | float   |                                                              |
+| advanced.saving on divergence            | disabled          | string  | Selections are ['disabled', 'enabled'].                      |
 | genrate.genrate_path                     |                   | string  |                                                              |
 | genrate.source_fraction                  |                   | float   |                                                              |
 | genrate.coordinate_unit                  | m                 | string  | Selections are ['m', 'cm', 'um', 'nm'].                      |
@@ -2883,7 +2890,11 @@ Electrodes are added and set up through the `add_electrode` function. The format
 [72]
 ```
 ```python
-st.add_electrode(name, property)
+ add_ddm_settings(pj, run_options)
+
+    bd = pj.BoundaryCondition()
+
+    bd.add(name,type="Electrode", property)
 ```
 
 `add_electrode()` parameters:
@@ -2893,13 +2904,13 @@ st.add_electrode(name, property)
 
 <br/>
 
-There are two different type of electrical boundary conditions, which are `"steady_state"`and `"transient"`, specified by the property `bc_mode`.
+There are two different type of electrical boundary conditions, which are `"steady_state"`and `"transient"`, specified by the property `electrode_mode`.
 
 <br/>
 
 #### 4.3.1 Steady state boundary condition
 
-When the property `bc_mode` is set to `"steady_state"`, the steady state boundary condition is applied.
+When the property `electrode_mode` is set to `"steady_state"`, the steady state boundary condition is applied.
 
 <br/>
 
@@ -2908,8 +2919,8 @@ Property list of steady state boundary condition:
 |                               | default      | type    | notes                                            |
 |:------------------------------|:-------------|:--------|:-------------------------------------------------|
 | force_ohmic                   | true         | bool    |                                                  |
-| bc_mode                       | steady_state | string  | Selections are ['steady_state'].                 |
-| apply_AC_small_signal         | none         | string  | Selections are ['none', 'All'].                         |
+| electrode_mode                | steady_state | string  | Selections are ['steady_state','transient'].     |
+| apply_AC_small_signal         | none         | string  | Selections are ['none', 'All'].                  |
 | sweep_type                    | single       | string  | Selections are ['single', 'range', 'value'].     |
 | voltage                       | 0            | float   | Available when sweep_type is 'single'            |
 | range_start                   | 0            | float   | Available when sweep_type is 'range'             |
@@ -2952,9 +2963,19 @@ Description:
 [73]
 ```
 ```python
-st.add_electrode(name="anode", property={
-    "solid": "Anode", "bc_mode": "steady_state", "sweep_type": "single",
-    "voltage": 0, "apply_AC_small_signal": "none"})
+    add_ddm_settings(pj, run_options)
+
+    bd = pj.BoundaryCondition()
+
+    bd.add(name=gnd,type="Electrode", property={
+        "geometry": {"surface_type": "solid", "solid": st[gnd]},
+        "general": {"electrode_mode": "steady_state",  
+                    "contact_type": "ohmic_contact",
+                    "sweep_type": "single", "voltage": 0,
+                    "apply_ac_small_signal": "none",
+                    "envelop": "uniform",
+                    }
+    })
 ```
 
 <br/>
@@ -2965,29 +2986,26 @@ st.add_electrode(name="anode", property={
 [74]
 ```
 ```python
-st.add_electrode(name="anode", property={
-    "solid": "Anode", "bc_mode": "steady_state", "sweep_type": "range",
-    "range_start": 0, "range_stop": 1, "range_interval": 0.5, "apply_AC_small_signal": "none"})
-```
+    add_ddm_settings(pj, run_options)
 
-<br/>
+    bd = pj.BoundaryCondition()
 
-*Example for voltage table*
-
-```
-[75]
-```
-```python
-st.add_electrode(name="anode", property={
-    "solid": "Anode", "bc_mode": "steady_state", "sweep_type": "value",
-    "sweep_value_table": [{"index": 0, "number": 0}, {"index": 1, "number": 0.5}, {"index": 2, "number": 1}]})
+    bd.add(name=vsource,type="Electrode", property={
+        "geometry": {"surface_type": "solid", "solid": st[vsource]},
+        "general": {"electrode_mode": "steady_state",  
+                    "contact_type": "ohmic_contact",
+                    "sweep_type": "range", "range_start": sweep_vstart, "range_stop": sweep_vstop, "range_step": sweep_vstep,
+                    "apply_ac_small_signal": "none", 
+                    "envelop": "uniform",
+                    }
+    })
 ```
 
 <br/>
 
 #### 4.3.2 Transient boundary condition
 
-When the property `bc_mode` is set to `"transient"`, the transient boundary condition is applied.
+When the property `electrode_mode` is set to `"transient"`, the transient boundary condition is applied.
 
 <br/>
 
@@ -2996,7 +3014,7 @@ Property list of transient boundary condition:
 |                                      | default      | type    | notes                                            |
 |:-------------------------------------|:-------------|:--------|:-------------------------------------------------|
 | force_ohmic                          | true         | bool    |                                                  |
-| bc_mode                              |              | string  | Selections are ['transient'].                    |
+| electrode_mode                              |              | string  | Selections are ['transient'].                    |
 | voltage                              | 0            | float   |                                                  |
 | []time_table.time_start              |              | float   |                                                  |
 | []time_table.time_stop               |              | float   |                                                  |
@@ -3032,13 +3050,24 @@ Description:
 [76]
 ```
 ```python
-st.add_electrode(name="cathode", property={
-    "solid": "Cathode", "bc_mode": "transient", "voltage": 1, "v_step_max": 0.5,
-    "time_table": [{"time_start": 0, "time_stop": 2e-12, "initial_step": 1e-12, "max_step": 5e-12},
-                   {"time_start": 2e-12, "time_stop": 50e-12, "initial_step": 1e-15, "max_step": 1e-12,
-                    "optical": {"enabled": 1, "envelop": 0, "source_fraction": 1e-3}},
-                   {"time_start": 50e-12, "time_stop": 600e-12, "initial_step": 1e-12, "max_step": 10e-12,
-                    "optical": {"enabled": 1, "envelop": 0, "source_fraction": 1e-3}}]})
+    bd = pj.BoundaryCondition()
+
+    bd.add(name="cathode",type="Electrode", property={
+        "geometry": {"surface_type": "solid", "solid": st["Cathode"]},
+        "general": {"electrode_mode": "transient",  
+                    "contact_type": "ohmic_contact",
+                    "sweep_type": "range", "range_start": 0, "range_stop": 4, "range_step": 0.5,
+                    "apply_ac_small_signal": "none", 
+                    "envelop": "uniform", "amplitude": 1, "time_delay": 0,
+                    "transient_time_control": [
+                        {"time_start": 0, "time_stop": 2e-12, "initial_step": 1e-12, "max_step": 5e-12},
+                        {"time_start": 2e-12, "time_stop": 2.001e-12, "initial_step": 3e-17, "max_step": 3e-17},
+                        {"time_start": 2.001e-12, "time_stop": 2.01e-12, "initial_step": 3e-17, "max_step": 6e-17},
+                        {"time_start": 2.01e-12, "time_stop": 2.03e-12, "initial_step": 6e-17, "max_step": 2e-15},
+                        {"time_start": 2.03e-12, "time_stop": 1e-11, "initial_step": 2e-15, "max_step": 5e-14},
+                        {"time_start": 1e-11, "time_stop": 5e-10, "initial_step": 5e-14, "max_step": 1e-11},
+                    ]
+                    }
 ```
 
 <br/>

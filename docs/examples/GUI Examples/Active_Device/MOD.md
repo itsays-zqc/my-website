@@ -15,15 +15,14 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 ![](../MOD/plot/MOD_structure.png)
 
-## Simulation Structure
+## Simulation 
 
 ​The present structural file provides a comprehensive guide for constructing a simulation structure and establishing a Gaussian doping distribution. Initially, one must construct the geometric structure of the device, incorporate materials and physical models, specify the doping distribution, and simulation boundary conditions, and set the light source and simulation solver. Eventually, the simulation result data should be extracted and output. 
 
 ​Our simulation is designed with a light source entering along the X-axis, and the primary optoelectronic characteristic analysis takes place within the three-dimensional structure on the YZ plane. The FDE solver is utilized to preview the distribution of effective refractive index, and the OEDevice solver is used to preview the doping distribution of the device. Finally, we generate ad output the  distribution map of doping and index in modulator structure.
 
-Application Library path: `:\mo_sdk_solution_v3.2.3.0\examples\active_demo\doping_function\MOD\MOD00_structure.py`
 
-### 1. Basic Operations
+### 1. Simulation Structure
 
 It is essential to incorporate materials for structure. Although module of `maxoptics_sdk.all` provides default values for standard semiconductors, these values can be customized in `MOD_material.py` . 
 

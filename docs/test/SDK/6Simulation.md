@@ -23,7 +23,7 @@ simu.add(
     )
 ```
 ### General
-solver_type Selections are '2d_x_normal','2d_y_normal','2d_z_normal', 'x_y_prop', 'x_z_prop', 'y_x_prop', 'y_z_prop', 'z_x_prop', 'z_y_prop'.
+Choose the 1D or 2D eigenmode solver, with available types including '2d_x_normal','2d_y_normal','2d_z_normal', 'x_y_prop', 'x_z_prop', 'y_x_prop', 'y_z_prop', 'z_x_prop' and 'z_y_prop'.
 
 ### Background material
 Selects a material object from the material database as the background medium for the simulation region.<br/>
@@ -32,24 +32,33 @@ Selects a material object from the material database as the background medium fo
 ### Geometry
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
-| x, y, z               | number  |     -    | The center position of the geometry. |
-| x_span, y_span, z_span  | number  |     -   | X span, Y span and Z span of the geometry. |
-| x_min, x_max           | number  |     -     | X min, X max position of the geometry. |
-| y_min, y_max           | number  |     -     | Y min, Y max position of the geometry. |
-| z_min, z_max           | number  |     -     | Z min, Z max position of the geometry. |
+| x, y, z               | number  |     -    | The center position of the simulation region. |
+| x_span, y_span, z_span  | number  |     -   | X span, Y span and Z span of the simulation region. |
+| x_min, x_max           | number  |     -     | X min, X max position of the simulation region. |
+| y_min, y_max           | number  |     -     | Y min, Y max position of the simulation region. |
+| z_min, z_max           | number  |     -     | Z min, Z max position of the simulation region. |
 
 ### Mesh settings
-mesh_type 'uniform' 
-global_mesh_uniform_grid                                                                                                     |
-dz  
-minimum_mesh_step_settings.min_mesh_step  mesh_factor  
-|  mesh_grading.grading_factor                                           
-thread_setting.thread
+**mesh_refinement:**<br/>
+mesh_refinement: Selects 'curve_mesh' or 'staircase' to refine the mesh.<br/>    
+**mesh_grading:**<br/>
+grading_factor: The maximum rate at which the mesh size can be changed.<br/>                                
+**minimum_mesh_step_settings:**<br/>
+min_mesh_step: Specify the minimum mesh size for the entire simulation region, including localmesh region.                                                                                               
+**global_mesh_uniform_grid:**<br/>
+dx/dy/dz: Specify the maximum grid size along the x, y or z directions throughout the entire simulation region.           
 
 ### Boundary conditions
 
 Select the override default boundary conditions to True, and each boundary condition can be set separately. The optional boundary conditions include "PEC", "PMC", "PML", "symmetric" or "anti symmetric". 
 
+### Advanced
+
+**Dispersion settings:**
+Fractional offset for group delay
+**Remove PML mode settings:**
+Automatically Remove PML Modes
+Threshold for PML Mode Removal
 
 **Example:**
 
@@ -121,37 +130,23 @@ custom_settings_for_cell_group
 display_groups Enable displaying the span of each cell group using wireframes to separate them.
 display_cells   Enable displaying the boundaries of each cell and use wireframes to separate them.
 
-### Transverse mesh setting
-global_mesh_uniform_grid.
-dx ,dz     0.02  
-minimum_mesh_step_settings.
-min_mesh_step   Sets the minimum mesh step for the simulation solution area.                                  | number  | 0.
-mesh_grading
-grading_factor The factor that determines the maximum rate of change in grid step size.          1.2   
+### Mesh settings
+**mesh_refinement:**<br/>
+mesh_refinement: Selects 'curve_mesh' or 'staircase' to refine the mesh.<br/>                                                                                                  
+**mesh_grading:**<br/>
+grading_factor: The maximum rate at which the mesh size can be changed.<br/>                                
+**minimum_mesh_step_settings:**<br/>
+min_mesh_step: Specify the minimum mesh size for the entire simulation region, including localmesh region.  
 
-
-mesh_settings
-mesh_type                                                                              | string  | uniform          | Selections are ['uniform']                                                   |
-mesh_accuracy.cells_per_wavelength                                                     | integer | 15               |                                                                              |
-dx                                                                  | number  | 0.1              | A float, or a parameter, or a parameter expression that evaluates to a float |
-dz                                                                  | number  | 0.1              | A float, or a parameter, or a parameter expression that evaluates to a float |
-mesh_refinement
-mesh_refinement                                                        | string  | curve_mesh       | Selections are ['curve_mesh', 'staircase']                                   |
-grading.
-grading                                                                        | boolean | True             |                                                                              |
-grading.grading_factor                                                                 | number  | 1.2              | A float, or a parameter, or a parameter expression that evaluates to a float |
-global_mesh_uniform_grid.dx                                                            | number  | 0.02             | A float, or a parameter, or a parameter expression that evaluates to a float |
-global_mesh_uniform_grid.dy                                                            | number  | 0.02             | A float, or a parameter, or a parameter expression that evaluates to a float |
-global_mesh_uniform_grid.dz                                                            | number  | 0.02             | A float, or a parameter, or a parameter expression that evaluates to a float |
-minimum_mesh_step_settings.min_mesh_step                                               | number  | 0.0001           | A float, or a parameter, or a parameter expression that evaluates to a float |
-mesh_factor                                                                            | number  | 1.2              | A float, or a parameter, or a parameter expression that evaluates to a float |
-mesh_grading.grading_factor                                                            | number  | 1.2              | A float, or a parameter, or a parameter expression that evaluates to a float |
+### transverse_mesh__settings:**<br/>
+**global_mesh_uniform_grid:**<br/>
+dy/dz: The EME solver propagates along the x-axis, so only the mesh step size of the yz plane needs to be set.
 
 ### Boundary conditions
+                                                                      
 
-  1000             |                                                                              |
-| thread_settings.thread                                                                               | integer | 4                |                                                                              |
-| override_default_boundary_conditions                                                                 | boolean | False            |                                                                              |
+### Advanced
+
 
 **Example:**
 
@@ -163,11 +158,12 @@ simu = Project.Simulation()
 simu.add(name=simu_name, type="EME",
         property={"background_material": "object_defined_dielectric", "refractive_index": 1,
                 "mesh_settings": {"mesh_factor": 1.2, "mesh_refinement": {"mesh_refinement": "curve_mesh"}},
+                "transverse_mesh_setting": {"global_mesh_uniform_grid": {"dy": 0.02, "dz": 0.02}}})
                 "geometry": {"x_min": 0, "y": 0, "y_span": 4, "z": 0, "z_span": 3},
                 "general": {"wavelength": 1.5, "use_wavelength_sweep": True},
                 "eme_setup": {"cell_geometry": {"energy_conservation": "make_passive", "allow_custom_eigensolver_settings": True,
                                                 "cell_group_definition": [{"span": 2.5, "cell_number": 1, "number_of_modes": 10, "sc": "none"}]}},
-                "transverse_mesh_setting": {"global_mesh_uniform_grid": {"dy": 0.02, "dz": 0.02}}})
+                
 simu_res = simu[simu_name].run()
 ```
 
@@ -184,62 +180,49 @@ add(
 ```
 
 ### General
-dimension      '2d', '3d'       
-using_optical_path_estimate_time                                      
-simulation_time         1000    
+Dimension: Select the dimension of the simulation region, with options of "2d" and "3d".     
+Using_optical_path_estimate_time: Use optical path length to estimate simulation duration.                                     
+Simulation_time: Set the maximum running time of FDTD solver, in fs units.
 
 ### Background material
-background_material: Selects a material object from the material database as the background medium for the simulation region.
+background_material: Selects a material object from the material database as the background medium for the simulation region.<br/>
 refractive_index: If not selecting a material, this field can directly set the refractive index of the background medium. The default value is 1.
 
 ### Geometry
-| x, y, z               | number  |     -    | The center position of the geometry. |
-| x_span, y_span, z_span  | number  |     -   | X span, Y span and Z span of the geometry. |
-| x_min, x_max           | number  |     -     | X min, X max position of the geometry. |
-| y_min, y_max           | number  |     -     | Y min, Y max position of the geometry. |
-| z_min, z_max           | number  |     -     | Z min, Z max position of the geometry. |
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+| x, y, z               | number  |     -    | The center position of the simulation region. |
+| x_span, y_span, z_span  | number  |     -   | X span, Y span and Z span of the simulation region. |
+| x_min, x_max           | number  |     -     | X min, X max position of the simulation region. |
+| y_min, y_max           | number  |     -     | Y min, Y max position of the simulation region. |
+| z_min, z_max           | number  |     -     | Z min, Z max position of the simulation region. |
 
 ### Mesh settings
-| Parameter                | Type    | Default   | Description        |
-|:---------------|:--------|:----------:|:----------------------|
-|  mesh_type                                                 | string  | auto_non_uniform | Selections are ['auto_non_uniform', 'uniform']                                                                 |
-|  mesh_accuracy.cells_per_wavelength                        | integer | 15               |                                                                                                                |
-
-| mesh_step_settings.
-mesh_step_settings.dz                                     | number  | 0.1              | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| mesh_refinement.
-mesh_refinement                           | string  | curve_mesh       | Selections are ['curve_mesh', 'staircase']                                                                     |
-| grading.
-grading                                           | boolean | True             |                                                                                                                |
-grading_factor                                    | number  | 1.2              | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| minimum_mesh_step_settings.min_mesh_step                  | number  | 0.0001           | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| mesh_factor                                               | number  | 1.2              | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| mesh_grading.grading_factor                               | number  | 1.2              | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
+**mesh_type:** <br/>
+The types of mesh generation algorithms available for FDTD solver are "auto_non_uniform' and 'uniform'.<br/>                                                 
+**mesh_accuracy：** <br/>
+cells_per_wavelength: Using the wavelength in the material to set the mesh size, with cells per wavelength limited to integer >=6. <br/>
+**mesh_step_settings:**<br/>
+dx/dy/dz: Allow setting the grid step size in the x/y/z direction when selecting uniform type mesh.<br/>
+**mesh_refinement:**<br/>
+mesh_refinement: Selects 'curve_mesh' or 'staircase' to refine the mesh.<br/>                                                                                                  
+**mesh_grading:**<br/>
+grading: After activation, the growth rate of mesh size can be customized.<br/>
+grading_factor: The maximum rate at which the mesh size can be changed.<br/>                                
+**minimum_mesh_step_settings:**<br/>
+min_mesh_step: Specify the minimum mesh size for the entire simulation region, including localmesh region.                 
+                 
 
 ### Boundary conditions
-| Parameter                | Type    | Default   | Description        |
-|:---------------|:--------|:----------:|:----------------------|
+
 'PEC', 'PML', 'symmetric', 'anti_symmetric', 'bloch.
 
 
-bloch_boundary_settings.bloch_units                 | string  | bandstructure    | Selections are ['bandstructure', 'SI']                                                                         |
-bloch_boundary_settings.kx                          | number  | 0                |                                                                                                                |
-bloch_boundary_settings.ky                          | number  | 0                |                                                                                                                |
-bloch_boundary_settings.kz                          | number  | 0                |                                                                                                                |
-
-
-advanced_options.
-auto_shutoff.use_early_shutoff                         | boolean | True             |                                                                                                                |
-auto_shutoff.auto_shutoff_min                          | number  | 0.0001           | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-auto_shutoff.down_sample_time                          | number  | 100              | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-live_slice_filed_display_settings.show_field           | boolean | False            |                                                                                                                |
-live_slice_filed_display_settings.select_field_section | string  | x_normal         |                                                                                                                |
-live_slice_filed_display_settings.select_component     | string  | ex               |                                                                                                                |
-live_slice_filed_display_settings.time_interval        | number  | 200              | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-live_slice_filed_display_settings.position             | number  | 0                | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-
-| thread_setting.thread                                                   | integer | 4                |                                                                                                                |
-
+### advanced_options.
+**auto_shutoff:**<br/>
+use_early_shutoff: Use the conditions of shutoff to terminate the simulation in advance. <br/>
+auto_shutoff_min: When the total energy in the simulation region drops to this fraction, the simulation will end.<br/>
+down_sample_time: Check the early shutoff conditions for each down sample time step. 
 
 **Example:**
 

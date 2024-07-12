@@ -110,7 +110,7 @@ sidebar_position: 2
 
 ① **Show Field:** Real-time filed slice display switch. (Default: on)
 
-② **Select Field Section:** Combo box allows you to choose from a list of 2D planes normal to the axes for field display. ( 2D Z Normal by default）
+② **Select Field Section:** Combo box allows you to choose from a list of 2D planes normal to the axes for field display. ( 2D Z Normal by default)
 
 ③　**Position**：The position of slice (0 μm by default)
 

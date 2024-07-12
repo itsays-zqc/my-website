@@ -10,9 +10,9 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 const FeatureList = [
   {
     title:<a href='/my-website/docs/faq/General'><font color='black'>Frequently Asked Questions</font></a>,
-   
+
     Svg: require('@site/static/img/book.svg').default,
-    
+
     description: (
       <>
         <div style={{ textAlign: 'left' }}>
@@ -27,7 +27,7 @@ const FeatureList = [
 
 
         <hr style={{ margin: '0.25rem 0' }}/>
-        
+
         <div style={{ textAlign: 'left' }}>
           <a href="/my-website/docs/category/basic-knowledge">    3. Basic Knowledge </a>
         </div>
@@ -37,18 +37,18 @@ const FeatureList = [
         <div style={{ textAlign: 'left' }}>
           <a href="/my-website/docs/category/simulation-setup" >    4. Simulation Setup </a>
         </div>
-        
+
 
         <hr style={{ margin: '0.25rem 0' }}/>
         <div style={{ textAlign: 'left' }}>
           <a href="/my-website/docs/faq/ObtainTechnicalSupport" >    5. Contact Us </a>
         </div>
         <hr style={{ margin: '0.25rem 0' }}/>
-       
+
       </>
     ),
-    
-    
+
+
   },
   {
     // title: 'Tutorials',
@@ -60,18 +60,18 @@ const FeatureList = [
               {/* <hr /> */}
 
       <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/tutorial/4Simulation/1FDE">1.What is FDE?</a>
+        <a href="/my-website/docs/tutorial/3Simulation/1FDE">1.What is FDE?</a>
       </div>
       <hr style={{ margin: '0.25rem 0' }}/>
 
 
       <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/tutorial/4Simulation/2FDTD">2.What is the FDTD?</a>
+        <a href="/my-website/docs/tutorial/3Simulation/2FDTD">2.What is the FDTD?</a>
       </div>
       <hr style={{ margin: '0.25rem 0' }}/>
 
       <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/tutorial/4Simulation/3EME">3.What is the EME?</a>
+        <a href="/my-website/docs/tutorial/3Simulation/3EME">3.What is the EME?</a>
       </div>
       <hr style={{ margin: '0.25rem 0' }}/>
 
@@ -82,16 +82,16 @@ const FeatureList = [
       <hr style={{ margin: '0.25rem 0' }}/>
 
       <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/category/simulation">5.How to set the simulation?</a>
+        <a href="/my-website/docs/tutorial/2Structure">5.How to add the structures?</a>
       </div>
       <hr style={{ margin: '0.25rem 0' }}/>
 
-       
-        
+
+
       </>
     ),
   },
-  
+
   {
     // title: 'Example Library',
     title:<a href='/my-website/docs/category/passive-devices'><font color='black'>Example Library</font></a>,
@@ -102,18 +102,18 @@ const FeatureList = [
       <>
        {/* <hr /> */}
         <div style={{ textAlign: 'left' }}>
-          <a href="/my-website/docs/category/passive-devices">1.Passive Devices</a>
+          <a href="/my-website/docs/category/passive-devices-1">1.SDK Passive Devices</a>
         </div>
         <hr style={{ margin: '0.25rem 0' }}/>
-  
+
         <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/examples/PIC/GratingCoupler/">2.Grating</a>
+        <a href="/my-website/docs/category/active-devices">2.SDK Active Devices</a>
         </div>
         <hr style={{ margin: '0.25rem 0' }}/>
 
 
         <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/examples/Active_Device/Photodetector">3.PD</a>
+        <a href="/my-website/docs/category/passive-devices">3.GUI Passive Devices</a>
         </div>
         <hr style={{ margin: '0.25rem 0' }}/>
 
@@ -122,17 +122,17 @@ const FeatureList = [
         </div> */}
         {/* <hr style={{ margin: '0.25rem 0' }}/> */}
 
-        <div style={{ textAlign: 'left' }}>
+        {/* <div style={{ textAlign: 'left' }}>
         <a href="/my-website/docs/examples/Active_Device/MOD/">4.MOD</a>
         </div>
-        <hr style={{ margin: '0.25rem 0' }}/>
+        <hr style={{ margin: '0.25rem 0' }}/> */}
 
         {/* <div style={{ textAlign: 'left' }}>
         <a href="/my-website/docs/tutorial/material">7.MOD(by SDK)</a>
         </div>
         <hr style={{ margin: '0.25rem 0' }}/> */}
 
-       
+
       </>
     ),
   },
@@ -147,29 +147,29 @@ const FeatureList = [
       <>
          {/* <hr /> */}
         <div style={{ textAlign: 'left' }}>
-          <a href="/my-website/docs/test/v2_core/1Material">1.How can I add an anisotropic material with the SDK?</a>
+          <a href="/my-website/docs/test/SDK/1Material">1.How can I add an anisotropic material with the SDK?</a>
         </div>
         <hr style={{ margin: '0.25rem 0' }}/>
-  
+
         <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/test/v2_core/5Mornitor">2.How can I add a monitor with the SDK?</a>
+        <a href="/my-website/docs/test/SDK/5Mornitor">2.How can I add a monitor with the SDK?</a>
         </div>
         <hr style={{ margin: '0.25rem 0' }}/>
 
 
         <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/test/v2_core/6Simulation">3.How can I create a simulation with the SDK?</a>
+        <a href="/my-website/docs/test/SDK/6Simulation">3.How can I create a simulation with the SDK?</a>
         </div>
         <hr style={{ margin: '0.25rem 0' }}/>
 
         <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/test/v2_core/2Structure">4.How can I adjust the structure with the SDK?</a>
+        <a href="/my-website/docs/test/SDK/2Structure">4.How can I adjust the structure with the SDK?</a>
         </div>
         <hr style={{ margin: '0.25rem 0' }}/>
-        
-       
-        
-      
+
+
+
+
       </>
     ),
   },
@@ -188,7 +188,7 @@ function Feature({ Svg, title, description }) {
           <h3 style={{fontSize:25,marginBottom: '1rem'}}>{title}</h3>
         </div>
       </div>
-      
+
       <div className="text--left padding-horiz--md">
         <p>{description}</p>
       </div>

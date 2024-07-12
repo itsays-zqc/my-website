@@ -25,6 +25,10 @@ simu.add(
 ### General
 solver_type Selections are '2d_x_normal','2d_y_normal','2d_z_normal', 'x_y_prop', 'x_z_prop', 'y_x_prop', 'y_z_prop', 'z_x_prop', 'z_y_prop'.
 
+### Background material
+Selects a material object from the material database as the background medium for the simulation region.<br/>
+**refractive_index:** If not selecting a material, this field can directly set the refractive index of the background medium. The default value is 1.
+
 ### Geometry
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
@@ -34,35 +38,18 @@ solver_type Selections are '2d_x_normal','2d_y_normal','2d_z_normal', 'x_y_prop'
 | y_min, y_max           | number  |     -     | Y min, Y max position of the geometry. |
 | z_min, z_max           | number  |     -     | Z min, Z max position of the geometry. |
 
-background_material  object  |-                  | Selects a material object in the material database.                                                                                                        |
-refractive_index       number  | 1                | If not selecting a material, the refractive index is required                                                                     |
-
-### Mesh setting
-| Parameter                | Type    | Default   | Description        |
-|:---------------|:--------|:----------:|:----------------------|
-|  mesh_type                                | string  | uniform          | Selections are ['uniform']                                                                                                        |
-|  mesh_accuracy.cells_per_wavelength       | integer | 15               |                                                                                                                                   |
-|  mesh_step_settings.dx                    | number  | 0.1              | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-|  mesh_step_settings.dy                    | number  | 0.1              | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-|  mesh_step_settings.dz                    | number  | 0.1              | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-|  mesh_refinement.mesh_refinement          | string  | curve_mesh       | Selections are ['curve_mesh', 'staircase']                                                                                        |
-|  grading.grading                          | boolean | True             |                                                                                                                                   |
-|  grading.grading_factor                   | number  | 1.2              | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-|  global_mesh_uniform_grid.dx              | number  | 0.02             | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-|  global_mesh_uniform_grid.dy              | number  | 0.02             | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-|  global_mesh_uniform_grid.dz              | number  | 0.02             | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-|  minimum_mesh_step_settings.min_mesh_step | number  | 0.0001           | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-|  mesh_factor                              | number  | 1.2              | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-|  mesh_grading.grading_factor              | number  | 1.2              | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
-
-| thread_setting.thread                                  | integer | 4                |                                                                                                                                   |
+### Mesh settings
+mesh_type 'uniform' 
+global_mesh_uniform_grid                                                                                                     |
+dz  
+minimum_mesh_step_settings.min_mesh_step  mesh_factor  
+|  mesh_grading.grading_factor                                           
+thread_setting.thread
 
 ### Boundary conditions
 
 Select the override default boundary conditions to True, and each boundary condition can be set separately. The optional boundary conditions include "PEC", "PMC", "PML", "symmetric" or "anti symmetric". 
 
-
-| mode_removal.threshold                                 | number  |-                 | A float, or a parameter, or a parameter expression that evaluates to a float                                                      |
 
 **Example:**
 
@@ -99,7 +86,8 @@ use wavelength sweep
 
 ### Background material
 background_material: Selects a material object from the material database as the background medium for the simulation region.
-refractive_index: If not selecting a material, this field can directly set the refractive index of the background medium, with a default value of 1.
+refractive_index: If not selecting a material, this field can directly set the refractive index of the background medium. The default value is 1.
+
 ### Geometry
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
@@ -117,44 +105,40 @@ Choose the type of energy conservation for the interface S matrix, which is calc
 None: Not using energy conservation.
 Make passive: If the norm of the interface S matrix is less than or equal to 1, do not perform the operation; otherwise, force norm to be equal to 1
 conserve energy:force the norm of the interface S-matrix to be 1.It is usually used with periodic devices.
-|  allow_custom_eigensolver_settings                                            | boolean | False            |                                                                              |
-|  display_groups                                                               | boolean | False            |                                                                              |
-|  number_of_modes_for_all_cell_group                                           | integer | 20               |                                                                              |
+
+allow_custom_eigensolver_settings Allow you to set different number of modes to be solved for all cell groups, as well as the properties settings for mode analysis.
+display_groups                                                               | boolean | False            |                                                                              |
+number_of_modes_for_all_cell_group  Sets the number of modes to be solved for all cells.                                        | integer | 20               |                                                                              |
 cell_group_definition
+3
+|  span:     Sets the span for each cell group.
+|  cell_number   Sets number of cells for the cell group.     
+|  number_of_modes              In the cell group, sets the required number of modes to be solved for all cells.
+|  sc  'none', 'sub_cell'
+|  search                                  s             | string  | max_index        |                                                                              |
+custom_settings_for_cell_group 
 
-|  span                                                 | number  | -                 | A float, or a parameter, or a parameter expression that evaluates to a float |
-|  cell_number                                        | integer | 5                |                                                                              |
-|  number_of_modes                                      | integer | 10               |                                                                              |
-|  sc                                                   | string  | none             | Selections are ['none', 'sub_cell']                                          |
-|  search                                               | string  | max_index        |                                                                              |
-custom_settings_for_cell_group
-
-|  bent_location         | integer | 0                | 0: Simulation Center                                                         |
-|  bent_orientation     | number  | 0                | A float, or a parameter, or a parameter expression that evaluates to a float |
-|  bent_radius           | number  | 1                | A float, or a parameter, or a parameter expression that evaluates to a float |
-|  bent_waveguide       | boolean | False            |                                                                              |
-|  name                  | string  | cellGroup        |                                                                              |
-|  ccalculate_group_index | boolean | False            |                                                                              |
-|  n                     | number  | 1.0              | A float, or a parameter, or a parameter expression that evaluates to a float |
-
-|  display_groups                                                               | boolean | False            |                                                                              |
-|  display_cells                                                                | boolean | False            |                                                                              |
+display_groups Enable displaying the span of each cell group using wireframes to separate them.
+display_cells   Enable displaying the boundaries of each cell and use wireframes to separate them.
 
 ### Transverse mesh setting
-global_mesh_uniform_grid.dx                                                  | number  | 0.02             | A float, or a parameter, or a parameter expression that evaluates to a float |
-minimum_mesh_step_settings.min_mesh_step                                     | number  | 0.0001           | A float, or a parameter, or a parameter expression that evaluates to a float |
-mesh_grading.grading_factor                                                  | number  | 1.2              | A float, or a parameter, or a parameter expression that evaluates to a float |
-
+global_mesh_uniform_grid.
+dx ,dz     0.02  
+minimum_mesh_step_settings.
+min_mesh_step   Sets the minimum mesh step for the simulation solution area.                                  | number  | 0.
+mesh_grading
+grading_factor The factor that determines the maximum rate of change in grid step size.          1.2   
 
 
 mesh_settings
 mesh_type                                                                              | string  | uniform          | Selections are ['uniform']                                                   |
 mesh_accuracy.cells_per_wavelength                                                     | integer | 15               |                                                                              |
-mesh_step_settings.dx                                                                  | number  | 0.1              | A float, or a parameter, or a parameter expression that evaluates to a float |
-mesh_step_settings.dy                                                                  | number  | 0.1              | A float, or a parameter, or a parameter expression that evaluates to a float |
-mesh_step_settings.dz                                                                  | number  | 0.1              | A float, or a parameter, or a parameter expression that evaluates to a float |
-mesh_refinement.mesh_refinement                                                        | string  | curve_mesh       | Selections are ['curve_mesh', 'staircase']                                   |
-grading.grading                                                                        | boolean | True             |                                                                              |
+dx                                                                  | number  | 0.1              | A float, or a parameter, or a parameter expression that evaluates to a float |
+dz                                                                  | number  | 0.1              | A float, or a parameter, or a parameter expression that evaluates to a float |
+mesh_refinement
+mesh_refinement                                                        | string  | curve_mesh       | Selections are ['curve_mesh', 'staircase']                                   |
+grading.
+grading                                                                        | boolean | True             |                                                                              |
 grading.grading_factor                                                                 | number  | 1.2              | A float, or a parameter, or a parameter expression that evaluates to a float |
 global_mesh_uniform_grid.dx                                                            | number  | 0.02             | A float, or a parameter, or a parameter expression that evaluates to a float |
 global_mesh_uniform_grid.dy                                                            | number  | 0.02             | A float, or a parameter, or a parameter expression that evaluates to a float |
@@ -200,21 +184,20 @@ add(
 ```
 
 ### General
-| Parameter                | Type    | Default   | Description        |
-|:---------------|:--------|:----------:|:----------------------|
-| extra.fdtd_port_group.source_port                                       | string  |-                  |                                                                                                                |
-| general.dimension                                                       | string  | 3d               | Selections are ['2d', '3d']                                                                                    |
-| general.using_optical_path_estimate_time                                | boolean | False            |                                                                                                                |
-| general.simulation_time                                                 | integer | 1000             |                                                                                                                |
+dimension      '2d', '3d'       
+using_optical_path_estimate_time                                      
+simulation_time         1000    
 
+### Background material
+background_material: Selects a material object from the material database as the background medium for the simulation region.
+refractive_index: If not selecting a material, this field can directly set the refractive index of the background medium. The default value is 1.
 
 ### Geometry
-| Parameter                | Type    | Default   | Description        |
-|:---------------|:--------|:----------:|:----------------------|
-
-| background_material                                                     | object  | -                 | Select a material object                                                                                       |
-| refractive_index                                                        | number  | 1                | If not selecting a material, the refractive index is required                                                  |
-
+| x, y, z               | number  |     -    | The center position of the geometry. |
+| x_span, y_span, z_span  | number  |     -   | X span, Y span and Z span of the geometry. |
+| x_min, x_max           | number  |     -     | X min, X max position of the geometry. |
+| y_min, y_max           | number  |     -     | Y min, Y max position of the geometry. |
+| z_min, z_max           | number  |     -     | Z min, Z max position of the geometry. |
 
 ### Mesh settings
 | Parameter                | Type    | Default   | Description        |
@@ -222,15 +205,13 @@ add(
 |  mesh_type                                                 | string  | auto_non_uniform | Selections are ['auto_non_uniform', 'uniform']                                                                 |
 |  mesh_accuracy.cells_per_wavelength                        | integer | 15               |                                                                                                                |
 
-| mesh_step_settings.dx                                     | number  | 0.1              | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| mesh_step_settings.dy                                     | number  | 0.1              | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-|mesh_step_settings.dz                                     | number  | 0.1              | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| mesh_refinement.mesh_refinement                           | string  | curve_mesh       | Selections are ['curve_mesh', 'staircase']                                                                     |
-| grading.grading                                           | boolean | True             |                                                                                                                |
-| grading.grading_factor                                    | number  | 1.2              | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| global_mesh_uniform_grid.dx                               | number  | 0.02             | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| global_mesh_uniform_grid.dy                               | number  | 0.02             | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
-| global_mesh_uniform_grid.dz                               | number  | 0.02             | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
+| mesh_step_settings.
+mesh_step_settings.dz                                     | number  | 0.1              | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
+| mesh_refinement.
+mesh_refinement                           | string  | curve_mesh       | Selections are ['curve_mesh', 'staircase']                                                                     |
+| grading.
+grading                                           | boolean | True             |                                                                                                                |
+grading_factor                                    | number  | 1.2              | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
 | minimum_mesh_step_settings.min_mesh_step                  | number  | 0.0001           | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
 | mesh_factor                                               | number  | 1.2              | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
 | mesh_grading.grading_factor                               | number  | 1.2              | A float, or a parameter, or a parameter expression that evaluates to a float                                   |
@@ -238,22 +219,7 @@ add(
 ### Boundary conditions
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
-|  x_min_bc                                            | string  | PML              | Selections are ['PEC', 'PML', 'symmetric', 'anti_symmetric', 'bloch']                                                   |
-|  x_max_bc                                            | string  | PML              | Selections are ['PEC', 'PML', 'bloch']                                                                                  |
-|  y_min_bc                                            | string  | PML              | Selections are ['PEC', 'PML', 'symmetric', 'anti_symmetric', 'bloch']                                                   |
-|  y_max_bc                                            | string  | PML              | Selections are ['PEC', 'PML', 'bloch']                                                                                  |
-|  z_min_bc                                            | string  | PML              | Selections are ['PEC', 'PML', 'symmetric', 'anti_symmetric', 'bloch']                                                   |
-|  z_max_bc                                            | string  | PML              | Selections are ['PEC', 'PML', 'bloch']                                                                                  |
-|  pml_settings.all_pml.layers                         | integer | 8.0              | (property of PMLSettingsForFDTD1)                                                                              |
-| boundary_conditions.pml_settings.all_pml.kappa                          | number  | 2.0              | A float, or a parameter, or a parameter expression that evaluates to a float (property of PMLSettingsForFDTD1) |
-| boundary_conditions.pml_settings.all_pml.sigma                          | number  | 0.8              | A float, or a parameter, or a parameter expression that evaluates to a float (property of PMLSettingsForFDTD1) |
-| boundary_conditions.pml_settings.all_pml.polynomial                     | integer | 3.0              | (property of PMLSettingsForFDTD1)                                                                              |
-| boundary_conditions.pml_settings.all_pml.alpha                          | number  | 0.0              | A float, or a parameter, or a parameter expression that evaluates to a float (property of PMLSettingsForFDTD1) |
-| boundary_conditions.pml_settings.all_pml.alpha_polynomial               | integer | 1.0              | (property of PMLSettingsForFDTD1)                                                                              |
-| boundary_conditions.pml_settings.all_pml.min_layers                     | integer | 8.0              | (property of PMLSettingsForFDTD1)                                                                              |
-| boundary_conditions.pml_settings.all_pml.max_layers                     | integer | 64.0             | (property of PMLSettingsForFDTD1)                                                                              |
-| boundary_conditions.pml_settings.x_max_pml.layers                       | integer | 8.0              | (property of PMLSettingsForFDTD2)                                                                              |
-
+'PEC', 'PML', 'symmetric', 'anti_symmetric', 'bloch.
 
 
 bloch_boundary_settings.bloch_units                 | string  | bandstructure    | Selections are ['bandstructure', 'SI']                                                                         |
@@ -309,27 +275,23 @@ add(
         property: dict
     )
 ```
-### Simulation name
-| simulation_name               | string  | -          | The specified FDE solver name                                                |
 
-### Sweep type
-| sweep_type                    | string  | ranges    |                                                                              |
+### Simulation name
+Specifies the name of the simulation solver used for parameter sweep.   
+
+### sweep type   
+Selects the type of parameter sweep settings, with options of "ranges" and "values".
 
 ### Parameters
-| variable       | Any     | -          | A parameter that evaluates to a float                                        |
-| start           | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| stop            | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| number_of_points | integer | -          |                                                                              |
-| values           | array   |  -         |                                                                              |
-| type             | string  | Number    |                                                                              |
+**Variable:** Specifies the global parameter names used in the simulation.<br/>
+**Number_of_points:** When using the sweep type of ranges, the number of variable changes in parameter sweep.<br/>
+**Start/Stop:** When using the sweep type of ranges, sets the start and stop value of the variable.<br/>
+**Values:** When using the sweep type of values, specifies the sweep values by a list.
 
-### result 
-
-| Parameter                     | type    | default   | description                                                                  |
-|:------------------------------|:--------|:----------|:-----------------------------------------------------------------------------|
-| name                 | string  |-           |                                                                              |
-| result               | string  | -          |                                                                              |
-| component            | string  | -          |                                                                              |
+### Result 
+**name:** Specifies the name of the parameter sweep result.<br/>
+**result:** Specifies the name of the analysis that has been added.<br/>
+**component:** Specifies the result component to be extracted.
 
 **Example:**
 The following script adds a FDESweep solver to obtain the effective refractive index of FDE analysis results, where the sweep range must be set through global parameters. This script assumes that the FDE solver and FDE analysis have been set up. 
@@ -361,21 +323,22 @@ add(
     )
 ```
 
-| parameter                         | type    | default   | description                                                                  |
-|:------------------------------|:--------|:----------|:-----------------------------------------------------------------------------|
-| simulation_name               | string  | -          | The specified EME solver name                                                |
-| sweep_type                    | string  | ranges    |                                                                              |
-| parameters.[variable]         | Any     | -          | A parameter that evaluates to a float                                        |
-| parameters.[start]            | number  | -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| parameters.[stop]             | number  |  -         | A float, or a parameter, or a parameter expression that evaluates to a float |
-| parameters.[number_of_points] | integer |  -         |                                                                              |
-| parameters.[values]           | array   |  -         |                                                                              |
-| parameters.[type]             | string  | Number    |                                                                              |
-| result.[name]                 | string  | -          |                                                                              |
-| result.[result]               | string  | -          |                                                                              |
-| result.[component]            | string  |  -         |                                                                              |
-| name                          | string  | EME Sweep |                                                                              |
-| type_name                     | string  | EMESweep  |                                                                              |
+### Simulation name
+Specifies the name of the simulation solver used for parameter sweep.   
+
+### Sweep type   
+Selects the type of parameter sweep settings, with options of "ranges" and "values".
+
+### Parameters
+**Variable:** Specifies the global parameter names used in the simulation.<br/>
+**Number_of_points:** When using the sweep type of ranges, the number of variable changes in parameter sweep.<br/>
+**Start/Stop:** When using the sweep type of ranges, sets the start and stop value of the variable.<br/>
+**Values:** When using the sweep type of values, specifies the sweep values by a list.
+
+### Result 
+**name:** Specifies the name of the parameter sweep result.<br/>
+**result:** Specifies the name of the analysis that has been added.<br/>
+**component:** Specifies the result component to be extracted.
 
 
 **Example:**
@@ -406,26 +369,27 @@ The syntax for adding FDTDSweep solver to the project and its properties setting
 simu = pj.Simulation()
 simu.add(        
         name: str,
-        type: Literal[]"FDTDSweep"],
+        type: Literal["FDTDSweep"],
         property: dict
     )
 ```
 
-| title                         | type    | default    | description                                                                  |
-|:------------------------------|:--------|:-----------|:-----------------------------------------------------------------------------|
-| simulation_name               | string  | -           | The specified FDTD solver name                                               |
-| sweep_type                    | string  | ranges     |                                                                              |
-| parameters.[variable]         | Any     | -           | A parameter that evaluates to a float                                        |
-| parameters.[start]            | number  |  -          | A float, or a parameter, or a parameter expression that evaluates to a float |
-| parameters.[stop]             | number  |-            | A float, or a parameter, or a parameter expression that evaluates to a float |
-| parameters.[number_of_points] | integer | -           |                                                                              |
-| parameters.[values]           | array   | -           |                                                                              |
-| parameters.[type]             | string  | Number     |                                                                              |
-| result.[name]                 | string  | -           |                                                                              |
-| result.[result]               | string  | -           |                                                                              |
-| result.[component]            | string  | -           |                                                                              |
-| name                          | string  | FDTD Sweep |                                                                              |
-| type_name                     | string  | FDTDSweep  |                                                                              |
+### Simulation name
+Specifies the name of the simulation solver used for parameter sweep.   
+
+### sweep type   
+Selects the type of parameter sweep settings, with options of "ranges" and "values".
+
+### Parameters
+**Variable:** Specifies the global parameter names used in the simulation.<br/>
+**Number_of_points:** When using the sweep type of ranges, the number of variable changes in parameter sweep.<br/>
+**Start/Stop:** When using the sweep type of ranges, sets the start and stop value of the variable.<br/>
+**Values:** When using the sweep type of values, specifies the sweep values by a list.
+
+### Result 
+**name:** Specifies the name of the parameter sweep result.<br/>
+**result:** Specifies the name of the analysis that has been added.<br/>
+**component:** Specifies the result component to be extracted.
 
 **Example:**
 
@@ -444,8 +408,8 @@ simu = pj.Simulation()
 simu.add(name=sweep_name, type="FDTDsweep", property={
             "simulation_name": simu_name, 
             "parameters": [{"variable": gap, "number_of_points": 3, "start": 0.5, "stop": 0.6 }],
-                           "result": [{"name": res1, "result": monitor_name, "component": "T"},
-                                      {"name": res2, "result": analysis_name, "component": "T_forward"}]})
+            "result": [{"name": res1, "result": monitor_name, "component": "T"},
+                       {"name": res2, "result": analysis_name, "component": "T_forward"}]})
 swp_res = simu["FDTDSweep"].run()
 ```
 
@@ -461,17 +425,18 @@ simu.add(
         property: dict
     )
 ```
-| Parameter                    | Type    | Default      | Description                   |
-|:-------------------------|:--------|:-------------|:------------------------------|
-| simulation_name          | string  |  -            | The specified FDTD solver name|
-| s_matrix_setup.[port_id] | string  | -             |                               |
-| s_matrix_setup.[index]   | integer | -             |                               |
-| s_matrix_setup.[port]    | string  | -             |                               |
-| s_matrix_setup.[active]  | boolean | -             |                               |
-| name                     | string  | FDTD SMatrix |                               |
-| type_name                | string  | FDTDSMatrix  |                               |
 
-        
+simulation_name    The specified FDTD solver name|
+port
+active       
+
+ ### Simulation name
+Specifies the name of the simulation solver used for parameter sweep.   
+
+### S_matrix_setup  
+**Port:** Specifies the name of port in the FDTD simulation region.
+**Active:** Selects the enabled port as the excitation source, and the number of ""Active" port determines the number of simulation sweep.
+   
 **Example:**
 
 The following script add an FDTDSmatrix solver to obtain the S matrix of the FDTD port, and enable the calculated port through "active".
@@ -487,11 +452,7 @@ smatrix_res = simu.add(name=sweep_name, type="FDTDSmatrix",
                                         "s_matrix_setup": [{"port": port1_name, "active": True},
                                                         {"port": port2_name, "active": True}]})
 
-
-
-
 ```
-
 
 
 

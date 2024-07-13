@@ -13,7 +13,7 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 ​The figure below illustrates the device structure we constructed, wherein the aluminum electrode is applied to the silicon modulator, and the entire device is encapsulated with silicon dioxide material.
 
-![](../MOD/plot/MOD_structure.png)
+![](../Active_Device/img/MOD/MOD_structure.png)
 
 ## Simulation 
 

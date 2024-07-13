@@ -21,7 +21,7 @@ add(
     ):
 ```
 
-#### Geometry properties
+#### Geometry
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
 | monitor_type          | string  | -          | The types of index monitor that can be selected are "2d_x_normal","2d_y_normal" and "2d_z_normal".   |
@@ -69,13 +69,11 @@ add(
 | y_min, y_max           | number  |     -     | Y min, Y max position of the time monitor. |
 | z_min, z_max           | number  |     -     | Z min, Z max position of the time monitor. |
 
-### Data to record 
-| output_ex    | boolean | True  |                                                                                                                             |
-| output_py | boolean | False             |                                                                                                                             |
-| output_pz | boolean | False             |                                                                                                                             |
+### Data to record                                                                                                                  
 
 ### Advancd 
-| advanced.sampling_rate.min_sampling_per_cycle      | integer | 10                |            
+**sampling_rate:**
+min_sampling_per_cycle:
 
 **Example:**
 The following script add a time monitor and set its dimension and position. This script assumes that FDTD solver has been added to the simulation environment, and the pj is an instance of the project.
@@ -100,21 +98,21 @@ add(
 ```
 
 
-### Frequency profile properties
+### Frequency profile 
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
-|  sample spacing                            | integer | 0                 |                                                                                                                             |
+|  sample spacing                            |    string              |                                            |
 |  use_wavelength_spacing                    | boolean | True              |                                                                                                                             |
 |  use source limits                         | boolean | False             |                                                                                                                             |
 |   spacing type                              | string  | wavelength        | Selections are ["wavelength", "frequency"]                                                                                  |
 |   spacing_limit                             | string  | min_max           | Selections are ["min_max", "center_span"]                                                                                   |
-| wavelength center, frequency center                         | number  |                   | A float, or a parameter, or a parameter expression that evaluates to a float                                                |
-|  wavelength span, frequency span                           | number  |-                   | A float, or a parameter, or a parameter expression that evaluates to a float                                                |
-|  wavelength min, wavelength wax                            | number  | -                  | A float, or a parameter, or a parameter expression that evaluates to a float                                                |
-| frequency min, frequency max                             | number  |-                   | A float, or a parameter, or a parameter expression that evaluates to a float                                                |
-| general.frequency_profile.frequency_points                          | integer | 5                 |                                                                                                                             |
+| wavelength center, frequency center     | number  |      -             | A float, or a parameter, or a parameter expression that evaluates to a float                                                |
+|  wavelength span, frequency span     | number  |-                   | A float, or a parameter, or a parameter expression that evaluates to a float                      |
+|  wavelength min, wavelength wax                            | number  | -                  | A float, or a parameter, or a parameter expression that evaluates to a float           |
+| frequency min, frequency max       | number  | -                  | A float, or a parameter, or a parameter expression that evaluates to a float           |
+| frequency_profile.frequency_points                | integer | 5                 |                     |
 
-### Geometry properties
+### Geometry
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
 | monitor_type    | string | -          | The types of power monitor that can be selected are "point", "2d_x_normal","2d_y_normal","2d_z_normal", "x_linear", "y_linear", "z_linear". |
@@ -124,11 +122,10 @@ add(
 | y_min, y_max           | number  |     -     | Y min, Y max position of the power monitor. |
 | z_min, z_max           | number  |     -     | Z min, Z max position of the power monitor. |
 
-### Data to record properties
-| data_to_record.fields.output_ex                                     | boolean | True              |                                                                                                                             |
-| data_to_record.poynting_vector_and_power.output_power               | boolean | True              |                                                                                                                             |
-
-| advanced.sampling_frequency.min_sampling_per_cycle                  | integer | 2                 |                                                                                                                             |
+### Data to record 
+**Fields:** output_ex                                 
+**poynting_vector_and_power:** output_power      
+                                                                                   
 
 **Example:**
 The following script add a power monitor and set its dimension and position. This script assumes that FDTD solver has been added to the simulation environment, and the pj is an instance of the project.
@@ -147,7 +144,7 @@ mn.add(name="z_normal", type="power_monitor",
 | monitor type    | string | -          | The types of profile monitor that can be selected are "2d_x_normal","2d_y_normal" and "2d_z_normal".        |
 | x_resolution | integer | 100       |   The resolution of output simulation results of profile monitor.        |
 | x, y, z               | number  |     -    | The center position of the profile monitor. |
-| x_span, y_span, z_span | number  |     -   | Xspan, Y span, Z span of the profile monitor. |
+| x_span, y_span, z_span | number  |     -   | X span, Y span, Z span of the profile monitor. |
 | x_min, x_max           | number  |     -     | X min, X max position of the profile monitor. |
 | y_min, y_max           | number  |     -     | Y min, Y max position of the profile monitor. |
 | z_min, z_max           | number  |     -     | Z min, Z max position of the profile monitor. |
@@ -178,8 +175,8 @@ mn.add(name="y_normal", type="profile_monitor",
 |  frequency_min, frequency max          | number  |-                | A float, or a parameter, or a parameter expression that evaluates to a float |
 | frequency_points        | integer | 5              |                                                                              |
 
-### Advanced properties
-| advanced.min_sampling_per_cycle         | integer | 2              |                                                                              |
+### Advanced 
+**advanced:** min_sampling_per_cycle  
 
 **Example:**
 The following script add the global monitor and set its frequency domain range and number of frequency points. This script assumes that FDTD solver has been added to the simulation environment, and the pj is an instance of the project.
@@ -246,8 +243,6 @@ mn.add(name="band_line", type="band_monitor", property={
 |   geometry.z_min    |     -    |  float   | The z-coordinate of the bottom position of the height of the band monitor.      |
 |   geometry.z_max    |      -   |  float   |  The z-coordinate of the top position of the height of the band monitor.     |
 | geometry.interpolate_accuracy |    1    | integer |  Set the accuracy of the rectangular grid for extracting the monitor result.  Restrained by condition: >=1 && <= 10. Here 1 means the grid size is 10nm, and 10 means the grid size is 1nm, and the grid size varies uniformly with the variation in "interpolate_accuracy".         |
-
-
 
 
 ## 5.6 Charge monitor

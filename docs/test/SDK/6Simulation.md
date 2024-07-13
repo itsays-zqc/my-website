@@ -39,24 +39,23 @@ Selects a material object from the material database as the background medium fo
 | z_min, z_max           | number  |     -     | Z min, Z max position of the simulation region. |
 
 ### Mesh settings
-**mesh_refinement:**<br/>
+mesh_refinement:<br/>
 mesh_refinement: Selects 'curve_mesh' or 'staircase' to refine the mesh.<br/>    
-**mesh_grading:**<br/>
+mesh_grading:<br/>
 grading_factor: The maximum rate at which the mesh size can be changed.<br/>                                
-**minimum_mesh_step_settings:**<br/>
-min_mesh_step: Specify the minimum mesh size for the entire simulation region, including localmesh region.                                                                                               
-**global_mesh_uniform_grid:**<br/>
+minimum_mesh_step_settings:<br/>
+min_mesh_step: Specify the minimum mesh size for the entire simulation region, including localmesh region. <br/>                                                                                              
+global_mesh_uniform_grid:<br/>
 dx/dy/dz: Specify the maximum grid size along the x, y or z directions throughout the entire simulation region.           
 
 ### Boundary conditions
-
 Select the override default boundary conditions to True, and each boundary condition can be set separately. The optional boundary conditions include "PEC", "PMC", "PML", "symmetric" or "anti symmetric". 
 
 ### Advanced
 
-**Dispersion settings:**
+Dispersion settings:
 Fractional offset for group delay
-**Remove PML mode settings:**
+Remove PML mode settings:
 Automatically Remove PML Modes
 Threshold for PML Mode Removal
 
@@ -89,9 +88,8 @@ add(
 ```
 
 ### General
-wavelength       
-wavelength offset   
-use wavelength sweep   
+wavelength: The wavelength in the simulation calculation.    
+use wavelength sweep: Enabling wavelength sweep will automatically calculate the group refractive index of modes in the simulation and allow setting wavelength sweep parameters. 
 
 ### Background material
 background_material: Selects a material object from the material database as the background medium for the simulation region.
@@ -107,43 +105,42 @@ refractive_index: If not selecting a material, this field can directly set the r
 |  z min, z max           | number  |     -     | The maximum and minimum z position of the EME simulation region. |
 
 ### EME setup
-cell_geometry
+cell_geometry:<br/>
+energy conservation: Choose the type of energy conservation for the interface S matrix, which is calculated by the modes on both sides of each adjacent cells interface. The options are 'none', 'passive', or 'conserve energy'.<br/>
+- None: Not using energy conservation.<br/>
+- Make passive: If the norm of the interface S matrix is less than or equal to 1, do not perform the operation; otherwise, force norm to be equal to 1.<br/>
+- conserve energy: force the norm of the interface S-matrix to be 1.It is usually used with periodic devices.<br/>
+  
+allow_custom_eigensolver_settings: Allow you to set different number of modes to be solved for all cell groups, as well as the properties settings for mode analysis.<br/>
+number_of_modes_for_all_cell_group: Sets the number of modes to be solved for all cells.   <br/> 
+cell_group_definition: <br/>
 
-energy conservation
-Choose the type of energy conservation for the interface S matrix, which is calculated by the modes on both sides of each adjacent cells interface. The options are 'none', 'passive', or 'conserve energy'.
-None: Not using energy conservation.
-Make passive: If the norm of the interface S matrix is less than or equal to 1, do not perform the operation; otherwise, force norm to be equal to 1
-conserve energy:force the norm of the interface S-matrix to be 1.It is usually used with periodic devices.
-
-allow_custom_eigensolver_settings Allow you to set different number of modes to be solved for all cell groups, as well as the properties settings for mode analysis.
-display_groups                                                               | boolean | False            |                                                                              |
-number_of_modes_for_all_cell_group  Sets the number of modes to be solved for all cells.                                        | integer | 20               |                                                                              |
-cell_group_definition
-3
-|  span:     Sets the span for each cell group.
-|  cell_number   Sets number of cells for the cell group.     
-|  number_of_modes              In the cell group, sets the required number of modes to be solved for all cells.
-|  sc  'none', 'sub_cell'
-|  search                                  s             | string  | max_index        |                                                                              |
-custom_settings_for_cell_group 
-
-display_groups Enable displaying the span of each cell group using wireframes to separate them.
-display_cells   Enable displaying the boundaries of each cell and use wireframes to separate them.
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
+|span| number  |        -          | Sets the span for each cell group. |
+| cell_number     | integer | 10                |   Sets number of cells for the cell group.   |
+| number_of_modes                                     | integer | 10               |In the cell group, sets the required number of modes to be solved for all cells.|
+| sc                                                 | string  | none             | Selections are ['none', 'sub_cell']                                          |
+| search                                            | string  | max_index        |      Select 'max_index' or 'near_n' to specify the effective refractive index for mode calculation.        |
+display_groups: Enable displaying the span of each cell group using wireframes to separate them.<br/>
+display_cells: Enable displaying the boundaries of each cell and use wireframes to separate them.<br/>
 
 ### Mesh settings
-**mesh_refinement:**<br/>
-mesh_refinement: Selects 'curve_mesh' or 'staircase' to refine the mesh.<br/>                                                                                                  
-**mesh_grading:**<br/>
-grading_factor: The maximum rate at which the mesh size can be changed.<br/>                                
-**minimum_mesh_step_settings:**<br/>
-min_mesh_step: Specify the minimum mesh size for the entire simulation region, including localmesh region.  
 
-### transverse_mesh__settings:**<br/>
-**global_mesh_uniform_grid:**<br/>
+mesh_refinement:<br/>
+mesh_refinement: Selects 'curve_mesh' or 'staircase' to refine the mesh.   <br/>                                                                                               
+mesh_grading:<br/>
+grading_factor: The maximum rate at which the mesh size can be changed.  <br/>                             
+minimum_mesh_step_settings: <br/>
+min_mesh_step: Specify the minimum mesh size for the entire simulation region, including localmesh region. <br/>
+
+### Transverse mesh settings <br/>
+
+global_mesh_uniform_grid: <br/>
 dy/dz: The EME solver propagates along the x-axis, so only the mesh step size of the yz plane needs to be set.
 
 ### Boundary conditions
-                                                                      
+Select the override default boundary conditions to True, and each boundary condition can be set separately. The optional boundary conditions include "PEC", "PMC", "PML", "symmetric" or "anti symmetric". 
 
 ### Advanced
 
@@ -198,28 +195,26 @@ refractive_index: If not selecting a material, this field can directly set the r
 | z_min, z_max           | number  |     -     | Z min, Z max position of the simulation region. |
 
 ### Mesh settings
-**mesh_type:** <br/>
-The types of mesh generation algorithms available for FDTD solver are "auto_non_uniform' and 'uniform'.<br/>                                                 
-**mesh_accuracy：** <br/>
-cells_per_wavelength: Using the wavelength in the material to set the mesh size, with cells per wavelength limited to integer >=6. <br/>
-**mesh_step_settings:**<br/>
+mesh_type: The types of mesh generation algorithms available for FDTD solver are "auto_non_uniform' and 'uniform'.<br/>                                                 
+mesh_accuracy：<br/>cells_per_wavelength: Using the wavelength in the material to set the mesh size, with cells per wavelength limited to integer >=6. <br/>
+
+mesh_step_settings:<br/>
 dx/dy/dz: Allow setting the grid step size in the x/y/z direction when selecting uniform type mesh.<br/>
-**mesh_refinement:**<br/>
+
+mesh_refinement:<br/>
 mesh_refinement: Selects 'curve_mesh' or 'staircase' to refine the mesh.<br/>                                                                                                  
-**mesh_grading:**<br/>
+mesh_grading:<br/>
 grading: After activation, the growth rate of mesh size can be customized.<br/>
 grading_factor: The maximum rate at which the mesh size can be changed.<br/>                                
-**minimum_mesh_step_settings:**<br/>
+minimum_mesh_step_settings:<br/>
 min_mesh_step: Specify the minimum mesh size for the entire simulation region, including localmesh region.                 
                  
 
 ### Boundary conditions
-
-'PEC', 'PML', 'symmetric', 'anti_symmetric', 'bloch.
-
+Select the override default boundary conditions to True, and each boundary condition can be set separately. The optional boundary conditions include "PEC", "PMC", "PML", "symmetric" or "anti symmetric". 
 
 ### advanced_options.
-**auto_shutoff:**<br/>
+auto_shutoff:<br/>
 use_early_shutoff: Use the conditions of shutoff to terminate the simulation in advance. <br/>
 auto_shutoff_min: When the total energy in the simulation region drops to this fraction, the simulation will end.<br/>
 down_sample_time: Check the early shutoff conditions for each down sample time step. 
@@ -266,15 +261,15 @@ Specifies the name of the simulation solver used for parameter sweep.
 Selects the type of parameter sweep settings, with options of "ranges" and "values".
 
 ### Parameters
-**Variable:** Specifies the global parameter names used in the simulation.<br/>
-**Number_of_points:** When using the sweep type of ranges, the number of variable changes in parameter sweep.<br/>
-**Start/Stop:** When using the sweep type of ranges, sets the start and stop value of the variable.<br/>
-**Values:** When using the sweep type of values, specifies the sweep values by a list.
+Variable: Specifies the global parameter names used in the simulation.<br/>
+Number_of_points: When using the sweep type of ranges, the number of variable changes in parameter sweep.<br/>
+Start/Stop: When using the sweep type of ranges, sets the start and stop value of the variable.<br/>
+Values: When using the sweep type of values, specifies the sweep values by a list.
 
 ### Result 
-**name:** Specifies the name of the parameter sweep result.<br/>
-**result:** Specifies the name of the analysis that has been added.<br/>
-**component:** Specifies the result component to be extracted.
+name: Specifies the name of the parameter sweep result.<br/>
+result: Specifies the name of the analysis that has been added.<br/>
+component: Specifies the result component to be extracted.
 
 **Example:**
 The following script adds a FDESweep solver to obtain the effective refractive index of FDE analysis results, where the sweep range must be set through global parameters. This script assumes that the FDE solver and FDE analysis have been set up. 
@@ -313,15 +308,15 @@ Specifies the name of the simulation solver used for parameter sweep.
 Selects the type of parameter sweep settings, with options of "ranges" and "values".
 
 ### Parameters
-**Variable:** Specifies the global parameter names used in the simulation.<br/>
-**Number_of_points:** When using the sweep type of ranges, the number of variable changes in parameter sweep.<br/>
-**Start/Stop:** When using the sweep type of ranges, sets the start and stop value of the variable.<br/>
-**Values:** When using the sweep type of values, specifies the sweep values by a list.
+Variable: Specifies the global parameter names used in the simulation.<br/>
+Number_of_points: When using the sweep type of ranges, the number of variable changes in parameter sweep.<br/>
+Start/Stop: When using the sweep type of ranges, sets the start and stop value of the variable.<br/>
+Values: When using the sweep type of values, specifies the sweep values by a list.
 
 ### Result 
-**name:** Specifies the name of the parameter sweep result.<br/>
-**result:** Specifies the name of the analysis that has been added.<br/>
-**component:** Specifies the result component to be extracted.
+name: Specifies the name of the parameter sweep result.<br/>
+result: Specifies the name of the analysis that has been added.<br/>
+component: Specifies the result component to be extracted.
 
 
 **Example:**
@@ -364,15 +359,15 @@ Specifies the name of the simulation solver used for parameter sweep.
 Selects the type of parameter sweep settings, with options of "ranges" and "values".
 
 ### Parameters
-**Variable:** Specifies the global parameter names used in the simulation.<br/>
-**Number_of_points:** When using the sweep type of ranges, the number of variable changes in parameter sweep.<br/>
-**Start/Stop:** When using the sweep type of ranges, sets the start and stop value of the variable.<br/>
-**Values:** When using the sweep type of values, specifies the sweep values by a list.
+Variable: Specifies the global parameter names used in the simulation.<br/>
+Number_of_points: When using the sweep type of ranges, the number of variable changes in parameter sweep.<br/>
+Start/Stop: When using the sweep type of ranges, sets the start and stop value of the variable.<br/>
+Values: When using the sweep type of values, specifies the sweep values by a list.
 
 ### Result 
-**name:** Specifies the name of the parameter sweep result.<br/>
-**result:** Specifies the name of the analysis that has been added.<br/>
-**component:** Specifies the result component to be extracted.
+name: Specifies the name of the parameter sweep result.<br/>
+result: Specifies the name of the analysis that has been added.<br/>
+component: Specifies the result component to be extracted.
 
 **Example:**
 
@@ -417,8 +412,8 @@ active
 Specifies the name of the simulation solver used for parameter sweep.   
 
 ### S_matrix_setup  
-**Port:** Specifies the name of port in the FDTD simulation region.
-**Active:** Selects the enabled port as the excitation source, and the number of ""Active" port determines the number of simulation sweep.
+Port: Specifies the name of port in the FDTD simulation region.<br/>
+Active: Selects the enabled port as the excitation source, and the number of ""Active" port determines the number of simulation sweep.
    
 **Example:**
 

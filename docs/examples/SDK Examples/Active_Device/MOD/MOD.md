@@ -19,7 +19,7 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 ​The present structural file provides a comprehensive guide for constructing a simulation structure and establishing a Gaussian doping distribution. Initially, one must construct the geometric structure of the device, incorporate materials and physical models, specify the doping distribution, and simulation boundary conditions, and set the light source and simulation solver. Eventually, the simulation result data should be extracted and output. 
 
-​Our simulation is designed with a light source entering along the X-axis, and the primary optoelectronic characteristic analysis takes place within the three-dimensional structure on the YZ plane. The FDE solver is utilized to preview the distribution of effective refractive index, and the OEDevice solver is used to preview the doping distribution of the device. Finally, we generate ad output the  distribution map of doping and index in modulator structure.
+​Our simulation is designed with a light source entering along the X-axis, and the primary optoelectronic characteristic analysis takes place within the three-dimensional structure on the YZ plane. The FDE solver is utilized to preview the distribution of effective refractive index, and the DDM solver is used to preview the doping distribution of the device. Finally, we generate ad output the  distribution map of doping and index in modulator structure.
 
 Application Library path: `:\mo_sdk_solution_v3.2.3.0\examples\active_demo\doping_function\MOD\MOD00_structure.py`
 
@@ -347,7 +347,7 @@ simu_name = "MOD00"
 | wavelength     | um    | Specifies the optical wavelength of the source beam (in the vacuum) for mono-spectral simulations. |
 | temperature    | K     | Specifies the temperature in Kelvin.                         |
 | normal_length  | um    | Specifies the extent of a mesh section in the X direction.   |
-| egrid_loacal   | um    | Specifies the appropriate size of mesh in the Y and Z direction for overall region of OEDevice simulation. |
+| egrid_loacal   | um    | Specifies the appropriate size of mesh in the Y and Z direction for overall region of DDM simulation. |
 | ogrid_global_y | um    | Specifies the mesh spacing in the Y direction for region of optical simulation. |
 | ogrid_global_z | um    | Specifies the mesh spacing in the Z direction for region of optical simulation. |
 | ogrid_local    | um    | Specifies the mesh spacing in the Y and Z direction for local region of optical simulation. |
@@ -967,7 +967,7 @@ vsource = "Cathode" # electrode solid
     # endregion
 ```
 
-##### 1.2.5 Create Structure
+##### 1.2.4 Create Structure
 
 Could directly reference the device structure and materials set in the previous file `MOD00_structure.py` and `MOD_material.py`.
 
@@ -987,25 +987,10 @@ Could directly reference the device structure and materials set in the previous 
 
     # endregion
 ```
-<!-- ##### 1.2.5 Create Component
 
-​You can specify the physical attributes of an electrode. You can set the BC model and scanning method here. The bias voltage range is set for steady-state solutions, and the AC small signal switch is disabled. Detailed information about the Electrode attribute can be found in the appendix of the PD documentation.
+##### 1.2.5 Set Simulation
 
-```python
-pj = mod_project(project_name, run_mode, st_type="normal")
-st = pj.Structure()
-
-st.add_electrode(name="cathode", property={
-    "solid": "Cathode", "bc_mode": "steady_state",
-    "sweep_type": "range", "range_start": tcad_vmin, "range_stop": tcad_vmax, "range_interval": tcad_vstep, "apply_AC_small_signal": "none"})
-st.add_electrode(name="anode", property={
-    "solid": "Anode", "bc_mode": "steady_state",
-    "sweep_type": "single", "voltage": 0, "apply_AC_small_signal": "none"}) -->
-<!-- ``` -->
-
-##### 1.2.6 Set Simulation
-
-​You can add a electrical model solver here, include `DDM` solver and boundary conditons.
+​You can add a electrical model solver here, include `DDM` solver and boundary conditons. ​You can specify the physical attributes of an electrode. You can set the BC model and scanning method here. The bias voltage range is set for steady-state solutions. Detailed information about the Electrode attribute can be found in the appendix of the PD documentation.
 
 ```python
     # region --- 3. Simulation ---
@@ -1060,18 +1045,18 @@ st.add_electrode(name="anode", property={
     # endregion
 ```
 
-##### 1.2.7 Run
+##### 1.2.6 Run
 
 ​It is recommended to include a module that runs the solver and initiates the simulation. The `result_device` variable stores simulation results for subsequent extraction. 
 
 ```python
     # region --- 5. Run ---
     if run_options.run:
-        result_ddm = simu[simu_name].run()
+        result_ddm = simu[simu_name].run(resources={"threads": 4})
     # endregion
 ```
 
-##### 1.2.8 Extract Parameters 
+##### 1.2.7 Extract Parameters 
 
 ​You can extract and export simulation results to the plot folder.
 
@@ -1116,9 +1101,18 @@ if __name__ == "__main__":
     simulation(run_options=RunOptions(index_preview=False, doping_preview=False, calculate_modes=False, run=True, extract=True))
 
 ```
-##### 1.2.9 Calculate
+##### 1.2.8 Calculate
 
 Import the `np density` file, which contains the carrier distribution derived from the `DDM` method, into the `FDE` model. This integration facilitates the analysis of refractive index and loss variations as a function of bias voltage at specific wavelengths.
+
+​According to the phase change formula, we can determine that the refractive index *n* is a function of bias voltage, which means that we can change the refractive index of the material by adjusting the bias voltage. 
+
+<BlockMath math="\Delta\varphi=\frac{2\pi}{\lambda}\Delta n(V)L\\=\frac{2\pi}{\lambda}\frac{dn}{dV}\Delta VL" />
+
+​With the following formula, when the phase difference is pi:
+
+<BlockMath math="\Delta V_\pi L=\frac{\Delta V}{\Delta n}\frac{\lambda}{2}" />
+
 
 ​Application Library path: 
 `:mo_sdk_solution_v3.2.3.0\examples\active_demo\doping_function\MOD\MOD0A_vpi.py`
@@ -1320,7 +1314,7 @@ if __name__ == "__main__":
 ##### 1.3.3 Modulation efficiency
 
 ​	These graphs illustrate the relationship between two parameters that represent modulation efficiency as a function of bias voltage.
-
+        
 |                          *VpiL*                           |                          *VpiLoss*                           |
 | :-------------------------------------------------------: | :----------------------------------------------------------: |
 | ![](../MOD/plot/MOD0A_vpi_loca_time/vpil/0_VpiL_Real.png) | ![](../MOD/plot/MOD0A_vpi_loca_time/vpiloss/0_VpiLoss_Real.png) |
@@ -1391,7 +1385,7 @@ def simulation(*, run_options: "RunOptions", **kwargs, ):
     plot_path = f"{path}/plots/{project_name}/"
     current_file_path = os.path.abspath(__file__)
 ```
-##### 2.2.5 Set Simulation
+##### 2.2.4 Set Simulation
 
 ​You can add a solver for the simulation and define its properties. Furthermore, the properties of the AC small-signal module are defined in this section. The frequency interval is logarithmically defined, specifying the initial frequency, final frequency, and the number of frequencies. The variable `ssac_amplitude"` represents the amplitude of the small signal. In this instance, three frequency values (1, 100, and 10000 MHz) are selected from the range of 1e6 to 1e10.
 
@@ -1438,7 +1432,7 @@ def simulation(*, run_options: "RunOptions", **kwargs, ):
 
     # endregion
 ```
-##### 2.2.4 Create Component
+##### 2.2.5 Create Component
 
 ​You can directly invoke the engineering function and device structure created in the `MOD00_structure.py`  file, and then add the electrodes and their attributes. In this case, a bias voltage ranging from -0.5 V to 4 V with a scan step of 0.5 V is applied to the `cathode` electrode during small-signal simulation.
 
@@ -1476,9 +1470,9 @@ def simulation(*, run_options: "RunOptions", **kwargs, ):
 ​It is recommended to include a module to execute the solver and commence the simulation.
 
 ```python
- # region --- 5. Run ---
+    # region --- 5. Run ---
     if run_options.run:
-        result_ddm = simu[simu_name].run()
+        result_ddm = simu[simu_name].run(resources={"threads": 4})
     # endregion
 ```
 
@@ -1487,24 +1481,68 @@ def simulation(*, run_options: "RunOptions", **kwargs, ):
 ​Firstly, the names of the folders used to store the extracted data for the real and imaginary components of the refractive index should be defined. ​Secondly, the following program can be used to define the output files for the real and imaginary parts of the refractive index, as well as the capacitance and resistance, while also specifying the data content within the files and ensuring proper attention to the frequency units.
 
 ```python
- if run_options.run and run_options.extract:
+    # region --- 6. Extract ---
+    if run_options.run and run_options.extract:
         export_options = {"export_csv": True,
                           "export_mat": True, "export_zbf": False}
-
-        # --- Voltage list ---
-        result_ddm.extract(data="ddm:electrode_ac", electrode_name=vsource, savepath=f"{plot_path}Iac_{vsource}",
-                           target="line", attribute="Iac", plot_x=f"V_{vsource}", real=True, imag=False, frequency=1e8, show=False, export_csv=True)
         
-        result_ddm.extract(data="ddm:electrode_ac", electrode_name=vsource, savepath=f"{plot_path}C",
-                           target="line", attribute="C", plot_x=f"V_{vsource}", real=True, imag=False, frequency=1e8, show=False, export_csv=True)
-        
-        result_ddm.extract(data="ddm:electrode_ac", electrode_name=vsource, savepath=f"{plot_path}G",
-                           target="line", attribute="G", plot_x=f"V_{vsource}", real=True, imag=False, frequency=1e8, show=False, export_csv=True)
+        # --- Frequency list ---
+        result_ddm.extract(data="ddm:electrode_ac", electrode_name=vsource, savepath=f"{plot_path}Iac_f",
+                            target="line", attribute="Iac", plot_x=f"frequency", real=True, imag=False, show=False, export_csv=True)
+        ssac_frequency_span = np.genfromtxt(f"{plot_path}Iac_f.csv", skip_header=1, delimiter=',')[:,0]
 
+        # --- Iac ---
+        for i,val in enumerate(ssac_frequency_span):
+            plot_path_f = os.path.join(plot_path, f"{val/1e6:.2f}MHz")
+            result_ddm.extract(data="ddm:electrode_ac", electrode_name=vsource, savepath=f"{plot_path_f}/Iac_{vsource}_real",
+                            target="line", attribute="Iac", plot_x=f"V_{vsource}", real=True, imag=False, frequency=val, show=False, export_csv=True)
+            
+            result_ddm.extract(data="ddm:electrode_ac", electrode_name=vsource, savepath=f"{plot_path_f}/Iac_{vsource}_imag",
+                            target="line", attribute="Iac", plot_x=f"V_{vsource}", real=False, imag=True, frequency=val, show=False, export_csv=True)
     # endregion
+```
+2.2.8 Calculate
 
-    return project_name
+​Finally, the column names in the previously defined data files can be set, with the first column representing voltage and the second column representing capacitance or resistance. Additionally, the axis titles and styles should be set for the output images.
 
+```python
+    # region --- 7. Post Processing ---
+        fontsize = 20
+        linewidth = 1
+        plt.rcParams.update({"font.size": fontsize})
+        for i,val in enumerate(ssac_frequency_span):
+            plot_path_f = os.path.join(plot_path, f"{val/1e6:.2f}MHz")
+            Iac_real_data = np.genfromtxt(f"{plot_path_f}/Iac_Cathode_real.csv", skip_header=1, delimiter=",")
+            Iac_imag_data = np.genfromtxt(f"{plot_path_f}/Iac_Cathode_imag.csv", skip_header=1, delimiter=",")
+            Iac = Iac_real_data[:,1] + 1j * Iac_imag_data[:,1]
+            Vdc = Iac_real_data[:,0]
+            Z = ssac_amplitude/Iac
+            R = np.abs(np.real(Z))
+            C = np.abs(np.imag(1/Z)/(2*np.pi*ssac_frequency_span[i]))/1e4*1e15
+
+            np.savetxt(f"{plot_path_f}/resistance.csv", np.array((Vdc, R)).T, fmt='%f,%.15e', header='voltage,resistance')
+            np.savetxt(f"{plot_path_f}/capacitance.csv", np.array((Vdc, C)).T, fmt='%f,%.15e', header='voltage,capacitance')
+
+            fig, ax1 = plt.subplots()
+            fig.set_size_inches(12, 8)
+            ax1.plot(Vdc, R, c='b', linewidth=linewidth, label=f"f:{val/1e6:.2f}MHz",marker='o')
+            ax1.set_xlabel('VBias[V]')
+            ax1.set_ylabel('Resistance[Ohm]')
+            ax1.legend()
+            ax1.grid()
+            plt.savefig(f"{plot_path_f}/resistance.jpg")
+            plt.close()
+
+            fig, ax2 = plt.subplots()
+            fig.set_size_inches(12, 8)
+            ax2.plot(Vdc, C, c='b', linewidth=linewidth, label=f"f:{val/1e6:.2f}MHz",marker='o')
+            ax2.set_xlabel('VBias[V]')
+            ax2.set_ylabel('Capacitance[fF/um]')
+            ax2.legend()
+            ax2.grid()
+            plt.savefig(f"{plot_path_f}/capacitance.jpg")    
+            plt.close()
+    # endregion
 if __name__ == "__main__":
     simulation(run_options=RunOptions(index_preview=False, doping_preview=False, calculate_modes=False, run=True, extract=True))
 ```
@@ -1516,14 +1554,28 @@ if __name__ == "__main__":
 
 ##### 2.3.1 Small Signal AC Current
 
-​This section displays the variations of  AC current with respect to bias voltage at 100MHZ.
- ![](../MOD/plot/MOD0B_RC_local_time/Iac_Cathode.png) 
+​This section displays the variations of the real and imaginary components of the AC current with respect to bias voltage at different frequencies.
+
+|       | 1 MHZ                                                        | 100 MHZ                                                      | 10000 MHZ                                                    |
+| ----- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Real  | ![](../MOD/plot/MOD01_RC_local_time/1.00MHz/Iac_Cathode_real.png) | ![](../MOD/plot/MOD01_RC_local_time/100.00MHz/Iac_Cathode_real.png) | ![](../MOD/plot/MOD01_RC_local_time/10000.00MHz/Iac_Cathode_real.png) |
+| Image | ![](../MOD/plot/MOD01_RC_local_time/1.00MHz/Iac_Cathode_imag.png) | ![](../MOD/plot/MOD01_RC_local_time/100.00MHz/Iac_Cathode_imag.png) | ![](../MOD/plot/MOD01_RC_local_time/10000.00MHz/Iac_Cathode_imag.png) |
 
 ##### 2.3.2 Capacitance
 
-​This section displays the variations of capacitance with respect to bias voltage at 100MHZ.
- ![](../MOD/plot/MOD0B_RC_local_time/C.png)
+​This section displays the variations of capacitance with respect to bias voltage at different frequencies.
 
+| 1 MHZ                                                        | 100 MHZ                                                      | 10000 MHZ                                                    |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![](../MOD/plot/MOD01_RC_local_time/1.00MHz/capacitance.jpg) | ![](../MOD/plot/MOD01_RC_local_time/100.00MHz/capacitance.jpg) | ![](../MOD/plot/MOD01_RC_local_time/10000.00MHz/capacitance.jpg) |
+
+##### 2.3.3 Resistance
+
+​This section displays the variations of resistance with respect to bias voltage at different frequencies.
+
+| 1 MHZ                                                        | 100 MHZ                                                      | 10000 MHZ                                                    |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![](../MOD/plot/MOD01_RC_local_time/1.00MHz/resistance.jpg) | ![](../MOD/plot/MOD01_RC_local_time/100.00MHz/resistance.jpg) | ![](../MOD/plot/MOD01_RC_local_time/10000.00MHz/resistance.jpg) |
 
 
 </div>

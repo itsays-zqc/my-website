@@ -1121,7 +1121,7 @@ def simulation(*, run_options: "RunOptions", **kwargs, ):
 <br/>
 
 
-#### 3.1.5 Add the solver
+#### 3.1.4 Add the solver
 
 ```
 [30]
@@ -1169,7 +1169,7 @@ The detailed property list of `DDM` solver can be found in the appendix.
 
 <br/>
 
-#### 3.1.4 Add electrodes
+#### 3.1.5 Add electrodes
 
 ```
 [29]
@@ -1273,7 +1273,7 @@ The detailed property list of electrode can be found in the appendix. Here a ran
 
 *Result show of the dark current extraction*
 
-![Dark Current](./img/darkcurrent.png)
+![Dark Current](./img/3.2.3.0/Id.png)
 
 <center>Fig 3. Dark Current</center>
 
@@ -1423,13 +1423,6 @@ def simulation(*, run_options: "RunOptions", **kwargs, ):
                            target="line", attribute="I", plot_x=f"v_{vsource.lower()}", real=True, imag=False, log=False, show=False, **slice_options, export_csv=True
                            )  # attribute = "I", "In", "Ip", "Id", "Vs"
     # endregion
-
-    return project_name
-
-
-if __name__ == "__main__":
-    simulation(run_options=RunOptions(high_field=False, index_preview=False, run=True, extract=True))
-
 ```
 
 A range of voltage from 0V to 1.5V is applied to the electrode `"anode"`, with a step of 0.25V. No optical generation rate is applied. And a steady state simulation is performed to extract the I-V curve, which is saved to the folder `IV_file_folder`.
@@ -1438,7 +1431,7 @@ A range of voltage from 0V to 1.5V is applied to the electrode `"anode"`, with a
 <br/>
 
 *Result show of the I-V curve*
-![I-V curve](./img/resistanceIV.png)
+![I-V curve](./img/3.2.3.0/Rs_Ianode.png)
 <center>Fig 4. I-V curve</center>
 
 <br/>
@@ -1456,14 +1449,8 @@ A range of voltage from 0V to 1.5V is applied to the electrode `"anode"`, with a
 
 ```python
 # region --- calculate R ---
-IV_file = os.path.join(IV_file_folder, "0_I_Real.csv")
-for i in range(10):
-    IV_file = os.path.join(IV_file_folder, str(i) + "_I_Real.csv")
-    if os.path.exists(IV_file):
-        break
-rawdata = np.genfromtxt(IV_file, skip_header=3, delimiter=',')
-I = rawdata[:,1]
-V = rawdata[:,0]
+        Vdc = np.genfromtxt(f"{plot_path}I_Anode.csv",skip_header=1,delimiter=",")[:,0]
+        Idc = np.genfromtxt(f"{plot_path}I_Anode.csv",skip_header=1,delimiter=",")[:,1]
 ```
 
 `"0_I_Real.csv"` is filename generated automatically of the I-V result. The `"0"` in the beginning indicates the index of the electrode. When the I-V curve is from a different electrode, the index will change. Therefore, a iteration from 0 to 9 is applied to find the saved I-V data file.
@@ -1478,10 +1465,10 @@ V = rawdata[:,0]
 ```
 
 ```python
-start_idx = len(V)//2
-coeffs = np.polyfit(I[start_idx:], V[start_idx:], 1)
-V_fit = coeffs[0]*I + coeffs[1]
-R = abs(coeffs[0])
+        start_idx = len(Vdc)//2
+        coeffs = np.polyfit(Idc[start_idx:], Vdc[start_idx:], 1)
+        V_fit = coeffs[0]*Idc + coeffs[1]
+        R = abs(coeffs[0])
 ```
 
 Fit the data after the index `start_idx`, which is the start index of the approximately linear portion of the curve. A first-order polynomial fitting is performed on the V-I data. Then the coefficient of the first-order term is the device resistance.
@@ -1499,29 +1486,26 @@ Fit the data after the index `start_idx`, which is the start index of the approx
 ```
 
 ```python
-Rdata_folder = os.path.join(plot_path, project_name, "resistance")
-if not os.path.exists(Rdata_folder):
-    os.makedirs(Rdata_folder)
-Rdata_file = os.path.join(Rdata_folder, "Rdata.dat")
-Rdata_fig = os.path.join(Rdata_folder, "resistance.jpg")
-
-with open(Rdata_file, "w") as fp:
-    fp.write("Resistance: " + f"{R} Ohm\n")
-
-fontsize = 20
-linewidth = 1
-plt.rcParams.update({"font.size": fontsize})
-fig, ax = plt.subplots()
-fig.set_size_inches(12, 8)
-ax.plot(I, V, c="b", linewidth=linewidth, label="V-I")
-ax.plot(I, V_fit, c="g", linewidth=linewidth, label="V_fit-I")
-ax.set_xlabel("I[A]")
-ax.set_ylabel("V[V]")
-plt.legend()
-plt.ticklabel_format(style="sci", scilimits=(-1, 2))
-ax.grid()
-plt.savefig(Rdata_fig)
-plt.close()
+ r_path = f"{plot_path}resistance"
+        if not os.path.exists(r_path):
+            os.makedirs(r_path)
+        
+        with open(f"{r_path}/Rdata.txt", "w") as fp:
+            fp.write("Resistance: " + f"{R} Ohm\n")
+        fontsize = 20
+        linewidth = 1
+        plt.rcParams.update({"font.size": fontsize})
+        fig, ax = plt.subplots()
+        fig.set_size_inches(12, 8)
+        ax.plot(Idc, Vdc, c="b", linewidth=linewidth, label="V-I")
+        ax.plot(Idc, V_fit, c="g", linewidth=linewidth, label="V_fit-I")
+        ax.set_xlabel("I[A]")
+        ax.set_ylabel("V[V]")
+        plt.legend()
+        plt.ticklabel_format(style="sci", scilimits=(-1, 2))
+        ax.grid()
+        plt.savefig(f"{plot_path}resistance/Rs.jpg")
+        plt.close()
 # endregion
 
 print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - start)/60, 2)} + "\x1b[0m")
@@ -1531,7 +1515,7 @@ print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - 
 <br/>
 
 *Result show of the V-I fitting*
-![resistance](./img/resistance.jpg)
+![resistance](./img/3.2.3.0/Rs_Resistance.jpg)
 <center>Fig 5. V-I fitting</center>
 
 <br/>
@@ -1696,7 +1680,7 @@ For the result extraction:
 <br/>
 
 *Result show of the capacitance*
-![Capacitance](./img/capacitance.png)
+![Capacitance](./img/3.2.3.0/C.png)
 <center>Fig 6. Capacitance</center>
 
 <br/>
@@ -1876,7 +1860,7 @@ if __name__ == "__main__":
 <br/>
 
 *Result show of the optical generation rate*
-![Optical generation rate](./img/generation.png)
+![Optical generation rate](./img/3.2.3.0/FDTD_genrate.png)
 <center>Fig 7. Optical generation rate</center>
 
 <br/>
@@ -1919,16 +1903,6 @@ from VPD00_structure import *
 ```
 
 ```python
-start = time.time()
-time_str = time.strftime("%Y%m%d_%H%M%S/", time.localtime())
-
-# region --- 0. General Parameters ---
-tcad_vmin = 0  # unit:Volt
-tcad_vmax = 4      # unit:Volt
-tcad_vstep = 0.5   # unit:Volt
-# endregion
-
-# ----------------------   set project_path
 @timed
 @with_path
 def simulation(*, run_options: "RunOptions", **kwargs, ):
@@ -1948,12 +1922,12 @@ def simulation(*, run_options: "RunOptions", **kwargs, ):
     plot_path = f"{path}/plots/{project_name}/"
     current_file_path = os.path.abspath(__file__)
 
-    gen_rate_file = os.path.join(os.path.dirname(__file__), "VPD01_FDTD_1550.gfile")
-    
+    gen_rate_file = os.path.join(os.path.dirname(__file__), "VPD01_FDTD.gfile")
+
     # endregion
 ```
 
-`genrate_file_path` is the absolute path of the gfile to be imported to the `DDM` solver. Here it's set to the absolute path of `VPD01_FDTD_1550.gfile` in the same directory. And  this can be changed to the path of the gfile extracted by the `FDTD` simulation.
+`genrate_file_path` is the absolute path of the gfile to be imported to the `DDM` solver. Here it's set to the absolute path of `VPD01_FDTD.gfile` in the same directory. And  this can be changed to the path of the gfile extracted by the `FDTD` simulation.
 
 
 <br/>
@@ -1975,7 +1949,7 @@ def simulation(*, run_options: "RunOptions", **kwargs, ):
 ```
 <br/>
 
-#### 3.5.5 Add the solver
+#### 3.5.4 Add the solver
 
 ```
 [48]
@@ -2033,7 +2007,7 @@ Description:
 
 
 <br/>
-#### 3.5.4 Add electrodes
+#### 3.5.5 Add electrodes
 
 ```
 [47]
@@ -2104,7 +2078,7 @@ if __name__ == "__main__":
 <br/>
 
 *Result show of the photo current*
-![Photo current](./img/photocurrent.png)
+![Photo current](./img/3.2.3.0/IP_Icathode.png)
 <center>Fig 8. Photo current</center>
 <br/>
 
@@ -2132,6 +2106,10 @@ import os
 import time
 from typing import NamedTuple
 import sys
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import interpolate as scip, fft as scfft
+
 current_dir = os.path.dirname(__file__)
 sys.path.extend([current_dir])
 from VPD00_structure import *
@@ -2159,7 +2137,8 @@ def simulation(*, run_options: "RunOptions", **kwargs, ):
     plot_path = f"{path}/plots/{project_name}/"
     current_file_path = os.path.abspath(__file__)
 
-    gen_rate_file = os.path.join(os.path.dirname(__file__), "VPD01_FDTD_1550.gfile")
+    gen_rate_file = os.path.join(os.path.dirname(__file__), "VPD01_FDTD.gfile")
+
     # endregion
 ```
 
@@ -2366,7 +2345,7 @@ if __name__ == "__main__":
 <br/>
 
 *Result show of the step response*
-![Step response](./img/stepresponse.png)
+![Step response](./img/3.2.3.0/BW_I.png)
 <center>Fig 9. Step response</center>
 
 <br/>
@@ -2386,31 +2365,27 @@ By taking the derivative of the step response, the impulse response is obtained.
 ```
 
 ```python
-# region Calculate 3dB bandwidth
-It_file = os.path.join(It_file_folder, "0_I_Real.csv")
-for i in range(10):
-    It_file = os.path.join(It_file_folder, str(i) + "_I_Real.csv")
-    if os.path.exists(It_file):
-        break
-rawdata = np.genfromtxt(It_file, skip_header=3, delimiter=',')
-I = rawdata[:,1]
-t = rawdata[:,0]*1e-15
+# region --- 6. Post Processing ---
+        I = np.genfromtxt(f"{plot_path}/I.csv", skip_header=1, delimiter=',')[:,1]
+        t = np.genfromtxt(f"{plot_path}/I.csv", skip_header=1, delimiter=',')[:,0]
+        start_idx = 0
+        for i ,val in enumerate(t):
+            if val == 2e-12:
+                start_idx = i
+                break
+        
+        t = t[start_idx:]
+        I = I[start_idx:]
 
-start_idx = 2
-t = t[start_idx:]
-I = I[start_idx:]
-
-# Calculate impulse response dI/dt from step response I(t)
-# Impulse response at t[i] is the average of dI[i-1]/dt[i-1] and dI[i]/dt[i] 
-dt = np.diff(t)
-dI = np.diff(I)
-dIdt = (dI[1:] + (dt[1:]/dt[:-1])**2*dI[:-1])/(dt[1:]*(1+dt[1:]/dt[:-1]))
-delta_t = 1e-13
-th = t[1:len(t)-1]
-nt = int(np.ceil((th[-1]-th[0])/delta_t))
-t_interp = np.linspace(th[0], th[-1], nt)
-interp1d_func = scip.interp1d(th, dIdt)
-dIdt_interp = interp1d_func(t_interp)
+        dt = np.diff(t)
+        dI = np.diff(I)
+        dIdt = (dI[1:] + (dt[1:]/dt[:-1])**2*dI[:-1])/(dt[1:]*(1+dt[1:]/dt[:-1]))
+        delta_t = 1e-13
+        th = t[1:len(t)-1]
+        nt = int(np.ceil((th[-1]-th[0])/delta_t))
+        t_interp = np.linspace(th[0], th[-1], nt)
+        interp1d_func = scip.interp1d(th, dIdt)
+        dIdt_interp = interp1d_func(t_interp)
 ```
 
 First, take the derivative of the step response to obtain the impulse response. And then uniform time intervals and perform interpolation on the impulse response to facilitate the subsequent application of the Fast Fourier Transform.
@@ -2425,31 +2400,32 @@ First, take the derivative of the step response to obtain the impulse response. 
 ```
 
 ```python
-# Output impulse response
-bandwidth_folder = str(Path(It_file_folder).parent.as_posix()) + "/3dB_bandwidth"
-if not os.path.exists(bandwidth_folder):
-    os.makedirs(bandwidth_folder)
-impulse_fig = os.path.join(bandwidth_folder, "impulse_response.jpg")
-fontsize = 20
-linewidth = 1
-plt.rcParams.update({"font.size": fontsize})
-fig, ax = plt.subplots()
-fig.set_size_inches(12, 8)
-ax.plot(t_interp*1e12, dIdt_interp/np.max(np.abs(dIdt_interp)), c='b', linewidth=linewidth, label="Impulse response")
-ax.set_ylabel("Impulse response")
-ax.set_xlabel("Time [ps]")
-ax.grid()
-plt.legend()
-plt.ticklabel_format(style='sci', scilimits=(-1,2))
-plt.savefig(impulse_fig)
-plt.close()
+    # Output impulse response
+        bandwidth_folder = f"{plot_path}/3dB_bandwidth"
+        if not os.path.exists(bandwidth_folder):
+            os.makedirs(bandwidth_folder)
+        impulse_fig = os.path.join(bandwidth_folder, "impulse_response.jpg")
+        fontsize = 20
+        linewidth = 1
+        plt.rcParams.update({"font.size": fontsize})
+        fig, ax = plt.subplots()
+        fig.set_size_inches(12, 8)
+        ax.plot(t_interp*1e12, dIdt_interp/np.max(np.abs(dIdt_interp)), c='b', linewidth=linewidth, label="Impulse response")
+        ax.set_ylabel("Impulse response")
+        ax.set_xlabel("Time [ps]")
+        ax.grid()
+        plt.legend()
+        plt.ticklabel_format(style='sci', scilimits=(-1,2))
+        plt.savefig(impulse_fig)
+        plt.close()
+
 ```
 
 
 <br/>
 
 *Result show of the impulse response*
-![Impulse response](./img/impulseresponse.jpg)
+![Impulse response](./img/3.2.3.0/BW_impulse_response.jpg)
 <center>Fig 10. Impulse response</center>
 
 <br/>
@@ -2462,18 +2438,18 @@ plt.close()
 ```
 
 ```python
-fresponse = scfft.rfft(dIdt_interp)
-freq = scfft.rfftfreq(len(t_interp), t_interp[1]-t_interp[0])
-fresponse = np.abs(fresponse)/np.max(np.abs(fresponse))
+    fresponse = scfft.rfft(dIdt_interp)
+        freq = scfft.rfftfreq(len(t_interp), t_interp[1]-t_interp[0])
+        fresponse = np.abs(fresponse)/np.max(np.abs(fresponse))
 
-# Calculate 3dB bandwidth by interpolation
-log_freq = np.log10(freq[1:])
-log_fresp = 20*np.log10(np.abs(fresponse[1:]))
-resp_3dB = -3
+        # Calculate 3dB bandwidth by interpolation
+        log_freq = np.log10(freq[1:])
+        log_fresp = 20*np.log10(np.abs(fresponse[1:]))
+        resp_3dB = -3
 
-log_freq_3dB = scip.interp1d(log_fresp, log_freq)(resp_3dB)
+        log_freq_3dB = scip.interp1d(log_fresp, log_freq)(resp_3dB)
 
-bandwidth_GHz = 10**log_freq_3dB*1e-9
+        bandwidth_GHz = 10**log_freq_3dB*1e-9
 ```
 
 Obtain the frequency response by Fast Fourier Transform. And then calculate the 3dB bandwidth by interpolation.
@@ -2488,33 +2464,36 @@ Obtain the frequency response by Fast Fourier Transform. And then calculate the 
 ```
 
 ```python
-bandwidth_file = os.path.join(bandwidth_folder, "3dB_bandwidth.txt")
-bandwidth_fig = os.path.join(bandwidth_folder, "3dB_bandwidth.jpg")
+        bandwidth_file = os.path.join(bandwidth_folder, "3dB_bandwidth.txt")
+        bandwidth_fig = os.path.join(bandwidth_folder, "3dB_bandwidth.jpg")
 
-with open(bandwidth_file, 'w') as fp:
-    fp.write("3dB bandwidth: " + f"{bandwidth_GHz:.6f} GHz\n")
+        with open(bandwidth_file, 'w') as fp:
+            fp.write("3dB bandwidth: " + f"{bandwidth_GHz:.6f} GHz\n")
 
-fig, ax = plt.subplots()
-fig.set_size_inches(12, 8)
-ax.plot(freq[1:]*1e-9, 20*np.log10(np.abs(fresponse[1:])), 'b', linewidth=linewidth, label="Normalized response")
-ax.plot(freq[1:]*1e-9, resp_3dB*np.ones(len(freq[1:])), 'g', linewidth=linewidth)
-ax.set_xlim(left = 1, right = 300)
-ax.set_ylim(bottom = -25)
-ax.set_xscale('log')
-ax.set_ylabel('Normalized response [dB]')
-ax.set_xlabel('Frequency [GHz]')
-ax.grid(which='both', axis='both')
-plt.savefig(bandwidth_fig)
-# endregion
+        fig, ax = plt.subplots()
+        fig.set_size_inches(12, 8)
+        ax.plot(freq[1:]*1e-9, 20*np.log10(np.abs(fresponse[1:])), 'b', linewidth=linewidth, label="Normalized response")
+        ax.plot(freq[1:]*1e-9, resp_3dB*np.ones(len(freq[1:])), 'g', linewidth=linewidth)
+        ax.set_xlim(left = 1, right = 300)
+        ax.set_ylim(bottom = -25)
+        ax.set_xscale('log')
+        ax.set_ylabel('Normalized response [dB]')
+        ax.set_xlabel('Frequency [GHz]')
+        ax.grid(which='both', axis='both')
+        plt.savefig(bandwidth_fig)
 
-print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - start)/60, 2)} + "\x1b[0m")
+    # endregion
+
+if __name__ == "__main__":
+    simulation(run_options=RunOptions(high_field=True, index_preview=True, run=True, extract=True))
+
 ```
 
 
 <br/>
 
 *Result show of the frequency response*
-![Frequency response](./img/frequencyresponse.jpg)
+![Frequency response](./img/3.2.3.0/BW_3dB_bandwidth.jpg)
 <center>Fig 11. Frequency response</center>
 
 <br/>

@@ -235,7 +235,7 @@ The charge distribution of n type and p type from charge monitor.
 #### 3.2 Loss
 
 ​This section displays the variation of losses with bias voltage.
-![](../MOD/plot/MOD0A_vpi_loca_time/loss/0_loss_Real.png)
+![](../Active_Device/img/MOD/0_loss_Real.png)
 
 #### 3.3 Effective Index
 

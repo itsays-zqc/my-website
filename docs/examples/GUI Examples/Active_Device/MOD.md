@@ -228,36 +228,37 @@ Run DDM solver and wait simulation results, and export the data of the real and 
 
 ### 3 Output Result
 
-#### 3.1 Loss
+#### 3.1 NP Density
+The charge distribution of n type and p type from charge monitor.
+![](../Active_Device/img/MOD/Result_npDensity.png)
+
+#### 3.2 Loss
 
 ​This section displays the variation of losses with bias voltage.
 ![](../MOD/plot/MOD0A_vpi_loca_time/loss/0_loss_Real.png)
 
-#### 3.2 Effective Index
+#### 3.3 Effective Index
 
-​These graphs depict the real and imaginary components of the refractive index as a function of bias voltage.
+​This section displays the variation of effective index with bias voltage.
+ ![](../Active_Device/img/MOD/Result_neff.png)
 
-|                    Reffective index real                     |                  Reffective index imaginary                  |
-| :----------------------------------------------------------: | :----------------------------------------------------------: |
-| ![](../MOD/plot/MOD0A_vpi_loca_time/neffreal/0_effective%20index_Real.png) | ![](../MOD/plot/MOD0A_vpi_loca_time/neffimag/0_effective%20index_Imaginary.png) |
-
-#### 3.3 Modulation efficiency
+#### 3.4 Modulation efficiency
 
 ​	These graphs illustrate the relationship between two parameters that represent modulation efficiency as a function of bias voltage.
 
 |                          *VpiL*                           |                          *VpiLoss*                           |
 | :-------------------------------------------------------: | :----------------------------------------------------------: |
-| ![](../MOD/plot/MOD0A_vpi_loca_time/vpil/0_VpiL_Real.png) | ![](../MOD/plot/MOD0A_vpi_loca_time/vpiloss/0_VpiLoss_Real.png) |
+| ![](../Active_Device/img/MOD/0_VpiL_Real.png) | ![](../Active_Device/img/MOD/0_VpiLoss_Real.png) |
 
-#### 3.4 Small Signal AC Current
+#### 3.5 Small Signal AC Current
 
 ​This section displays the variations of  AC current with respect to bias voltage at 100MHZ.
- ![](../MOD/plot/MOD0B_RC_local_time/Iac_Cathode.png) 
+ ![](../Active_Device/img/MOD/Iac_Cathode_real.png) 
 
-#### 3.5 Capacitance
+#### 3.6 Capacitance
 
 ​This section displays the variations of capacitance with respect to bias voltage at 100MHZ.
- ![](../MOD/plot/MOD0B_RC_local_time/C.png)
+ ![](../Active_Device/img/MOD/Result_C_100mhz.jpg)
 
 
 

@@ -1,5 +1,6 @@
 # Release Log
-![mo-logo](../static/img/mo_logo.jpg)
+
+![](../static/img/mo_logo.jpg)
 
 ## V3.1.5.0
 

@@ -297,7 +297,7 @@ analysis.add_analysis(
         "workflow_id": simu_res.workflow_id,
         "simulation_name": "FDE",
         "modal_analysis": {
-            "calculate_modes": run_options.run, "mesh_structure": False, "wavelength": wavelength, "wavelength_offset": 0.0001, "number_of_trial_modes": number_of_trial_modes, "search": "max_index",  # ['near_n','max_index'] "n": 1, "calculate_group_index": False, # 'mode_removal': {'threshold': 0.02},
+            "calculate_modes": run_options.run, "mesh_structure": False, "wavelength": wavelength, "number_of_trial_modes": number_of_trial_modes, "search": "max_index",  # ['near_n','max_index'] "n": 1, "calculate_group_index": False, # 'mode_removal': {'threshold': 0.02},
             "bent_waveguide": {
                 "bent_waveguide": False, "radius": 1, "orientation": 0, "location": "simulation_center",
             },
@@ -524,7 +524,7 @@ Subsequently, in Region 2, we ues the materials required for the simulation. We 
 </div>
 
 ```python
-# region --- 2. Material ---
+# region --- 1. Material ---
 mt = pj.Material()
 mt.add_lib(name='Si', data=mo.Material.Si_Palik, order=2)
 mt.add_lib(name='SiO2', data=mo.Material.SiO2_Palik, order=2)
@@ -553,7 +553,15 @@ In Region 3, we define the parameters relevant to the wavelength.
 ```python
 # region --- 3. Waveform ---
 wv = pj.Waveform()
-wv.add(name=waveform_name, wavelength_center=wavelength, wavelength_span=wavelength_span)
+    wv.add(name=waveform_name,type='gaussian_waveform',
+           property={'set': 'frequency_wavelength',  # selections are ['frequency_wavelength','time_domain']
+                     'set_frequency_wavelength': {
+                            'range_type': 'wavelength',  # selections are ['frequency','wavelength']
+                            'range_limit': 'center_span',  # selections are ['min_max','center_span']
+                            'wavelength_center': wavelength,
+                            'wavelength_span': wavelength_span,},
+                     }
+    )
 # endregion
 ```
 
@@ -600,9 +608,6 @@ st.add_geometry(
         'material': {'material': mt['Si'], 'mesh_order': 2}, } , )
 # endregion
 
-# region --- 5. Boundary ---
-bc = { "pml_layer": 8, "pml_kappa": 2, "pml_sigma": 0.8, "pml_polynomial": 3, "pml_alpha": 0, "pml_alpha_polynomial": 1, }
-# endregion
 ```
 
 <div class="text-justify">
@@ -628,8 +633,8 @@ simu.add(
     property={
         "background_material": mt["SiO2"],
         "geometry": { "x": 0, "x_span": 2*(l_input+l_bend+l_beam/2-0.5), "y": 0, "y_span": 6, "z": 0.11, "z_span": monitor_h },
-        "boundary_conditions": { "x_min_bc": "PML", "x_max_bc": "PML", "y_min_bc": "PML", "y_max_bc": "PML", "z_min_bc": "PML", "z_max_bc": "PML",
-            "pml_settings": { "x_min_pml": bc, "x_max_pml": bc, "y_min_pml": bc, "y_max_pml": bc, "z_min_pml": bc, "z_max_pml": bc, }, },
+         "boundary_conditions": {"x_min_bc": "PML", "x_max_bc": "PML", "y_min_bc": "PML", "y_max_bc": "PML", "z_min_bc": "PML", "z_max_bc": "PML",
+                                               "pml_settings": {"all_pml": {"layers": 8, "kappa": 2, "sigma": 0.8, "polynomial": 3, "alpha": 0, "alpha_polynomial": 1, }}},
         "general": { "simulation_time": 10000, },
         "mesh_settings": {
             "mesh_factor": 1.2,
@@ -674,7 +679,7 @@ src.add(
     type="mode_source",
     # axis="x_forward",
         property={
-            "general": { "mode_selection": "user_select", "waveform": {"waveform_id_select": wv[waveform_name]}, "inject_axis": "x", "direction": "forward", },
+            "general": { "mode_selection": "user_select", "waveform": {"waveform_id": wv[waveform_name]}, "inject_axis": "x_axis", "direction": "forward" },
             "geometry": { "x": -l_input-l_beam/2-l_bend+2, "x_span": 0, "y": 1.35, "y_span": monitor_w, "z": 0.11, "z_span": monitor_h },
             "modal_analysis": { "mode_removal": {"threshold": 0.01} } , }, )
 # endregion
@@ -718,7 +723,7 @@ mn.add(
     type="power_monitor",
     property={
         "general": {
-            "frequency_profile": { "wavelength_center": wavelength, "wavelength_span": 0.1, "frequency_points": 3, },
+            "frequency_profile": { "wavelength_center": wavelength, "wavelength_span": wavelength_span, "frequency_points": 3, },
         },
         "geometry": {
             "monitor_type": "2d_z_normal",
@@ -731,7 +736,7 @@ mn.add(
     name="input_reflect",
     property={
         "general": {
-            "frequency_profile": { "wavelength_center": wavelength, "wavelength_span": 0.1, "frequency_points": 11 } },
+            "frequency_profile": { "wavelength_center": wavelength, "wavelength_span": wavelength_span, "frequency_points": 11 } },
         "geometry": {
             "monitor_type": "2d_x_normal",
             "x": -l_input-l_beam/2-l_bend+1.5, "x_span": 0, "y": 1.35, "y_span": monitor_w, "z": 0.11, "z_span": monitor_h }, } )
@@ -743,7 +748,7 @@ mn.add(
     name="through",
     property={
         "general": {
-            "frequency_profile": { "wavelength_center": wavelength, "wavelength_span": 0.1, "frequency_points": 11 } },
+            "frequency_profile": { "wavelength_center": wavelength, "wavelength_span": wavelength_span, "frequency_points": 11 } },
         "geometry": {
             "monitor_type": "2d_x_normal",
             "x": l_input+l_beam/2+l_bend-2, "x_span": 0, "y": 1.35, "y_span": 2, "z": 0.11, "z_span": monitor_h }, }, )
@@ -755,7 +760,7 @@ mn.add(
     type="power_monitor",
     property={
         "general": {
-            "frequency_profile": { "wavelength_center": wavelength, "wavelength_span": 0.1, "frequency_points": 11 } },
+            "frequency_profile": { "wavelength_center": wavelength, "wavelength_span": wavelength_span, "frequency_points": 11 } },
          "geometry": {
             "monitor_type": "2d_x_normal",
             "x": l_input+l_beam/2+l_bend-2,

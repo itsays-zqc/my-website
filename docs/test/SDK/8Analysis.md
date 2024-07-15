@@ -52,11 +52,11 @@ bent_waveguide
 ### 7.1.3 Frequency Analysis
 | Parameter                                          | Type    | Default           | Description                                                                  |
 |:---------------------------------------------------|:--------|:------------------|:-----------------------------------------------------------------------------|
-|  frequency_analysis              | boolean | False             |                                                                              |
-|  start_wavelength                | number  | 1.55              | The start wavelength for the calculation mode. |
-|  stop_wavelength                 | number  | 1.499             | The stop wavelength for the calculation mode. |
+|  frequency_analysis              | boolean | False             |Choose whether to calculate the frequency sweep analysis results of the modes.    |
+|  start_wavelength                | number  | 1.55              | The start wavelength for the calculation modes. |
+|  stop_wavelength                 | number  | 1.499             | The stop wavelength for the calculation modes. |
 |  number_of_points                | integer | 10                |   The number of points to be calculated within the range.         |
-|  effective_index                 | number  | 1                 |   Specify the value of effective index for mode calculation. |
+|  effective_index                 | number  | 1                 |   Specify the value of effective index for mode calculation. Valid when not tracking a selected mode.|
 |  number_of_trial_modes            | number  | 1                 |  Sets the maximum number of modes to use for the frequency sweep.|
 
 **Example:**
@@ -93,14 +93,10 @@ simu_res = simu[simu_name].run()
 workflow_id_name = simu_res.workflow_id
 ```
                                         
-### 7.2.2 Eme propagate
-eme_propagate: The calculation structure S matrix uses all EME solver settings.
-
-override_group_spans: It can optionally override the group span and sc settings in EME solver and reset them.
-
-cell_group_settings: 
-span:
-sc: Selections are ['none', 'sub_cell']                                        
+### 7.2.2 EME propagate
+eme_propagate: Choose whether to calculation structure S-matrix using all EME solver settings.<br/>
+override_group_spans: Choose whether to override the group spans settings in EME solver and reset them.<br/>
+cell_group_settings: In each cell group, the parameters that are allowed to be changed are "span" and "sc".                               
 
 ### 7.2.3 Periodicity
 periodicity: Calculate the results of the periodic structure.
@@ -108,9 +104,9 @@ periodic_group_definition
 
 | Parameter                                          | Type    | Default           | Description                                                                  |
 |:---------------------------------------------------|:--------|:------------------|:-----------------------------------------------------------------------------|
-|  start_cell_group | string  |              |The cell group at the starting of the periodic structure, 'group_stpan_1' represents the first group, and so on.                     |
-|  end_cell_group   | string  |              | The cell group at the ending of the periodic structure, 'group_stpan_1' represents the first group, and so on.                      |
-|  periods          | integer |              |   The number of periodic structural regions.                                                                           |
+|  start_cell_group | string  |   -           |The cell group at the starting of the periodic structure, 'group_stpan_1' represents the first group, and so on.                     |
+|  end_cell_group   | string  |     -         | The cell group at the ending of the periodic structure, 'group_stpan_1' represents the first group, and so on.                      |
+|  periods          | integer |     -         |   The number of periodic structural regions.                                                                           |
 
 ### 7.2.4 Group span sweep
 Allow setting the length range of group span to obtain transmission results without recalculating the mode of each cell.
@@ -138,13 +134,13 @@ The following settings affect the results of the profile monitor and do not affe
 
 |Parameter                                 | Type    | Default        | Description                                                                               |
 |:---------------------------------------|:--------|:---------------|:------------------------------------------------------------------------------------------|
-| phase                                      | number  | 0            |  Specify the initial phase of the source. |
 | source_port                                | object  |  -            | Select the port of the input source.                                                |
 | select_mode                                | string  | TE           |Select the injection mode for the port.                                                |
-| wavelength                           | number  |     -         | This parameter takes effect when 'use_wavelength_sweep' of EME solver is true|
 
+<!-- | phase                                      | number  | 0            |  Specify the initial phase of the source. | -->
 ### 7.2.7 Override wavelength
-wavelength:
+wavelength: Override the wavelength used to calculate modes in the EME solver and use to calculate the s-matrix. This parameter takes effect when 'use_wavelength_sweep' of EME solver is true.
+
 **Example:**
 
 ```python
@@ -154,7 +150,7 @@ analysis.add(name="eme_propagate", type="eme_analysis",
                         "periodicity": {"periodicity": True,
                                         "periodic_group_definition": [{"start_cell_group": "group_span_1",
                                                                         "end_cell_group": "group_span_1",
-                                                                        "periods": grating_periods}]},
+                                                                        "periods": 80}]},
                         "group_span_sweep": {"group_span_sweep": False,
                                         "parameter": "group_span_1", "start": 41, "stop": 61, "number_of_points": 11},
                         "wavelength_sweep": {"wavelength_sweep": False,

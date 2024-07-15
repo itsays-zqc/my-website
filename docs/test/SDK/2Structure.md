@@ -125,6 +125,7 @@ add_geometry(
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
 |   radius               |    -     |  float   | The radius of the circle.  |
+|   angle               |    -     |  float   | The angle of the arc length of the added circle., in degrees.  |
 | x, y, z               | number  |     -    | The center position of the geometry. |
 | z_span                 | number  |     -   | Z span of the geometry. |
 | z_min, z_max           | number  |     -     | Z min, Z max position of the geometry. |
@@ -147,8 +148,8 @@ The following script adds a circle to the structure of the instance, sets the ra
 st = pj.Structure()
 st.add_geometry(name="circle", type="Circle", property={
     "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},  
-    "geometry": {"radius": 2, "x": 0, "y": 0, "z": 0, "z_span": 0.5
-                 "tilt_angle":360, "tilt_position":"top"}})
+    "geometry": {"radius": 2, "angle": 360, "x": 0, "y": 0, "z": 0, "z_span": 0.5
+                 "tilt_angle":90, "tilt_position":"top"}})
 ```
 
 ### 2.1.4 Ring

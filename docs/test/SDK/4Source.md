@@ -29,7 +29,7 @@ add(
 |:---------------|:--------|:----------:|:----------------------|
 | range_type       | string  |  -         | Selects "frequency" or "wavelength".                                    |
 | range_limit      | string  |  -         | Selects "min_max" or "center_span".                                     |
-|  wavelength_center, wavelength_center  | number  |-                | The wavelength center and frequency center. |
+|  wavelength_center, frequency_center  | number  |-                | The wavelength center and frequency center. |
 |  wavelength_span, frequency_span  | number  |-                | The wavelength span and frequency span.|
 |  wavelength_min, wavelength_max        | number  | -               | The minimum wavelength and maximum wavelength. |
 |  frequency_min, frequency_max          | number  |-                | The minimum frequency and maximum frequency.|
@@ -76,22 +76,22 @@ add(
 ### General properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
-| inject axis                             | string  |    _               | Selects the mode source propagation along the x-axis, y-axis or zaxis.|
+| inject axis                             | string  |    -             | Selects the mode source propagation along the x-axis, y-axis or zaxis.|
 | direction                               | string  | forward           | Selects the forward or backward direction of propagation for the mode source. |
 | amplitude                               | number  | 1.0               |Specifies the peak amplitude of the electric field, with the unit in V/m.            |
 | phase                                   | number  | 0.0               |  Specifies the initial phase of the source, with the unit in degrees.       |
-| mode selection                          | string  |  _                 | Selects "fundamental", "fundamental TE", "fundamental TM" or "user select" to inject mode.|
-| mode index                              | integer | 0                 |Selects the mode number from the list of calculated modes.                   |
-| search                                  | string  | max index         | Selects "max index" or "near n" to search modes.           |
+| mode_selection                          | string  |  -                 | Selects "fundamental", "fundamental TE", "fundamental TM" or "user select" to inject mode.|
+| mode_index                              | integer | 0                 |Selects the mode number from the list of calculated modes.                   |
+| search                                  | string  | max_index         | Selects "max index" or "near n" to search modes.           |
 | n                                       | number  | 1.0               |  Searchs modes near the specified effective index.                        |
-| number of trial modes                   | integer | 20                |  Records the maximum number of modes in the mode list.    |
+| number_of_trial_modes                   | integer | 20                |  Records the maximum number of modes in the mode list.    |
 | waveform                               | object  | -                  |  Selects the waveform ID from source pulse waveform list.                   |
 
 ### Geometry properties
 
 | Parameter                | Type    | Default   | Description        |
-|:---------------|:--------|:----------:|:---------------------           -|
-|  x, y, z               | number  |     -    | The center position of the mode source. |
+|:---------------|:--------|:----------:|:---------------------                     -|
+|  x, y, z               | number  |     -    | The center position of the mode source.             |
 |  x span, y span, z span  | number  |     -   | X span, Y span, Z span of the mode source. |
 |  x min, x max           | number  |     -     | X min, X max position of the mode source. |
 |  y min, y max           | number  |     -     | Y min, Y max position of the mode source. |
@@ -133,15 +133,15 @@ add(
 ### General properties
 | Parameter                                 | Type    | Default                  | Description                                                                  |
 |:------------------------------------------|:--------|:-------------------------|:-----------------------------------------------------------------------------|
-| inject axis                             | string  |   _                | Selects the mode source propagation along the x-axis, y-axis or zaxis.|
+| inject_axis                             | string  |   -               | Selects the mode source propagation along the x-axis, y-axis or zaxis.|
 | direction                               | string  | forward           | Selects the forward or backward direction of propagation for the mode source. |
 | amplitude                               | number  | 1.0               |Specifies the peak amplitude of the electric field, with the unit in V/m.            |
 | phase                                   | number  | 0.0               |  Specifies the initial phase of the source, with the unit in degrees.       |
 | waveform                               | object  | -                  |  Selects the waveform ID from source pulse waveform list.                   |
-|  angle theta                       | number  | 0                  | The angle between the propagation direction and the injection axis of source, with the unit in degrees.           |
-|  angle phi                         | number  | 0                        |  In a right-hand coordinate system, the angle of propagation is rotated around the injection axis of the source.  |
-|  polarization angle                | number  | 0                        |  The polarization angle defines the orientation of the injected electric field. A polarization angle of zero degrees indicates P-polarized radiation, while an angle of 90 degrees indicates S-polarized radiation.    |
-| beam parameters     | string  | waist_size_and_position            | Selects "waist_size_and_position" or "beam_size_and_divergence" to set the beam parameters.       |
+|  angle_theta                       | number  | 0                  | The angle between the propagation direction and the injection axis of source, with the unit in degrees.           |
+|  angle_phi                         | number  | 0                        |  In a right-hand coordinate system, the angle of propagation is rotated around the injection axis of the source.  |
+|  polarization_angle                | number  | 0                        |  The polarization angle defines the orientation of the injected electric field. A polarization angle of zero degrees indicates P-polarized radiation, while an angle of 90 degrees indicates S-polarized radiation.    |
+| beam_parameters     | string  | waist_size_and_position            | Selects "waist_size_and_position" or "beam_size_and_divergence" to set the beam parameters.       |
 ### Beam parameters
 
 **waist_size_and_position**

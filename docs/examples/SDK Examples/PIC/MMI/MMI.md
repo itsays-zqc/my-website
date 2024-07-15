@@ -220,7 +220,7 @@ simu.add(
     property={
         "background_material": mt["Air"],
         "mesh_settings": { "mesh_factor": 1.2, "mesh_refinement": { "mesh_refinement": "curve_mesh", }, },
-        "geometry": {"x": 30.75, "x_span": 55.5, "y": 0, "y_span": 5, "z": 0, "z_span": 4},
+        "geometry": {"x_min": -1, "y": 0, "y_span": 3, "z": 0, "z_span": 3},
         "boundary_conditions": {
             "y_min_bc": "PML", "y_max_bc": "PML", "z_min_bc": "PML", "z_max_bc": "PML",
             "pml_settings": { "pml_kappa": 2, "pml_sigma": 5, "pml_layer": 12, "pml_polynomial": 3, }, },
@@ -241,7 +241,7 @@ simu.add(
 The `name` parameter defines the name of the simulation module.<br/>The `property` parameter specifies the general property of the simulation module, such as the geometry of cell, wavelength and so on.<br/>
 The `cell_group_definition` parameter specifies the general property of the cell group.<br/>
 The `number_of_modes` parameter specifies the general property of the simulation module within the structure, such as the geometry of cell, wavelength and so on.<br/>
-The `sc` parameter sets the subcell method in EME simulation. Selections are ['none', 'sub_cell', 'sc'].<br/>
+The `sc` parameter sets the subcell method in EME simulation. Selections are ['none', 'sub_cell'].<br/>
 
 
 #### 2.8 Add Sub-mesh

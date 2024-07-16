@@ -60,9 +60,6 @@ add_dispersion(
 | name      | string  |  -  |   Define the name of the material.             |
 | data      | tuple |     -      |A list of tuple, format is [(wavelength, index real, index imag), ...]       |
 | order       | integer | 2         |  Indicates the priority of the material, with higher numbers indicating higher priority.      | 
-| name   | string  |    -   |   Define the name of the material.           |
-| data  | tuple   | - | A list of tuple, format is [(wavelength, index real, index imag), ...]       |
-| order   | integer | 2         |  Priority of the material, with larger number indicating higher priority.   |
 | color   | string  |    -     | Set the color for material display, format is "#RRGGBB" .   |
 
 

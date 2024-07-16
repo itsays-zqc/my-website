@@ -27,7 +27,7 @@ Choose the 1D or 2D eigenmode solver, with available types including '2d_x_norma
 
 ### Background material
 Selects a material object from the material database as the background medium for the simulation region.<br/>
-**refractive_index:** If not selecting a material, this field can directly set the refractive index of the background medium. The default value is 1.
+refractive_index: If not selecting a material, this field can directly set the refractive index of the background medium. The default value is 1.
 
 ### Geometry
 | Parameter                | Type    | Default   | Description        |

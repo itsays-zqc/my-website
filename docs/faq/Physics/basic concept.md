@@ -23,7 +23,7 @@ The real part of the propagation constant represents the phase velocity, while t
 <div class="text-justify">
 The direction and velocity of propagation vary with wavelength, medium structure, and refractive index. The ratio of propagation constant to vacuum wave vector is defined as the effective refractive index of the propagation direction.
 
-<BlockMath math="β = n_eff \frac{2π}{λ}" />
+<BlockMath math="β = n_{eff} \frac{2π}{λ}" />
 
 </div>
 
@@ -31,8 +31,8 @@ The direction and velocity of propagation vary with wavelength, medium structure
 ## Phase velocity
 
 The propagation speed of light of a certain mode at a single frequency.
-                                                
-<BlockMath math="V_p = \frac{c}{n_eff}" /> 
+
+<BlockMath math="V_p = \frac{c}{n_{eff}}" />
 
 ## Group refractive index
 
@@ -40,7 +40,7 @@ The propagation speed of light of a certain mode at a single frequency.
 
 A type of average refractive index formed by changes in the speed and direction of light propagation due to factors such as non-uniformity of the propagation medium and wavelength of light.
 
-<BlockMath math="n_g=n_eff-λ\frac{dn}{dλ}" />                                               
+<BlockMath math="n_g=n_{eff}-λ\frac{dn}{dλ}" />
 
 </div>
 

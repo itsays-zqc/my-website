@@ -76,7 +76,7 @@ We have enhanced the classical CEM algorithm and introduced a novel 'local + clo
 
 | FDTD Module                                                   |  Shared Module | EME Module                                                     |
 | :----------------------------------------------------------- | :----------------------------------------------------------- | :----------------------------------------------------------- |
-| • Mode/Gaussian/Import source<br/>• PML/PEC boundary<br/>• 0D/1D/2D/3D frequency monitor<br/>• 0D/1D/2D/3D time monitor <br/>• Early Shutoff<br/>• Transmission calculation<br/>• Mode expansion<br/>• S-parameters calculation<br/>• Global parameter sweeping<br/>• Multi-threaded computing | • 3D Modeling• GDS import<br/>• Tilt slope of waveguide profile<br/>• Non-Uniform/Uniform Mesh<br/>• Conformal Mesh Refinement<br/>• Standard material library<br/>• Custom isotropic/diagonally<br/>anisotropic materials<br/>• Far field | • Effective Index Calculation<br/>• Group Index Calculation<br/>• Arbitrary port settings<br/>• PEC/PMC/PML boundary<br/>• 2D frequency domain monitor<br/>• S-parameter calculation<br/>• Frequency Sweeping<br/>• Group span quick sweeping<br/>• Overlap Analysis<br/>• Multi-threaded Computing |
+| • Mode/Gaussian/Import source<br/>• PML/PEC boundary<br/>• 0D/1D/2D/3D frequency monitor<br/>• 0D/1D/2D/3D time monitor <br/>• Early Shutoff<br/>• Transmission calculation<br/>• Mode expansion<br/>• S-parameters calculation<br/>• Global parameter sweeping<br/>• Multi-threaded computing | • 3D Modeling•<br/> GDS import<br/>• Tilt slope of waveguide profile<br/>• Non-Uniform/Uniform Mesh<br/>• Conformal Mesh Refinement<br/>• Standard material library<br/>• Custom isotropic/diagonally<br/>anisotropic materials<br/>• Far field | • Effective Index Calculation<br/>• Group Index Calculation<br/>• Arbitrary port settings<br/>• PEC/PMC/PML boundary<br/>• 2D frequency domain monitor<br/>• S-parameter calculation<br/>• Frequency Sweeping<br/>• Group span quick sweeping<br/>• Overlap Analysis<br/>• Multi-threaded Computing |
 
 
 ## What functions are available for active component simulation?
@@ -89,7 +89,7 @@ Our active module seamlessly integrates optical and electrical modules, combinin
 
 | Shared Module | Shared Module for AFDTD and AFDE      |
 | ------------------------------ | ------------------------------------------------------------ |
-| • 3D Modeling<br/>• GDS Import | • Non-Uniform/Uniform Mesh<br/>• Conformal Mesh Refinement<br/>• Standard Material Library<br/>• Custom Isotropic Optical Materials |
+| • 3D Modeling <br/> • GDS Import | • Non-Uniform/Uniform Mesh<br/>• Conformal Mesh Refinement<br/>• Standard Material Library<br/>• Custom Isotropic Optical Materials |
 
 ## Which simulation modules are applied?
 
@@ -115,7 +115,7 @@ Max-Optics Studio EME is an efficient simulation tool for modeling long-distance
 
 ***<font size = "1" color = "#0000dd">—— Curve Mesh Technology </font><br />***
 
-Max-Optics introduces a unique 3D curve mesh grid technology that enables precise equivalence for curved or surface structures when using a hexahedral grid. This allows for reduced mesh density without sacrificing computational accuracy, resulting in improved computational efficiency. 
+Max-Optics introduces a unique 3D curve mesh grid technology that enables precise equivalence for curved or surface structures when using a hexahedral grid. This allows for reduced mesh density without sacrificing computational accuracy, resulting in improved computational efficiency.
 
 ***<font size = "1" color = "#0000dd">—— Curve Mesh Technology </font><br />***
 
@@ -177,16 +177,16 @@ When you need technical support or have inquiries related to using Max-Optics, y
 Clearly State the Issue or Requirement:
 Describe the issue or requirement concisely. Use clear language to explain the specific support you are seeking.
 
-Provide Detailed Information: 
+Provide Detailed Information:
 Provide as much relevant information as possible about the issue, such as error messages, steps taken, software version, operating system, etc. This will assist the support personnel in analyzing and diagnosing the problem.
 
-Include Screenshots or Log Files: 
+Include Screenshots or Log Files:
 If applicable, attach relevant screenshots or log files to supplement the problem description. These visual aids provide additional context and facilitate the identification and resolution of the issue.
 
-List Attempted Solutions: 
+List Attempted Solutions:
 If you have already attempted some solutions without success, mention them in your request. Provide details of the steps you have taken and the outcomes. This will help the support team understand the efforts you have already made and avoid repetition.
 
-Be Polite and Clear: 
+Be Polite and Clear:
 Maintain a polite and clear tone when writing your support request. Use professional language and appropriate etiquette to express your issue or requirement and express gratitude for the support team's assistance.
 
 Please contact our customer support team.

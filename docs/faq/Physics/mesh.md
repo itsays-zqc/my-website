@@ -9,8 +9,8 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 | Solver |FDE|EME|FDTD|description|
 |--------|---|---|----|-----------|
-|uniform|  √| √ | √ | The grid size in the x, y, and z directions are the same in the structure.| 
-|auto non-uniform| |  √ |  |The size of the non-uniform grid is determined by "cells per wavelength", and the grid size is the wavelength in the structure divided by "cells per wavelength".| 
+|uniform|  √| √ | √ | The grid size in the x, y, and z directions are the same in the structure.|
+|auto non-uniform| |  √ |  |The size of the non-uniform grid is determined by "cells per wavelength", and the grid size is the wavelength in the structure divided by "cells per wavelength".|
 
 
 ### 1.1 Uniform
@@ -28,7 +28,7 @@ Global automatic non-uniform grid distribution, with "cells per wavelength" dete
 According to the different ways in which the refractive index of materials is filled in hexahedral and rectangular grids, they can be divided into "staircase" and "curve mesh" types of grids.
 </div>
 
-### 2.1Staircase 
+### 2.1 Staircase
 
 <div class="text-justify">
 When multiple materials appear in a grid, one of them will be selected as the filling material for the grid. The size of the divided grid is too large, which can easily create a stepped shape in curved structures. As shown in the figure below, the refractive index distribution of the structure is observed, and a stepped shape appears at the boundary of the curved waveguide.

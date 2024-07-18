@@ -73,7 +73,7 @@ add(
     )
 ```
 
-### General properties
+### General 
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
 | inject axis                             | string  |    -             | Selects the mode source propagation along the x-axis, y-axis or zaxis.|
@@ -87,7 +87,7 @@ add(
 | number_of_trial_modes                   | integer | 20                |  Records the maximum number of modes in the mode list.    |
 | waveform                               | object  | -                  |  Selects the waveform ID from source pulse waveform list.                   |
 
-### Geometry properties
+### Geometry 
 
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:---------------------                     -|
@@ -97,10 +97,10 @@ add(
 |  y min, y max           | number  |     -     | Y min, Y max position of the mode source. |
 |  z min, z max           | number  |     -     | Z min, Z max position of the mode source. |
 
-### boundary conditions.
+### Boundary conditions
 Select the override default boundary conditions to True, and each boundary condition can be set separately. The optional boundary conditions include "PEC", "PMC", "PML", "symmetric" or "anti symmetric". 
 
-### modal analysis.
+### Modal analysis
 If the fraction of magnetic field intensity in PML is greater than the specified threshold, the mode is discarded.
  
 
@@ -130,7 +130,7 @@ add(
         property: dict,
     )
 ```
-### General properties
+### General 
 | Parameter                                 | Type    | Default                  | Description                                                                  |
 |:------------------------------------------|:--------|:-------------------------|:-----------------------------------------------------------------------------|
 | inject_axis                             | string  |   -               | Selects the mode source propagation along the x-axis, y-axis or zaxis.|
@@ -141,22 +141,15 @@ add(
 |  angle_theta                       | number  | 0                  | The angle between the propagation direction and the injection axis of source, with the unit in degrees.           |
 |  angle_phi                         | number  | 0                        |  In a right-hand coordinate system, the angle of propagation is rotated around the injection axis of the source.  |
 |  polarization_angle                | number  | 0                        |  The polarization angle defines the orientation of the injected electric field. A polarization angle of zero degrees indicates P-polarized radiation, while an angle of 90 degrees indicates S-polarized radiation.    |
-| beam_parameters     | string  | waist_size_and_position            | Selects "waist_size_and_position" or "beam_size_and_divergence" to set the beam parameters.       |
-### Beam parameters
 
-**waist_size_and_position**
+beam_settings:<br/>
+Beam_parameters: Selects "waist_size_and_position" or "beam_size_and_divergence" to set the beam parameters. Waist_radius and distance_from_caist are valid when beam_parameters is set to waist_steze_1and_position. Similarly, beam_radius and divergence_angle are valid when beam_marameters is selected as beam_size_and_divergence.<br/>
+waist radius: 1/e field (1/e2 power) radius of the beam for a Gaussian beam.<br/>
+distance from waist: The distance between the injection plane and the beam waist. A positive distance indicates a diverging beam, while a negative distance indicates a converging beam.
+beam radius: 1/e field (1/e2 power) radius of the beam for a Gaussian beam.<br/>
+divergence angle: The radiation divergence angle measured in the far field. A positive angle indicates a diverging beam, while a negative angle indicates a converging beam.
 
-*waist radius*: 1/e field (1/e2 power) radius of the beam for a Gaussian beam.
-
-*distance from waist*: The distance between the injection plane and the beam waist. A positive distance indicates a diverging beam, while a negative distance indicates a converging beam.
-
-**beam_size_and_divergence**
-
-*beam radius*: 1/e field (1/e2 power) radius of the beam for a Gaussian beam .
-
-*divergence angle*: The radiation divergence angle measured in the far field. A positive angle indicates a diverging beam, while a negative angle indicates a converging beam.
-
-### Geometry properties
+### Geometry
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
 |  x, y, z               | number  |     -    | The center position of the gaussian source. |
@@ -176,7 +169,7 @@ so = pj.Source()
 so.add(name="source", type="gaussian_source", axis="z_backward",
            property={"general": {"angle_theta": 0, "angle phi": 0, "polarization_angle": 0, "waveform": {"waveform_id": wv_id},
                                  "beam_settings": {"calculation method": "use_scalar_approximation", 
-                                                   "beam parameters": "waist_size_and_position", 
+                                                   "beam_parameters": "waist_size_and_position", 
                                                    "waist_radius": 5.2, "distance_from_waist": 1.5}},
                      "geometry": {"x": 4, "x span": 20, "y": 0, "y span": 20, "z": 1.5, "z span": 0}})
 
@@ -194,7 +187,7 @@ add(
     )
 ```
 
-### Geometry properties
+### Geometry 
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
 |  x, y, z               | number  |     -    | The center position of the FDTD port. |
@@ -203,10 +196,10 @@ add(
 |  y min, y max           | number  |     -     | Y min, Y max position of the FDTD port. |
 |  z min, z max           | number  |     -     | Z min, Z max position of the FDTD port. |
 
-### boundary conditions.
+### Boundary conditions
 Select the override default boundary conditions to True, and each boundary condition can be set separately. The optional boundary conditions include "PEC", "PMC", "PML", "symmetric" or "anti symmetric". 
 
-### modal analysis.
+### Modal analysis
 If the fraction of magnetic field intensity in PML is greater than the specified threshold, the mode is discarded.
  
 
@@ -255,10 +248,10 @@ add(
 | n                                       | number  | 1.0               |  Searchs modes near the specified effective index.                        |
 | number of trial modes                   | integer | 20                |  Records the maximum number of modes in the mode list.    |
 
-### Boundary conditions.
+### Boundary conditions
 Select the override default boundary conditions to True, and each boundary condition can be set separately. The optional boundary conditions include "PEC", "PMC", "PML", "symmetric" or "anti symmetric". 
 
-### Modal analysis.
+### Modal analysis
 If the fraction of magnetic field intensity in PML is greater than the specified threshold, the mode is discarded.
  
 

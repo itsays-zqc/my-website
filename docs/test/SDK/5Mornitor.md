@@ -72,7 +72,8 @@ add(
 ### Data to record                                                                                                                  
 
 ### Advancd 
-**sampling_rate:**
+
+sampling_rate:
 min_sampling_per_cycle:
 
 **Example:**
@@ -104,13 +105,13 @@ add(
 |  sample spacing                            |    string              |                                            |
 |  use_wavelength_spacing                    | boolean | True              |                                                                                                                             |
 |  use source limits                         | boolean | False             |                                                                                                                             |
-|   spacing type                              | string  | wavelength        | Selections are ["wavelength", "frequency"]                                                                                  |
-|   spacing_limit                             | string  | min_max           | Selections are ["min_max", "center_span"]                                                                                   |
+|   spacing type                              | string  | wavelength        | Selections are "wavelength", "frequency"                                                                                 |
+|   spacing_limit                             | string  | min_max           | Selections are "min_max", "center_span"                                                                                 |
 | wavelength center, frequency center     | number  |      -             | A float, or a parameter, or a parameter expression that evaluates to a float                                                |
 |  wavelength span, frequency span     | number  |-                   | A float, or a parameter, or a parameter expression that evaluates to a float                      |
 |  wavelength min, wavelength wax                            | number  | -                  | A float, or a parameter, or a parameter expression that evaluates to a float           |
 | frequency min, frequency max       | number  | -                  | A float, or a parameter, or a parameter expression that evaluates to a float           |
-| frequency_profile.frequency_points                | integer | 5                 |                     |
+| frequency_points                | integer | 5                 |                     |
 
 ### Geometry
 | Parameter                | Type    | Default   | Description        |
@@ -123,8 +124,10 @@ add(
 | z_min, z_max           | number  |     -     | Z min, Z max position of the power monitor. |
 
 ### Data to record 
-**Fields:** output_ex                                 
-**poynting_vector_and_power:** output_power      
+Fields: <br/>   
+output ex, ey, ez, hx, hy, hz: Choose whether to measure that field component. In 2D simulation, only some field components are non-zero.   <br/>                    
+poynting_vector_and_power: <br/>   
+output px, py, pz, power: Choose whether to output the results of poynting vector and transmittance. In 2D simulation, only some components are non-zero.
                                                                                    
 
 **Example:**
@@ -176,7 +179,7 @@ mn.add(name="y_normal", type="profile_monitor",
 | frequency_points        | integer | 5              |                                                                              |
 
 ### Advanced 
-**advanced:** min_sampling_per_cycle  
+min_sampling_per_cycle  
 
 **Example:**
 The following script add the global monitor and set its frequency domain range and number of frequency points. This script assumes that FDTD solver has been added to the simulation environment, and the pj is an instance of the project.

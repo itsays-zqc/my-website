@@ -12,10 +12,7 @@ In this section, we will discuss how to add meshing to the simulation. This step
 Add sub mesh to the simulation project with the code below (for optical simulation).
 
 ```python
-lm = Project.LocalMesh()
-lm.add(
-        self,
-        *,
+add(
         name: str,
         property: dict,
     )
@@ -30,11 +27,9 @@ lm.add(name="sub_mesh",
         property={"general": {"dx": 0.2, "dy": 0.2, "dz": 0.2},
                     "geometry": {"x": 0, "x_span": 6, "y": 0, "y_span":3, "z": 0, "z_span": 3 } } )
 ```
-wget https://github.com/mikefarah/yq/releases/download/v4.16.2/yq_linux_amd64 && chmod +x yq_linux_amd64 && mv yq_linux_amd64 /usr/local/bin/yq
+
 ### General properties
-| Parameter                      | Type    | Default   | Description                                                                  |
-|:-------------------------------|:--------|:----------|:-----------------------------------------------------------------------------|
-| dx, dy, dz                    | number  |     -      |                        |
+ dx/dy/dz: Specify the mesh size in the x/y/z direction.
 
 #### Geometry properties
 | Parameter                | Type    | Default   | Description        |

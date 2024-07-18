@@ -117,6 +117,12 @@ const FeatureList = [
         </div>
         <hr style={{ margin: '0.25rem 0' }}/>
 
+
+        <div style={{ textAlign: 'left' }}>
+        <a href="/my-website/docs/category/active-devices">4.GUI Active Devices</a>
+        </div>
+        <hr style={{ margin: '0.25rem 0' }}/>
+
         {/* <div style={{ textAlign: 'left' }}>
         <a href="/my-website/docs/tutorial/t1">5.PD(by SDK)</a>
         </div> */}

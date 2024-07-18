@@ -542,7 +542,7 @@ def add_ddm_settings(pj: Project, run_options: RunOptions):
 
 
 
-`add_doping()` parameters:
+`pj.Doping()` parameters:
 
 - `name`--Doping name
 - `type`--Doping type. Options are `"n"` or `"p"` for n-type, p-type doping respectively
@@ -572,11 +572,11 @@ Doping property list:
 | geometry.y_max                |         | float |                                                    |
 | geometry.z_min                |         | float |                                                    |
 | geometry.z_max                |         | float |                                                    |
-| general.type |         | str   | Selections are ['constant', 'gaussian']            |
+| general.type |         | str   | Selections are ['constant_doping', 'diffusion_doping']            |
 | general.concentration         |         | float |                                                    |
-| general.source_face           |         | str   | Available when type is 'gaussian' |
-| general.junction_width        |         | float | Available when type is 'gaussian' |
-| general.ref_concentration     |         | float | Available when type is 'gaussian' |
+| general.source_face           |         | str   | Available when type is 'diffusion_doping' |
+| general.junction_width        |         | float | Available when type is 'diffusion_doping' |
+| general.ref_concentration     |         | float | Available when type is 'diffusion_doping' |
 | geometry.applicable_regions            | 'all_regions'   | str   | Selections are ['all_regions', 'material', 'region']       |
 | geometry.material_list          |         | list  | Available when geometry.applicable_regions is 'material'           |
 | geometry.solid_list            |         | list  | Available when geometry.applicable_regions is 'region'             |
@@ -672,7 +672,7 @@ Description:
     # endregion
 ```
 
-`add_surface_recombination()` parameters：
+parameters：
 
 - `name`--Custom name
 - `property`--Other properties
@@ -696,7 +696,7 @@ Description:
 
 - `surface_type`--Type of selection for the surface
   - When `surface_type` is `"solid_solid"`, the surface is the interface between two structures 
-  - When `surface_type` is "material_material"`, the surface is the interface between two materials
+  - When `surface_type` is `"material_material"`, the surface is the interface between two materials
 
 - `hole.s0`, `electron.s0`--Surface recombination velocity of holes and electrons. 
 
@@ -710,6 +710,7 @@ Description:
 
 #### 2.3.6 Set local mesh
 
+set a rectangle region for local mesh of electrical simulation. 
 ```
 [19]
 ```
@@ -743,20 +744,20 @@ Description:
     # endregion
 ```
 
-`Emesh` set a rectangle region for local mesh of electrical simulation. Parameters:
+ Parameters:
 
 - `name`--Custom name
 - `property`--Other properties
 
 <br/>
 
-|                   | default | type  | notes                                          |
-| :----------------: | :------: | :----: | :-----------------------------------------: |
-| general.mesh_size |  0.01   | float |  The minimum value of the local mesh region.   |
-| general.geometry_type | directly defined | string | Selections are ['directly defined', 'solid','solid_solid']  |
+|                       |         default     |  type  | notes                                          |
+| :-------------------: | :-----------------: | :----: | :--------------------------------------------: |
+| general.mesh_size     |           0.01      |  float |  The minimum value of the local mesh region.   |
+| general.geometry_type |    directly defined | string | Selections are ['directly defined', 'solid','solid_solid']  |
 | solid_solid           |                     |string  |Names of the two structures at the interface.|
-| solid_1               |                     | string | Available when geometry_type is 'solid_solid'                                                                       |
-| solid_2               |                     | string | Available when geometry_type is 'solid_solid'                                                                       |
+| solid_1               |                     | string | Available when geometry_type is 'solid_solid'    |
+| solid_2               |                     | string | Available when geometry_type is 'solid_solid'    |
 
 Local mesh of electrical simulation in rectangle region property list, when `geometry_type` is `directly defined`:
 
@@ -908,13 +909,10 @@ Mode source property list:
 | general.phase                       | 0.0               | float   |                                                              |
 | general.mode_selection              |                   | string  | Selections are ['fundamental', 'fundamental_TE', 'fundamental_TM', 'fundamental_TE_and_TM', 'user_select', 'user_import']. |
 | general.mode_index                  | 0                 | integer |                                                              |
+| general.rotations.theta             | 0                 | float   |                                                              |
 | general.search                      | max_index         | string  | Selections are ['near_n', 'max_index'].                      |
-| general.n                           | 1.0               | float   |                                                              |
 | general.number_of_trial_modes       | 20                | integer |                                                              |
 | general.waveform.waveform_id_select |                   | any     |                                                              |
-| general.rotations.theta             | 0                 | float   |                                                              |
-| general.rotations.phi               | 0                 | float   |                                                              |
-| general.rotations.rotation_offset   | 0                 | float   |                                                              |
 | bent_waveguide.bent_waveguide       | false             | bool    |                                                              |
 | bent_waveguide.radius               | 1                 | float   |                                                              |
 | bent_waveguide.orientation          | 20                | float   |                                                              |
@@ -1431,6 +1429,7 @@ A range of voltage from 0V to 1.5V is applied to the electrode `"anode"`, with a
 <br/>
 
 *Result show of the I-V curve*
+
 ![I-V curve](./img/3.2.3.0/Rs_Ianode.png)
 <center>Fig 4. I-V curve</center>
 
@@ -1453,8 +1452,7 @@ A range of voltage from 0V to 1.5V is applied to the electrode `"anode"`, with a
         Idc = np.genfromtxt(f"{plot_path}I_Anode.csv",skip_header=1,delimiter=",")[:,1]
 ```
 
-`"0_I_Real.csv"` is filename generated automatically of the I-V result. The `"0"` in the beginning indicates the index of the electrode. When the I-V curve is from a different electrode, the index will change. Therefore, a iteration from 0 to 9 is applied to find the saved I-V data file.
-
+`"I_Anode.csv"` is filename generated automatically of the I-V result. 
 
 <br/>
 
@@ -1486,7 +1484,7 @@ Fit the data after the index `start_idx`, which is the start index of the approx
 ```
 
 ```python
- r_path = f"{plot_path}resistance"
+    r_path = f"{plot_path}resistance"
         if not os.path.exists(r_path):
             os.makedirs(r_path)
         
@@ -1508,13 +1506,14 @@ Fit the data after the index `start_idx`, which is the start index of the approx
         plt.close()
 # endregion
 
-print("\x1b[6;30;42m" + "[Finished in %(t)s mins]" % {"t": round((time.time() - start)/60, 2)} + "\x1b[0m")
+if __name__ == "__main__":
+    simulation(run_options=RunOptions(high_field=False, index_preview=False, run=True, extract=True))
 ```
-
 
 <br/>
 
 *Result show of the V-I fitting*
+
 ![resistance](./img/3.2.3.0/Rs_Resistance.jpg)
 <center>Fig 5. V-I fitting</center>
 
@@ -1680,6 +1679,7 @@ For the result extraction:
 <br/>
 
 *Result show of the capacitance*
+
 ![Capacitance](./img/3.2.3.0/C.png)
 <center>Fig 6. Capacitance</center>
 
@@ -1840,9 +1840,9 @@ if __name__ == "__main__":
 `pj.analysis()` parameters：
 
 - `name`--Custom name
-- `monitor`--Name of the `power_monitor` for calculating optical generation rate. The `power_monitor` is required to be of 3D type
-- `average_dimension`--Set the direction to take the average of the optical generate rate
-- `light_power`--Set the power of the light source, measured in W. The optical generation rate will be scaled based on the power
+- `monitor`--Name of the `power_monitor` for calculating optical generation rate. The `power_monitor` is required to be of 3D type.
+- `average_dimension`--Set the direction to take the average of the optical generate rate.
+- `light_power`--Set the power of the light source, measured in W. The optical generation rate will be scaled based on the power.
 
 <br/>
 
@@ -1850,8 +1850,8 @@ if __name__ == "__main__":
 `gen_res.extract()` parameters：
 
 - `data`--Type of the result
-  - When `data` is set to `"generation_rate"`, besides an image file and a csv file, the result files also include a text file in `.gfile` format. The coordinate unit in the csv and the image file is `um`, and the generation rate unit in the two files is `/cm^3/s`. These units can't be modified when extracting the result. However, the units in the gfile are controlled by `coordinate_unit`、`field_length_unit`. And only the gfile can be imported to the OEDevice solver
-  - When data is set to `"pabs_total"`, the total absorption power is extracted
+  - When `data` is set to `"generation_rate"`, besides an image file and a csv file, the result files also include a text file in `.gfile` format. The coordinate unit in the csv and the image file is `um`, and the generation rate unit in the two files is `/cm^3/s`. These units can't be modified when extracting the result. And only the gfile can be imported to the DDM solver.
+  - When data is set to `"pabs_total"`, the total absorption power is extracted.
 
 - `export_csv`--Whether to export csv file
 - `show`--Whether to show the plot in a popup window
@@ -1860,6 +1860,7 @@ if __name__ == "__main__":
 <br/>
 
 *Result show of the optical generation rate*
+
 ![Optical generation rate](./img/3.2.3.0/FDTD_genrate.png)
 <center>Fig 7. Optical generation rate</center>
 
@@ -2078,6 +2079,7 @@ if __name__ == "__main__":
 <br/>
 
 *Result show of the photo current*
+
 ![Photo current](./img/3.2.3.0/IP_Icathode.png)
 <center>Fig 8. Photo current</center>
 <br/>
@@ -2345,6 +2347,7 @@ if __name__ == "__main__":
 <br/>
 
 *Result show of the step response*
+
 ![Step response](./img/3.2.3.0/BW_I.png)
 <center>Fig 9. Step response</center>
 
@@ -2425,6 +2428,7 @@ First, take the derivative of the step response to obtain the impulse response. 
 <br/>
 
 *Result show of the impulse response*
+
 ![Impulse response](./img/3.2.3.0/BW_impulse_response.jpg)
 <center>Fig 10. Impulse response</center>
 
@@ -2759,7 +2763,7 @@ For the detailed introduction about electronic parameters, please refer to the d
 | general.simulation_temperature           | 300               | float   |                                                              |
 | general.background_material              |                   | string  |                                                              |
 | advanced.non_linear_solver               | Newton            | string  | Selections are ['Newton'].                                   |
-| advanced.linear_solver                   | MUMPS             | string  | Selections are ['MUMPS', 'LU', 'BCGS'].                      |
+| advanced.linear_solver                   | MUMPS             | string  |                     |
 | advanced.fermi_statistics                | disabled          | string  | Selections are ['disabled', 'enabled'].                      |
 | advanced.damping                         | none              | string  | Selections are ['none', 'potential'].                        |
 | advanced.potential_update                | 1.0               | float   |                                                              |
@@ -2811,16 +2815,6 @@ Description:
   - `temperature`--Set the simulation temperature
   - `temperature_dependence`--Set the type of the temperature dependence. Only `"Isothermal"` is supported currently 
 
-- `genrate`:
-
-  - `genrate_path`--Set the absolute path of the optical generation rate file (gfile)
-    - When it's set to `""` (by default), and empty string , no optical generation rate will be applied
-    - When it's not empty, the gfile at the path will be imported to apply the optical generation rate
-
-  - `coordinate_unit`--Set the coordinate unit in the gfile
-  - `field_length_unit`--Set the length unit in the generation rate unit in the gfile
-  - `source_fraction`--Set the scaling factor for the light power. The imported optical generation rate will be multiplied by this factor first, and then be used to solve the carrier transport
-
 - `small_signal_ac`:
 
   - `perturbation_amplitude`--Set the voltage amplitude of the small signal
@@ -2842,18 +2836,11 @@ Description:
 - `advanced`:
 
   - `non_linear_solver`--Set the non-linear solver, only Newton method is supported currently
-  - `linear_solver`--Set the linear solver. Options are `"MUMPS"`, `"LU"`, `"BCGS"`.  `MUMPS` and `LU` are direct linear solvers which usually give the exact solution. However, `MUMPS` supports parallel computation while `LU` doesn't. ；`"BCGS"` is a Krylov subspace (KSP) iterative solver, which also supports parallel computation and is more efficient but can only give approximate results.
+  - `linear_solver`--Set the linear solver. Options are `"MUMPS"`. `MUMPS` is direct linear solvers which usually give the exact solution, and supports parallel computation.
   - `use_quasi_fermi`--Whether to directly solve for the quasi-Fermi potential instead of carrier concentration as unkowns. `"enabled"` means `True`, and `"disabled"` means `False`
   - `damping`--Set the nonlinear update damping scheme. `"potential"` means the damping is based on the potential variation
   - `potential_update`--Set the threshold potential for potential damping. The large value will reduce the strength of damping effect
-  - `multi_threads`:
-    - When it's set to `"let_solver_choose"`, the solver will determine the number of threads to use. The default maximum number of threads is 4
-    - When it's set to `"set_thread_count"`, the number of threads is set by the user to `thread_count`
-  - `thread_count`--Custom number of threads
   - `max_iterations`--Set global maximum number of iterations, available when `use_global_max_iterations` is `True`
-  - `use_global_max_iterations`--Whether to use global max iterations during the initialization of solving the Poisson equations and the subsequent computing for solving the drift-diffusion equations coupling with Poisson equations, default to be `True`
-  - `poisson_max_iterations`--Set the max iterations during the initialization of solving the Poisson equations, available when `use_global_max_iterations` is `False`
-  - `ddm_max_iterations`--Set the max iterations during the subsequent computing for solving the drift-diffusion equations coupling with Poisson equations, available when `use_global_max_iterations` is `False`
   - `relative_tolerance`--Set the relative update tolerance
   - `tolerance_relax`--Set the tolerance relaxation factor for convergence on relative tolerance criteria
   - `divergence_factor`--Nonlinear solver fault with divergence when each individual function norm exceeds the threshold as its absolute tolerance multiply by this factor
@@ -2897,42 +2884,29 @@ Property list of steady state boundary condition:
 
 |                               | default      | type    | notes                                            |
 |:------------------------------|:-------------|:--------|:-------------------------------------------------|
-| force_ohmic                   | true         | bool    |                                                  |
+| contact_ohmic                 | true         | bool    |                                                  |
 | electrode_mode                | steady_state | string  | Selections are ['steady_state','transient'].     |
 | apply_AC_small_signal         | none         | string  | Selections are ['none', 'All'].                  |
-| sweep_type                    | single       | string  | Selections are ['single', 'range', 'value'].     |
+| sweep_type                    | single       | string  | Selections are ['single', 'range'].              |
 | voltage                       | 0            | float   | Available when sweep_type is 'single'            |
 | range_start                   | 0            | float   | Available when sweep_type is 'range'             |
 | range_stop                    | 1            | float   | Available when sweep_type is 'range'             |
-| range_interval                | 1            | float   | Available when sweep_type is 'range'             |
-| range_num_points              | 2            | integer | Available when sweep_type is 'range'             |
-| []sweep_value_table.index     |              | integer | Available when sweep_type is 'value'.            |
-| []sweep_value_table.number    |              | float   | Available when sweep_type is 'value'.            |
+| range_step                    | 1            | float   | Available when sweep_type is 'range'             |
 | surface_type                  | solid        | string  | Selections are ['solid'].                        |
 | solid                         |              | string  |                                                  |
 
 Description:
 
-- `surface_type`--Type of the surface to be set as an electrode. Currently only `"solid"` is supported, meaning that all the surfaces of a structure are selected
-- `solid`--Name of the structure to be set as an electrode. Available when `surface_type` is set to `"solid"`
-- `force_ohmic`--Whether the electrode is ohmic, default to be `True`. Currently only ohmic contact is supported, so `force_ohmic` can't be set to `False`
-- `bc_mode`--Set to `"steady_state"` for steady state boundary condition
-- `apply_AC_small_signal`:
-  - When it's set to `"none"` (as default), no AC small signal is applied at each sweeping voltage
-  - When it's set to "All", the AC small signal is applied after steady state simulation at each sweeping voltage
-
-- `sweep_type`--Type of sweeping voltage. Options are `"single"`, `"range"` and `"value"`
-  - When it's set to `"single"`, `voltage` is required
-  - When it's set to `"range"`, `range_start`, `range_stop`, and `range_interval` or `range_num_points` are required
-  - When it's set to `"value"`, `sweep_value_table` is required
-- `voltage`--Set the value of the single voltage
-- `range_start`--Set the start value of the voltage range
-- `range_stop`--Set the stop value of the voltage range
-- `range_interval`--Set the voltage interval of the voltage range
-- `range_num_points`--Set the number of points of the voltage range
-- `sweep_value_table`--Table of voltage values. It's a list, whose item is a dictionay. In each of its item:
-  - `index`--Set the index of the voltage value
-  - `number`--Set the value of the voltage
+- `surface_type`, `solid`, `force_ohmic`--The same as the one in steady state condition.
+- `bc_mode`--Set to `"transient"` for transient boundary condition. Then the time dependence of the optical generation rate can be set at this electrode.
+- `voltage`--Set the voltage that  is applied to the electrode and a steady state simulation is performed first. The transient simulation is based on the steady state result. The optical generation rate is not applied during the steady state simulation.
+- `v_step_max`--Set the max step of the voltage from the equilibrium state to steady state at the bias of `voltage`.
+- `time_table`--Set the time dependence of optical generation rate. It's a list, whose item is a dictionary. In each of its item:
+  - `time_start`--Set the start time point of the range. The value of `0` represents the steady state of the earlier simulation.
+  - `time_stop`--Set the stop time point of the range
+  - `initial_step`--Set the initial time step of the range
+  - `max_step`--Set the max time step of the range
+  - `envelop`--The envelop of the scaling factor of the light power during the time range. Selection are uniform or pulse.
 
 <br/>
 
@@ -2986,29 +2960,24 @@ Description:
 
 When the property `electrode_mode` is set to `"transient"`, the transient boundary condition is applied.
 
-<br/>
-
 Property list of transient boundary condition:
 
 |                                      | default      | type    | notes                                            |
 |:-------------------------------------|:-------------|:--------|:-------------------------------------------------|
 | force_ohmic                          | true         | bool    |                                                  |
-| electrode_mode                              |              | string  | Selections are ['transient'].                    |
+| electrode_mode                       |              | string  | Selections are ['transient'].                    |
 | voltage                              | 0            | float   |                                                  |
 | []time_table.time_start              |              | float   |                                                  |
 | []time_table.time_stop               |              | float   |                                                  |
 | []time_table.initial_step            |              | float   |                                                  |
 | []time_table.max_step                |              | float   |                                                  |
-| []time_table.optical.enabled         | 0            | integer | Selections are [0, 1]                            |
-| []time_table.optical.envelop         |              | integer | Selections are [0]                               |
-| []time_table.optical.source_fraction |              | float   |                                                  |
 | surface_type                         | solid        | string  | Selections are ['solid'].                        |
 | solid                                |              | string  |                                                  |
 
 Description:
 
-- `surface_type`, `solid`, `force_ohmic`--The same as the one in steady state condition
-- `bc_mode`--Set to `"transient"` for transient boundary condition. Then the time dependence of the optical generation rate can be set at this electrode
+- `surface_type`, `solid`, `force_ohmic`--The same as the one in steady state condition.
+- `bc_mode`--Set to `"transient"` for transient boundary condition. Then the time dependence of the optical generation rate can be set at this electrode.
 - `voltage`--Set the voltage that  is applied to the electrode and a steady state simulation is performed first. The transient simulation is based on the steady state result. The optical generation rate is not applied during the steady state simulation.
 - `v_step_max`--Set the max step of the voltage from the equilibrium state to steady state at the bias of `voltage`.
 - `time_table`--Set the time dependence of optical generation rate. It's a list, whose item is a dictionary. In each of its item:
@@ -3016,10 +2985,18 @@ Description:
   - `time_stop`--Set the stop time point of the range
   - `initial_step`--Set the initial time step of the range
   - `max_step`--Set the max time step of the range
-  - `optical`--Set the optical generation rate during the time range
-    - `enabled`--Whether to apply optical generation rate during the time range. The value of `1` means `True`, and `0` means `False`
-    - `envelop`--The envelop of the scaling factor of the light power during the time range. When it's set to `0`, the envelop is uniform
-    - `source_fraction`--When `envelop` is set to`0`, this value is the scaling factor of the light power during the time range
+  - `envelop`--The envelop of the scaling factor of the light power during the time range. Selection are uniform or pulse.
+- `uniform`:
+  - `aplitude`: This field sets the maximum amplitude of the mode source.
+  - `time Delay`: Define the delay time before open the source.
+-`pulse`: 
+  - `high amplitude`: Maximum amplitude with the pulse turned on.
+  - `low amplitude`: Minimum amplitude with the pulse turned off.
+  - `time delay`: Define the delay time before open the source.
+  - `rising edge`: The time of low amplitude rising to high amplitude.
+  - `falling edge`: The time of high amplitude falling to low amplitude.
+  - `pulse width`: The time of high amplitude duration.
+  - `period`: The time of pulse duration, which should larger than rising edge、pulse width and falling edge.
 
 <br/>
 

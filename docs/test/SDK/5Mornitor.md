@@ -214,10 +214,13 @@ add(
 **Example:**
 
 ```python
-mn = pj.Monitor()   
-mn.add(name="band_line", type="band_monitor", property={
-    "geometry": {"monitor_type": "linear_z", "x": oe_x_mean, "x_span": 0, "y_min": 0, "y_max": 0, "z_min": oe_z_min, "z_max": oe_z_max,
-                 "interpolate_accuracy": 9}})
+    mn = pj.Monitor()
+    mn.add(name="band_monitor", type="band_monitor", property={
+        "general": {"interpolate_accuracy": 1},
+        "geometry": {"monitor_type": "y_linear", "x": st_x_mean, "x_span": 0,
+                     "y": st_y_mean, "y_span": st_y_span, "z": 0.08, "z_span": 0}
+    })
+
 # endregion
 ```
 
@@ -268,10 +271,13 @@ add(
 **Example:**
 
 ```python
-mn = pj.Monitor()
-mn.add(name="np_line_080nm", type="charge_monitor", property={
-       "geometry": {"monitor_type": "linear_y", "x": st_x_mean, "x_span": st_x_span, "y_min": -0.4, "y_max": 0.4, "z": 0.08, "z_span": 0,
-                      "interpolate_accuracy": 9}})
+    mn = pj.Monitor()
+    mn.add(name="charge_monitor", type="charge_monitor", property={
+        "general": {"interpolate_accuracy": 1},
+        "geometry": {"monitor_type": "2d_x_normal", "x": st_x_mean, "x_span": 0,
+                     "y": st_y_mean, "y_span": st_y_span, "z": st_z_mean, "z_span": st_z_span}
+    })
+
 ```
 
 |         **Parameters**         | Default |  Type   |                            Notes                             |
@@ -319,10 +325,13 @@ add(
 **Example:**
 
 ```python
- mn = pj.Monitor()
- mn.add(name="electric_2d", type="electric_monitor", property={
-        "geometry": {"monitor_type": "2d_x_normal", "x": oe_x_mean, "x_span": 0, "y_min": -Ge_y_span_bottom*3/4, "y_max": Ge_y_span_bottom*3/4, "z_min": 0, "z_max": Si_z_span+Ge_z_span,
-                     "interpolate_accuracy": 6}})
+    mn = pj.Monitor()
+
+    mn.add(name="elec_monitor", type="electrical_monitor", property={
+        "general": {"interpolate_accuracy": 1},
+        "geometry": {"monitor_type": "2d_x_normal", "x": st_x_mean, "x_span": 0,
+                     "y": st_y_mean, "y_span": st_y_span, "z": st_z_mean, "z_span": st_z_span}
+    })
 ```
 
 |             **Parameters**             | Default |  Type   |                            Notes                             |
@@ -344,6 +353,59 @@ add(
 |   geometry.z_min    |     -    |  float   | The z-coordinate of the bottom position of the height of the electric monitor.      |
 |   geometry.z_max    |      -   |  float   |  The z-coordinate of the top position of the height of the electric monitor.     |
 |     geometry.interpolate_accuracy      |    1    | integer |            Restrained by condition: >=1 && <= 10.            |
+
+
+## 5.7 Doping monitor
+
+Integrate an electric monitor into the current project.
+
+```python
+add(
+            self,
+            *,
+            type: Literal["doping_monitor"],
+            name: str,
+            property: PostProcessElectricMonitor,
+    )
+```
+
+| **Parameters** |    Description     |
+| :------------: | :----------------: |
+|      name      |    The name of electric monitor defined in the project.   |
+|      type      |       To decide the type of monitor.       |
+|    property    | The property of electric monitor. |
+
+**Example:**
+
+```python
+    mn = pj.Monitor()
+
+    mn.add(name="doping_monitor", type="doping_monitor", property={
+        "general": {"interpolate_accuracy": 4},
+        "geometry": {"monitor_type": "2d_x_normal", "x": st_x_mean, "x_span": 0,
+                     "y": 0, "y_span": 0.8, "z_min": -0.1, "z_max": 0.3}
+    })
+```
+
+|             **Parameters**             | Default |  Type   |                            Notes                             |
+| :------------------------------------: | :-----: | :-----: | :----------------------------------------------------------: |
+|     general.donor     |  true   |  bool   | The distribution of electric field in monitor.       |
+| general.acceptorl |  true   |  bool   |  The distribution of electric potential in monitor.        |
+|         geometry.monitor_type          |         | string  | Selections are [ "2d_x_normal", "2d_y_normal", "2d_z_normal"]. |
+|     geometry.x      |    -     |  float   |  The x-coordinate of the center point position of the electric monitor.    |
+|   geometry.x_span   |     -    |  float   | The length in x direction of the electric monitor. Restrained by condition: >0.  |
+|   geometry.x_min    |    -     |  float   | The minimum x-coordinate endpoint data of the electric monitor.      |
+|   geometry.x_max    |     -    |  float   |  The maximum x-coordinate endpoint data of the electric monitor.     |
+|     geometry.y      |     -    |  float   |  The y-coordinate of the center point position of the electric monitor.      |
+|   geometry.y_span   |     -    |  float   | The width in y direction of the electric monitor. Restrained by condition: >0.  |
+|   geometry.y_min    |     -    |  float   |The minimum y-coordinate endpoint data of the electric monitor.       |
+|   geometry.y_max    |     -    |  float   |  The maximum y-coordinate endpoint data of the electric monitor.      |
+|     geometry.z      |     -    |  float   |   The z-coordinate of the center point position of the electric monitor.    |
+|   geometry.z_span   |     -    |  float   | The height in z direction of the electric monitor. Restrained by condition: >0.  |
+|   geometry.z_min    |     -    |  float   | The z-coordinate of the bottom position of the height of the electric monitor.      |
+|   geometry.z_max    |      -   |  float   |  The z-coordinate of the top position of the height of the electric monitor.     |
+|     geometry.interpolate_accuracy      |    1    | integer |            Restrained by condition: >=1 && <= 10.            |
+
 
 </div>
 

@@ -687,9 +687,6 @@ fdtd_res.extract( data="fdtd:mode_source_mode_info", savepath=f"{plot_path}02_so
 
 ```
 
-
-
-
 ## 8.4 Sweep
 
 <div class="text-justify">
@@ -749,6 +746,259 @@ extract(
 ```python
 smatrix_res.extract(data="smatrix_sweep", savepath=f"{plot_path}{kL[8]}_smatrix_sweep",
                             target="line", plot_x="wavelength", real=True, imag=True, export_csv=True, export_mat=True, show=False)
+```
+
+
+The simulation results are extracted by the `extract` function in SDK.
+
+<br/>
+
+## 8.5 DDM
+### 8.5.1 Extract generation rate
+
+Generation Rate is extracted from result_afdtd (result of AFDTD simulation). The format is
+
+```python
+result_generate = result_afdtd.run_generation_rate_analysis(name, monitor, average_dimension, light_power, coordinate_unit, field_length_unit)
+result_generate.extract(data, export_csv, show, log, savepath)
+```
+
+```python
+    add_fdtd_settings(pj, run_options)
+
+    mn = pj.Monitor()
+
+    # region --- 4. Run ---
+    if run_options.run:
+        result_fdtd = simu[simu_name].run(
+            # resources={"compute_resources": "gpu", "gpu_devices": [{"id": 0}]}
+        )
+
+        """ Analysis """
+        analysis = pj.Analysis()
+        analysis.add(name, type="generation_rate",
+                     property={"power_monitor", "average_dimension", "light_power", "workflow_id"})
+        gen_res = analysis["generation_rate"].run()
+    # endregion
+
+    # region --- 5. Extract ---
+        export_options = {"export_csv": True,
+                          "export_mat": True, "export_zbf": True}
+        gen_res.extract(data="fdtd:generation_rate", savepath, generation_rate_name,
+                        target="intensity", attribute="G", real=True, imag=False, **export_options, show=False)
+        gen_res.extract(data="fdtd:generation_rate", savepath, generation_rate_name,
+                        target="line", attribute="Pabs_total", plot_x="frequency", real=True, imag=False, show=False, export_csv=True)
+        gen_res.extract(data="fdtd:generation_rate", savepath=, generation_rate_name,
+                        target="line", attribute="Jsc", plot_x="frequency", real=True, imag=False, show=False, export_csv=True)
+```
+
+`analysis.add()` parameters:
+
+- `name`--Custom name
+- `monitor`--Name of the `power_monitor` for calculating optical generation rate. The `power_monitor` is required to be of 3D type
+- `average_dimension`--Set the direction to take the average of the optical generate rate
+- `light_power`--Set the power of the light source, measured in W. The optical generation rate will be scaled based on the power
+
+<br/>
+
+`gen_res.extract()` parameters：
+
+- `data`--Type of the result
+  - When `data` is set to `"generation_rate"`, besides an image file and a csv file, the result files also include a text file in `.gfile` format. The coordinate unit in the csv and the image file is `um`, and the generation rate unit in the two files is `/cm^3/s`. These units can't be modified when extracting the result. However, the units in the gfile are controlled by `coordinate_unit`、`field_length_unit`. And only the gfile can be imported to the DDM solver
+  - When data is set to `"pabs_total"`, the total absorption power is extracted
+
+- `export_csv`--Whether to export csv file
+- `show`--Whether to show the plot in a popup window
+- `log`--Whether to apply a logarithmic normalization in the intensity plot
+- `savepath`--The save path of the result extraction
+
+<br/>
+
+#### Example of extracting generation rate
+
+```python
+    # region --- 1. Simulation Settings ---
+    add_fdtd_settings(pj, run_options)
+
+    mn = pj.Monitor()
+
+    # endregion
+
+    # region --- 2. Run ---
+    if run_options.run:
+        result_fdtd = simu[simu_name].run(
+            # resources={"compute_resources": "gpu", "gpu_devices": [{"id": 0}]}
+        )
+
+        """ Analysis """
+        analysis = pj.Analysis()
+        analysis.add(name="generation_rate", type="generation_rate",
+                     property={"power_monitor": "power_monitor", "average_dimension": "x", "light_power": 1, "workflow_id": result_fdtd.workflow_id})
+        gen_res = analysis["generation_rate"].run()
+    # endregion
+
+
+    # region --- 3. Extract ---
+        export_options = {"export_csv": True,
+                          "export_mat": True, "export_zbf": True}
+        gen_res.extract(data="fdtd:generation_rate", savepath=f"{plot_path}genrate", generation_rate_name="generation_rate",
+                        target="intensity", attribute="G", real=True, imag=False, **export_options, show=False)
+        gen_res.extract(data="fdtd:generation_rate", savepath=f"{plot_path}pabs_total", generation_rate_name="generation_rate",
+                        target="line", attribute="Pabs_total", plot_x="frequency", real=True, imag=False, show=False, export_csv=True)
+        gen_res.extract(data="fdtd:generation_rate", savepath=f"{plot_path}jsc", generation_rate_name="generation_rate",
+                        target="line", attribute="Jsc", plot_x="frequency", real=True, imag=False, show=False, export_csv=True)
+    # endregion
+```
+
+<br/>
+
+### 8.5.2 Extract electrode result
+
+The results of electrode are extracted from result_DDM (result of DDM simulation). The format is
+
+```python
+    if run_options.extract:
+        export_options = {"export_csv": True,
+                          "export_mat": True, "export_zbf": True}
+        result_DDM.extract(data, electrode, operation, export_csv, show, savepath)
+```
+
+Extraction of electrode result parameters:
+
+- `data`--Type of result
+  - When it's steady state simulation or SSAC simulation, options `"I"`, `"In"`, `"Ip"` are available, which means the current at the electrode versus voltage is extracted, with
+    - `"I"` for the total current
+    - `"In"` for the electron current
+    - `"Ip"` for the hole current
+  - When it's SSAC simulation, options `"Iac"` and `"C"` are available, which means the AC current or capacitance at the electrode versus voltage at different frequency points is extracted, with
+    - `"Iac"` for the total AC current
+    - `"C"` for the capacitance
+  - When it's transient simulation, options `"I"`, `"In"`, `"Ip"` are available, which means the current at the electrode versus time is extracted, with
+    - `"I"` for the total current
+    - `"In"` for the electron current
+    - `"Ip"` for the hole current
+- `electrode`--Name of the electrode
+- `operation`--Options are `"real"` (by default), `"imag"`, `"abs"`, `"abs2"`. For a result whose value is a real number, this parameter can be omitted. Bur for a result whose value is a complex number, like `"Iac"`, it must be used to extract the real and imaginary part of the result respectively
+- `export_csv`--Whether to export csv file
+- `show`--Whether to show the plot in a popup window
+- `savepath`--The save path of the result extraction
+
+<br/>
+
+#### Example of extracting electrode result
+
+```python
+    if run_options.extract:
+        export_options = {"export_csv": True,
+                          "export_mat": True, "export_zbf": True}
+
+        result_ddm.extract(data="ddm:electrode_ac", electrode_name=vsource, savepath=f"{plot_path}C",
+                           target="line", attribute="C", plot_x=f"v_{vsource.lower()}", real=True, imag=False, frequency=1e8, show=False, export_csv=True)
+    # endregion
+```
+
+<br/>
+
+### 8.5.3 Extract results of electrical monitor
+
+The electrical monitor result extraction is similar to the electrode result extraction, but a monitor instead of an electrode is required to be specified. The format is
+
+```python
+result_DDM.extract(data, monitor, operation, export_csv, show, log, savepath)
+```
+
+Extraction of electrode result parameters:
+
+- `data`--Type of result
+
+  - When the monitor is `charge_monitor`, options `"n"`, `"p"` are available, which means the concentration of carriers is extracted, with
+    - `"n"` for the electron
+    - `"p"` for the hole
+  - When the monitor is `electric_monitor`, options `"electric_field"`, `"ex"`, `"ey"`, `"ez"`, `"potential"` are available, which means the concentration of carriers is extracted, with
+    - `"electric_field"` for the absolute value of the electric field
+    - `"ex"` for the x component of the electric field
+    - `"ey"` for the y component of the electric field
+    - `"ez"` for the z component of the electric field
+    - `"potential"` for the electrostatic potential
+  - When the monitor is `band_monitor`, options `"conduction_band"`, `"valence_band"`, `"equasi_fermi"`, `"hquasi_fermi"` are available, which means the band structure is extracted, with
+    - `"conduction_band"` for the conduction band energy level
+    - `"valence_band"` for the valence band energy level
+    - `"equasi_fermi"` for the electron quasi-Fermi potential
+    - `"hquasi_fermi"` for the hole quasi-Fermi potential
+
+- `operation`--Options are `"real"` (by default), `"imag"`, `"abs"`, `"abs2"`
+
+- `export_csv`--Whether to export csv file. When the monitor is of 2D type, the result is a distribution in a 2D region, and the plot is an intensity image; When the monitor is of 1D type, the result is a distribution along a 1D range, and the plot is a curve
+
+- `show`--Whether to show the plot in a popup window
+
+- `log`--Whether to take the logarithm of the result
+
+- `savepath`--The save path of the result extraction
+
+<br/>
+
+#### Example of extracting electrical monitor result
+
+```python
+for voltage in voltage_list:
+            slice_options = {f"v_{vsource.lower()}": voltage, f"v_{gnd.lower()}": 0.0}
+
+            # --- Charge Monitor ---
+            attribute = "n"  # "n", "p"
+            result_ddm.extract(data="ddm:charge_monitor", monitor_name="charge_monitor", savepath=f"{plot_path}{attribute}/{voltage}V",
+                               target="intensity", attribute=attribute, real=True, imag=False, log=False, show=False, **slice_options, **export_options)
+            
+            # --- Electrical Monitor ---
+            attribute = "E"  # "E", "Ex", "Ey", "Ez"
+            result_ddm.extract(data="ddm:electrical_monitor", monitor_name="elec_monitor", savepath=f"{plot_path}{attribute}/{voltage}V",
+                               target="intensity", attribute=attribute, real=True, imag=False, log=False, show=False, **slice_options, **export_options)
+
+            # --- Band Monitor ---
+            attribute = "Ec" # "Ec", "Ev", "Efn", "Efp"                   
+            result_ddm.extract(data="ddm:band_monitor", monitor_name="band_monitor", savepath=f"{plot_path}{attribute}/{voltage}V",
+                               target="line", attribute=attribute, plot_x="y", real=True, imag=False, log=False, show=False, **slice_options, export_csv=True)
+```
+
+<br/>
+
+### 8.5.4 Extract results of modulator analysis
+
+The results of modulator analysis are extracted from result_afde (result of AFDE). The format is
+
+```python
+result_fde.extract(data, savepath, export_csv)
+```
+
+`result_fde.extract()` parameters:
+
+- `data`--Type of result. Options are `"mesh_structurex"`, `"calculate_modes"`, which means the effective index or loss versus voltage is extracted
+- `export_csv`--Whether to export csv file
+- `show`--Whether to show the plot in a popup window
+- `savepath`--The save path of the result extraction
+
+<br/>
+
+#### Example of extracting modulator analysis result
+
+```python
+    result_fde = analysis["fde_analysis"].run()
+    # endregion
+
+    # region --- 5. Extract ---
+    
+    export_options = {"export_csv": True,
+                      "export_mat": True, "export_zbf": True}
+
+    if run_options.extract:
+        if run_options.index_preview:
+            result_fde.extract(
+                data="mesh_structure", savepath=f"{plot_path}01_index", export_csv=True)
+            
+        if run_options.run:
+            res = result_fde.extract(
+                data="calculate_modes", savepath=f"{plot_path}02_neff_table", export_csv=True)
+            return res
 ```
 
 </div>

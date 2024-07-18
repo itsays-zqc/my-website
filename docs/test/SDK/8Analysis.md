@@ -324,6 +324,43 @@ analysis.add(name="overlap", type="overlap",
 overlap_res = analysis["overlap"].run()
 ```
 
+## 7.5 Generation Rate
+
+**Feature Description**: 
+The user can use the Power monitor simulation objects to extract the distribution of photogeneration rates in the device. 
+
+**Example:**
+
+```python
+if run_options.run:
+        result_fdtd = simu[simu_name].run(
+            # resources={"compute_resources": "gpu", "gpu_devices": [{"id": 0}]}
+        )
+
+        """ Analysis """
+        analysis = pj.Analysis()
+        analysis.add(name="generation_rate", type="generation_rate",
+                     property={"power_monitor": "power_monitor", "average_dimension": "x", "light_power": 1, "workflow_id": result_fdtd.workflow_id})
+        gen_res = analysis["generation_rate"].run()
+    # endregion
+
+    # region --- 5. Extract ---
+        export_options = {"export_csv": True,
+                          "export_mat": True, "export_zbf": True}
+        gen_res.extract(data="fdtd:generation_rate", savepath=f"{plot_path}genrate", generation_rate_name="generation_rate",
+                        target="intensity", attribute="G", real=True, imag=False, **export_options, show=False)
+        gen_res.extract(data="fdtd:generation_rate", savepath=f"{plot_path}pabs_total", generation_rate_name="generation_rate",
+                        target="line", attribute="Pabs_total", plot_x="frequency", real=True, imag=False, show=False, export_csv=True)
+        gen_res.extract(data="fdtd:generation_rate", savepath=f"{plot_path}jsc", generation_rate_name="generation_rate",
+                        target="line", attribute="Jsc", plot_x="frequency", real=True, imag=False, show=False, export_csv=True)
+```
+
+
+**Import Data**:
+1) Power Monitor: Choice 3D power monitor from Monitors of Simulations.
+2) Average Dimension: Choice one’s average dimension of “X”,”Y” or “Z” for 2D simulation of power monitor. Choice the travels through injection plane of optical generation in source injuction direction. 
+3) Light Power: Define the amount of source power injected into the simulation.
+
 </div>
 
 </font>

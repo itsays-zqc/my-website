@@ -366,6 +366,28 @@ Material Data tab: User can view each material property in this list via double 
 
 </div>
 
+### 1.4 Electrical Material Properties:
+
+Electrical Materials in the Standard Material Database:
+
+The following materials are included in the standard material database.
+
+|ID	|         Name        |	Mesh Order|
+|:-:|:-------------------:|:---------:|
+|1	|   Air (Electrical)	|      2    |
+|2	|Aluminum(Electrical)	|      2    |
+|3	|Germanium(Electrical)|      2    |
+|4	|Silicon(Electrical)	|      2    |
+|5	|SiO2(Electrical)	    |      2    |
+
+Material Properties:
+
+![](../../static/img/tutorial/material/electrical/MatLib_ele.png)
+
+Material properties in electrical engineering include attributes such as "Name," "Color," and "Mesh Order," alongside various electrical parameters specific to each material type. Users are required to define permittivity for “Insulators” or work functions for “Conductors”. Semiconductors necessitate the definition of multiple parameters, encompassing DC permittivity, work function, as well as fundamental aspects like effective mass/density of states, band gap model, mobility, and recombination. It's worth noting that users cannot modify these parameter values in the standard library, except within the user library or objects tree.
+
+
+
 ## 2 User Material Database
 
 <div class="text-justify">
@@ -433,8 +455,46 @@ In general, this tensor can be diagnonalized by a proper choice of coordinate sy
 |![](../../static/img/tutorial/material/anisoropic.png)|
 | :------------------------------------------------------------: |
 
+### 2.3 Electrical Material Properties
+
+To conduct simulations accurately, users are required to specify various electrical parameters and models corresponding to different material types. For insulators, defining permittivity is essential, while for conductors, specifying work function is necessary. When dealing with semiconductors, users have the flexibility to define DC permittivity, work function, and fundamental parameters including mobility and recombination.
+
+In addition to the properties mentioned above, users can also define temperature dependencies for many parameters using the adjacent "f(T)" buttons. This action triggers a parameter editor displaying the associated formula.
+
+![](../../static/img/tutorial/material/electrical/Si_eleMat.png)
 
 
+`Name`: Users have the option to redefine the name of the material.
+`Color`: Users can choose a different color to represent the material in the layout.
+`Mesh Order`: Determines the meshing of overlapping objects in the simulation.
+`Material Type`: 
+There are three material types: Insulator, Conductor, and Semiconductor. 
+`Permittivity/DC Permittivity`: 
+Specifies the relative dielectric permittivity of the material, represented by a 3x3 matrix.
+`Work Function`: 
+Specifies the intrinsic work function of the material. Failure to specify a work function will result in Ohmic contacts irrespective of the material.
+`Fundamental`: 
+Semiconductors must have basic properties defining their electronic behavior, including relative band gap, effective mass, or density of states.
+`Effective Mass/Density of States`: 
+Users can specify the effective mass of electrons and holes, as well as the density of states for the conduction and valence bands.
+`Band Gap`: 
+Users can specify the band gap at 300K and choose a model of bandgap narrowing from the available options. The effective intrinsic carrier concentration (Ni) is calculated by combining the effective mass or equivalent density of states.
+`Mobility`: 
+Defines the mobility of electrons and holes, accounting for corrections due to scattering and supporting velocity saturation effects under strong electric fields.
+`Lattice and Impurity Scattering`: 
+User can define the low-field mobility model of electrons and holes at lattice, correct the charge carriers from lattice thermal vibration scattering at “f(T)”. The Masetti model in the pull-down box of impurity to correct the heavier doped scattering.
+`High Field`: 
+Users can opt for the Canali model to calculate mobility changes due to the drift speed reaching saturation under the influence of strong electric fields in the semiconductor. To specify the carrier's saturation velocity (vsat), users need to select either the size of the Quasi-Fermi level gradient or the component of the electric field in the direction of the current density from the "Driving Field" drop-down box.
+`Recombination`: 
+The continuous transition and recombination of different bands are crucial in simulation design. Users can enable or disable the corresponding composite model based on their preferences.
+`Trap-Assisted(Rsrh)`: 
+Users can activate the trap-assisted composite, allowing them to directly define the temperature-dependent lifetime of electrons and holes or correct it using the carrier concentration-dependent Scharfetter model or the field effect model Schenk.
+`Radiative(Ropt)`: 
+Users can activate the Radiative model and define the parameters of copt.
+`Auger(Rau)`: 
+Users can enable auger recombination of band-to-band, which is temperature-dependent by activating the "Enable Model" option.
+`Band to Band Tunneling`: 
+Users can activate the band-to-band tunneling model of Hurkx or Schenk.
 
 </div>
 

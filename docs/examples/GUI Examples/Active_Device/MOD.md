@@ -25,9 +25,11 @@ import { InlineMath, BlockMath } from 'react-katex';
 ### 1. Simulation Structure
 
 It is essential to incorporate materials for structure. The electrical and optical parameters of SiO2、Al and Si materials in the `Material Library` can be accessed. Then set simulation structure from structure of home.
+
 ![](../Active_Device/img/MOD/material.png)
 
 In the Ribbon menu, select "New Material", specify the material name in the pop-up window, and then click the "Load from Standard Library" button on both the "Optical" and "Electrical" property pages to choose the corresponding optical and electrical materials. Adjust the material parameters as needed. Then click "Import to Project" to import the material into the current project and close the window.
+
 ![](../Active_Device/img/MOD/new_material.png)
 
 Click on "Structure" in the Ribbon menu, then select the corresponding structure type from the drop-down list. Set the name, geometric parameters, and material of the structure in the pop-up window, and finally click the "OK" button. 
@@ -119,6 +121,7 @@ Charge Monitor support both 2D and 1D geometry.
 |interpolate_accuracy  |    1    | integer |  Set the accuracy of the rectangular grid for extracting the monitor result. Restrained by condition: >=1 && <= 10. Here 1 means the grid size is 10nm, and 10 means the grid size is 1nm, and the grid size varies uniformly with the variation in 'interpolate_accuracy'.           |
 
 ![](../Active_Device/img/MOD/ChargeMonitor_Geometry.png)
+
 |         **Parameters**         | Default |  Type   |                            Notes                             |
 | :----------------------------: | :-----: | :-----: | :----------------------------------------------------------: |
 |monitor_type      |         | string  | Selections are ['linear_x', 'linear_y', 'linear_z', '2d_x_normal', '2d_y_normal', '2d_z_normal']. |
@@ -128,13 +131,16 @@ Charge Monitor support both 2D and 1D geometry.
 #### 2.1 Obtain Carrier Distribution
 
 Set the BC model and scanning method here. First, select "Steady State" in Solver Mode of DDM.
+
 ![](../Active_Device/img/MOD/DDM_SteadyState.png)
 
 ​The operational mechanism of the device we simulated in this study primarily revolves around the application of a reverse voltage to modify the width of the depletion region, thereby effectively modifying the carrier concentration and subsequently modulating the refractive index. Hence, it is necessary to specify the voltage of initial、termination and step, with both parameters expressed in volts.  The bias voltage range is set for steady-state solutions. 
+
 ![](../Active_Device/img/MOD/DDM_Vcathode_BC.png)
 
 Chick `Run` and wait simulation result.
 Right-click on the "Charge" result in the "Result View" and select the "Save As" option to save the carrier distribution data with device coordinates as a cdat format file. Then import this data file into the "data space" for use in FDE analysis.
+
 ![](../Active_Device/img/MOD/Result_Charge.png)
 
 #### 2.2 Modulation efficiency
@@ -146,9 +152,11 @@ The half-wave voltage refers to the applied voltage required by the modulator's 
 According to the modulator's operating principle, the extra carriers created by the doped device under external bias form an internal electric field and depletion layer in the device via drift diffusion, resulting in changes in refractive index and loss. You may determine np density using DDM's steady-state solution by `DDM` and then input the data into FDE to calculate changes in optical loss and refractive index by `FDE`. 
 
 The initial and ultimate step involves importing the optical characteristics of the substance and activating the nanoparticle density model for silicon materials.
+
 ![](../Active_Device/img/MOD/FDE_material.png)
 
 Select FDE from Setup Solvers, and set up the general, Geometry, Mesh Settings, Boundary Conditions and Advanced.
+
 ![](../Active_Device/img/MOD/EditFDE.png)
 
 Import the `np density` file, which contains the carrier distribution derived from the `DDM` method, into the `FDE` model. This integration facilitates the analysis of refractive index and loss variations as a function of bias voltage at specific wavelengths.
@@ -159,12 +167,14 @@ Add FDE analysis about wavelength as follows:
 ![](../Active_Device/img/MOD/FDE_analyses.png)
 
 Run FDE solver and add the analysis to calculate the change of effective refractive index and optical loss under specific wavelength. Set the value of "V_cathode" as global parameter to sweep in "Sweeps".
+
 ![](../Active_Device/img/MOD/FDE_globalParameters.png)
 
 ![](../Active_Device/img/MOD/FDE_sweep.png)
 
 ​This section of the program is dedicated to calculating the parameters *VpiL* and *VpiLoss*.
 ​You should extract the parameters for transmission loss and the real part of effective refractive index.
+
 ![](../Active_Device/img/MOD/FDE_result.png)
 
 #### 2.3 Capacitance And Resistance
@@ -230,16 +240,19 @@ Run DDM solver and wait simulation results, and export the data of the real and 
 
 #### 3.1 NP Density
 The charge distribution of n type and p type from charge monitor.
+
 ![](../Active_Device/img/MOD/Result_npDensity.png)
 
 #### 3.2 Loss
 
 ​This section displays the variation of losses with bias voltage.
+
 ![](../Active_Device/img/MOD/0_loss_Real.png)
 
 #### 3.3 Effective Index
 
 ​This section displays the variation of effective index with bias voltage.
+
  ![](../Active_Device/img/MOD/Result_neff.png)
 
 #### 3.4 Modulation efficiency
@@ -253,11 +266,13 @@ The charge distribution of n type and p type from charge monitor.
 #### 3.5 Small Signal AC Current
 
 ​This section displays the variations of  AC current with respect to bias voltage at 100MHZ.
+
  ![](../Active_Device/img/MOD/Iac_Cathode_real.png) 
 
 #### 3.6 Capacitance
 
 ​This section displays the variations of capacitance with respect to bias voltage at 100MHZ.
+
  ![](../Active_Device/img/MOD/Result_C_100mhz.jpg)
 
 

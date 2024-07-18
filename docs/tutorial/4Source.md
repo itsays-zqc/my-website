@@ -205,8 +205,44 @@ The waveform of Gaussian light source is similar to that of mode light source, a
 |![](../../static/img/tutorial/waveform/waveforms.png) |
 | :------------------------------------------------------------: |
 
+## 5 Optical Generation
+To calculate optical current in simulations, users need to import optical generation rate data with coordinate information. There are three methods for leading optical generation in simulation:
 
+### 5.1 Data Space
+Users can select "Import Generation" in the popup within the "Data Space" section. Then, by clicking "Select" in the "Import Generation Data," they can choose the required "gfile" file.
 
+![](../../static/img/tutorial/Source/DataSpace_Gener.png)
+
+![](../../static/img/tutorial/Source/DataSpace_ImpGenRate.png)
+
+`Name`: Users can read and edit the name of this generation rate, which defaults to the name of the imported file.
+`Choose Data to Add`:
+- `Path`: Displays the storage path for the imported file.
+- `Select`: Clicking opens the file selection window, allowing users to see the distribution of generation rates with coordinate data in the "Import Generation Data" window.
+
+### 5.2 Sources
+Users can access "Optical Generation" under "Sources" in the simulation menu.
+
+![](../../static/img/tutorial/Source/DataSpac3_GenRatData.png)
+
+`Import`:
+ - `Generation Data`:
+Users can select data from the Data Space of the project or shared files, or import from a new generation file.
+ - `Source Fraction`: 
+Multiplies the dataset values by the scale factor.
+
+![](../../static/img/tutorial/Source/DataSpace_Trans.png)
+
+`Transient`:
+Choosing "Uniform" requires users to define "Amplitude" and "Time Delay”.
+`Amplitude`: Set the maximum amplitude of the mode source.
+`Time Delay`: Define the delay time before opening the source.
+For `Pulse`, users should define parameters such as `High Amplitude`, `Low Amplitude`, `Time Delay`, `Rising Edge`, `Falling Edge`,`Pulse Width` and `Period`.
+`Pulse`:
+ - `High Amplitude`: Amplitude of pulse after on shutter.
+ - `Low Amplitude`: Amplitude of pulse after off shutter.
+ - `Time Delay`: 
+   Time Delay, Rising Edge, Falling Edge, Pulse Width, and Period: Specify timing and duration parameters. The period's duration should be large. 
 </font>
 
 </div>

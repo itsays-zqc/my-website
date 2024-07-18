@@ -57,7 +57,7 @@ For example, the mesh order=2 structure will cover the mesh order=1.
 The advantage is that increasing the value of mesh order allows user to make new nested structures in the complex model.
 
 
-## 3.2 Add emesh
+## 3.2 Add Local Mesh
 
 In the context of electrical simulation, we present guidelines on how to incorporate meshing to ensure the precision and dependability of the simulation outcomes. The code explanations and a practical example provided below.
 
@@ -78,9 +78,23 @@ add_emesh(
 **Example:**
 
 ```python
-st.add_emesh(name="EMesh_Local", property={
-    "y_min": oe_y_min, "y_max": oe_y_max, "z_min": oe_z_min, "z_max": oe_z_max, "mesh_size": egrid_local})
+st.add_emesh(name="local_mesh", type="EMesh", property={
+        "general": {"mesh_size": 0.01},
+        "geometry": {"geometry_type": "directly_defined", "x": st_x_mean, "x_span": 0,
+                     "y": 0, "y_span": 0.8, "z_min": -0.1, "z_max": 0.3}})
 ```
+
+Property list of electrical local mesh in a rectangle region:
+
+|                       |         default     |  type  | notes                                          |
+| :-------------------: | :-----------------: | :----: | :--------------------------------------------: |
+| general.mesh_size     |           0.01      |  float |  The minimum value of the local mesh region.   |
+| general.geometry_type |    directly defined | string | Selections are ['directly defined', 'solid','solid_solid']  |
+| solid_solid           |                     |string  |Names of the two structures at the interface.|
+| solid_1               |                     | string | Available when geometry_type is 'solid_solid'    |
+| solid_2               |                     | string | Available when geometry_type is 'solid_solid'    |
+
+Local mesh of electrical simulation in rectangle region property list, when `geometry_type` is `directly defined`:
 
 | **Parameters** | Default | Type  |                 Notes                  |
 | :------------: | :-----: | :---: | :------------------------------------: |
@@ -98,45 +112,34 @@ st.add_emesh(name="EMesh_Local", property={
 |   geometry.z_max    |     -    |  float   |  The z-coordinate of the top position of the thickness of the electrical mesh.     |
 |   mesh_size    |       -  | float | The max size of electrical simulation mesh. |
 
+Note: When the simulation region is in the xy plane, only the parameters in the x, y direction are effective, and parameters in the z direction will be ignored. Similarly for the rest.
 
-
-### 3.2.3 Add emesh along line
-
-By implementing an electric mesh along line, you can accurately capture intricate electrical phenomena and variations, enhancing the comprehensiveness of your simulation results.
-
-```python
-add_emesh_along_line(
-            self,
-            *,
-            name: str,
-            property: Dict[str, Any],
-    )
-```
-
-| **Parameters** |             Description             |
-| :------------: | :---------------------------------: |
-|      name      |   The name of electric mesh along line.   |
-|    property    | The property of electric mesh along line. |
+By implementing an electric mesh in solid or its boundary, enhancing the comprehensiveness of your simulation results.
 
 **Example:**
 
 ```python
-st.add_emesh_along_line(name="EMesh_Ge_SiO2_Interface_Slope_Left", property={
-    "start_x": oe_x_mean, "start_y": -Ge_y_span_bottom/2, "start_z": Si_z_span,
-    "end_x": oe_x_mean, "end_y": -Ge_y_span_top/2, "end_z": Si_z_span+Ge_z_span,
-    "mesh_size": egrid_interface})
+# Example of electrical local mesh in a solid
+
+   lm = pj.LocalMesh()
+    
+    lm.add(name="EMesh_Si", type="EMesh", property={
+        "general": {"mesh_size": 0.02},
+        "geometry": {"geometry_type": "solid", "solid": st["Si_base"]}
+    })
+
+# Example of electrical local mesh in the solid boundary
+
+   lm = pj.LocalMesh()
+
+    lm.add(name="Ge_Boundary", type="EMesh", property={
+        "general": {"mesh_size": 0.002},
+        "geometry": {"geometry_type": "solid_solid", 
+                     "solid_1": st["Ge"],
+                     "solid_2": st["Ge"],
+                     "growth_ratio": 2}
+    })
 ```
-
-| Parameters | Default | Type  |             Notes             |
-| :------------: | :-----: | :---: | :---------------------------: |
-|    start_x     |    0    | float |  The minimum value of mesh region in x axis. |
-|    start_y     |    0    | float | The minimum value of mesh region in y axis. Restrained by condition: >=0. |
-|    start_z     |    0    | float | The minimum value of mesh region in z axis.   |
-|     end_x      |    1    | float | The maximum value of mesh region in x axis.   |
-|     end_y      |    1    | float | The maximum value of mesh region in y axis.   |
-|     end_z      |    1    | float | The maximum value of mesh region in z axis.  Restrained by condition: >=0. |
-|   mesh_size    |  0.01   | float |  The size of the unit grid.     |
-
 
 </div>
 

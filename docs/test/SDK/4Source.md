@@ -277,6 +277,43 @@ pjp.add(name="port2", type="eme_port",
 
 ```
 
+## 5 Optical Generation
+To calculate optical current in simulations, users need to import optical generation rate data with coordinate information. There are three methods for leading optical generation in simulation:
+
+Users can select "import_data" in the "DataSpace" section and set up property of source.
+
+```python
+add_ddm_settings(pj, run_options)
+
+    ds = pj.DataSpace()
+
+    ds.import_data(name="gen", type="generation", property={
+        "path": gen_rate_file
+    })
+
+    src = pj.Source()
+    src.add(name="gen", type="optical_generation", property={
+        "general": {"generation_data": ds["gen"], "source_fraction": 0.001},
+        "transient": {"envelop": "uniform"}
+    })
+```
+
+`Name`: Users can read and edit the name of this generation rate, which defaults to the name of the imported file.
+
+`path`--Here it's not empty, meaning that the file at the path will be imported to the `DDM` solver
+`source_fraction`--Set the scaling factor for the light power. The imported optical generation rate will be multiplied by this factor first, and then be used to solve the carrier transport
+
+`Transient`:
+Choosing "Uniform" requires users to define "Amplitude" and "Time Delay”.
+`Amplitude`: Set the maximum amplitude of the mode source.
+`Time Delay`: Define the delay time before opening the source.
+For `Pulse`, users should define parameters such as `High Amplitude`, `Low Amplitude`, `Time Delay`, `Rising Edge`, `Falling Edge`,`Pulse Width` and `Period`.
+`Pulse`:
+ - `High Amplitude`: Amplitude of pulse after on shutter.
+ - `Low Amplitude`: Amplitude of pulse after off shutter.
+ - `Time Delay`: 
+   Time Delay, Rising Edge, Falling Edge, Pulse Width, and Period: Specify timing and duration parameters. The period's duration should be large. 
+
 </div>
 
 

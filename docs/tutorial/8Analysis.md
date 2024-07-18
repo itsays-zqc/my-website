@@ -312,6 +312,18 @@ Sample Resolution: This specifies the beam resolution, the number of sampling po
 
 --> Rotation Offset: A rotation offset can be endowed to the plane upon which the mode is computed. This guarantees that mode sources at an angle do not interfere with structures not belonging to the waveguide/fiber.
 
+## 5 Generation Rate
+
+**Feature Description**: 
+The user can use the Power monitor simulation objects to extract the distribution of photogeneration rates in the device. 
+
+![](../../static/img/tutorial/analysis/GenerRate.png)
+
+**Import Data**:
+1) Power Monitor: Choice 3D power monitor from Monitors of Simulations.
+2) Average Dimension: Choice one’s average dimension of “X”,”Y” or “Z” for 2D simulation of power monitor. Choice the travels through injection plane of optical generation in source injuction direction. 
+3) Light Power: Define the amount of source power injected into the simulation.
+
 </font>
 
 </div>

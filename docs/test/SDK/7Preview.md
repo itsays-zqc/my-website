@@ -162,7 +162,7 @@ simu[simu_name].show3d(show_with="local_gui")
 
 
 
-## 8.4 Run doping
+## 8.4 Preview doping
 
 The code within this module enables the preview of doping results for the respective structures.
 
@@ -198,10 +198,75 @@ run_doping(
 **Example:**
 
 ```python
-simu["preview_oedevice"].run_doping(name="x_in", property={
-        "geometry": {"dimension": "2d_x_normal", "x": oe_x_mean, "x_span": 0, "y": oe_y_mean, "y_span": oe_y_span, "z_min": oe_z_min, "z_max": oe_z_max}},
-        norm="log", scale="equal", superimpose=False, show=False,
-        material_list=["Ge", "Si"], cmin=8e5, savepath=plot_path + simu_name + "_" + time_str + "doping_x_in")
+@timed
+@with_path
+def preview_doping(**kwargs):
+    # region --- 6. Preview Doping ---
+    run_options = RunOptions(index_preview=False, doping_preview=True, calculate_modes=False, run=False, extract=False)
+
+    vsource = "Cathode" # electrode solid
+    gnd = "Anode"       # electrode solid  
+    path = kwargs["path"]
+    time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime())
+    simu_name = "MOD00_structure_doping"
+    project_name = f"{simu_name}_{time_str}"
+    plot_path = f"{path}/plots/{project_name}/"
+    current_file_path = os.path.abspath(__file__)
+
+    pj: Project = create_project(project_name, run_options)
+
+    create_structures(pj, run_options)
+
+    mt = pj.Material()
+    st = pj.Structure()
+
+    simu = pj.Simulation()
+    simu.add(name=simu_name, type="DDM", property={
+        "background_material": mt["mat_sio2"], 
+        "general": {"solver_mode": "steady_state",
+                    "norm_length": normal_length,
+                    "temperature_dependence": "isothermal",
+                    "temperature": temperature,
+                    },
+        "geometry": {"dimension": "2d_x_normal", "x": oe_x_mean, "x_span": 0, "y_min": oe_y_min, "y_max": oe_y_max, "z_min": oe_z_min, "z_max": oe_z_max},
+        "mesh_settings": {"mesh_size": egrid_global},
+        "advanced": {"non_linear_solver": "newton",
+                     "linear_solver": "mumps",
+                     "fermi_statistics": "disabled", # or "enabled"
+                     "damping": "none", # or "potential"
+                     "potential_update": 1.0,
+                     "max_iterations": 15,
+                     "relative_tolerance": 1e-5,
+                     "tolerance_relax": 1e5,
+                     "divergence_factor": 1e25
+                     }
+    })
+
+    add_ddm_settings(pj, run_options)
+
+    bd = pj.BoundaryCondition()
+
+    bd.add(name=vsource,type="electrode", property={
+        "geometry": {"surface_type": "solid", "solid": st[vsource]},
+        "general": {"electrode_mode": "steady_state",  
+                    "contact_type": "ohmic_contact",
+                    "sweep_type": "single", "voltage": 0,
+                    "apply_ac_small_signal": "none", 
+                    # "envelop": "uniform",
+                    }
+    })
+    bd.add(name=gnd,type="electrode", property={
+        "geometry": {"surface_type": "solid", "solid": st[gnd]},
+        "general": {"electrode_mode": "steady_state",  
+                    "contact_type": "ohmic_contact",
+                    "sweep_type": "single", "voltage": 0,
+                    "apply_ac_small_signal": "none",
+                    # "envelop": "uniform",
+                    }
+    })
+
+    simu[simu_name].preview_doping(monitor_name="doping_monitor", savepath=f"{plot_path}doping", export_csv=True, real=True, imag=False)
+    # endregion
 ```
 
 |     Parameters     | Default |  Type  |                            Notes                             |

@@ -6,7 +6,6 @@
 
 This example introduces the modeling and optoelectronic simulation of a vertical Ge-Si photodetector.
 
-
 <br/>
 
 ## 1. Overview
@@ -45,7 +44,7 @@ Note:
 
 ### 2.3 Create structures
 
-Click on "Structure" in the Ribbon menu, then select the corresponding structure type from the drop-down list. Set the name, geometric parameters, and material of the structure in the pop-up window, and finally click the "OK" button. 
+Click on "Structure" in the Ribbon menu, then select the corresponding structure type from the drop-down list. Set the name, geometric parameters, and material of the structure in the pop-up window, and finally click the "OK" button.
 To begin with, it is advisable to define the geometric region of the device structure in `geometry` and add materials to this region by `material`. In the overlapping area of the materials, the material with a higher order value will take precedence over the one with a lower value. If the values of `Mesh Order` are the same, the material defined later will override the one defined earlier. It is worth noting that the material Aluminium will call the PEC material library.
 
 |     name  |Structure   |  x/x span    |  y/y span  |  z/z span |   material  |
@@ -155,16 +154,16 @@ Adding electrical silmulation solver, is the prerequisite for output structure f
 
 ![](../Active_Device/img/VPD/EditDDM_General.png)
 
-Specifies the  boundary of electrical simulation for `DDM` solver in 2D direction. Additionally, we define the length of the three-dimensional X direction and the solution mode and temperature during the composite process. 
+Specifies the  boundary of electrical simulation for `DDM` solver in 2D direction. Additionally, we define the length of the three-dimensional X direction and the solution mode and temperature during the composite process.
 
 ![](../Active_Device/img/VPD/EditDDM_Geometry.png)
 
-When specifying meshes, a balance should be struck between accuracy and numerical efficiency. The accuracy, convergence, and program memory of the subsequent computation are all affected by the quality and size of the elements in the mesh, making mesh partitioning crucial in this module. Achieving accuracy requires a fine mesh that can resolve all significant features of the solution, while numerical efficiency requires a coarse mesh that minimizes the total number of grid points.  
-Due to the relatively simple structure of this modulator, a rough initial mesh can be established for electrical simulation of the entire device. 
+When specifying meshes, a balance should be struck between accuracy and numerical efficiency. The accuracy, convergence, and program memory of the subsequent computation are all affected by the quality and size of the elements in the mesh, making mesh partitioning crucial in this module. Achieving accuracy requires a fine mesh that can resolve all significant features of the solution, while numerical efficiency requires a coarse mesh that minimizes the total number of grid points.
+Due to the relatively simple structure of this modulator, a rough initial mesh can be established for electrical simulation of the entire device.
 
 ![](../Active_Device/img/VPD/EditDDM_Mesh.png)
 
-We utilize the `newton` iteration method for calculation, and the `mumps`  direct solver is employed as the linear solver. The `max_iterations` parameter defines the maximum number of nonlinear iterations. When the number of iterations exceeds this value, the solver reduces the voltage step and starts a new iterative computations. 
+We utilize the `newton` iteration method for calculation, and the `mumps`  direct solver is employed as the linear solver. The `max_iterations` parameter defines the maximum number of nonlinear iterations. When the number of iterations exceeds this value, the solver reduces the voltage step and starts a new iterative computations.
 
 ![](../Active_Device/img/VPD/EditDDM_Advanced.png)
 
@@ -179,7 +178,7 @@ We utilize the `newton` iteration method for calculation, and the `mumps`  direc
 ### 2.4 Add doping
 
 
-You should define the `name` and `geometry` for doping region,and basic parameters of doping module in `dopant`, such as  `dopant type` and `concentration`.   
+You should define the `name` and `geometry` for doping region,and basic parameters of doping module in `dopant`, such as  `dopant type` and `concentration`.
 
 ##### 2.4.1 Constant Doping
 
@@ -307,10 +306,10 @@ Surface recombination property list:
 Description:
 
 - `surface_type`--Type of selection for the surface
-  - When `surface_type` is `"solid_solid"`, the surface is the interface between two structures 
+  - When `surface_type` is `"solid_solid"`, the surface is the interface between two structures
   - When `surface_type` is `"material_material"`, the surface is the interface between two materials
 
-- `hole.s0`, `electron.s0`--Surface recombination velocity of holes and electrons. 
+- `hole.s0`, `electron.s0`--Surface recombination velocity of holes and electrons.
 
 - `solid_1`, `solid_2`--Names of the two structures at the interface. They must be set explicitly when `surface_type` is `"solid_solid"`
 
@@ -535,7 +534,7 @@ Import the generation rate file with device structure from the "Data Space" or f
 This section performs the simulation of dark current in the `V1` of `Versions`.
 
 Should refer to the above introduction to build a simulation structure with filling materials, set up the DDM solver and add doping and electrode boundary conditions, and set up locally dense grids to ensure solution accuracy.
-Select "Steady State" in solver mode of DDM solver. Here a range of voltage from 0V to 4V is applied to the electrode `"Cathode"`, and the step of the voltage is 0.5V. No optical generation rate is applied. 
+Select "Steady State" in solver mode of DDM solver. Here a range of voltage from 0V to 4V is applied to the electrode `"Cathode"`, and the step of the voltage is 0.5V. No optical generation rate is applied.
 Click on the "Solver" in `Run` and not the information of "Progress" and "Message".`Result View`stores the information of the simulation result, which can be used to perform result extraction.
 Select "Cathode" of "Electrode" in `Result View`, and then choose the file format to export in "Export".
 
@@ -554,7 +553,7 @@ Select "Cathode" of "Electrode" in `Result View`, and then choose the file forma
 This simulation applies a forward bias to the electrode `"anode"`. And then the I-V curve is extracted and fitted to obtain the resistance.
 
 Should refer to the above introduction to build a simulation structure with filling materials, set up the DDM solver and add doping and electrode boundary conditions, and set up locally dense grids to ensure solution accuracy.
-Select "Steady State" in solver mode of DDM solver. A range of voltage from 0V to 1.5V is applied to the electrode `"Anode"`, with a step of 0.25V. No optical generation rate is applied. 
+Select "Steady State" in solver mode of DDM solver. A range of voltage from 0V to 1.5V is applied to the electrode `"Anode"`, with a step of 0.25V. No optical generation rate is applied.
 Click on the "Solver" in `Run` and not the information of "Progress" and "Message".`Result View`stores the information of the simulation result, which can be used to perform result extraction.
 Select "Anode" of "Electrode" in "Result View", and then choose the file format to export in "Export".
 And a steady state simulation is performed to extract the I-V curve, which is saved to the folder `Result View`.
@@ -581,7 +580,7 @@ And a steady state simulation is performed to extract the I-V curve, which is sa
         Idc = np.genfromtxt(f"{plot_path}I_Anode.csv",skip_header=1,delimiter=",")[:,1]
 ```
 
-`"I_Anode.csv"` is filename generated automatically of the I-V result. 
+`"I_Anode.csv"` is filename generated automatically of the I-V result.
 <br/>
 
 ##### 3.2.2.2 Fit the data to obtain resistance
@@ -609,7 +608,7 @@ Fit the data after the index `start_idx`, which is the start index of the approx
  r_path = f"{plot_path}resistance"
         if not os.path.exists(r_path):
             os.makedirs(r_path)
-        
+
         with open(f"{r_path}/Rdata.txt", "w") as fp:
             fp.write("Resistance: " + f"{R} Ohm\n")
         fontsize = 20
@@ -640,10 +639,10 @@ if __name__ == "__main__":
 
 ### 3.3 Capacitance
 
-This section performs a SSAC simulation, and extracts the capacitance. 
+This section performs a SSAC simulation, and extracts the capacitance.
 
 Should refer to the above introduction to build a simulation structure with filling materials, set up the DDM solver and add doping and electrode boundary conditions, and set up locally dense grids to ensure solution accuracy.
-Select "SSAC" in solver mode of DDM solver. A range of voltage from 0V to 3V is applied to the electrode `"Cathode"`, with a step of 0.5V. And select `all` in `apply ac small signal`. No optical generation rate is applied. 
+Select "SSAC" in solver mode of DDM solver. A range of voltage from 0V to 3V is applied to the electrode `"Cathode"`, with a step of 0.5V. And select `all` in `apply ac small signal`. No optical generation rate is applied.
 
 |                           DDM            |                    Cathode                   |
 |:----------------------------------------:|:--------------------------------------------:|
@@ -659,7 +658,7 @@ For `DDM` solver, the detailed properties can be found in the appendix. Here:
   - `solver_mode`--It's set to `"SSAC"`, which means a SSAC simulation
 
     - `frequency_spacing`--It's set to `"single"`, which means a single frequency point
-    
+
     - `frequency`--Set the value of the single frequency
 
 
@@ -688,7 +687,7 @@ For the result extraction:
 
 ### 3.4 Optical generation rate
 
-This section performs a FDTD simulation to obtain the optical field profile in the structure of `"Ge"`, and then calculate the photo-induced carrier generation rate. The average of the optical generation rate in the light propagating direction, which is the x-direction, is then taken to obtain the profile in the yz plane to be imported to the DDM simulation. 
+This section performs a FDTD simulation to obtain the optical field profile in the structure of `"Ge"`, and then calculate the photo-induced carrier generation rate. The average of the optical generation rate in the light propagating direction, which is the x-direction, is then taken to obtain the profile in the yz plane to be imported to the DDM simulation.
 
 #### 3.4.1 Simulate Settings
 
@@ -703,7 +702,7 @@ The `FDTD` solver for active device simulation can be used to extract the optica
 
 #### 3.4.2 Run and extract the result
 
-Click on the "Solver+Analysis" in `Run` and not the information of "Progress" and "Message". `Result View` stores the information of the simulation result, which can be used to perform result extraction. 
+Click on the "Solver+Analysis" in `Run` and not the information of "Progress" and "Message". `Result View` stores the information of the simulation result, which can be used to perform result extraction.
 
 ![](../Active_Device/img/VPD/Rest_FDTD.png)
 
@@ -719,10 +718,10 @@ Right click on "Generation Rate" in result and choose "Save As" to export data. 
 
 ### 3.5 Photo current
 
-This section imports the optical generation rate to the `DDM` solver, and performs a steady state simulation to obtain the photo current. 
+This section imports the optical generation rate to the `DDM` solver, and performs a steady state simulation to obtain the photo current.
 
 Should refer to the above introduction to build a simulation structure with filling materials, set up the DDM solver and add doping and electrode boundary conditions, and set up locally dense grids to ensure solution accuracy.
-Select "Steady State" in solver mode of DDM solver. A range of voltage from 0V to 4V is applied to the electrode `"Cathode"`, with a step of 0.5V. Optical generation rate is applied. 
+Select "Steady State" in solver mode of DDM solver. A range of voltage from 0V to 4V is applied to the electrode `"Cathode"`, with a step of 0.5V. Optical generation rate is applied.
 Could import file of generation rate through data space or sources in simulation, and define the source fraction to reduce the rate of optical generation.
 
 |                        Data Space                    |                    Sources                     |
@@ -747,7 +746,7 @@ And a steady state simulation is performed to extract the I-V curve, which is sa
 
 ### 3.6 Bandwidth
 
-This section performs a transient simulation to extract the step response of the photo current. Then the bandwidth is obtained by postprocessing the I-t curve. 
+This section performs a transient simulation to extract the step response of the photo current. Then the bandwidth is obtained by postprocessing the I-t curve.
 
 Should refer to the above introduction to build a simulation structure with filling materials, set up the DDM solver and add doping and electrode boundary conditions, and set up locally dense grids to ensure solution accuracy.
 Select "Transient" in solver mode of DDM solver. "Transient Time Control" are applied to the electrode `"Cathode"`, with uniform envelop.
@@ -770,7 +769,7 @@ For the electrode `"cathode"`:
   - `max_step`--Set the max time step of the range.
   - `optical`--Set the optical generation rate during the time range.
     - `enabled`--Whether to apply optical generation rate during the time range. The value of `1` means `True`, and `0` means `False`.
-    - `envelop`--The envelop of the scaling factor of the light power during the time range. 
+    - `envelop`--The envelop of the scaling factor of the light power during the time range.
 
 Note:
 
@@ -818,7 +817,7 @@ By taking the derivative of the step response, the impulse response is obtained.
             if val == 2e-12:
                 start_idx = i
                 break
-        
+
         t = t[start_idx:]
         I = I[start_idx:]
 
@@ -1038,17 +1037,17 @@ Description:
 
   - `norm_length`--Set the length in the third dimension, default to be 1
   - `solver_mode`--Set the simulation mode. Steady state, transient and SSAC simulations are supported
-    - `Steady State` --DC Simulations. 
-    - `SSAC`-- Small signal AC simulations. Options “Single”, “Linear or “Log” can be selected in “Frequency Spacing”. 
+    - `Steady State` --DC Simulations.
+    - `SSAC`-- Small signal AC simulations. Options “Single”, “Linear or “Log” can be selected in “Frequency Spacing”.
       - `Perturbation Amplitude`: Amplitude of the SSAC perturbation.
-      - `Frequency Spacing`: Options “Single”, “Linear or “Log” can be selected. Default is “Single”. 
+      - `Frequency Spacing`: Options “Single”, “Linear or “Log” can be selected. Default is “Single”.
         - `Single`: Define a single frequency value.
         - `Linear`: Specify a linear frequency value range. Users should provide values for "Start Frequency," "Stop Frequency," and "Number of Points."
         -`Log`: Define a logarithmic frequency value range. Users should provide values for "Log Start Frequency," "Log Stop Frequency," and "Number of Points."
     - `Transient`: Time dependent simulations.
       For time-dependent simulations, users select the backward differential formula `BDF 1` or the trapezoidal rule/backward differentiation formula method `BDF 2` in the `Time Discretization Scheme` and set relative and absolute error limits to adjust the solver time step. The solver increases the time step if the absolute error is less than the specified `ABS LTE LIMIT`, or if the relative error is less than the `REL LTE LIMIT`.
   - `temperature`--Set the simulation temperature.
-  - `temperature_dependence`--Set the type of the temperature dependence. Only `"Isothermal"` is supported currently. 
+  - `temperature_dependence`--Set the type of the temperature dependence. Only `"Isothermal"` is supported currently.
 
 - `small_signal_ac`:
 
@@ -1085,7 +1084,7 @@ Description:
 
 ### 4.3 Electrode settings
 
-Electrodes are added and set up through the `surface recombination'. 
+Electrodes are added and set up through the `surface recombination'.
 
 There are two different type of electrical boundary conditions, which are `"steady_state"`and `"transient"`, specified by the  `Electrode Mode` in general table.
 
@@ -1165,7 +1164,7 @@ Description:
 - `uniform`:
   - `aplitude`: This field sets the maximum amplitude of the mode source.
   - `time Delay`: Define the delay time before open the source.
--`pulse`: 
+-`pulse`:
   - `high amplitude`: Maximum amplitude with the pulse turned on.
   - `low amplitude`: Minimum amplitude with the pulse turned off.
   - `time delay`: Define the delay time before open the source.
@@ -1173,6 +1172,7 @@ Description:
   - `falling edge`: The time of high amplitude falling to low amplitude.
   - `pulse width`: The time of high amplitude duration.
   - `period`: The time of pulse duration, which should larger than rising edge、pulse width and falling edge.
+
 </div>
 
 </font>

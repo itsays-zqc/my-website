@@ -6,7 +6,7 @@
 
 The subsequent code will exemplify the process of incorporating a light source and port within a simulation project.
 
-As of now, the source module accommodates the inclusion of mode source and Gaussian source. Furthermore, our platform extends support for ports into both EME and FDTD simulations.  
+As of now, the source module accommodates the inclusion of mode source and Gaussian source. Furthermore, our platform extends support for ports into both EME and FDTD simulations.
 
 ## 4.1 Waveform
 
@@ -16,7 +16,7 @@ In FDTD simulations, waveforms are utilized to control the bandwidth of the sour
 The syntax and properties for adding waveform are as follows. This function does not return any data.
 
 ```python
-add(        
+add(
         name: str,
         type: Literal["gaussian_waveform"],
         property: dict
@@ -24,7 +24,7 @@ add(
 
 ```
 
-### Set frequency wavelength 
+### Set frequency wavelength
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
 | range_type       | string  |  -         | Selects "frequency" or "wavelength".                                    |
@@ -73,7 +73,7 @@ add(
     )
 ```
 
-### General 
+### General
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
 | inject axis                             | string  |    -             | Selects the mode source propagation along the x-axis, y-axis or zaxis.|
@@ -87,7 +87,7 @@ add(
 | number_of_trial_modes                   | integer | 20                |  Records the maximum number of modes in the mode list.    |
 | waveform                               | object  | -                  |  Selects the waveform ID from source pulse waveform list.                   |
 
-### Geometry 
+### Geometry
 
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:---------------------                     -|
@@ -98,11 +98,11 @@ add(
 |  z min, z max           | number  |     -     | Z min, Z max position of the mode source. |
 
 ### Boundary conditions
-Select the override default boundary conditions to True, and each boundary condition can be set separately. The optional boundary conditions include "PEC", "PMC", "PML", "symmetric" or "anti symmetric". 
+Select the override default boundary conditions to True, and each boundary condition can be set separately. The optional boundary conditions include "PEC", "PMC", "PML", "symmetric" or "anti symmetric".
 
 ### Modal analysis
 If the fraction of magnetic field intensity in PML is greater than the specified threshold, the mode is discarded.
- 
+
 
 **Example:**
 
@@ -113,7 +113,7 @@ wv_id = wv["waveform_name"]     # Selects the waveform ID from source pulse wave
 src = pj.Source()
 src.add(name="source", type="mode_source", property={
                     "general": {"amplitude": 1, "phase": 0, "rotations": {"theta": 0, "phi": 0, "rotation_offset": 0},
-                    "mode_selection": "fundamental", "waveform": {"waveform_id": wv_id}, 
+                    "mode_selection": "fundamental", "waveform": {"waveform_id": wv_id},
                     "inject_axis": "x axis", "direction": "forward"},
                     "geometry": {"x": 0, "x span": 0, "y": 0, "y span": 3, "z": 0, "z span": 3},
                     "modal_analysis": {"mode_removal": {"threshold": 0.01}}})
@@ -130,7 +130,7 @@ add(
         property: dict,
     )
 ```
-### General 
+### General
 | Parameter                                 | Type    | Default                  | Description                                                                  |
 |:------------------------------------------|:--------|:-------------------------|:-----------------------------------------------------------------------------|
 | inject_axis                             | string  |   -               | Selects the mode source propagation along the x-axis, y-axis or zaxis.|
@@ -168,26 +168,26 @@ wv_id = wv["waveform_name"]     # Selects the waveform ID from source pulse wave
 so = pj.Source()
 so.add(name="source", type="gaussian_source", axis="z_backward",
            property={"general": {"angle_theta": 0, "angle phi": 0, "polarization_angle": 0, "waveform": {"waveform_id": wv_id},
-                                 "beam_settings": {"calculation method": "use_scalar_approximation", 
-                                                   "beam_parameters": "waist_size_and_position", 
+                                 "beam_settings": {"calculation method": "use_scalar_approximation",
+                                                   "beam_parameters": "waist_size_and_position",
                                                    "waist_radius": 5.2, "distance_from_waist": 1.5}},
                      "geometry": {"x": 4, "x span": 20, "y": 0, "y span": 20, "z": 1.5, "z span": 0}})
 
 ```
-     
+
 ## 4.3 FDTD port
 
-Incorporate a port into the current FDTD simulation project. 
+Incorporate a port into the current FDTD simulation project.
 
 ```python
-add(    
+add(
         name: str,
         type: Literal["fdtd port"],
         property: dict
     )
 ```
 
-### Geometry 
+### Geometry
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
 |  x, y, z               | number  |     -    | The center position of the FDTD port. |
@@ -197,11 +197,11 @@ add(
 |  z min, z max           | number  |     -     | Z min, Z max position of the FDTD port. |
 
 ### Boundary conditions
-Select the override default boundary conditions to True, and each boundary condition can be set separately. The optional boundary conditions include "PEC", "PMC", "PML", "symmetric" or "anti symmetric". 
+Select the override default boundary conditions to True, and each boundary condition can be set separately. The optional boundary conditions include "PEC", "PMC", "PML", "symmetric" or "anti symmetric".
 
 ### Modal analysis
 If the fraction of magnetic field intensity in PML is greater than the specified threshold, the mode is discarded.
- 
+
 
 **Example:**
 
@@ -228,9 +228,9 @@ add(
         type: Literal["eme_port"],
         property: dict,
     )
-```   
+```
 
-### Geometry  
+### Geometry
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
 | port location                       | string  |  -                 |  Set the location of EME port, selections are "left" and "right".                     |
@@ -241,7 +241,7 @@ add(
 | y min, y max           | number  |     -     | Y min, Y max position of the EME port. |
 | z min, z max           | number  |     -     | Z min, Z max position of the EME port. |
 
-### EME port  
+### EME port
 | mode selection                          | string  |                   | Selects "fundamental", "fundamental TE", "fundamental TM" or "user select" to inject mode.|
 | mode index                              | integer | 0                 |Selects the mode number from the list of calculated modes.                   |
 | search                                  | string  | max index         | Selects "max index" or "near n" to search modes.           |
@@ -249,11 +249,11 @@ add(
 | number of trial modes                   | integer | 20                |  Records the maximum number of modes in the mode list.    |
 
 ### Boundary conditions
-Select the override default boundary conditions to True, and each boundary condition can be set separately. The optional boundary conditions include "PEC", "PMC", "PML", "symmetric" or "anti symmetric". 
+Select the override default boundary conditions to True, and each boundary condition can be set separately. The optional boundary conditions include "PEC", "PMC", "PML", "symmetric" or "anti symmetric".
 
 ### Modal analysis
 If the fraction of magnetic field intensity in PML is greater than the specified threshold, the mode is discarded.
- 
+
 
 **Example:**
 The following script adds ports in EME simulation, selects the mode of "port1" as the source, and sets the calculation fundamental mode and the size is the span of the full simulation area.  This script assumes that EME solver has been added to the simulation environment, and the pj is an instance of the project.
@@ -266,7 +266,7 @@ pjp.add(name="port1", type="eme_port",
                   "eme_port": {"general": {"mode_selection": "user_select", "mode_index": 0, "number_of_trial_modes": 20}}})
 pjp.add(name="port2", type="eme_port",
         property={"geometry": {"port_location": "right", "use_full_simulation_span": True},
-                  "eme_port": {"general": {"mode_selection": "user_select", "mode_index": 0, "number_of_trial_modes": 20}}})    
+                  "eme_port": {"general": {"mode_selection": "user_select", "mode_index": 0, "number_of_trial_modes": 20}}})
 
 ```
 
@@ -304,11 +304,10 @@ For `Pulse`, users should define parameters such as `High Amplitude`, `Low Ampli
 `Pulse`:
  - `High Amplitude`: Amplitude of pulse after on shutter.
  - `Low Amplitude`: Amplitude of pulse after off shutter.
- - `Time Delay`: 
-   Time Delay, Rising Edge, Falling Edge, Pulse Width, and Period: Specify timing and duration parameters. The period's duration should be large. 
+ - `Time Delay`:
+   Time Delay, Rising Edge, Falling Edge, Pulse Width, and Period: Specify timing and duration parameters. The period's duration should be large.
 
 </div>
-
 
 </font>
 

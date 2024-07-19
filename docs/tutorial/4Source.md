@@ -228,7 +228,7 @@ Users can access "Optical Generation" under "Sources" in the simulation menu.
 `Import`:
  - `Generation Data`:
 Users can select data from the Data Space of the project or shared files, or import from a new generation file.
- - `Source Fraction`: 
+ - `Source Fraction`:
 Multiplies the dataset values by the scale factor.
 
 ![](../../static/img/tutorial/Source/DataSpace_Trans.png)
@@ -241,8 +241,9 @@ For `Pulse`, users should define parameters such as `High Amplitude`, `Low Ampli
 `Pulse`:
  - `High Amplitude`: Amplitude of pulse after on shutter.
  - `Low Amplitude`: Amplitude of pulse after off shutter.
- - `Time Delay`: 
-   Time Delay, Rising Edge, Falling Edge, Pulse Width, and Period: Specify timing and duration parameters. The period's duration should be large. 
+ - `Time Delay`:
+   Time Delay, Rising Edge, Falling Edge, Pulse Width, and Period: Specify timing and duration parameters. The period's duration should be large.
+
 </font>
 
 </div>

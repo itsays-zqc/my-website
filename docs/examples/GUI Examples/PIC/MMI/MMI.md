@@ -105,7 +105,7 @@ The steps are illustrated in the image below.And in this simulation, we mainly u
 
 Next, we can create the model of MMI by the geometries in "Structure" part. In this example, we mainly need the "Analytical Waveguide" , "Straight Waveguide" and "Bezier Waveguide", clicking the specific geometry to add it into the Objects Tree.
 
-Moreover, it is conveniently to use the global paramaters  changing the structures of directional coupler.
+Moreover, it is conveniently to use the global paramaters  changing the structures of MMI.
 
 </div>
 

@@ -44,22 +44,28 @@ The company's business focuses on 5G, optical communication, optoelectronic sens
 
 ## What are our advantages?
 
-
-
 We are the first company in the industry to offer a "local + cloud" computing platform for photonics integrated circuit (PIC) simulation software. We provide a one-stop solution, delivering software, resources, and technical support anytime, anywhere.
 
 ***The Importance of Software Simulation:***
 
 As semiconductor devices continue to evolve towards smaller sizes and more complex structures, the use of simulation software solutions offers numerous advantages over laboratory measurement methods, playing a crucial role in semiconductor device development. Highly accurate algorithms enable rapid modeling and simulation of devices, allowing the observation of internal physical processes. Through simulation software, customers can not only design new and complex device structures but also propose solutions to optimize device performance by altering operating conditions or various physical quantities and parameters within device models. From simulating photonic integrated circuits to various types of simulations in different fields, spanning from materials to systems, the use of simulation software not only reduces production costs, shortens development cycles, and increases productivity but also provides clear and concise results data for researchers in various domains to collaborate on complex projects more effectively.
 
+</div>
+Max-Optics Studio's simulation design platform for optical chips focuses on the simulation needs of optoelectronic devices in the integrated optoelectronic chip design phase, providing key functions such as device modeling, device simulation, and performance optimization. This comprehensive solution composed of these functions can help designers accelerate the development of groundbreaking optical products, while improving product performance, reliability, and yield. With high-precision physical solvers and comprehensive functions, Max-Optics Studio can provide a user-friendly workflow for designing cross-scale systems (spanning from nanoscale to macroscale) and support numerous application scenarios.
+
+
 ***Software Uniqueness:***
 
 We offer two software forms based on 'local + cloud' integration. The first is a software development toolkit SDK based on Python scripting, which includes modeling, simulation, post-processing, and data visualization capabilities. It can call all modules and is user-friendly, easy to learn, and easy to extend. The second is a GUI user interface, enabling interactive simulations using both forms. Additionally, we incorporate advanced grid optimization and GPU acceleration to reduce simulation times. We also provide virtual machine and Windows versions to accommodate various simulation environments preferred by our customers.
+
+</div>
+Max-Optics Studio's software model of "local + cloud" breaks the geographical limitations, allowing users to model, simulate, and view simulation results on any platform at any time. In addition to the GUI user interface, Max-Optics Studio also provides a software development kit (SDK) based on Python scripts, including modeling, simulation, post-processing, and data visualization functions. It can call all modules and has advantages such as user-friendliness, low learning cost, and easy scalability.
 
 ***Key Product Advantages:***
 
 We currently provide an efficient and reliable one-stop solution for both passive and active devices, combining multiple simulation algorithms. Our simulations exhibit industry-leading accuracy and speed.
 
+With applications in integrated optoelectronic chip and system simulation design, Max-Optics Studio has very broad application prospects in areas such as 5G, optical communication, optoelectronic sensing, optical computing, industrial Internet of Things, and national defense security. Currently, the core computational modules within the software consist of solvers corresponding to three algorithms: FDTD, FDE, and EME. These modules can provide users with precise and efficient solutions tailored to the physical properties of different optical devices. Among them, FDTD is a general algorithm that can be used to simulate various optical devices, especially suitable for simulation scenarios involving complex structures. FDE and EME are suitable for simulating optical waveguide-type structural devices, such as integrated waveguides, fiber Bragg gratings, and end-face couplers.
 
 
 ## What products do we currently have?
@@ -72,22 +78,40 @@ To learn more about our SDK software products, please visit the 'Max-Optics SDK'
 
 ## What functions are available for passive devices simulation?
 
-We have enhanced the classical CEM algorithm and introduced a novel 'local + cloud' user interface configuration to utilize passive modules for simulating optical waveguides and passive optical devices. The following are the modules supported for passive component simulation:
+Around complex application requirements, Max-Optics Studio has created a variety of functional combinations in the physical modeling, simulation calculation, result processing, and other stages of the simulation process to help designers quickly optimize device performance and iterate design solutions for different applications. The table below summarizes some commonly used functions in the design process.
+
 
 | FDTD Module                                                   |  Shared Module | EME Module                                                     |
 | :----------------------------------------------------------- | :----------------------------------------------------------- | :----------------------------------------------------------- |
-| • Mode/Gaussian/Import source<br/>• PML/PEC boundary<br/>• 0D/1D/2D/3D frequency monitor<br/>• 0D/1D/2D/3D time monitor <br/>• Early Shutoff<br/>• Transmission calculation<br/>• Mode expansion<br/>• S-parameters calculation<br/>• Global parameter sweeping<br/>• Multi-threaded computing | • 3D Modeling•<br/> GDS import<br/>• Tilt slope of waveguide profile<br/>• Non-Uniform/Uniform Mesh<br/>• Conformal Mesh Refinement<br/>• Standard material library<br/>• Custom isotropic/diagonally<br/>anisotropic materials<br/>• Far field | • Effective Index Calculation<br/>• Group Index Calculation<br/>• Arbitrary port settings<br/>• PEC/PMC/PML boundary<br/>• 2D frequency domain monitor<br/>• S-parameter calculation<br/>• Frequency Sweeping<br/>• Group span quick sweeping<br/>• Overlap Analysis<br/>• Multi-threaded Computing |
+| • Mode/Gaussian/Import source<br/>• PML/PEC/Symmetric/Anti-Symmetric boundary<br/>• 0D/1D/2D/3D frequency monitor<br/>• 0D/1D/2D/3D time monitor <br/>• Early Shutoff<br/>• Transmission calculation<br/>• Mode expansion<br/>• S-parameters calculation<br/>• Global parameter sweeping<br/>• Multi-threaded computing | • 3D Modeling•<br/> GDS import<br/>• Tilt slope of waveguide profile<br/>• Non-Uniform/Uniform Mesh<br/>• Conformal Mesh Refinement<br/>• Standard material library<br/>• Custom isotropic/diagonally<br/>anisotropic materials<br/>• Far field | • Effective Index Calculation<br/>• Group Index Calculation<br/>• Arbitrary port settings<br/>• PEC/PMC/PML boundary<br/>• 2D frequency domain monitor<br/>• S-parameter calculation<br/>• Frequency Sweeping<br/>• Group span quick sweeping<br/>• Overlap Analysis<br/>• Multi-threaded Computing |
+
+
+|         FDTD Module       |            EME Module     |       FDE Module          |       Shared Module       |
+|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|
+|Mode/Gaussian/Import source|   Arbitrary port settings |PML/PEC/Symmetric/Anti-Symmetric/Periodic boundary|3D Modeling  |
+|PML/PEC/Symmetric/Anti-Symmetric boundary|PML/PEC/PMC/Symmetric/Anti-Symmetric/Periodic boundary|Curved waveguide|GDS import|
+|0D/1D/2D/3D frequency monitor|Frequency domain field monitor|Field overlap analysis|Tilt slope of waveguide profile|
+|0D/1D/2D/3D time monitor|S-parameter calculation|Impedance calculation|Non-uniform Mesh/Uniform Mesh|
+|Real time field display during the calculation process| Internal S-parameter calculation| Frequency Sweep|Conformal Mesh Refinement|
+|Terminate the calculation process in advance and save the results|Cell transmission field/S matrix output|modal dispersion/delay analysis|Standard material library|
+|Transmission rate calculation|Energy monitoring auxiliary inspection tool | Multi threaded calculation | Custom isotropic/diagonally anisotropic materials|
+|Mode expansion          | Wavelength sweep          |                      |           Far-field |
+|S-parameter calculation | structural length sweep|                         |                     |
+|Global parameter scanning | multi-threaded computation|                    |                     |
+|Multi-threaded computation|                         |                      |                     | 
+|Multi GPU acceleration  |                           |                      |                     | 
+
 
 
 ## What functions are available for active component simulation?
 
 Our active module seamlessly integrates optical and electrical modules, combining carrier transport simulation algorithms with electromagnetic simulation algorithms. This one-stop solution allows for efficient and reliable simulation of optoelectronic active devices with the ability to perform multiple diverse simulations in a single model. The following are the modules supported for active component simulation.
 
-| AFDTD Module | AFDE Module | OEDevice Module                                                 |
+| FDTD Module | FDE Module |  DDM Module                                                 |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | • Mode Source<br/>• PML/PEC Boundary<br/>• 0D/1D/2D/3D Frequency Monitor<br/>• Early Shutoff<br/>• Transmission Calculation<br/>• Multi-thread Computing<br/>• Generation Rate Extraction | • Effective Index Calculation<br/>• Group Index Calculation<br/>• VpiL, VpiLoss Extraction | • Steady State / SSAC / Transient Simulation<br/>• Physical Models and Parameters of Electrical <br/>• Materials<br/>• Multi-thread Computing<br/>• Convergence Control<br/>• Carrier / Potential / Band Profile Monitor<br/>• Doping Import<br/>• Generation Rate Import |
 
-| Shared Module | Shared Module for AFDTD and AFDE      |
+| Shared Module | Shared Module for FDTD and FDE      |
 | ------------------------------ | ------------------------------------------------------------ |
 | • 3D Modeling <br/> • GDS Import | • Non-Uniform/Uniform Mesh<br/>• Conformal Mesh Refinement<br/>• Standard Material Library<br/>• Custom Isotropic Optical Materials |
 
@@ -121,9 +145,9 @@ Max-Optics introduces a unique 3D curve mesh grid technology that enables precis
 
 • The EME module benefits from a 50% reduction in the number of required computational modes, leading to increased computational stability.
 
-***<font size = "4" color = "#0000dd">3、Max-Optics Studio-OE Device </font><br />***
+***<font size = "4" color = "#0000dd">3、Max-Optics Studio-DDM </font><br />***
 
-OE Device is a one-stop solution, providing a convenient tool for simultaneous electromagnetic field and carrier motion simulation in active optoelectronic devices. It allows for self-consistent solutions of the electromagnetic field (Maxwell's equations), electrostatic potential (Poisson's equation), and free carrier density (drift-diffusion equations). The entire modeling and simulation process can be completed in one interface.
+DDM is a one-stop solution, providing a convenient tool for simultaneous electromagnetic field and carrier motion simulation in active optoelectronic devices. It allows for self-consistent solutions of the electromagnetic field (Maxwell's equations), electrostatic potential (Poisson's equation), and free carrier density (drift-diffusion equations). The entire modeling and simulation process can be completed in one interface.
 
 ***<font size = "4" color = "#0000dd">4、Max-Optics Studio-MO Link </font><br />***
 

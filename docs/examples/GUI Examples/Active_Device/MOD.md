@@ -98,11 +98,6 @@ Specifies the  junction width and peak concentration of gaussian doping by`Junct
 
 ![](../Active_Device/img/MOD/Gaussian%20Doping_Dopant.png)
 
-##### 1.2.3 Import Doping
-
-Import a new doped file with device structure from the "Data Space" that has already stored doped data files, or from a local path.
-
-![](../Active_Device/img/MOD/ImportDoping.png)
 
 
 #### 1.3 Set Contact
@@ -164,6 +159,7 @@ Import the `np density` file, which contains the carrier distribution derived fr
 ![](../Active_Device/img/MOD/FDE_npDensity.png)
 
 Add FDE analysis about wavelength as follows:
+
 ![](../Active_Device/img/MOD/FDE_analyses.png)
 
 Run FDE solver and add the analysis to calculate the change of effective refractive index and optical loss under specific wavelength. Set the value of "V_cathode" as global parameter to sweep in "Sweeps".

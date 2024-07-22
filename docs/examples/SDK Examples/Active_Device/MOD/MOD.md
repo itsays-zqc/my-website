@@ -870,7 +870,8 @@ if __name__ == "__main__":
 
 ​Here, we present the device geometry as defined in the structure file, along with the P-type and N-type dopant distributions, and the overall doping distribution.
 
-​Application Library path: `:mo_sdk_solution_v3.2.3.0\examples\active_demo\doping_function\MOD\plots\MOD00_structure_doping_time`
+​Application Library path: 
+`:mo_sdk_solution_v3.2.3.0\examples\active_demo\doping_function\MOD\plots\MOD00_structure_doping_time`
 
 |                   Na Doping                   |                      N Doping                       |                   Nd Doping                   |
 | :-----------------------------------------------------: | :---------------------------------------------------: | :----------------------------------------------------------: |
@@ -878,7 +879,8 @@ if __name__ == "__main__":
 
 ​	We can see the distribution of the refractive index in these three directions of device.
 
-​	Application Library path: `:mo_sdk_solution_v3.2.3.0\examples\active_demo\doping_function\MOD\plots\MOD00_structure_index_time`
+​	Application Library path: 
+`:mo_sdk_solution_v3.2.3.0\examples\active_demo\doping_function\MOD\plots\MOD00_structure_index_time`
 
 |                      X-axis                      |                      Y-axis                      |                      Z-axis                      |
 | :----------------------------------------------: | :----------------------------------------------: | :----------------------------------------------: |
@@ -892,8 +894,8 @@ if __name__ == "__main__":
 
 According to the modulator's operating principle, the extra carriers created by the doped device under external bias form an internal electric field and depletion layer in the device via drift diffusion, resulting in changes in refractive index and loss. You may determine np density using DDM's steady-state solution by `MOD02_np.py` and then input the data into FDE to calculate changes in optical loss and refractive index by `MOD0A_vpi.py`. 
 
-
-​Application Library path: `:mo_sdk_solution_v3.2.3.0\examples\active_demo\doping_function\MOD\MOD02_np.py`
+​Application Library path: 
+`:mo_sdk_solution_v3.2.3.0\examples\active_demo\doping_function\MOD\MOD02_np.py`
 `:mo_sdk_solution_v3.2.3.0\examples\active_demo\doping_function\MOD\MOD0A_vpi.py`
 
 #### 1.1 Basic Operations
@@ -1301,6 +1303,7 @@ if __name__ == "__main__":
 ##### 1.3.1 Loss
 
 ​This section displays the variation of losses with bias voltage.
+
 ![](../MOD/plot/MOD0A_vpi_loca_time/loss/0_loss_Real.png)
 
 ##### 1.3.2 Effective Index
@@ -1313,12 +1316,11 @@ if __name__ == "__main__":
 
 ##### 1.3.3 Modulation efficiency
 
-​	These graphs illustrate the relationship between two parameters that represent modulation efficiency as a function of bias voltage.
+​These graphs illustrate the relationship between two parameters that represent modulation efficiency as a function of bias voltage.
         
 |                          *VpiL*                           |                          *VpiLoss*                           |
 | :-------------------------------------------------------: | :----------------------------------------------------------: |
 | ![](../MOD/plot/MOD0A_vpi_loca_time/vpil/0_VpiL_Real.png) | ![](../MOD/plot/MOD0A_vpi_loca_time/vpiloss/0_VpiLoss_Real.png) |
-
 
 
 ### 2. Capacitance And Resistance

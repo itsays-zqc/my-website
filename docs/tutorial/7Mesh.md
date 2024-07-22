@@ -41,16 +41,16 @@ Although the size of the grid in the solver area has been set in “Edit DDM”,
 |![](../../static/img/tutorial/simulation/mesh/Localmesh_1.png)|![](../../static/img/tutorial/simulation/mesh/Localmesh_2.png)|
 
 Users should set the size of mesh in General and define the region of encrypted grid in Geometry.
-`Geometry Type`: Options `Directly Defined`, `Solid` or `Solid,Solid`.
-`Directly Defined`: Users can define follow parameters to make sure region.
- - `X`, `Y`, `Z`: The center position of the simulation region.
- - `X Min`/ `X Max`: X min, X max position.
- - `Y Min`/ `Y Max`: Y min, Y max position.
- - `Z Min`/ `Z Max`: Z min, Z max position.
- - `X Span`/ `Y Span` / `Z Span`: X, Y, Z span of the simulation region.
-`Solid`: 
+- `Geometry Type`: Options `Directly Defined`, `Solid` or `Solid,Solid`.
+- `Directly Defined`: Users can define follow parameters to make sure region.
+  - `X`, `Y`, `Z`: The center position of the simulation region.
+  - `X Min`/ `X Max`: X min, X max position.
+  - `Y Min`/ `Y Max`: Y min, Y max position.
+  - `Z Min`/ `Z Max`: Z min, Z max position.
+  - `X Span`/ `Y Span` / `Z Span`: X, Y, Z span of the simulation region.
+- `Solid`: 
 Encrypt a structure and select the structure already defined in Project in the Solid drop-down box.
-`Solid,Solid`: 
+- `Solid,Solid`: 
 Encryption on the surface of the two structures requires the definition of the grid growth rate `Growth Ratio`.
 
 </font>

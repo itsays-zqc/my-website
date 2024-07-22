@@ -320,9 +320,12 @@ The user can use the Power monitor simulation objects to extract the distributio
 ![](../../static/img/tutorial/analysis/GenerRate.png)
 
 **Import Data**:
-1) Power Monitor: Choice 3D power monitor from Monitors of Simulations.
-2) Average Dimension: Choice one’s average dimension of “X”,”Y” or “Z” for 2D simulation of power monitor. Choice the travels through injection plane of optical generation in source injuction direction. 
-3) Light Power: Define the amount of source power injected into the simulation.
+
+1. Power Monitor: Choice 3D power monitor from Monitors of Simulations.
+
+2. Average Dimension: Choice one’s average dimension of `X`,`Y` or `Z` for 2D simulation of power monitor. Choice the travels through injection plane of optical generation in source injuction direction. 
+
+3. Light Power: Define the amount of source power injected into the simulation.
 
 </font>
 

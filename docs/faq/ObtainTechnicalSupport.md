@@ -23,9 +23,23 @@ If you have already attempted some solutions without success, mention them in yo
 If you have other suggestions for designing software features or optimizing physical modules, we look forward to talking to you. Please contact our customer support team.
 
 Contact Information:
-- Phone: 150 6666 1688
-- E-mail: sales@max-optics.com
-- E-mail：support@max-optics.com
 
+| 官方网址  |         https://www.max-optics.com/        |
+|:--------:|:------------------------------------------:|
+| 线上知识库| https://itsays-zqc.github.io/my-website/   |
+|:--------:|:------------------------------------------:|
+|  技术支持 |             support@max-optics.com         |
+|:--------:|:------------------------------------------:|
+|   电话   |               15066661688                  |
+|:--------:|:------------------------------------------:|
+| 办公地址  | 上海市浦东新区丹桂路799号国创中心三期5号楼6楼 |
+
+Trademark:
+
+"ManGuang" and "Max Optics" are registered trademarks of Shanghai ManGuang Information Technology Co., Ltd. Other product or brand names may be trademarks or registered trademarks of their respective owners.
+
+Patent:
+
+Shanghai Max-Optics Information Technology Co., Ltd. products are protected by one or more patents. For more information, please visit https://www.max-optics.com/
 
 </font>

@@ -464,36 +464,36 @@ In addition to the properties mentioned above, users can also define temperature
 ![](../../static/img/tutorial/material/electrical/Si_eleMat.png)
 
 
-`Name`: Users have the option to redefine the name of the material.
-`Color`: Users can choose a different color to represent the material in the layout.
-`Mesh Order`: Determines the meshing of overlapping objects in the simulation.
-`Material Type`: 
+- `Name`: Users have the option to redefine the name of the material.
+- `Color`: Users can choose a different color to represent the material in the layout.
+- `Mesh Order`: Determines the meshing of overlapping objects in the simulation.
+- `Material Type`: 
 There are three material types: Insulator, Conductor, and Semiconductor. 
-`Permittivity/DC Permittivity`: 
+- `Permittivity/DC Permittivity`: 
 Specifies the relative dielectric permittivity of the material, represented by a 3x3 matrix.
-`Work Function`: 
+- `Work Function`: 
 Specifies the intrinsic work function of the material. Failure to specify a work function will result in Ohmic contacts irrespective of the material.
-`Fundamental`: 
+- `Fundamental`: 
 Semiconductors must have basic properties defining their electronic behavior, including relative band gap, effective mass, or density of states.
-`Effective Mass/Density of States`: 
+- `Effective Mass/Density of States`: 
 Users can specify the effective mass of electrons and holes, as well as the density of states for the conduction and valence bands.
-`Band Gap`: 
+- `Band Gap`: 
 Users can specify the band gap at 300K and choose a model of bandgap narrowing from the available options. The effective intrinsic carrier concentration (Ni) is calculated by combining the effective mass or equivalent density of states.
-`Mobility`: 
+- `Mobility`: 
 Defines the mobility of electrons and holes, accounting for corrections due to scattering and supporting velocity saturation effects under strong electric fields.
-`Lattice and Impurity Scattering`: 
+- `Lattice and Impurity Scattering`: 
 User can define the low-field mobility model of electrons and holes at lattice, correct the charge carriers from lattice thermal vibration scattering at “f(T)”. The Masetti model in the pull-down box of impurity to correct the heavier doped scattering.
-`High Field`: 
+- `High Field`: 
 Users can opt for the Canali model to calculate mobility changes due to the drift speed reaching saturation under the influence of strong electric fields in the semiconductor. To specify the carrier's saturation velocity (vsat), users need to select either the size of the Quasi-Fermi level gradient or the component of the electric field in the direction of the current density from the "Driving Field" drop-down box.
-`Recombination`: 
+- `Recombination`: 
 The continuous transition and recombination of different bands are crucial in simulation design. Users can enable or disable the corresponding composite model based on their preferences.
-`Trap-Assisted(Rsrh)`: 
+- `Trap-Assisted(Rsrh)`: 
 Users can activate the trap-assisted composite, allowing them to directly define the temperature-dependent lifetime of electrons and holes or correct it using the carrier concentration-dependent Scharfetter model or the field effect model Schenk.
-`Radiative(Ropt)`: 
+- `Radiative(Ropt)`: 
 Users can activate the Radiative model and define the parameters of copt.
-`Auger(Rau)`: 
+- `Auger(Rau)`: 
 Users can enable auger recombination of band-to-band, which is temperature-dependent by activating the "Enable Model" option.
-`Band to Band Tunneling`: 
+- `Band to Band Tunneling`: 
 Users can activate the band-to-band tunneling model of Hurkx or Schenk.
 
 </div>

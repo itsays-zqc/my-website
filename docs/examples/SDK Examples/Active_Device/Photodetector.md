@@ -2008,6 +2008,7 @@ Description:
 
 
 <br/>
+
 #### 3.5.5 Add electrodes
 
 ```
@@ -2042,6 +2043,7 @@ Description:
 
 
 <br/>
+
 #### 3.5.6 Run and extract the result
 
 ```
@@ -2074,7 +2076,6 @@ Description:
 if __name__ == "__main__":
     simulation(run_options=RunOptions(high_field=False, index_preview=False, run=True, extract=True))
 ```
-
 
 <br/>
 
@@ -2296,8 +2297,8 @@ Note:
 
 1. The dependency of scaling factor of light power on time is a step function here.
 
-
 <br/>
+
 #### 3.6.6 Run the solver
 
 ```
@@ -2392,7 +2393,6 @@ By taking the derivative of the step response, the impulse response is obtained.
 ```
 
 First, take the derivative of the step response to obtain the impulse response. And then uniform time intervals and perform interpolation on the impulse response to facilitate the subsequent application of the Fast Fourier Transform.
-
 
 <br/>
 
@@ -2497,6 +2497,7 @@ if __name__ == "__main__":
 <br/>
 
 *Result show of the frequency response*
+
 ![Frequency response](./img/3.2.3.0/BW_3dB_bandwidth.jpg)
 <center>Fig 11. Frequency response</center>
 
@@ -2504,7 +2505,6 @@ if __name__ == "__main__":
 
 
 ## 4. Appendix
-
 
 <br/>
 
@@ -2868,7 +2868,6 @@ Electrodes are added and set up through the `add_electrode` function. The format
 - `name`--Electrode name
 - `property`--Other properties
 
-<br/>
 
 There are two different type of electrical boundary conditions, which are `"steady_state"`and `"transient"`, specified by the property `electrode_mode`.
 
@@ -2877,8 +2876,6 @@ There are two different type of electrical boundary conditions, which are `"stea
 #### 4.3.1 Steady state boundary condition
 
 When the property `electrode_mode` is set to `"steady_state"`, the steady state boundary condition is applied.
-
-<br/>
 
 Property list of steady state boundary condition:
 
@@ -2989,7 +2986,7 @@ Description:
 - `uniform`:
   - `aplitude`: This field sets the maximum amplitude of the mode source.
   - `time Delay`: Define the delay time before open the source.
--`pulse`: 
+- `pulse`: 
   - `high amplitude`: Maximum amplitude with the pulse turned on.
   - `low amplitude`: Minimum amplitude with the pulse turned off.
   - `time delay`: Define the delay time before open the source.
@@ -3024,6 +3021,7 @@ Description:
                         {"time_start": 1e-11, "time_stop": 5e-10, "initial_step": 5e-14, "max_step": 1e-11},
                     ]
                     }
+    })
 ```
 
 <br/>

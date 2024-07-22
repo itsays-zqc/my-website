@@ -52,7 +52,7 @@ For example, the mesh order=2 structure will cover the mesh order=1.
 The advantage is that increasing the value of mesh order allows user to make new nested structures in the complex model.
 
 
-## 3.2 Add Local Mesh
+## 3.2 Add Electrical Local Mesh
 
 In the context of electrical simulation, we present guidelines on how to incorporate meshing to ensure the precision and dependability of the simulation outcomes. The code explanations and a practical example provided below.
 

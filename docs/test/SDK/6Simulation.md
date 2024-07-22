@@ -436,6 +436,8 @@ smatrix_res = simu.add(name=sweep_name, type="FDTDSmatrix",
 
 ## 6.5 DDM
 
+### 6.5.1 DDM Settings
+
 Incorporate a DDM solver into the current project using the code `type='DDM`.
 
 ```python
@@ -563,18 +565,19 @@ Description:
   - `relative_tolerance`--Set the relative update tolerance
   - `tolerance_relax`--Set the tolerance relaxation factor for convergence on relative tolerance criteria
   - `divergence_factor`--Nonlinear solver fault with divergence when each individual function norm exceeds the threshold as its absolute tolerance multiply by this factor
-  
-## 6.6 FDTD
 
-### 6.6.1 FDTD Setting
-Incorporate an AFDTD(Active Finite-Difference Time-Domain) solver into the current project using the code `type='FDTD'`.
+
+### 6.5.2 FDTD 
+#### 6.5.2.1 Setting
+
+Incorporate an FDTD(Finite-Difference Time-Domain) solver into the current project using the code `type='FDTD'`.
 
 ```python
 add(
             self,
             *,
             name: str,
-            type: Literal["AFDTD"],
+            type: Literal["FDTD"],
             property: FdtdPostProcess,
     )
 ```
@@ -620,7 +623,7 @@ add(
 | advanced_options.live_slice_filed_display_settings.position  |        0         |  float  |     Set the center position of the field image.      |
 |                    thread_setting.thread                     |        4         | integer |    Determine the number of cores required to run the simulation on the local computer.      |
 
-### 6.6.2 Boundary
+#### 6.5.2.2 Boundary
 
 The following content comprises code explanations and specific examples of boundary conditions in optical simulation.
 
@@ -691,9 +694,11 @@ If you need to customize the boundary conditions for simulation requirements, yo
 
 The code provided in this section can be utilized to incorporate  boundary and mesh into the current project.
 
-## 6.7 FDE
 
-Integrate an AFDE(Active Finite Difference Eigenmode) solver into the current project using the code `type='FDE'`.
+
+### 6.5.3 FDE
+
+Integrate an FDE(Finite Difference Eigenmode) solver into the current project using the code `type='FDE'`.
 
 ```python
 add(

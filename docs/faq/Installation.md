@@ -12,269 +12,135 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 Max-Optics Studio Local Passive Software Installation
 
+
+
+-----------------------------------------------------------------------------------------------
+
 #### 1. Open the Installation Package
 
-Find the Setup.exe package, double-click to open the MOPassive-x.x.x.x+build.xxxxxxxx-setup
-installation package.
+Find the "Setup.exe" package, double-click to open the installation package.
 
-!['install1'](../../static/img/faq/Installation/install1.png) 
+![](../../static/img/faq/Installation/install/install1.png) 
 
 If there is a pop-up window come out, please press the “Run” button and wait to run.
 
-![mediul](../../static/img/faq/Installation/install2.png) 
+![](../../static/img/faq/Installation/install/install2.png) 
 
 Check the contents and click "I Accept The Agreement" item, then click "Next".
 
-!['install3'](../../static/img/faq/Installation/install3.png ) 
+![](../../static/img/faq/Installation/install/install3.png ) 
 
 #### 2. Select Destination Location
 
 User can custom destination location by pressing “Browse...” button , or just use the auto-default
 location, then press the “Next” button.
 
-!['install4'](../../static/img/faq/Installation/install4.png ) 
+![](../../static/img/faq/Installation/install/install4.png ) 
 
+#### 3.  Configuration License
 
-#### 3. Select Start Menu Folder & Create a Shortcut
+User can enter "Host IP Address" and "Port" in the configuration window.
 
-In the "Select Start Menu Folder" window, users can either click the "Next" button directly or
-customize the location for shortcuts by clicking the "Browse..." button.
+![](../../static/img/faq/Installation/install/install5.png)
 
-!['install5'](../../static/img/faq/Installation/install5.png ) 
+##### 3.1 License Configuration Method
 
-In the "Select Additional Tasks" window, users can choose to create a desktop shortcut by selecting
-the "Create a desktop shortcut" option, and then proceed by clicking the "Next" button. Alternatively,
-users can simply uncheck the option and click the "Next" button directly.
+Any of the following methods can be used to configure the license:<br />
 
-!['install6'](../../static/img/faq/Installation/install6.png ) 
+Method 1: Deploy the local floating authorization License Server, deployment steps can be found in the installation manual "Max-Optics Studio Flex License Install Guide.pdf".<br />
+Method 2: Online public network floating authorization, using ManGuang public network floating authorization service.<br />
 
-#### 4. Ready to Install
+Configure license:<br />
 
-In the "Ready to Install" window, click the "Install" button to proceed with the installation.
-!['install7'](../../static/img/faq/Installation/install7.png ) 
+Using Method 1: Click on License, enter the address and port of the local floating license server (default is 8273), and click "Confirm".<br />
+Choose method two: please contact ManGuang staff and configure according to the authorization configuration information provided by them.<br />
 
-#### 5. Installing
+Active Mulaes:<br />
+
+Configuration windows will be altered if the software has active modules.Active license enhances the licensing file and license server for specific users. 
+After choosing "License Server”, user may choose "Host" and "Port" and click "Next".
+
+![](../../static/img/faq/Installation/install/install29.png)
+
+When user selects "License File," they have the option to choose a specific destination place by clicking the "Browse..." button or to just utilize the auto-default location before clicking "Next."
+
+![](../../static/img/faq/Installation/install/install30.png)
+
+##### 3.2 Setting software runtime dependencies
+
+In the "Required Dependencies" window, the software will perform a mandatory dependency check on "Visual C++ Redistributable for Visual Studio 2015 or later". If the minimum requirements are not met, the software will prompt you with a specific download link. Please perform the check and subsequent installation again after correctly installing the mandatory dependencies.<br />
+The GPU acceleration feature in the software has a minimum requirement for NVIDIA graphics card drivers, which should not be lower than "Nvidia Driver version 527.41". For users who wish to use GPU acceleration in the software, please check whether the GPU driver is "Nvidia Driver 527.41 or later (for GPU acceleration)" to avoid any impact on the experience during later use due to the GPU driver not meeting the requirements.
+
+![](../../static/img/faq/Installation/install/install6.png)
+
+Note: For users who are installing the machine without a GPU graphics card, please do not check the option to verify the GPU driver version, otherwise it will keep failing the check and you will not be able to proceed with the installation.
+
+![](../../static/img/faq/Installation/install/install7.png)
+
+##### 3.3 Select Start Menu Folder and Create Shortcut
+
+In the "Select Start Menu Folder" window, users can directly click the "Next" button, or customize the location of the shortcut by clicking the "Browse..." button.
+
+![](../../static/img/faq/Installation/install/install8.png)
+
+In the "Select Additional Tasks" window, users can create a desktop shortcut by selecting the "Create a desktop shortcut" option, and then click the "Next" button to continue. Alternatively, users can simply uncheck this option and then click the "Next" button directly.
+
+![](../../static/img/faq/Installation/install/install9.png)
+
+##### 3.4 Reay Install
+
+In the "Ready to Install" window, click the "Install" button to continue the installation.
+
+![](../../static/img/faq/Installation/install/install20.png)
+
+##### 3.5 Installing
 
 Please wait, until installation is complete.
 
-!['install8'](../../static/img/faq/Installation/install8.png ) 
+![](../../static/img/faq/Installation/install/install21.png)
 
-#### 6. Restart
+##### 3.6 Exit Setup
 
-Check either the “yes, restart the computer now” or “No, I will restart the computer later” to invoke
-the software. Then press “Finish” button.
+Please press “Finish” button to exit setup, then click the shortcuts to invoke the software.
 
-!['install9'](../../static/img/faq/Installation/install9.png ) 
+![](../../static/img/faq/Installation/install/install22.jpg)
 
-#### 7. Complete
+##### 3.7 Complete 
 
 Once the installation is complete, the user can find a shortcut to the software on their desktop.
 
-!['install10'](../../static/img/faq/Installation/install10.png ) 
+![](../../static/img/faq/Installation/install/install23.png)
 
-Notes:
-User can double click the shortcut to invoke the software;
-
-User also can double click a .passive file to open the software automatically
+Notes:<br />
+- User can double click the shortcut to invoke the software;
+- User also can double click a .passive file to open the software automatically.
 
 ### How to Install Max-Optics SDK Software?
 
-#### 1. Installing Python.
+![](../../static/img/faq/Installation/install/install24.png)
 
-AIO SDK only supports Python 3.8.x. If you have Python already installed, please verify its version. If you have multiple Python versions installed, ensure that the version specified in the PATH environment variable is Python 3.8.x. If Python is not installed, follow the instructions below:
+By running the SDK package in the local environment, modeling and simulation can be done using the Python SDK. Simply click the New button to generate a local "MO SDK" workspace file, which will automatically load the SDK package. Users can open the package and seamlessly simulate in "Visual Studio Code" (VS Code).
 
-① Open the 'python-3.8.X-amd64.exe' from the trial package.
+Workflow: New -&gt; Solution Name -&gt; Path -&gt; Create
 
-![](../../static/img/faq/Installation/2.png) 
+![](../../static/img/faq/Installation/install/install25.png)
 
-② Choose 'Customize installation'.
 
-③ Check the 'Add Python 3.8 to PATH' option.
+## How to simulate a case in the SDK.
 
-![](../../static/img/faq/Installation/3.png) 
+Users can execute the SDK with additional quick demo cases in the Visual Studio Code (VS Code) environment. Click on the File dropdown menu in VS Code, then select Open Folder, locate the path where the SDK workspace is saved, and open it in VS Code.
 
-Note: When customizing the installation path, ensure that the folder name in the installation path does not contain any spaces. Spaces can cause the SDK to be unable to locate the Python path (due to code syntax reasons) . We recommend using the installation path: 'D:\Python\Python38,' as this path aligns with the default setting path in SDK's settings.json.
+![](../../static/img/faq/Installation/install/install26.png)
 
-#### 2. Install VS Code
+Workflow: Navigate to the examples folder, select a sample library script, and then continue to click the Run button to execute it.
 
-For Python code environment, using a code editor is helpful for managing the SDK simulation script results. Here, we select the free code editor, Visual Studio Code (VSCode) , as the editor for SDK scripts. This section provides guidance on the installation process and considerations for VSCode.
+![](../../static/img/faq/Installation/install/install27.png)
 
-① Install 'VSCodeUserSetup-x64-1.74.3.exe,' just as the default settings.
+View SDK results: After the simulation is completed, users can view and check the simulation results of fast_fdtd in the drawing files in the fast_demo folder.
 
-![](../../static/img/faq/Installation/4.png) 
+![](../../static/img/faq/Installation/install/install28.png.png)
 
-② In the extensions, search for and install the Python plugin to enhance VSCode's support for the Python development environment. 
-
-![](../../static/img/faq/Installation/5.png) 
-
-Note that the installation of the SDK and subsequent model simulations will be done within the VSCode interface.
-
-#### 3. Install the SDK
-
-SDK Directory Structure:
-
-```python
-├─.vscode
-│   settings.json
-│   tasks.json
-│
-├─ci
-│   requirements.txt
-│
-└─wheels
-    SDK dependencies.whl
-```
-
-`.vscode`：Configuration files to enable running tasks in the SDK within VSCode.
-`ci`：The requirements.txt file contains information about dependencies and their versions needed to install the SDK.
-`wheels`：This directory contains all the dependencies required to install the SDK.
-
-P.S.This directory contains all the dependencies required to install the SDK.
-
-3.1 Placing the SDK Folder
-
-Put the SDK folder in the directory where you want to manage model scripts and simulation data. It is recommended to place it in the root directory of the D drive.
-
-3.2 Opening the SDK Folder with VSCode
-
-(1) Click 'File' in VSCode.
-
-(2) Select 'Open Folder' from the dropdown menu.
-
-(3) Choose the 'AIO_SDK' folder.
-
-3.3 Configuring the VSCode Environment for the SDK
-
-(1) In VSCode's file explorer, open the 'settings.json' file within the '.vscode' folder.
-
-![](../../static/img/faq/Installation/6.png) 
-
-(2) In the editing area, set the path to the location of 'python3.8.x.exe,' which is by default 'D:\Python\Python38\python.exe.' 
-
-![](../../static/img/faq/Installation/7.png) 
-
-3.4 Reasons for Creating a Python Virtual Environment
-
-A virtual environment is an isolated environment separate from the entire computer's operating system. When you install and run AIO_SDK within a virtual environment, it ensures that AIO_SDK doesn't conflict with dependencies already present in the Windows environment. Dependency conflicts can potentially prevent the SDK from functioning correctly.
-
-We have already configured a script (tasks.json)  to generate a virtual environment and install AIO_SDK. However, Windows, in the interest of system security, may prevent the execution of this configuration script. Therefore, we need to modify the execution policy for Windows scripts to ensure that the subsequent steps proceed smoothly.
-
-3.5 Modify the Execution Policy for Windows Scripts
-
-(1)  Run 'Windows PowerShell' as an administrator.
-
-![](../../static/img/faq/Installation/8.png) 
-
-(2)  Enter 'Set-ExecutionPolicy RemoteSigned' and press Enter. If prompted to change the policy, type 'Y' and press Enter. At this point, the security policy for running Windows scripts has been changed.
-
-![](../../static/img/faq/Installation/9.png) 
-
-3.6  Create the virtual environment through the 'Create PIP' task. 
-
-Click on 'Terminal' and select 'Run Task' from the dropdown menu. A new menu will pop up in VSCode, and within that menu, choose 'Create PIP'.
-
-![](../../static/img/faq/Installation/10.png) 
-
-![](../../static/img/faq/Installation/11.png) 
-
-VSCode will automatically open a terminal to install the SDK. After the installation is complete, press any key to exit.
-
-![](../../static/img/faq/Installation/12.png) 
-
-#### 4. Enable the Virtual Environment
-
-Through the previous steps, you should see the .venv_maxoptics folder in the VSCode file explorer. We need to activate the virtual environment where the SDK is installed. Here are the configuration steps:
-
-![](../../static/img/faq/Installation/13.png) 
-
-(1)  In VSCode, press F1 to bring up the menu, as shown in the image.
-
-![](../../static/img/faq/Installation/14.png) 
-
-(2)  Click 'Python: Select Interpreter' and in the new menu, select the interpreter as shown in the image. This interpreter is the virtual environment where the SDK is installed.
-
-![](../../static/img/faq/Installation/15.png) 
-
-(3)  Start a new terminal and you should see the virtual environment indicator (.venv_maxoptics)  in the terminal bar, indicating the successful activation of the virtual environment.
-
-![](../../static/img/faq/Installation/16.png) 
-
-#### 5. How to Access the Handbook
-
-In VSCode, open a terminal, and the .venv_maxoptics virtual environment will be activated. You can access the handbook by entering the 'mo.sdk doc' command. This step can also serve as a test to verify the correct installation of the software.
-
-![](../../static/img/faq/Installation/17.png) 
-
-![](../../static/img/faq/Installation/18.png) 
-
-#### 6. Copying Examples
-
-In VSCode, open a terminal, and the .venv_maxoptics virtual environment will be activated. You can import simulation model examples by entering the 'mo.sdk init -n examples' command.
-
-Here, '-n' specifies the name of the target folder to copy the examples to.
-
-![](../../static/img/faq/Installation/19.png) 
-
-At this point, a set of example script samples named 'examples' will be created in the AIO_SDK folder.
-
-![](../../static/img/faq/Installation/20.png) 
-
-#### 7. Run File
-
-In the 'examples' folder, open a .py script file for a specific example. Run the 'Run File' task in the terminal to execute the script and perform the simulation.
-
-![](../../static/img/faq/Installation/21.png) 
-
-#### 8. License Configuration:
-
-Note: Trial licenses and the passive standalone version use the same configuration. If you've already configured a passive standalone license, there's no need to repeat the process.
-
-(1)  Online License Activation:
-
-① Open the 'MaxOpticsSDK__LicenseManager_x64.exe' license management tool.
-
-② Click 'Activate' (the first button on the upper left) .
-
-③ Select 'Activate automatically via the internet,' and confirm.
-
-(2)  Offline License Activation:
-
-① Open the 'MaxOpticsSDK__LicenseManager_x64.exe' license management tool.
-
-② Click 'Activate' (the first button on the upper left) .Choose 'Unable to connect to the internet, activate via offline mode' and confirm.
-
-③ Select 'Use activation file,' change the file type to *.txt, and open the 'ZAKT5VW6LY37KNU7-pre.txt' file.
-
-④ A dialog will appear confirming a successful license activation and prompting you to save a confirmation file. Click 'Confirm' and select any folder to save the confirmation file.
-
-
-## What to Do If You Encounter an Error During "Create PIP" with a Version Not Found?
-
-If you encounter an error stating that the required version cannot be found while creating a PIP during the SDK installation：
-
-```python
-ERROR: Could not find a version that satisfies the requirement max_optics_sdk~
-```
-
-You should first check whether your Python version is 3.8.* as we currently only support this version. Additionally, ensure that the "wheels" folder contains the following three files:
-
-max_optics_local_sdk-2.3.0.4.630.2001-cp38-cp38-win_amd64.whl
-
-max_optics_sdk-2.3.0.4.630.2000-py3-none-any.whl
-
-max_optics_whale-2.3.0.4.630.2003-cp38-cp38-win_amd64.whl
-
-Finally, double-check the version information in the "requirements.txt" file to ensure that it matches the versions of the three files mentioned earlier. 
-
-## The error "Tunnel Breakoff" occurs when you open the software for the first time after installation. What should you do?
-
-You can check if the software was mistakenly installed in a Chinese directory path, if any antivirus software that does not support installation has been closed (currently Tencent Guardian and Windows Defender support MO software usage) , and if the service has been started.
-
-Then, restart your computer, reinstall the software, and check if it's installed on the C drive (some users may not have sufficient permissions on the C drive) .
-
-Finally, run it as an administrator..\\MOService\bin\Release\mol-mid-pas-console.exe(中间件服务) 。
-
-
+## How to 
 
 ## How to configure and use group services?
 
@@ -405,7 +271,7 @@ After successful validation, two windows will pop up. Do not close these windows
 
 Group authorization services support a specific number of users. When the user limit is reached, it will prompt: "The number of activated machines has reached the limit, and the authorization code cannot be used on more machines." For more common issues and error messages, please visit the following URL: https://bit.bitanswer.cn/doc/?t=welcome
 
-## How to resolve the issue when encountered the common error codes in MO Passive?
+## How to resolve the issue when encountered the common error codes in MaxOpticsStudio?
 
 #### 1.Error Code 264
 

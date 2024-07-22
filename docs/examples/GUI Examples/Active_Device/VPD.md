@@ -57,6 +57,7 @@ To begin with, it is advisable to define the geometric region of the device stru
 |   Si_taper| Linear Trapezoid| 0/0     |  0.11/0.22 | (-40/-0.25),(-40/0.25),(0/2),(0/-2)|  Silicon    |
 
 |name    |Structure | x/x span top/x span bottom | y/y span top/y span bottom | z/z span |   material  |
+|:------:|:--------:|:--------------------------:|:--------------------------:|:--------:|:-----------:|
 |Ge      |Pyramid   |  10.75/19.5/20             |   0/3/4                    | 0.47/0.5 |  Germanium  |
 |Anode   |Pyramid   |  10.75/19/19               |  3.7/2/2                   |0.905/1.37|   Aluminum  |
 |Cathode |Pyramid   |  10.75/19/19               |  0/2.2/2.2                 | 1.22/1   |   Aluminum  |
@@ -183,6 +184,7 @@ You should define the `name` and `geometry` for doping region,and basic paramete
 ##### 2.4.1 Constant Doping
 
 Specifies the  concentration of uniform doping by `Concentration` and its boundary throuth `Geometry` in Y-Z plane. `Dopant Type` specifies the n-type or donor dopant in `n` , and  p-type or acceptor dopant in `p` , which may be used with gaussian and uniform profile types.
+
 |                          Dopant                |                      Geometry                   |
 |:----------------------------------------------:|:-----------------------------------------------:|
 |![](../Active_Device/img/VPD/Doping_uniform.png)|![](../Active_Device/img/VPD/Doping_uniform2.png)|
@@ -273,6 +275,7 @@ Import a new doped file with device structure from the "Data Space" that has alr
 #### 2.5.1 Set Electrode
 
 Position the cathode to receive a reverse bias voltage and the anode to facilitate the flow of current.
+
 ![](../Active_Device/img/VPD/Contact_cathode.png)
 
 #### 2.5.2 Add surface recombination
@@ -289,7 +292,6 @@ Position the cathode to receive a reverse bias voltage and the anode to facilita
 | Ge_SiO2  |   2.25e5  |  2.25e5|materiaal,material|           Germanium,Glass     |
 
 <br/>
-
 
 Surface recombination property list:
 
@@ -965,7 +967,6 @@ Description:
     - `vsat`--Set the model and parameters of velocity saturation
 
 
-
 For the detailed introduction about electronic parameters, please refer to the document `examples/active_demo/Physics_Model_in_OEDevice.pdf`.
 
 
@@ -1066,9 +1067,6 @@ Description:
   - `log_stop_frequency`--Set the stop frequency of logarithmic spacing
 
   - `log_num_frequency_points`--Set the number of frequency points of logarithmic spacing
-- `transient`:
-
-  - ``
 - `advanced`:
 
   - `non_linear_solver`--Set the non-linear solver, only Newton method is supported currently
@@ -1164,7 +1162,7 @@ Description:
 - `uniform`:
   - `aplitude`: This field sets the maximum amplitude of the mode source.
   - `time Delay`: Define the delay time before open the source.
--`pulse`:
+- `pulse`:
   - `high amplitude`: Maximum amplitude with the pulse turned on.
   - `low amplitude`: Minimum amplitude with the pulse turned off.
   - `time delay`: Define the delay time before open the source.

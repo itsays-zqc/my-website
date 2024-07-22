@@ -259,22 +259,22 @@ Sampling rate:
 
 ![](../../static/img/tutorial/monitor/Doping_gen.png)
 
-`Data to Record`:
- - `Donor`: The distribution of donor doping in monitor.
- - `Acceptor`: The distribution of acceptor doping in monitor.
- `Interpolate Accuracy`: Restrained by condition: >=1 && <= 10.
+- `Data to Record`:
+  - `Donor`: The distribution of donor doping in monitor.
+  - `Acceptor`: The distribution of acceptor doping in monitor.
+- `Interpolate Accuracy`: Restrained by condition: >=1 && <= 10.
 
 
 ### 7.2 Geometry tab
 
 ![](../../static/img/tutorial/monitor/Doping_geo.png)
 
-`Monitor Type`: The monitor type and orientation, this option will control the available of spatial setting below , `2D X-Normal`, `2D Y-Normal`, `2D Z-Normal` are included. (Default: 2D X-Normal)
-`X`, `Y`, `Z`: The center position of the simulation region.
-`X Min`/ `X Max`: X min, X max position.
-`Y Min`/ `Y Max`: Y min, Y max position.
-`Z Min`/ `Z Max`: Z min, Z max position.
-`X Span`/ `Y Span` / `Z Span`: X, Y, Z span of the simulation region.
+- `Monitor Type`: The monitor type and orientation, this option will control the available of spatial setting below , `2D X-Normal`, `2D Y-Normal`, `2D Z-Normal` are included. (Default: 2D X-Normal)
+- `X`, `Y`, `Z`: The center position of the simulation region.
+- `X Min`/ `X Max`: X min, X max position.
+- `Y Min`/ `Y Max`: Y min, Y max position.
+- `Z Min`/ `Z Max`: Z min, Z max position.
+- `X Span`/ `Y Span` / `Z Span`: X, Y, Z span of the simulation region.
 
 
 ## 8 Charge Monitor
@@ -283,22 +283,22 @@ Sampling rate:
 
 ![](../../static/img/tutorial/monitor/charge_gen.png)
 
-`Data to Record`:
-- `Electrons`: The distribution of electron concentration in monitor.
-- `Hole`:The distribution of hole concentration in monitor. 
-- `Total Charge`: Available when monitor_type is in “2d_x_normal”, “2d_y_normal”, “2d_z_normal”.
-- `Interpolate Accuracy`: Restrained by condition: >=1 && <= 10.
+- `Data to Record`:
+ - `Electrons`: The distribution of electron concentration in monitor.
+ - `Hole`:The distribution of hole concentration in monitor. 
+ - `Total Charge`: Available when monitor_type is in “2d_x_normal”, “2d_y_normal”, “2d_z_normal”.
+ - `Interpolate Accuracy`: Restrained by condition: >=1 && <= 10.
 
 ### 8.2 Geometry tab
 
 ![](../../static/img/tutorial/monitor/charge_geo.png)
 
-`Monitor Type`: The monitor type and orientation, this option will control the available of spatial setting below , `Linear X`, `Linear Y`, `Linear Z`, `2D X-Normal`, `2D Y-Normal`, `2D Z-Normal` are included. (Default: 2D X-Normal)
-`X`, `Y`, `Z`: The center position of the simulation region.
-`X Min`/ `X Max`: X min, X max position.
-`Y Min`/ `Y Max`: Y min, Y max position.
-`Z Min`/ `Z Max`: Z min, Z max position.
-`X Span`/ `Y Span` / `Z Span`: X, Y, Z span of the simulation region.
+- `Monitor Type`: The monitor type and orientation, this option will control the available of spatial setting below , `Linear X`, `Linear Y`, `Linear Z`, `2D X-Normal`, `2D Y-Normal`, `2D Z-Normal` are included. (Default: 2D X-Normal)
+- `X`, `Y`, `Z`: The center position of the simulation region.
+- `X Min`/ `X Max`: X min, X max position.
+- `Y Min`/ `Y Max`: Y min, Y max position.
+- `Z Min`/ `Z Max`: Z min, Z max position.
+- `X Span`/ `Y Span` / `Z Span`: X, Y, Z span of the simulation region.
 
 ## 9 Band Monitor
 
@@ -306,26 +306,26 @@ Sampling rate:
 
 ![](../../static/img/tutorial/monitor/Band_gen.png)
 
-`Name`: Name of band monitor
-`Data to Record`: 
-`Ec`: The conduction band edge energy at 300K.
-`Ev`: The valance band edge energy at 300K.
-`Evac`: The vacuum level energy at 300K.
-`Efn`: The electron quasi-Fermi energy.
-`Efp`: The hole quasi-Fermi energy.
-`Interpolate Accuracy`: 
+- `Name`: Name of band monitor
+- `Data to Record`: 
+  - `Ec`: The conduction band edge energy at 300K.
+  - `Ev`: The valance band edge energy at 300K.
+  - `Evac`: The vacuum level energy at 300K.
+  - `Efn`: The electron quasi-Fermi energy.
+  - `Efp`: The hole quasi-Fermi energy.
+- `Interpolate Accuracy`: 
 Set the accuracy of the rectangular grid for extracting monitored results. It should be within the range of 1 to 10. Here, 1 corresponds to a grid size of 10nm, and 10 corresponds to a grid size of 1nm. The grid size uniformly varies with changes in “Interpolation Accuracy”.
 
 ### 9.2 Geometry tab
 
 ![](../../static/img/tutorial/monitor/Band_geo.png)
 
-`Monitor Type`: The monitor type and orientation, this option will control the available of spatial setting below , `Linear X`, `Linear Y`, `Linear Z`are included. (Default: 2D X-Normal)
-`X`, `Y`, `Z`: The center position of the simulation region.
-`X Min`/ `X Max`: X min, X max position.
-`Y Min`/ `Y Max`: Y min, Y max position.
-`Z Min`/ `Z Max`: Z min, Z max position.
-`X Span`/ `Y Span` / `Z Span`: X, Y, Z span of the simulation region.
+- `Monitor Type`: The monitor type and orientation, this option will control the available of spatial setting below , `Linear X`, `Linear Y`, `Linear Z`are included. (Default: 2D X-Normal)
+- `X`, `Y`, `Z`: The center position of the simulation region.
+- `X Min`/ `X Max`: X min, X max position.
+- `Y Min`/ `Y Max`: Y min, Y max position.
+- `Z Min`/ `Z Max`: Z min, Z max position.
+- `X Span`/ `Y Span` / `Z Span`: X, Y, Z span of the simulation region.
 
 ## 10 Electrical Monitor
 
@@ -333,22 +333,22 @@ Set the accuracy of the rectangular grid for extracting monitored results. It sh
 
 ![](../../static/img/tutorial/monitor/Electrical_gen.png)
 
-`Data to Record`: 
- - `Electric Field`: The distribution of electric field in monitor.
- - `Electrostatic Potential`: The distribution of electric potential in monitor.
-`Interpolate Accuracy`:
+- `Data to Record`: 
+  - `Electric Field`: The distribution of electric field in monitor.
+  - `Electrostatic Potential`: The distribution of electric potential in monitor.
+- `Interpolate Accuracy`:
 Set the accuracy of the rectangular grid for extracting monitored results. It should be within the range of 1 to 10. Here, 1 corresponds to a grid size of 10nm, and 10 corresponds to a grid size of 1nm. The grid size uniformly varies with changes in “Interpolation Accuracy”.
 
 ### 10.2 Geometry tab
 
 ![](../../static/img/tutorial/monitor/Electrical_geo.png)
 
-`Monitor Type`: The monitor type and orientation, this option will control the available of spatial setting below , `Linear X`, `Linear Y`, `Linear Z`, `2D X-Normal`, `2D Y-Normal`, `2D Z-Normal` are included. (Default: 2D X-Normal)
-`X`, `Y`, `Z`: The center position of the simulation region.
-`X Min`/ `X Max`: X min, X max position.
-`Y Min`/ `Y Max`: Y min, Y max position.
-`Z Min`/ `Z Max`: Z min, Z max position.
-`X Span`/ `Y Span` / `Z Span`: X, Y, Z span of the simulation region.
+- `Monitor Type`: The monitor type and orientation, this option will control the available of spatial setting below , `Linear X`, `Linear Y`, `Linear Z`, `2D X-Normal`, `2D Y-Normal`, `2D Z-Normal` are included. (Default: 2D X-Normal)
+- `X`, `Y`, `Z`: The center position of the simulation region.
+- `X Min`/ `X Max`: X min, X max position.
+- `Y Min`/ `Y Max`: Y min, Y max position.
+- `Z Min`/ `Z Max`: Z min, Z max position.
+- `X Span`/ `Y Span` / `Z Span`: X, Y, Z span of the simulation region.
 
 </div>
 

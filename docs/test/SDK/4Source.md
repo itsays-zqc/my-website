@@ -46,7 +46,7 @@ add(
 
 **Example:**
 
-The following script adds a Gaussian waveform by setting the wavelength to 1.55 um and the wavelength span to 0.1 um. This script assumes that FDTD solver has been added to the simulation environment, and the pj is an instance of the project.
+The following script adds a gaussian waveform by setting the wavelength to 1.55 um and the wavelength span to 0.1 um. This script assumes that FDTD solver has been added to the simulation environment, and the pj is an instance of the project.
 
 ```python
 waveform name = "wv1550"

@@ -6,13 +6,12 @@
 
 <div class="text-justify">
 
-Use `Material()` to instance a material into the project, use `add_nondispersion`, `add_dispersion` and `add_anisotropy` functoin to add new materials or use `add_lib` utilize materials from the material library.
+The material module can create materials to be used in your simulation. Using `Material()` to instance the material module into the project, you can create new materials or utilize materials from the material library. The material database allows the creation of non dispersive, dispersive, and anisotropic types of materials.
 
 
 ## 1.1 Add nondispersion material
 
 The syntax and properties of adding non dispersive material are shown below. This function does not return any data.
-
 
 ```python
 add_nondispersion(
@@ -31,11 +30,11 @@ add_nondispersion(
 | color     | string  |    -     | Set the color for material display, format is "#RRGGBB" .   |
 
 **Example:**
-The following command adds non dispersive material to the material of the instance, sets the material name to "SiO2", data to [(1.444, 0)], mesh order to 1 and color to "#654321".
+The following command adds non dispersive material to the project and sets data to [(1.444, 0)], where the real part of the refractive index is 1.444 and the imaginary part is 0. This script assumes that the project has been added to the simulation environment, and the pj is an instance of the Project.
 
 ```python
 
-mt = Project.Material()
+mt = pj.Material()
 mt.add_nondispersion(name="nondispersion_material", data=[(1.444, 0)], order=1,color="#654321")
 ```
 
@@ -65,7 +64,7 @@ add_dispersion(
 
 **Example:**
 
-The following command adds dispersive material to the material of the instance, sets the material name to "SiO2", data to [(1.55e-06,, 1.444, 0), (1.30e-06, 1.81, 0.227)], mesh order to 2 and color to "#654321".
+The following command adds dispersive material to the project and sets data to [(1.55e-06, 1.444, 0), (1.30e-06, 1.81, 0.227)]. This script assumes that the project has been added to the simulation environment, and the pj is an instance of the Project.
 
 ```python
 w_index = [(1.55e-06, 1.444, 0), (1.30e-06, 1.81, 0.227)]
@@ -96,11 +95,11 @@ add_anisotropy(
 | color   | string  |    -     | Set the color for material display, format is "#RRGGBB" .   |
 
 **Example:** 
-The following command adds anisotropy material to the material of the instance, sets the material name to "LN", data to [(wavelength * 1e-6, 2.211, 0, 2.138, 0, 2.211, 0)] and mesh order to 2.
+The following command adds anisotropy material to the project and sets data to [(1.55, 2.211, 0, 2.138, 0, 2.211, 0)]. This script assumes that the project has been added to the simulation environment, and the pj is an instance of the Project.
 
 ```python
-wavelength = 1.55
-w_xyz = [(wavelength * 1e-6, 2.211, 0, 2.138, 0, 2.211, 0)]
+
+w_xyz = [(1.55, 2.211, 0, 2.138, 0, 2.211, 0)]
 mt = pj.Material()
 mt.add_anisotropy(name="anisotropy_material", 
       data=w_xyz, order=2
@@ -128,11 +127,11 @@ add_lib(
 
 **Example:**
 
-The following command adds material from material library to the material of the instance, sets the material name to "Air", data to mo.Material.Air and mesh order to 2.
+The following command adds Si from material library to the project and sets order to 2. This script assumes that the project has been added to the simulation environment, and the pj is an instance of the Project.
 
 ```python
-mt = Project.Material()
-mt.add_lib(name="Air", data=mo.Material.Air, order=2)
+mt = pj.Material()
+mt.add_lib(name="Si", data=mo.Material.Si_Palik, order=2)
 
 ```
 

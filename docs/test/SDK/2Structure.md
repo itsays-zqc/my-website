@@ -7,24 +7,27 @@ import { InlineMath, BlockMath } from "react-katex";
 
 <div class="text-justify">
 
-The code within the "Structure" section is designed to assist you incorporating the necessary structures during the EO(Electro-Optic) simulation process. 
-
-You can choose to create geometry models using GDS files. Meanwhile, you can also utilize various methods in this "Structure" module such as Bézier curves, tapering, and circular rings for your simulation project.
-
-
+The structue module can model the physical structure for the simulation. Using `Structure()` to instance the structure module to the project, you can choose to use basic geometry and import files to establish physical structure.
 
 ## 2.1 Add geometry
 
-Use `Structure()` to instance a structure into the project, and then use `add_geometry()` to add any geometric structure.
-The types that support adding geometric structures include "Triangle", "Rectangle", "Circle", "Ring", "Polygon", "Ellipse", "LinearTrapezoid", "Pyramid", "AnalyticalWaveguide", "Sphere", "StraightWaveguide", "BezierWaveguide" and "gds_file".
+The available basic geometry types are "Triangle", "Rectangle", "Circle", "Ring", "Polygon", "Ellipse", "LinearTrapezoid", "Pyramid", "Sphere", "StraightWaveguide", "BezierWaveguide" and "AnalyticalWaveguide". In addition, it supports "gds_file" type to import geometry.
 
-The syntax for adding geometry is as follows. "name" defines the name of the structure, "type" selects the type of the structure, and "property" sets the properties of the structure model. This function does not return any data.
+The syntax for adding geometry is as follows. "name" defines the name of the geometry, "type" selects the type of the geometry, and "property" sets the properties of the geometry model. This function does not return any data.
 
-note: Set the refractive index of the material for the structure by selecting the material to be added to the project, or use "object_defined_dielectric" to set the material, but require an additional keyword "refractive_index" to set the refractive index of the material. The material setting method for all geometric structures is the same.
+```python
+add_geometry(
+        name: str, 
+        type: Optional[str], 
+        property: dict
+    )
+```
+
+Sets the refractive index of the material for the structure by selecting the material from material database, or by using "object_defined_dielectric" to set the material, but requiring additional keyword - "refractive_index" to specify the refractive index. The material setting method is the same for all structures.
 
 ### 2.1.1 Triangle
 
-The geometric properties of triangle and an example of adding triangle into the project are shown below.
+The geometric properties and material properties of triangle and an example of adding triangle into the project are shown below.
 
 ```python
 add_geometry(
@@ -33,7 +36,9 @@ add_geometry(
         property: dict
     )
 ```
-#### Geometry properties
+
+#### Geometric properties
+
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
 | x, y, z               | number  |     -    | The center position of the geometry. |
@@ -49,12 +54,12 @@ add_geometry(
 |:---------------|:--------|:----------:|:----------------------|
 | material              | object  |     -   | Select a material object in the material database.                                                                    |
 | mesh_order            | integer |     -   |  Select a material in overlapping areas when generating grids, materials with higher mesh order have higher priority.|
-| refractive_index      | number  |      -  | Defined refractive index of the material.                                                                             |
-| color                 | string  |     -   | Defined color of the material, default "#70AD47".                                                                     |
+| refractive_index      | number  |      -  | Define refractive index of the material.                                                                             |
+| color                 | string  |     -   | Define color of the material, default "#70AD47".                                                                     |
 
 **Example:**
 
-The following script adds a triangle to the structure of the instance, with three vertices of (0,0) (0,2) (2,2) um and a thickness of 0.22 um. Select the material of "object_defined_ieleectric" and set the refractive index of the material to 1.4.
+The following script adds a triangle to the project, with three vertices of (0,0) (0,2) (2,2) um and a thickness of 0.22 um. Selects the material of "object_defined_dielectric" and sets the refractive index to 1.4. This script assumes that the project has been added to the simulation environment, and the pj is an instance of the Project.
 
 ```python
 st = pj.Structure()
@@ -62,13 +67,12 @@ st.add_geometry(name="triangle", type="Triangle", property={
     "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},  
     "geometry": {"control_points":[{"x": 0, "y": 0}, {"x": 0, "y": 2}, {"x": 2, "y": 2}],
                  "x": 0, "y": 0, "z": 0, "z_span": 0.22,
-                 "tilt_angle": 90, "tilt_position":"middle"}})
+                 "tilt_angle": 90, "tilt_position": "bottom"}})
 ```
 
 
 ### 2.1.2 Rectangle
-
-The geometric properties of rectangle and an example of adding rectangle into the project are shown below.
+The geometric properties and material properties of rectangle and an example of adding rectangle to the project are shown below.
 
 ```python
 add_geometry(
@@ -77,7 +81,7 @@ add_geometry(
         property: dict
     )
 ```
-#### Geometry properties
+#### Geometric properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
 | x, y, z               | number  |     -    | The center position of the geometry. |
@@ -94,24 +98,24 @@ add_geometry(
 |:---------------|:--------|:----------:|:----------------------|
 | material              | object  |     -   | Select a material object in the material database.                                                                    |
 | mesh_order            | integer |     -   |  Select a material in overlapping areas when generating grids, materials with higher mesh order have higher priority.|
-| refractive_index      | number  |      -  | Defined refractive index of the material.                                                                             |
-| color                 | string  |     -   | Defined color of the material, default "#70AD47".                                                                     |
+| refractive_index      | number  |      -  | Define refractive index of the material.                                                                             |
+| color                 | string  |     -   | Define color of the material, default "#70AD47".                                                                     |
 
 **Example:**
 
-The following script adds a rectangle to the structure of the instance, and set the dimension and material of the structure.
+The following script adds a rectangle to the project, and sets the dimension and material of the structure. This script assumes that the project has been added to the simulation environment, and the pj is an instance of the Project.
 
 ```python
 st = pj.Structure()
 st.add_geometry(name="rectangle", type="Rectangle", property={
     "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},  
     "geometry": {"x": 0, "x_span": 1, "y": 0, "y_span": 1, "z": 0, "z_span": 1, 
-                 "tilt_angle":90, "tilt_position":"top"}})
+                 "tilt_angle": 90, "tilt_position": "top"}})
 ```
 
 ### 2.1.3 Circle
 
-The geometric properties of circle and an example of adding circle into the project are shown below.
+The geometric properties and material properties of circle and an example of adding circle into the project are shown below.
 
 ```python
 add_geometry(
@@ -121,7 +125,7 @@ add_geometry(
     )
 ```
 
-#### Geometry properties
+#### Geometric properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
 |   radius               |    -     |  float   | The radius of the circle.  |
@@ -138,11 +142,11 @@ add_geometry(
 |:---------------|:--------|:----------:|:----------------------|
 | material              | object  |     -   | Select a material object in the material database.                                                                    |
 | mesh_order            | integer |     -   |  Select a material in overlapping areas when generating grids, materials with higher mesh order have higher priority.|
-| refractive_index      | number  |      -  | Defined refractive index of the material.                                                                             |
-| color                 | string  |     -   | Defined color of the material, default "#70AD47".                                                                     |
+| refractive_index      | number  |      -  | Define refractive index of the material.                                                                             |
+| color                 | string  |     -   | Define color of the material, default "#70AD47".                                                                     |
 
 **Example:**
-The following script adds a circle to the structure of the instance, sets the radius of the circle to 2 μ m, the thickness to 0.5 μ m, and the refractive index of the material to 1.4.
+The following script adds a circle to the project, sets the radius of the circle to 2 μm, the thickness to 0.5 μm, and the refractive index to 1.4. This script assumes that the project has been added to the simulation environment, and the pj is an instance of the Project.
 
 ```python
 st = pj.Structure()
@@ -154,7 +158,7 @@ st.add_geometry(name="circle", type="Circle", property={
 
 ### 2.1.4 Ring
 
-The geometric properties of ring and an example of adding ring into the project are shown below.
+The geometric properties and material properties of ring and an example of adding ring into the project are shown below.
 
 ```python
 add_geometry(
@@ -164,7 +168,7 @@ add_geometry(
     )
 ```
 
-#### Geometry properties
+#### Geometric properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
 | inner_radius          | number  | -          | The inner radius of the ring. |
@@ -183,12 +187,12 @@ add_geometry(
 |:---------------|:--------|:----------:|:----------------------|
 | material              | object  |     -   | Select a material object in the material database.                                                                    |
 | mesh_order            | integer |     -   |  Select a material in overlapping areas when generating grids, materials with higher mesh order have higher priority.|
-| refractive_index      | number  |      -  | Defined refractive index of the material.                                                                             |
-| color                 | string  |     -   | Defined color of the material, default "#70AD47".                                                                     |
+| refractive_index      | number  |      -  | Define refractive index of the material.                                                                             |
+| color                 | string  |     -   | Define color of the material, default "#70AD47".                                                                     |
 
 **Example:**
 
-The following script adds a ring to the structure of the instance, sets the inner radius to 4um, the outer radius to 6um, the thickness to 0.5um, and the refractive index of the material to 1.4.
+The following script adds a ring to the project, sets the inner radius to 4 um, the outer radius to 6 um, the thickness to 0.5 um, and the refractive index to 1.4. This script assumes that the project has been added to the simulation environment, and the pj is an instance of the Project.
 
 ```python
 st = pj.Structure()
@@ -196,11 +200,11 @@ st.add_geometry(name="ring", type="Ring", property={
     "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},  
     "geometry": {"x": 0, "y": 0, "z": 0, "z_span": 0.5,
                  "tilt_angle1": 90, "tilt_position": "top", "tilt_angle2": 90,
-                 "angle":360, "inner_radius": 4, "outer_radius": 6,}})
+                 "angle": 360, "inner_radius": 4, "outer_radius": 6,}})
 ```
-### 2.1.5 Polygon
 
-The geometric properties of polygon and an example of adding polygon into the project are shown below.
+### 2.1.5 Polygon
+The geometric properties and material properties of polygon and an example of adding polygon into the project are shown below.
 
 ```python
 add_geometry(
@@ -210,7 +214,7 @@ add_geometry(
     )
 ```
 
-#### Geometry properties
+#### Geometric properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
 | x, y, z               | number  |     -    | The center position of the geometry. |
@@ -226,19 +230,18 @@ add_geometry(
 |:---------------|:--------|:----------:|:----------------------|
 | material              | object  |     -   | Select a material object in the material database.                                                                    |
 | mesh_order            | integer |     -   |  Select a material in overlapping areas when generating grids, materials with higher mesh order have higher priority.|
-| refractive_index      | number  |      -  | Defined refractive index of the material.                                                                             |
-| color                 | string  |     -   | Defined color of the material, default "#70AD47".                                                                     |
+| refractive_index      | number  |      -  | Define refractive index of the material.                                                                             |
+| color                 | string  |     -   | Define color of the material, default "#70AD47".                                                                     |
 
 **Example:**
 
-The following script adds a polygon to the structure of the instance, sets the vertex coordinates of the polygon to (-2, -2) (2, -2) (2, 2) (-2, 2) um, with a thickness of 0.5um., and the refractive index of the material to 1.4.
+The following script adds a polygon to the project, sets the vertex coordinates of the polygon to (-2, -2) (2, -2) (2, 2) (-2, 2) um, with a thickness of 0.5 um, and the refractive index to 1.4. This script assumes that the project has been added to the simulation environment, and the pj is an instance of the Project.
 
 ```python
 st = pj.Structure()
-st.add_geometry(name="polygon", type="Polygon", property={
+st.add_geometry(name="polygon", type="polygon", property={
         "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2}, 
-        "geometry": {"x": 0, "y": 0,
-                     "z": 0, "z_span": 0.5,
+        "geometry": {"x": 0, "y": 0, "z": 0, "z_span": 0.5,
                      "control_points":
                         [{"x": -2, "y": -2}, {"x": 2, "y": -2}, {"x": 2, "y": 2}, {"x": -2, "y": 2}],
                     "tilt_angle": 90, "tilt_position": "top", 
@@ -247,7 +250,7 @@ st.add_geometry(name="polygon", type="Polygon", property={
 
 ### 2.1.6 Ellipse
 
-The geometric properties of ellipse and an example of adding ellipse into the project are shown below.
+The geometric properties and material properties of ellipse and an example of adding ellipse into the project are shown below.
 
 ```python
 add_geometry(
@@ -257,7 +260,7 @@ add_geometry(
     )
 ```
 
-#### Geometry properties
+#### Geometric properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
 | x_radius          | number  | -          | The x-axis radius of the ellipse. |
@@ -274,12 +277,12 @@ add_geometry(
 |:---------------|:--------|:----------:|:----------------------|
 | material              | object  |     -   | Select a material object in the material database.                                                                    |
 | mesh_order            | integer |     -   |  Select a material in overlapping areas when generating grids, materials with higher mesh order have higher priority.|
-| refractive_index      | number  |      -  | Defined refractive index of the material.                                                                             |
-| color                 | string  |     -   | Defined color of the material, default "#70AD47".                                                                     |
+| refractive_index      | number  |      -  | Define refractive index of the material.                                                                             |
+| color                 | string  |     -   | Define color of the material, default "#70AD47".                                                                     |
 
 **Example:**
 
-The following script adds a ellipse to the structure of the instance, sets the radius in the x direction to 3 um, the radius in the y direction to 5 um, the thickness to 0.5 um, and the refractive index of the material to 1.4.
+The following script adds a ellipse to the project, sets the radius in the x direction to 3 um, the radius in the y direction to 5 um and the thickness to 0.5 um. This script assumes that the project has been added to the simulation environment, and the pj is an instance of the Project.
 
 ```python
 st = pj.Structure()
@@ -292,7 +295,7 @@ st.add_geometry(name="ellipse", type="Ellipse", property={
 
 ### 2.1.7 Linear trapezoid
 
-The geometric properties of linear trapezoid and an example of adding linear trapezoid into the project are shown below.
+The geometric properties and material properties of linear trapezoid and an example of adding linear trapezoid into the project are shown below.
 
 ```python
 add_geometry(
@@ -302,7 +305,7 @@ add_geometry(
     )
 ```
 
-#### Geometry properties
+#### Geometric properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
 | x, y, z               | number  |     -    | The center position of the geometry. |
@@ -318,12 +321,12 @@ add_geometry(
 |:---------------|:--------|:----------:|:----------------------|
 | material              | object  |     -   | Select a material object in the material database.                                                                    |
 | mesh_order            | integer |     -   |  Select a material in overlapping areas when generating grids, materials with higher mesh order have higher priority.|
-| refractive_index      | number  |      -  | Defined refractive index of the material.                                                                             |
-| color                 | string  |     -   | Defined color of the material, default "#70AD47".                                                                     |
+| refractive_index      | number  |      -  | Define refractive index of the material.                                                                             |
+| color                 | string  |     -   | Define color of the material, default "#70AD47".                                                                     |
 
 **Example:**
 
-The following script adds a linear trapezoid to the structure of the instance, sets the vertex coordinates to (-2, 2) (-4, -2) (4, -2) (2, 2) um, with a thickness of 0.5 um and the refractive index of the material to 1.4.
+The following script adds a linear trapezoid to the project, sets the vertex coordinates to (-2, 2) (-4, -2) (4, -2) (2, 2) um, with a thickness of 0.5 um. This script assumes that the project has been added to the simulation environment, and the pj is an instance of the Project.
 
 ```python
 st = pj.Structrure()
@@ -337,7 +340,7 @@ st.add_geometry(name="linear_trapezoid", type="LinearTrapezoid", property={
 
 ### 2.1.8 Pyramid
 
-The geometric properties of pyramid and an example of adding pyramid into the project are shown below.
+The geometric properties and material properties of pyramid and an example of adding pyramid into the project are shown below.
 
 ```python
 add_geometry(
@@ -347,7 +350,7 @@ add_geometry(
     )
 ```
 
-#### Geometry properties
+#### Geometric properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
 | x, y, z               | number  |     -    | The center position of the geometry. |
@@ -365,11 +368,11 @@ add_geometry(
 |:---------------|:--------|:----------:|:----------------------|
 | material              | object  |     -   | Select a material object in the material database.                                                                    |
 | mesh_order            | integer |     -   |  Select a material in overlapping areas when generating grids, materials with higher mesh order have higher priority.|
-| refractive_index      | number  |      -  | Defined refractive index of the material.                                                                             |
-| color                 | string  |     -   | Defined color of the material, default "#70AD47".                                                                     |
+| refractive_index      | number  |      -  | Define refractive index of the material.                                                                             |
+| color                 | string  |     -   | Define color of the material, default "#70AD47".                                                                     |
 
 **Example:**
-The following script adds a pyramid to the structure of the instance, sets the top width in the x and y directions to 3 μ m, the bottom width to 5 μ m, the thickness to 0.5 μ m, and the refractive index of the material to 1.4.
+The following script adds a pyramid to the project, sets the top width in the x and y directions to 3 μm, the bottom width to 5 μm, the thickness to 0.5 μm. This script assumes that the project has been added to the simulation environment, and the pj is an instance of the Project.
 
 ```python
 st = pj.Material()
@@ -389,9 +392,9 @@ add_geometry(
         property: dict
     )
 ```
-The geometric properties of sphere and an example of adding sphere into the project are shown below.
+The geometric properties and material properties of sphere and an example of adding sphere into the project are shown below.
 
-#### Geometry properties
+#### Geometric properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
 | x, y, z               | number  |     -    | The center position of the geometry. |
@@ -402,23 +405,22 @@ The geometric properties of sphere and an example of adding sphere into the proj
 |:---------------|:--------|:----------:|:----------------------|
 | material              | object  |     -   | Select a material object in the material database.                                                                    |
 | mesh_order            | integer |     -   |  Select a material in overlapping areas when generating grids, materials with higher mesh order have higher priority.|
-| refractive_index      | number  |      -  | Defined refractive index of the material.                                                                             |
-| color                 | string  |     -   | Defined color of the material, default "#70AD47".                                                                     |
+| refractive_index      | number  |      -  | Define refractive index of the material.                                                                             |
+| color                 | string  |     -   | Define color of the material, default "#70AD47".                                                                     |
 
 
 **Example:**
-The following script adds a sphere to the structure of the instance, sets the radius in the x, y, and z directions to 1.5 um, and the refractive index of the material to 1.4.
+The following script adds a sphere to the project, sets the radius in the x, y, and z directions to 1.5 um, and the refractive index to 1.4. This script assumes that the project has been added to the simulation environment, and the pj is an instance of the Project.
 
 ```python
 st.add_geometry(name="Sphere", type="Sphere", property={
             "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},
-            "geometry": {"x": 0, "y": 0, "z": 0, "radius_x": 1.5,
-                         "radius_y": 1.5, "radius_z": 1.5}})
+            "geometry": {"x": 0, "y": 0, "z": 0, "radius_x": 1.5, "radius_y": 1.5, "radius_z": 1.5}})
 ```
 
 ### 2.1.10 Straight wavegudie
 
-The geometric properties of straight waveguide and an example of adding staright waveguide into the project are shown below.
+The geometric properties and material properties of straight waveguide and an example of adding staright waveguide into the project are shown below.
 
 ```python
 add_geometry(
@@ -428,7 +430,7 @@ add_geometry(
     )
 ```
 
-#### Geometry properties
+#### Geometric properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
 | x, y, z               | number  |     -    | The center position of the geometry. |
@@ -446,26 +448,25 @@ add_geometry(
 |:---------------|:--------|:----------:|:----------------------|
 | material              | object  |     -   | Select a material object in the material database.                                                                    |
 | mesh_order            | integer |     -   |  Select a material in overlapping areas when generating grids, materials with higher mesh order have higher priority.|
-| refractive_index      | number  |      -  | Defined refractive index of the material.                                                                             |
-| color                 | string  |     -   | Defined color of the material, default "#70AD47".                                                                     |
+| refractive_index      | number  |      -  | Define refractive index of the material.                                                                             |
+| color                 | string  |     -   | Define color of the material, default "#70AD47".                                                                     |
 
 
 **Example:**
-The following script adds a straight waveguide to the structure of the instance, sets the size to 10 um * 1 um * 1 um, "tile_angle_1" to 70 degrees, and the refractive index of the material to 1.4.
+The following script adds a straight waveguide to the project, sets the dimension to 10 um * 1 um * 1 um and tilt angle to 70 degrees. This script assumes that the project has been added to the simulation environment, and the pj is an instance of the Project.
 
 ```python
 st = pj.Structure()
 st.add_geometry(name="StraightWaveguide", type="StraightWaveguide", property={
             "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},
             "geometry": {"x": 0, "x_span": 10, "y": 0, "y_span": 1, "z": 0, "z_span": 1,
-                         "tilt_position": "top", "tilt_angle1": 70, "tilt_angle2": 90
+                         "tilt_position": "top", "tilt_angle1": 70, "tilt_angle2": 70
                          }})
 ```
 
 
 ### 2.1.11 Bezier wavegudie
-
-The geometric properties of bezier waveguide and an example of adding bezier waveguide into the project are shown below.
+The geometric properties and material properties of bezier waveguide and an example of adding bezier waveguide into the project are shown below.
 
 ```python
 add_geometry(
@@ -475,7 +476,7 @@ add_geometry(
     )
 ```
 
-#### Geometry properties
+#### Geometric properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
 | x, y, z               | number  |     -    | The center position of the geometry. |
@@ -493,12 +494,12 @@ add_geometry(
 |:---------------|:--------|:----------:|:----------------------|
 | material              | object  |     -   | Select a material object in the material database.                                                                    |
 | mesh_order            | integer |     -   |  Select a material in overlapping areas when generating grids, materials with higher mesh order have higher priority.|
-| refractive_index      | number  |      -  | Defined refractive index of the material.                                                                             |
-| color                 | string  |     -   | Defined color of the material, default "#70AD47".                                                                     |
+| refractive_index      | number  |      -  | Define refractive index of the material.                                                                             |
+| color                 | string  |     -   | Define color of the material, default "#70AD47".                                                                     |
 
 **Example:**
 
-The following script adds a bezier waveguide to the structure of the instance, sets the coordinates of the control points on the path to (1,1) (1,2) (2,2) (2,3) um with a width of 0.5 um and a thickness of 0.5 um, and the refractive index of the material to 1.4.
+The following script adds a bezier waveguide to the project, sets the coordinates of the control points on the path to (1,1) (1,2) (2,2) (2,3) um with a width of 0.5 um and a thickness of 0.5 um. This script assumes that the project has been added to the simulation environment, and the pj is an instance of the Project.
 
 ```python
 st = pj.Structure()
@@ -507,13 +508,13 @@ st.add_geometry(name="bezier", type="BezierWaveguide", property={
     "geometry": {"x": 0, "y": 0, "z": 0, "z_span": 0.5, "width": 0.5,
                   "control_points":
                         [{"x": 1, "y": 1}, {"x": 1, "y": 2}, {"x": 2, "y": 2}, {"x": 2, "y": 3}],
-                "tilt_angle1": 90, "tilt_position": "bottom", "tilt_angle2": 90,
+                 "tilt_position": "bottom", "tilt_angle1": 90, "tilt_angle2": 90,
                 }})
 ```
 
 ### 2.1.12 Analytical waveguide 
 
-The geometric properties of analytical waveguide and an example of adding analytical waveguide into the project are shown below.
+The geometric properties and material properties of analytical waveguide and an example of adding analytical waveguide into the project are shown below.
 
 ```python
 add_geometry(
@@ -523,7 +524,7 @@ add_geometry(
     )
 ```
 
-#### Geometry properties
+#### Geometric properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
 | x, y, z               | number  |     -    | The center position of the geometry. |
@@ -544,11 +545,11 @@ add_geometry(
 |:---------------|:--------|:----------:|:----------------------|
 | material              | object  |     -   | Select a material object in the material database.                                                                    |
 | mesh_order            | integer |     -   |  Select a material in overlapping areas when generating grids, materials with higher mesh order have higher priority.|
-| refractive_index      | number  |      -  | Defined refractive index of the material.                                                                             |
-| color                 | string  |     -   | Defined color of the material, default "#70AD47".                                                                     |
+| refractive_index      | number  |      -  | Define refractive index of the material.                                                                             |
+| color                 | string  |     -   | Define color of the material, default "#70AD47".                                                                     |
 
 **Example:**
-The following script adds a analytical waveguide to the structure of the instance, sets the size to 3um * 3um * 0.22um, the expression for x>0 (equation1) is "1/{x}", and the refractive index of the material is 1.4
+The following script adds an analytical waveguide to the project, sets the expression for x>0 (equation1) is "1/{x}". This script assumes that the project has been added to the simulation environment, and the pj is an instance of the Project.
 
 ```python
 st = pj.Structure()
@@ -564,7 +565,7 @@ st.add_geometry(name="analyticalwaveguide", type="AnalyticalWaveguide",property=
 
 ### 2.1.13 GDS file
 
-The geometric properties of sphere and an example of adding sphere into the project are shown below.
+The geometric properties and material properties of sphere and an example of adding sphere into the project are shown below.
 
 ```python
 add_geometry(
@@ -574,7 +575,7 @@ add_geometry(
     )
 ```
 
-#### Geometry properties
+#### Geometric properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
 | x, y, z               | number  |     -    | The center position of the geometry. |
@@ -592,13 +593,15 @@ add_geometry(
 |:---------------|:--------|:----------:|:----------------------|
 | material              | object  |     -   | Select a material object in the material database.                                                                    |
 | mesh_order            | integer |     -   |  Select a material in overlapping areas when generating grids, materials with higher mesh order have higher priority.|
-| refractive_index      | number  |      -  | Defined refractive index of the material.                                                                             |
-| color                 | string  |     -   | Defined color of the material, default "#70AD47".                                                                     |
+| refractive_index      | number  |      -  | Define refractive index of the material.                                                                             |
+| color                 | string  |     -   | Define color of the material, default "#70AD47".                                                                     |
 
   
 **Example:**
+
 ```python
-The following script import gds file to the structure of the instance, sets import parameters including the path name, cell name and layer name, structure thickness to 0.22 um, and material refractive index to 1.4.
+The following script imports a gds file to the project, sets the path name, cell name and layer name. This script assumes that the project has been added to the simulation environment, the pj is an instance of the Project.
+
 path_name = "gds_file_path"
 cell_name = "gds_cell_name"
 layer_name = (1,0)
@@ -608,6 +611,18 @@ st.add_geometry(name="gds_file", type="gds_file", property={
                         "geometry": {"x": 0, "y": 0, "z": 0, "z_span": 0.22},
                         "material": {"object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2}})
 ```    
+
+
+### 2.1.14 Mesh order
+
+The mesh order decides the coverage when creating a geometric structure.
+
+When the mesh order of two structures are same, the structure which is established later has a higher priority. When the mesh order of two structures are different, the large numerical value of mesh order has greater priority than the small one. That is, The large mesh order of structure is able to cover small mesh order of structure.
+For example, the mesh order=2 structure will cover the mesh order=1.
+
+![](../../../static/img/SDK/structure/mesh_order.png)
+
+The advantage is that increasing the value of mesh order allows user to make new nested structures in the complex model.
 
 
 

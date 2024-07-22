@@ -113,26 +113,26 @@ The provided code contains comments that define the simulation parameters. Let's
 
 <div class="text-justify">
 
-Define commonly used parameters in region 0, such as the width and height of the simulation boundary, the start time of the simulation, the path and name for the simulation output, the path to the imported GDS layout, and other parameters required for structural parameterized modeling.
+Define commonly used parameters in this region, such as the width and height of the simulation boundary, the start time of the simulation, the path and name for the simulation output, the path to the imported GDS layout, and other parameters required for structural parameterized modeling.
 
 </div>
 
 ```python
-# region --- 0. General Parameters ---
-  yspan_solver = 5
-  zspan_solver = 2
-  time_str = time.strftime('%Y%m%d_%H%M%S', time.localtime())
-  path = kwargs['path']
-  simu_name = f'FDE_DC_yspan={yspan_solver}_{time_str}'
-  gds_file_root_path = os.path.abspath(os.path.join(path, '..'))
-  gds_file = gds_file_root_path + '/examples_gds/DC.gds'
-  project_name = f'{simu_name}_{run_mode}_{time_str}'
-  plot_path = kwargs.get('plot_dir', path) + '/plots/' + project_name + '/'
-  kL = [f'0{k}' for k in range(5)]
-  export_options = {"export_csv": True, "export_mat": True, "export_zbf": True}
-  l_bend=5.6 # the length of z bend
-  l_arm=15 # the length of 2 arms
-  l_input=2.5 # the length of input wg
+# region --- General Parameters ---
+yspan_solver = 5
+zspan_solver = 2
+time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime())
+path = kwargs["path"]
+simu_name = f"FDE_DC_yspan={yspan_solver}_{time_str}"
+gds_file_root_path = os.path.abspath(os.path.join(path, ".."))
+gds_file = gds_file_root_path + "/examples_gds/DC.gds"
+project_name = f"{simu_name}_{run_mode}"
+plot_path = kwargs.get("plot_dir", path) + "/plots/" + project_name + "/"
+kL = [f"0{k}" for k in range(5)]
+export_options = {"export_csv": True, "export_mat": True, "export_zbf": True}
+l_bend = 5.6  # the length of z bend
+l_beam = 15  # the length of 2 beams
+l_input = 2.5  # the length of input wg
 # endregion
 ```
 
@@ -148,16 +148,16 @@ The code defines several parameters and variables necessary for the simulation p
 <div class="text-justify">
 
 
-Indeed, let's proceed to the next step, where we set up the materials required for the simulation in region 2. In this case, we will directly use relevant materials from the MO  material library.
+Indeed, let's proceed to the next step, where we set up the materials required for the simulation in this region. In this case, we will directly use relevant materials from the MO  material library.
 
 </div>
 
 ```python
-# region --- 2. Material ---
-  mt = pj.Material()
-  mt.add_lib(name='Si', data=mo.Material.Si_Palik, order=2)
-  mt.add_lib(name='SiO2', data=mo.Material.SiO2_Palik, order=2)
-  mt.add_lib(name='Air', data=mo.Material.Air, order=2)
+# region --- Material ---
+mt = pj.Material()
+mt.add_lib(name="Si", data=mo.Material.Si_Palik, order=2)
+mt.add_lib(name="SiO2", data=mo.Material.SiO2_Palik, order=2)
+mt.add_lib(name="Air", data=mo.Material.Air, order=2)
 # endregion
 ```
 
@@ -168,36 +168,25 @@ The `add_lib` is used to define three parameters `name`,`data` and `order`. <br/
 <div class="text-justify">
 
 
-Next, we will create the Directional Coupler model in region 3. We have two options for modeling the structure:
+Next, we will create the Directional Coupler model. We have two options for modeling the structure:
 
 </div>
 
 ```python
-# region --- 3. Structure ---
-    st = pj.Structure()
-    st.add_geometry(
-        name="box",
-        type="gds_file",
-        property={
-            "general": {"path": gds_file, "cell_name": "TOP", "layer_name": (1, 1)},
-            "geometry": {"x": 0, "y": 0, "z": 0.11, "z_span": 6},
-            "material": {"material": mt["SiO2"], "mesh_order": 1}, }, )
-
-    st.add_geometry(
-        name="dc",
-        type="gds_file",
-        property={
-            "general": {"path": gds_file, "cell_name": "TOP", "layer_name": (0, 0)},
-            "geometry": {"x": 0, "y": 0, "z": 0.11, "z_span": 0.22},
-            "material": {"material": mt["Si"], "mesh_order": 2}, }, )
-    st.add_geometry(
-        name="slab",
-        type="Rectangle",
-        property={
-            "geometry": {
-                "x_min": -l_input - l_bend - l_beam / 2 - 3, "x_max": l_input + l_bend + l_beam / 2 + 3,
-                "y": 0, "y_span": 8, "z": 0.045, "z_span": 0.09,},
-            "material": {"material": mt["Si"], "mesh_order": 2}, }, )
+# region --- Structure ---
+st = pj.Structure()
+st.add_geometry(name="box", type="gds_file",
+                property={"general": {"path": gds_file, "cell_name": "TOP", "layer_name": (1, 1)},
+                            "geometry": {"x": 0, "y": 0, "z": 0.11, "z_span": 6},
+                            "material": {"material": mt["SiO2"], "mesh_order": 1},},)
+st.add_geometry(name="dc",type="gds_file",
+                property={"general": {"path": gds_file, "cell_name": "TOP", "layer_name": (0, 0)},
+                            "geometry": {"x": 0, "y": 0, "z": 0.11, "z_span": 0.22},
+                            "material": {"material": mt["Si"], "mesh_order": 2},},)
+st.add_geometry(name="slab",type="Rectangle",
+                property={"geometry": {"x_min": -l_input - l_bend - l_beam / 2 - 3, "x_max": l_input + l_bend + l_beam / 2 + 3,
+                                        "y": 0, "y_span": 8, "z": 0.045, "z_span": 0.09,},
+                            "material": {"material": mt["Si"], "mesh_order": 2},},)
 # endregion
 ```
 
@@ -208,37 +197,28 @@ Here, we import the DC layout from the GDS file. we can create the DC model dir
 
 </div>
 
-
-
 #### 2.6 FDE Simulation
 
 <div class="text-justify">
 
-
-After establishing the model, we can add the simulation region in region 4.We add the FDE simulation module to support mode calculations and frequency scans. We can also and define the simulation boundary conditions. This involves specifying the geometry of the simulation region, the boundary conditions in the xyz directions, and detailed parameters.
+After establishing the model, we can add the simulation region. We add the FDE simulation module to support mode calculations and frequency scans. We can also and define the simulation boundary conditions. This involves specifying the geometry of the simulation region, the boundary conditions in the xyz directions, and detailed parameters.
 
 </div>
-
 
 <div class="text-justify">
 
 </div>
 
 ```python
-# region --- 4. Simulation ---
+# region --- Simulation ---
 simu = pj.Simulation()
-simu.add(
-    name=simu_name,
-    type="FDE",
-    property={
-        "background_material": mt["SiO2"],
-        "geometry": {
-            "x": 0, "x_span": 0, "y": 0, "y_span": yspan_solver, "z": 0, "z_span": zspan_solver,},
-        "boundary_conditions": {
-            "y_min_bc": "PEC", "y_max_bc": "PEC", "z_min_bc": "PEC", "z_max_bc": "PEC",},
-        'general': {'solver_type': '2d_x_normal'},  # default is '2d_x_normal' ['2d_x_normal','2d_y_normal','2d_z_normal']
-        "mesh_settings": {
-                "mesh_refinement": { "mesh_refinement": "curve_mesh" }, "mesh_factor": 1.2, "global_mesh_uniform_grid": { "dy": grid, "dz": grid, }, }, }, )
+simu.add(name=simu_name,type="FDE",
+            property={"background_material": mt["SiO2"],
+                    "geometry": { "x": 0, "x_span": 0, "y": 0, "y_span": yspan_solver, "z": 0, "z_span": zspan_solver, },
+                    "boundary_conditions": { "y_min_bc": "PEC", "y_max_bc": "PEC", "z_min_bc": "PEC", "z_max_bc": "PEC", },
+                    'general': {'solver_type': '2d_x_normal'},
+                    "mesh_settings": {"mesh_refinement": { "mesh_refinement": "curve_mesh" },
+                                        "mesh_factor": 1.2, "global_mesh_uniform_grid": { "dy": grid, "dz": grid, },},},)
 simu_res = simu[simu_name].run()
 # endregion
 ```
@@ -256,24 +236,20 @@ In this case,we use Perfect Electric Conductor(PEC) boundary condition. The PEC 
 <div class="text-justify">
 
 
-To achieve more accurate calculations of the model's modal fields, we can add a sub-mesh in region 5.
+To achieve more accurate calculations of the model's modal fields, we can add a sub-mesh.
 
 </div>
 
 ```python
-# region --- 5. Sub Mesh ---
+# region --- Sub Mesh ---
 lm = pj.LocalMesh()
-lm.add(
-    name="sub_mesh",
-    property={
-        "general": {"dx": 0.002, "dy": 0.002, "dz": 0.002},
-        "geometry": {
-            "x": 0, "x_span": 6, "y": 0, "y_span": 2, "z": 0, "z_span": 0.2, }, }, )
+lm.add(name="sub_mesh",
+        property={"general": {"dx": 0.002, "dy": 0.002, "dz": 0.002},
+                    "geometry": { "x": 0, "x_span": 6, "y": 0, "y_span": 2, "z": 0, "z_span": 0.2,},},)
 # endregion
 ```
 
 <div class="text-justify">
-
 
 In this code segment, we use the `LocalMesh` to add a sub-mesh.<br/>The `name` parameter defines the name of the mesh.<br/>The `general` parameter specifies the grid accuracy in the xyz directions (in this case, 0.002 micrometers in each direction).<br/>The `geometry` parameter sets the coordinates of the sub-mesh.
 
@@ -283,31 +259,23 @@ In this code segment, we use the `LocalMesh` to add a sub-mesh.<br/>The `name` p
 
 <div class="text-justify">
 
-Such as mode expansion and frequency analysis, we can add a sub-mesh in region 5 to achieve more analysis.
+Such as mode expansion and frequency analysis, we can add a sub-mesh to achieve more analysis.
 
 </div>
 
 ```python
-# region --- 6. Analysis ---
+# region --- Analysis ---
 analysis = pj.Analysis()
-analysis.add_analysis(
-    name="Mesh Structure",
-    type="FDEAnalysis",
-    props={
-        "workflow_id": simu_res.workflow_id,
-        "simulation_name": "FDE",
-        "modal_analysis": {
-            "calculate_modes": run_options.run, "mesh_structure": False, "wavelength": wavelength, "number_of_trial_modes": number_of_trial_modes, "search": "max_index",  # ['near_n','max_index'] "n": 1, "calculate_group_index": False, # 'mode_removal': {'threshold': 0.02},
-            "bent_waveguide": {
-                "bent_waveguide": False, "radius": 1, "orientation": 0, "location": "simulation_center",
-            },
-        },
-        "frequency_analysis": {
-            "frequency_analysis": run_options.run_frequency_sweep, "start_wavelength": 1.50, "stop_wavelength": 1.60, "number_of_points": 3, "effective_index": 2.67, "detailed_dispersion_calculation": False,
-        },
-    }
-)
-result_fde = analysis["Mesh Structure"].run()
+analysis.add_analysis(name="Mesh Structure", type="FDEAnalysis",
+                        props={"workflow_id": simu_res.workflow_id, "simulation_name": "FDE",
+                                "modal_analysis": {"calculate_modes": run_options.run, "mesh_structure": False, "wavelength": wavelength,
+                                                "number_of_trial_modes": number_of_trial_modes,"search": "max_index", "n": 1,
+                                                "calculate_group_index": False,
+                                                "bent_waveguide": { "bent_waveguide": False, "radius": 1, "orientation": 0, "location": "simulation_center", },},
+                                "frequency_analysis": {"frequency_analysis": run_options.run_frequency_sweep,
+                                                    "start_wavelength": 1.50, "stop_wavelength": 1.60,
+                                                    "number_of_points": 3, "effective_index": 2.67,
+                                                    "detailed_dispersion_calculation": False, }, } )
 # endregion
 ```
 <div class="text-justify">
@@ -321,24 +289,28 @@ The `wavelength` parameter sets the wavelength-related parameters for the simula
 <div class="text-justify">
 
 
-In region 7, you can retrieve and store the simulation results.
+In this region, you can retrieve and store the simulation results.
 
 </div>
 
 ```python
-# region --- 7. See Results ---
-    if run_options.run:
-            k = kL[2]
-            res = result_fde.extract( data="calculate_modes", savepath=f"{plot_path}{k}_neff_table", export_csv=True, )
-            print(res.to_string(index=False))
-            for m in range(len(res)):
-                k = kL[3]
-                result_fde.extract( data="calculate_modes", savepath=f"{plot_path}{k}_mode{m}", attribute="Ey", real=True, imag=False, mode=m, show=False, **export_options, )
+# region --- Run ---
+result_fde = analysis["Mesh Structure"].run()
+if run_options.run:
+        k = kL[2]
+        res = result_fde.extract(data="calculate_modes",
+                                    savepath=f"{plot_path}{k}_neff_table",export_csv=True,)
+        print(res.to_string(index=False))
+        for m in range(len(res)):
+            k = kL[3]
+            result_fde.extract(data="calculate_modes", savepath=f"{plot_path}{k}_mode{m}",
+                                attribute="Ey", real=True, imag=False, mode=m, show=False, **export_options,)
 
-    if run_options.run_frequency_sweep:
-            k = kL[4]
-            result_fde.extract( data="frequency_analysis", savepath=f"{plot_path}{k}_freq_sweep_neff", attribute="neff", real=True, imag=True, show=False, export_csv=True, export_mat=True, )
-    return project_name
+if run_options.run_frequency_sweep:
+        k = kL[4]
+        result_fde.extract(data="frequency_analysis", savepath=f"{plot_path}{k}_freq_sweep_neff",
+                            attribute="neff", real=True, imag=True, show=False, export_csv=True, export_mat=True,)
+return project_name
 # endregion
 ```
 
@@ -364,12 +336,9 @@ class RunOptions(NamedTuple):
     run_frequency_sweep: bool
     extract: bool
 
-
 if __name__ == "__main__":
-    simulation(
-        run_mode="local", wavelength=1.55, grid=0.02, number_of_trial_modes=3,
-        run_options=RunOptions( index_preview=True, run=True, run_frequency_sweep=True, extract=True ), )
-
+    simulation(run_mode="local", wavelength=1.55, grid=0.02,
+               number_of_trial_modes=3, run_options=RunOptions(index_preview=True, run=True, run_frequency_sweep=True, extract=True),)
 ```
 
 <div class="text-justify">
@@ -492,13 +461,13 @@ Next, we will continue to learn about the specific functionalities corresponding
 <div class="text-justify">
 
 
-Like the operations with the FDE module, after configuring the simulation wavelength, grid precision, and other parameters, we need to set the relevant parameters for simulation and parameterized modeling in Region 0. This includes defining the paths and names for the simulation files and output results and specifying the path for importing the GDS layout.
+Like the operations with the FDE module, after configuring the simulation wavelength, grid precision, and other parameters, we need to set the relevant parameters for simulation and parameterized modeling. This includes defining the paths and names for the simulation files and output results and specifying the path for importing the GDS layout.
 
 </div>
 
 ```python
-# region --- 0. General Parameters ---
-l_bend=5.6 # the length of z bend
+# region --- General Parameters ---
+l_bend=5.6 # the length of z bezier bend
 l_beam=15 # the length of 2 beams
 l_input=2.5 # the length of input wg
 monitor_w = 3.0
@@ -519,17 +488,15 @@ gds_file = gds_file_root_path + "/examples_gds/DC.gds"
 <div class="text-justify">
 
 
-Subsequently, in Region 2, we ues the materials required for the simulation. We also support users to specify the refractive indices of Si (Silicon) and SiO2 (Silicon Dioxide) materials.
+Subsequently, we ues the materials required for the simulation. We also support users to specify the refractive indices of Si (Silicon) and SiO2 (Silicon Dioxide) materials.
 
 </div>
 
 ```python
-# region --- 1. Material ---
+# region --- Material ---
 mt = pj.Material()
 mt.add_lib(name='Si', data=mo.Material.Si_Palik, order=2)
 mt.add_lib(name='SiO2', data=mo.Material.SiO2_Palik, order=2)
-# mt.add_nondispersion(name="Si", data=[(3.472, 0)], order=2)
-# mt.add_nondispersion(name="SiO2", data=[(1.444, 0)], order=2)
 mt.add_lib(name="Air", data=mo.Material.Air, order=2)
 # endregion
 ```
@@ -546,22 +513,20 @@ The `add_nondispersion` function adds a non-dispersion material to the project i
 <div class="text-justify">
 
 
-In Region 3, we define the parameters relevant to the wavelength.
+In this region, we define the parameters relevant to the wavelength.
 
 </div>
 
 ```python
-# region --- 3. Waveform ---
+# region --- Waveform ---
 wv = pj.Waveform()
-    wv.add(name=waveform_name,type='gaussian_waveform',
-           property={'set': 'frequency_wavelength',  # selections are ['frequency_wavelength','time_domain']
-                     'set_frequency_wavelength': {
-                            'range_type': 'wavelength',  # selections are ['frequency','wavelength']
-                            'range_limit': 'center_span',  # selections are ['min_max','center_span']
-                            'wavelength_center': wavelength,
-                            'wavelength_span': wavelength_span,},
-                     }
-    )
+wv.add(name=waveform_name,type='gaussian_waveform',
+       property={'set': 'frequency_wavelength',  # selections are ['frequency_wavelength','time_domain']
+                 'set_frequency_wavelength': {
+                        'range_type': 'wavelength',  # selections are ['frequency','wavelength']
+                        'range_limit': 'center_span',  # selections are ['min_max','center_span']
+                        'wavelength_center': wavelength,
+                        'wavelength_span': wavelength_span,},})
 # endregion
 ```
 
@@ -578,82 +543,56 @@ The `Waveform` function is used to retrieve the waveform manager for the current
 <div class="text-justify">
 
 
-Next, similar to the procedure in the FDE module, in Region 4, we create the model by importing the GDS layout. Subsequently, in Region 5, we establish the boundary conditions.
+Next, similar to the procedure in the FDE module, we create the model by importing the GDS layout.
 
 </div>
 
 ```python
-# region --- 4. Structure ---
-    st = pj.Structure()
-
-st.add_geometry(
-    name="box",
-    type="gds_file",
-    property={
-        "general": { "path": gds_file, "cell_name": "TOP", "layer_name": (1, 1) },
-        "geometry": {"x": 0, "y": 0, "z": 0.11, "z_span": 6},
-        "material": {"material": mt["SiO2"], "mesh_order": 1} }, )
-st.add_geometry(
-    name="dc",
-    type="gds_file",
-    property={
-        "general": { "path": gds_file, "cell_name": "TOP", "layer_name": (0, 0) },
-        "geometry": {"x": 0, "y": 0, "z": 0.11, "z_span": 0.22},
-        "material": {"material": mt["Si"], "mesh_order": 2} }, )
-st.add_geometry(
-    name='slab',
-    type='Rectangle',
-    property={
-        'geometry': { 'x_min': -l_input-l_bend-l_beam/2-3, 'x_max':l_input+l_bend+l_beam/2+3, 'y': 0, 'y_span': 8, 'z': 0.045, 'z_span': 0.09 },
-        'material': {'material': mt['Si'], 'mesh_order': 2}, } , )
+# region --- Structure ---
+st = pj.Structure()
+st.add_geometry(name="box",type="gds_file",
+                property={"general": {"path": gds_file,"cell_name": "TOP","layer_name": (1, 1)},
+                          "geometry": {"x": 0, "y": 0, "z": 0.11, "z_span": 6},
+                          "material": {"material": mt["SiO2"], "mesh_order": 1}},)
+st.add_geometry(name="dc",type="gds_file",
+                property={"general": {"path": gds_file,"cell_name": "TOP","layer_name": (0, 0)},
+                          "geometry": {"x": 0, "y": 0, "z": 0.11, "z_span": 0.22},
+                          "material": {"material": mt["Si"], "mesh_order": 2}},)
+st.add_geometry(name='slab',type='Rectangle',
+                property={'geometry': {'x_min': -l_input-l_bend-l_beam/2-3,'x_max':l_input+l_bend+l_beam/2+3,'y': 0,'y_span': 8,'z': 0.045,'z_span': 0.09},
+                          'material': {'material': mt['Si'], 'mesh_order': 2},} ,)
 # endregion
-
 ```
 
-<div class="text-justify">
-
-In this code segment, we set detailed parameters for the PML boundar.
-</div>
 
 #### 2.5 FDTD Simulation/local mesh
 
 <div class="text-justify">
 
-
-In Region 6, we add the FDTD simulation.  Additionally, in Region 7, we can set the sub-mesh for improved precision.
+Next, we add the FDTD simulation and detailed parameters for the  boundary condition. Additionally,we can set the sub-mesh for improved precision.
 
 </div>
 
 ```python
-# region --- 6. Simulation ---
+# region --- Simulation ---
 simu = pj.Simulation()
-simu.add(
-    name=simu_name,
-    type="FDTD",
-    property={
-        "background_material": mt["SiO2"],
-        "geometry": { "x": 0, "x_span": 2*(l_input+l_bend+l_beam/2-0.5), "y": 0, "y_span": 6, "z": 0.11, "z_span": monitor_h },
-         "boundary_conditions": {"x_min_bc": "PML", "x_max_bc": "PML", "y_min_bc": "PML", "y_max_bc": "PML", "z_min_bc": "PML", "z_max_bc": "PML",
-                                               "pml_settings": {"all_pml": {"layers": 8, "kappa": 2, "sigma": 0.8, "polynomial": 3, "alpha": 0, "alpha_polynomial": 1, }}},
+simu.add(name=simu_name,type="FDTD",
+         property={"background_material": mt["SiO2"],
+                   "geometry": {"x": 0,"x_span": 2*(l_input+l_bend+l_beam/2-0.5),"y": 0,"y_span": 6,"z": 0.11,"z_span": monitor_h},
+        "boundary_conditions": {"x_min_bc": "PML", "x_max_bc": "PML", "y_min_bc": "PML", "y_max_bc": "PML", "z_min_bc": "PML", "z_max_bc": "PML",
+                                           "pml_settings": {"all_pml": {"layers": 8, "kappa": 2, "sigma": 0.8, "polynomial": 3, "alpha": 0, "alpha_polynomial": 1, }}},
         "general": { "simulation_time": 10000, },
-        "mesh_settings": {
-            "mesh_factor": 1.2,
-            "mesh_type": "auto_non_uniform",
-            "mesh_accuracy": {"cells_per_wavelength": grids_per_lambda},
-            "minimum_mesh_step_settings": {"min_mesh_step": 1e-4},
-            "mesh_refinement": { "mesh_refinement": "curve_mesh", } },
-        # 'advanced_options': {'auto_shutoff': {'auto_shutoff_min': 1.00e-4, 'down_sample_time': 200}},
-        # 'thread_setting': {'thread': 4}
-    }, )
+        "mesh_settings": {"mesh_factor": 1.2, "mesh_type": "auto_non_uniform",
+                          "mesh_accuracy": {"cells_per_wavelength": grids_per_lambda},
+                          "minimum_mesh_step_settings": {"min_mesh_step": 1e-4},
+                          "mesh_refinement": { "mesh_refinement": "curve_mesh", } },},)
 # endregion
 
-# region --- 7. Sub Mesh ---
+# region --- Sub Mesh ---
 lm = pj.LocalMesh()
-lm.add(
-    name="sub_mesh",
-    property={
-        "general": { "dx": 0.05, "dy": 0.02, "dz": 0.02 },
-        "geometry": { "x": 0, "x_span": 2*(l_input+l_bend+l_beam/2-0.5), "y": 0, "y_span": 6, "z": 0.11, "z_span": monitor_h }, }, )
+lm.add(name="sub_mesh",
+       property={"general": {"dx": 0.05, "dy": 0.02,"dz": 0.02 },
+                 "geometry": {"x": 0, "x_span": 2*(l_input+l_bend+l_beam/2-0.5), "y": 0, "y_span": 6, "z": 0.11, "z_span": monitor_h },},)
 # endregion
 ```
 
@@ -667,21 +606,18 @@ The `Simulation` manager is critical for setting up and running simulations in t
 
 <div class="text-justify">
 
-Then we need to establish the light source in the input waveguide, as shown in Region 8.
+Then we need to establish the light source in the input waveguide, as shown below.
 
 </div>
 
 ```python
-# region --- 8. ModeSource ---
+# region --- ModeSource ---
 src = pj.Source()
-src.add(
-    name="source",
-    type="mode_source",
-    # axis="x_forward",
-        property={
-            "general": { "mode_selection": "user_select", "waveform": {"waveform_id": wv[waveform_name]}, "inject_axis": "x_axis", "direction": "forward" },
-            "geometry": { "x": -l_input-l_beam/2-l_bend+2, "x_span": 0, "y": 1.35, "y_span": monitor_w, "z": 0.11, "z_span": monitor_h },
-            "modal_analysis": { "mode_removal": {"threshold": 0.01} } , }, )
+src.add(name="source",type="mode_source",
+        property={"general": {"mode_selection": "user_select",
+                              "waveform": {"waveform_id": wv[waveform_name]}, "inject_axis": "x_axis", "direction": "forward"},
+                  "geometry": {"x": -l_input-l_beam/2-l_bend+2, "x_span": 0, "y": 1.35, "y_span": monitor_w, "z": 0.11, "z_span": monitor_h },
+                  "modal_analysis": {"mode_removal": {"threshold": 0.01}} ,})
 # endregion
 ```
 
@@ -697,75 +633,31 @@ The `Source` function is utilized to retrieve the source manager for the current
 <div class="text-justify">
 
 
-In Region 9, we set up the monitors.
+In this region, we set up the monitors.
 
 </div>
 
 ```python
-# region --- 9. Monitor ---
-# region --- 9.0 GlobalMonitor ---
+# region --- Monitor ---
 mn = pj.Monitor()
-mn.add(
-    name="Global Option",
-    type="global_option",
-    property={
-        "frequency_power": {
-            "spacing_type": "wavelength",
-            "spacing_limit": "center_span",
-            "wavelength_center": wavelength,
-            "wavelength_span":wavelength_span,
-            "frequency_points": 3 }, }, )
-# endregion
-
-# region --- 9.1 z_normal ---
-mn.add(
-    name="z_normal",
-    type="power_monitor",
-    property={
-        "general": {
-            "frequency_profile": { "wavelength_center": wavelength, "wavelength_span": wavelength_span, "frequency_points": 3, },
-        },
-        "geometry": {
-            "monitor_type": "2d_z_normal",
-            "x": 0, "x_span": 2*(l_input+l_bend+l_beam/2-0.5), "y": 0, "y_span": 5, "z": 0.11, "z_span": 0 }, }, )
-# endregion
-
-# region --- 9.2 input ---
-mn.add(
-    type="power_monitor",
-    name="input_reflect",
-    property={
-        "general": {
-            "frequency_profile": { "wavelength_center": wavelength, "wavelength_span": wavelength_span, "frequency_points": 11 } },
-        "geometry": {
-            "monitor_type": "2d_x_normal",
-            "x": -l_input-l_beam/2-l_bend+1.5, "x_span": 0, "y": 1.35, "y_span": monitor_w, "z": 0.11, "z_span": monitor_h }, } )
-# endregion
-
-# region --- 9.3 through ---
-mn.add(
-    type="power_monitor",
-    name="through",
-    property={
-        "general": {
-            "frequency_profile": { "wavelength_center": wavelength, "wavelength_span": wavelength_span, "frequency_points": 11 } },
-        "geometry": {
-            "monitor_type": "2d_x_normal",
-            "x": l_input+l_beam/2+l_bend-2, "x_span": 0, "y": 1.35, "y_span": 2, "z": 0.11, "z_span": monitor_h }, }, )
-# endregion
-
-# region --- 9.4 cross ---
-mn.add(
-    name="cross",
-    type="power_monitor",
-    property={
-        "general": {
-            "frequency_profile": { "wavelength_center": wavelength, "wavelength_span": wavelength_span, "frequency_points": 11 } },
-         "geometry": {
-            "monitor_type": "2d_x_normal",
-            "x": l_input+l_beam/2+l_bend-2,
-            "x_span": 0, "y": -1.35, "y_span": 2, "z": 0.11, "z_span": monitor_h }, } )
-# endregion
+mn.add(name="Global Option", type="global_option",
+       property={"frequency_power": {"spacing_type": "wavelength", "spacing_limit": "center_span",
+                 "wavelength_center": wavelength, "wavelength_span":wavelength_span, "frequency_points": 3},},)
+mn.add(name="z_normal",type="power_monitor",
+       property={"general": {"frequency_profile": {"wavelength_center": wavelength, "wavelength_span": wavelength_span, "frequency_points": 3,},},
+                 "geometry": {"monitor_type": "2d_z_normal", "x": 0, "x_span": 2*(l_input+l_bend+l_beam/2-0.5), "y": 0, "y_span": 5, "z": 0.11, "z_span": 0},},)
+mn.add(type="power_monitor", name="input_reflect",
+       property={"general": {"frequency_profile": {"wavelength_center": wavelength, "wavelength_span": 0.1, "frequency_points": 11}},
+                 "geometry": {"monitor_type": "2d_x_normal",
+                              "x": -l_input-l_beam/2-l_bend+1.5, "x_span": 0, "y": 1.35, "y_span": monitor_w, "z": 0.11, "z_span": monitor_h },})
+mn.add(type="power_monitor",name="through",
+       property={"general": {"frequency_profile": {"wavelength_center": wavelength, "wavelength_span": 0.1, "frequency_points": 11}},
+                 "geometry": {"monitor_type": "2d_x_normal",
+                              "x": l_input+l_beam/2+l_bend-2,"x_span": 0, "y": 1.35, "y_span": 2, "z": 0.11, "z_span": monitor_h },},)
+mn.add(name="cross",type="power_monitor",
+       property={"general": {"frequency_profile": { "wavelength_center": wavelength, "wavelength_span": 0.1, "frequency_points": 11 }},
+                 "geometry": {"monitor_type": "2d_x_normal",
+                              "x": l_input+l_beam/2+l_bend-2, "x_span": 0, "y": -1.35, "y_span": 2, "z": 0.11, "z_span": monitor_h },})
 # endregion
 ```
 
@@ -778,23 +670,21 @@ The power monitor is a configuration setting that allows users to specify variou
 
 </div>
 
-
-#### 2.8 Calculate Source
+#### 2.8 Preview Source Mode
 
 <div class="text-justify">
 
 
-To calculate the input mode light and save its electric field intensity data in region 10.
+To calculate the input mode light and save its electric field intensity data.
 
 </div>
 
 ```python
-# region --- 10. Calculate Mode ---
+# region --- Calculate Mode ---
 if run_options.calculate_modes:
-    simu[simu_name].preview_modes(
-        source_name = "source",
-        savepath=f"{plot_path}00_source_modeprofile_fdeonly",
-        attribute="E", real=True, imag=True, mode=0, show=False, export_csv=True, )
+    simu[simu_name].preview_modes(source_name = "source",
+                                  savepath=f"{plot_path}00_source_modeprofile_fdeonly",
+                                  attribute="E", real=True, imag=True, mode=0, show=False, export_csv=True, )
 # endregion
 ```
 
@@ -802,53 +692,42 @@ if run_options.calculate_modes:
 
 <div class="text-justify">
 
-Then, in Region 11, we run the simulation. 
+Then, we run the simulation. 
 
 </div>
 
 ```python
-# region --- 11. Run ---
+# region --- Run ---
 if run_options.run:
-    fdtd_res = simu[simu_name].run()
+    fdtd_res = simu[simu_name].run(
+        resources={"compute_resources": "gpu", "gpu_devices": [{"id": 0},{"id": 1}]})
 # endregion
 ```
 #### 2.10 Analysis
 
 <div class="text-justify">
 
-In Region 12, we run the analysis for the simulation.
+In this region, we run the analysis for the simulation.
 The `mode_expansion` parameter involves relevant settings for mode expansion simulations. Users can customize the simulation settings by utilizing these input parameters to achieve accurate and comprehensive results based on their specific simulation requirements.
 
 
 </div>
 
 ```python
-# region --- 12. Run ---
+# region --- ModeExpansion ---
 analysis = pj.Analysis()
-analysis.add(
-    name="me_through",
-    type="mode_expansion",
-    property={
-            "workflow_id": fdtd_res.workflow_id,
-            "mode_expansion": {
-                "direction": "positive",
-                "monitors_for_expansion": [ {"name": "me_through", "frequency_monitor": "through"} ],
-                "mode_calculation": {
-                    "mode_selection": "user_select",
-                    "mode_index": [0, 1, 2, 3],
-                    "override_global_monitor_setting": { "wavelength_center": wavelength, "wavelength_span": 0.1, "frequency_points": 11, }, }, }, } )
-analysis.add(
-    name="me_cross",
-    type="mode_expansion",
-    property={
-            "workflow_id": fdtd_res.workflow_id,
-            "mode_expansion": {
-                "direction": "positive",
-                "monitors_for_expansion": [ {"name": "me_cross", "frequency_monitor": "cross"} ],
-                "mode_calculation": {
-                    "mode_selection": "user_select",
-                    "mode_index": [0, 1, 2, 3],
-                    "override_global_monitor_setting": { "wavelength_center": wavelength, "wavelength_span": 0.1, "frequency_points": 11, }, }, }, } )
+analysis.add(name="me_through",type="mode_expansion",
+             property={"workflow_id": fdtd_res.workflow_id,
+                       "mode_expansion": {"direction": "positive", "monitors_for_expansion": [ {"name": "me_through", "frequency_monitor": "through"} ],
+                                          "mode_calculation": {"mode_selection": "user_select", "mode_index": [0, 1, 2, 3],
+                                                               "override_global_monitor_setting": {"wavelength_center": wavelength, "wavelength_span": 0.1,
+                                                                                                    "frequency_points": 11,},},},})
+analysis.add(name="me_cross",type="mode_expansion",
+             property={"workflow_id": fdtd_res.workflow_id,
+                       "mode_expansion": {"direction": "positive", "monitors_for_expansion": [ {"name": "me_cross", "frequency_monitor": "cross"} ],
+                       "mode_calculation": {"mode_selection": "user_select", "mode_index": [0, 1, 2, 3],
+                                            "override_global_monitor_setting": {"wavelength_center": wavelength, "wavelength_span": wavelength_span,
+                                                                                "frequency_points": 11, },},},})
 me_res1 = analysis["me_through"].run()
 me_res2 = analysis["me_cross"].run()
 # endregion
@@ -859,82 +738,42 @@ me_res2 = analysis["me_cross"].run()
 <div class="text-justify">
 
 
-In Region 13, we define the desired output results. Lastly, we control the switches of various functional modules at the end of the Python file.
+The codes below is uesd to extract the results.
 
 
 </div>
 
 ```python
-# region --- 13. See Results ---
+# region --- See Results ---
 if run_options.extract and run_options.run:
-    # region --- z_normal ---
-    """ 01_top_profile """
     for λ in [1.5, 1.55, 1.6]:
-        fdtd_res.extract(
-            data="fdtd:power_monitor",
-            savepath=plot_path + "01_top_profile" + str(λ) + "um",
-            monitor_name="z_normal",
-            target="intensity",
-            attribute="E",
-            real=True, imag=True, wavelength=str(λ), plot_x="x", plot_y="y", show=False, export_csv=True, )
-        # endregion
-
-        # # region --- through ---
-        """ 01_monitorThrough_modeprofile_fdtd """
-        fdtd_res.extract(
-            data="fdtd:power_monitor",
-            savepath=plot_path + "01_monitorThrough_modeprofile_fdtd_"+ f"{wavelength}" + "um",
-            monitor_name="through",
-            target="intensity",
-            attribute="E",
-            real=True, imag=False, wavelength=f"{wavelength}", plot_x="y", plot_y="z", show=False, export_csv=True, )
-        # # """ 02_Trans_ThroughVsLambda_power """
-        fdtd_res.extract(
-            data="fdtd:power_monitor",
-            savepath=plot_path + "02_Trans_ThroughVsLambda_power",
-            monitor_name="through",
-            target="line",
-            attribute="T",
-            real=True, imag=False, plot_x="wavelength", show=False, export_csv=True, )
-        # # """ 021_ME_ThroughVsLambda_mode """
-        me_res1.extract(
-            data="fdtd:mode_expansion",
-            savepath=plot_path + "021_ME_ThroughVsLambda_mode",
-            target="line",
-            attribute="T_forward",
-            real=True, imag=True, monitor_name="through", mode_expansion_name="me_through", mode=0, plot_x="wavelength", show=False, export_csv=True, )
-        # # region --- cross ---
-        """ 01_monitorcross_modeprofile_fdtd """
-        fdtd_res.extract(
-            data="fdtd:power_monitor",
-            savepath=plot_path + "01_monitorcross_modeprofile_fdtd_"+ f"{wavelength}" + "um",
-            monitor_name="cross",
-            target="intensity",
-            attribute="E",
-            real=True, imag=False, wavelength=f"{wavelength}", plot_x="y", plot_y="z", show=False, export_csv=True, )
-        # # """ 02_Trans_crossVsLambda_power """
-        fdtd_res.extract(
-            data="fdtd:power_monitor",
-            savepath=plot_path + "02_Trans_crossVsLambda_power",
-            monitor_name="cross",
-            target="line",
-            attribute="T",
-            real=True, imag=False, plot_x="wavelength", show=False, export_csv=True, )
-        # # """ 021_ME_crossVsLambda_mode """
-        me_res2.extract(
-            data="fdtd:mode_expansion",
-            savepath=plot_path + "021_ME_crossVsLambda_mode",
-            target="line",
-            attribute="T_forward",
-            real=True, imag=True, monitor_name="cross", mode_expansion_name="me_cross", mode=0, plot_x="wavelength", show=False, export_csv=True, )
-    # endregion
-
+        fdtd_res.extract(data="fdtd:power_monitor", savepath=plot_path + "01_top_profile" + str(λ) + "um",
+                         monitor_name="z_normal", target="intensity", attribute="E", real=True, imag=True,
+                         wavelength=str(λ), plot_x="x", plot_y="y", show=False, export_csv=True,)
+        fdtd_res.extract(data="fdtd:power_monitor", savepath=plot_path + "01_monitorThrough_modeprofile_fdtd_"+ f"{wavelength}" + "um",
+                         monitor_name="through", target="intensity", attribute="E", real=True, imag=False,
+                         wavelength=f"{wavelength}", plot_x="y", plot_y="z", show=False, export_csv=True,)
+        fdtd_res.extract(data="fdtd:power_monitor", savepath=plot_path + "02_Trans_ThroughVsLambda_power",
+                         monitor_name="through", target="line", attribute="T", real=True, imag=False,
+                         plot_x="wavelength", show=False, export_csv=True,)
+        me_res1.extract(data="fdtd:mode_expansion", savepath=plot_path + "021_ME_ThroughVsLambda_mode",
+                        target="line", attribute="T_forward", real=True, imag=True,
+                        monitor_name="through", mode_expansion_name="me_through", mode=0, plot_x="wavelength", show=False, export_csv=True,)
+        fdtd_res.extract(data="fdtd:power_monitor", savepath=plot_path + "01_monitorcross_modeprofile_fdtd_"+ f"{wavelength}" + "um",
+                         monitor_name="cross", target="intensity", attribute="E", real=True, imag=False,
+                         wavelength=f"{wavelength}", plot_x="y", plot_y="z", show=False, export_csv=True,)
+        fdtd_res.extract(data="fdtd:power_monitor", savepath=plot_path + "02_Trans_crossVsLambda_power",
+                         monitor_name="cross", target="line", attribute="T", real=True, imag=False,
+                         plot_x="wavelength", show=False, export_csv=True,)
+        me_res2.extract(data="fdtd:mode_expansion", savepath=plot_path + "021_ME_crossVsLambda_mode",
+                        target="line", attribute="T_forward", real=True, imag=True, monitor_name="cross", mode_expansion_name="me_cross",
+                        mode=0, plot_x="wavelength", show=False, export_csv=True,)
+# endregion
 ```
 
 #### 2.12 Switches
 
 <div class="text-justify">
-
 
 At the end of all codes, We control the switches of various functional modules.
 
@@ -947,11 +786,10 @@ class RunOptions(NamedTuple):
     run: bool
     extract: bool
 
-
 if __name__ == "__main__":
-    simulation( wavelength=1.55, wavelength_span=0.1 , grids_per_lambda=6,
-        run_options=RunOptions(
-            index_preview=True, run=True, calculate_modes=True, extract=True ), )
+    simulation(wavelength=1.55, wavelength_span=0.1 , grids_per_lambda=6,
+               run_options=RunOptions( index_preview=True, run=True, calculate_modes=True, extract=True),)
+
 ```
 
 ### 3. Output Results

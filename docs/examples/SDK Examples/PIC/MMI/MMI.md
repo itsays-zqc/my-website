@@ -99,9 +99,7 @@ Firstly, We define parameters and give them a default value, such as the simulat
 ```python
 @timed
 @with_path
-def simulation(
-    *, wavelength=1.55, number_of_modes=10, global_mesh_grid=0.155, local_mesh_grid=0.01, run_options: "RunOptions", **kwargs
-):
+def simulation(*,wavelength=1.55,wavelength_span=0.1,number_of_modes=10,global_mesh_grid=0.155,local_mesh_grid=0.01,run_options: "RunOptions",**kwargs):
 ```
 
 <div class="text-justify">
@@ -116,14 +114,14 @@ The provided code contains comments that define the simulation parameters. Let's
 <div class="text-justify">
 
 
-Define commonly used parameters in region 0, such as the mesh grid of the simulation boundary, the start time of the simulation, the path and name for the simulation output, the path to the imported GDS layout, and other parameters required for structural parameterized modeling.
+Define commonly used parameters in this region, such as the mesh grid of the simulation boundary, the start time of the simulation, the path and name for the simulation output, the path to the imported GDS layout, and other parameters required for structural parameterized modeling.
 
 If you need to calculate the bandwith of the device in the EME simulation, you can also decide the wavelength for sweeping in this section.
 
 </div>
 
 ```python
-# region --- 0. General Parameters ---
+# region --- General Parameters ---
 path = kwargs["path"]
 simu_name = "EME_1X2MMI"
 time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime())
@@ -132,9 +130,6 @@ plot_path = f'{path}/plots/{project_name}/'
 gds_file_root_path = os.path.abspath(os.path.join(path, '..'))
 gds_file = gds_file_root_path + "/examples_gds/1X2MMI.gds"
 kL = [f"0{k}" for k in range(5)]
-wavelength_start = 1.55
-wavelength_stop = 1.65
-wavelength_points = 10
 # endregion
 ```
 
@@ -147,10 +142,10 @@ The code defines several parameters and variables necessary for the simulation p
 
 #### 2.4 Creat Project
 
-You can create a new project using the Project function of Max's software development toolkit in region 1.
+You can create a new project using the Project function of Max's software development toolkit.
 
 ```python
-# region --- 1. Project ---
+# region --- Project ---
 pj = mo.Project(name=project_name)
 # endregion
 ```
@@ -159,12 +154,12 @@ pj = mo.Project(name=project_name)
 
 <div class="text-justify">
 
-Let's proceed to the next step, where we set up the materials required for the simulation in region 2. In this case, we will directly use relevant materials from the MO  material library.
+Let's proceed to the next step, where we set up the materials required for the simulation. In this case, we will directly use relevant materials from the MO  material library.
 
 </div>
 
 ```python
-# region --- 2. Material ---
+# region --- Material ---
 mt = pj.Material()
 mt.add_nondispersion(name="Si", data=[(3.454996, 0)], order=2)
 mt.add_nondispersion(name="SiO2", data=[(1.444991, 0)], order=2)
@@ -174,20 +169,17 @@ mt.add_lib(name="Air", data=mo.Material.Air, order=2)
 
 The `add_lib` contains three parameters `name`,`data` and `order`. <br/>The `data` calls up the property of simulation materials in the MO material library. <br/>The `Order` parameter determines the mesh order for the material during the simulation. <br/>As the same, we also support users to customize the material with `add_nondispersion`function.
 
-Detailed explaination about material :  <a href='https://itsays-zqc.github.io/my-website/docs/test/v2_core/1Material'>Material</a>
-
 #### 2.6 Create Model
 
 <div class="text-justify">
 
-Next, we will create the MMI model in region 3.
+Next, we will create the MMI model.
 
 </div>
 
 ```python
-# region --- 3. Structure ---
+# region --- Structure ---
 st = pj.Structure()
-
 st.add_geometry(name="box", type="gds_file",
                 property={"general": {"path": gds_file, "cell_name": "TOP", "layer_name": (1, 1)},
                             "geometry": {"x": 0, "y": 0, "z": 0, "z_span": 4},
@@ -208,33 +200,27 @@ We can import the MMI layout from the GDS file.<br/>The `name` parameter defines
 #### 2.7 Simulation
 
 <div class="text-justify">
-After establishing the model, we can add the simulation  in region 4.
+After establishing the model, we can add the simulation.
 </div>
 
 ```python
-# region --- 4. Simulation ---
+# region --- Simulation ---
 simu = pj.Simulation()
-simu.add(
-    name=simu_name,
-    type="EME",
-    property={
-        "background_material": mt["Air"],
-        "mesh_settings": { "mesh_factor": 1.2, "mesh_refinement": { "mesh_refinement": "curve_mesh", }, },
-        "geometry": {"x_min": -1, "y": 0, "y_span": 3, "z": 0, "z_span": 3},
-        "boundary_conditions": {
-            "y_min_bc": "PML", "y_max_bc": "PML", "z_min_bc": "PML", "z_max_bc": "PML",
-            "pml_settings": { "pml_kappa": 2, "pml_sigma": 5, "pml_layer": 12, "pml_polynomial": 3, }, },
-        "general": { "wavelength": wavelength, "wavelength_offset": 0.0003, "use_wavelength_sweep": True, },
-        "eme_setup": {
-            "cell_geometry": {
-                "cell_group_definition": [
-                    {"span": 2, "cell_number": 1, "number_of_modes": number_of_modes, "sc": "none"},
-                    {"span": 20, "cell_number": 10, "number_of_modes": number_of_modes, "sc": "sub_cell"},
-                    {"span": 11.5, "cell_number": 1, "number_of_modes": number_of_modes, "sc": "none"},
-                    {"span": 20, "cell_number": 10, "number_of_modes": number_of_modes, "sc": "sub_cell"},
-                    {"span": 2, "cell_number": 1, "number_of_modes": number_of_modes, "sc": "none"}, ] } },
-        "transverse_mesh_setting": {
-            "global_mesh_uniform_grid": {"dy": global_mesh_grid, "dz": global_mesh_grid} }, }, )
+simu.add(name=simu_name,type="EME",
+        property={"background_material": mt["Air"],
+                    "mesh_settings": {"mesh_factor": 1.2,"mesh_refinement": {"mesh_refinement": "curve_mesh",},},
+        "geometry": {"x_min": 3, "y": 0, "y_span": 5, "z": 0, "z_span": 4},
+        "boundary_conditions": {"y_min_bc": "PML", "y_max_bc": "PML", "z_min_bc": "PML", "z_max_bc": "PML",
+                                            "pml_settings": {"pml_kappa": 2, "pml_sigma": 5, "pml_layer": 12, "pml_polynomial": 3}},
+        "general": {"wavelength": wavelength,"wavelength_offset": 0.0003,"use_wavelength_sweep": True,},
+        "eme_setup": {"cell_geometry": {
+                        "cell_group_definition": [
+                            {"span": 2, "cell_number": 1, "number_of_modes": number_of_modes, "sc": "none"},
+                            {"span": 20, "cell_number": 10, "number_of_modes": number_of_modes, "sc": "sub_cell"},
+                            {"span": 11.5, "cell_number": 1, "number_of_modes": number_of_modes, "sc": "none"},
+                            {"span": 20, "cell_number": 10, "number_of_modes": number_of_modes, "sc": "sub_cell"},
+                            {"span": 2, "cell_number": 1, "number_of_modes": number_of_modes, "sc": "none"},]}},
+        "transverse_mesh_setting": {"global_mesh_uniform_grid": {"dy": global_mesh_grid, "dz": 0.05}},},)
 # endregion
 ```
 
@@ -247,69 +233,50 @@ The `sc` parameter sets the subcell method in EME simulation. Selections are ['n
 #### 2.8 Add Sub-mesh
 
 <div class="text-justify">
-To achieve more accurate calculations of the model's modal fields, we can add a sub-mesh in region 5.
+To achieve more accurate calculations of the model's modal fields, we can add a sub-mesh.
 </div>
 
 ```python
-# region --- 5. Sub Mesh ---
+# region --- Sub Mesh ---
 lm = pj.LocalMesh()
-lm.add(
-    name="sub_mesh",
-    property={
-        "general": {"dx": local_mesh_grid,"dy": local_mesh_grid, "dz": local_mesh_grid},
-        "geometry": {"x": 30.75, "x_span": 11.5, "y": 0, "y_span": 5, "z": 0.11, "z_span": 0.4}, }, )
+lm.add(name="sub_mesh",
+        property={"general": {"dx": local_mesh_grid,"dy": local_mesh_grid, "dz": local_mesh_grid},
+                    "geometry": {"x": 30.75, "x_span": 11.5, "y": 0, "y_span": 5, "z": 0.11, "z_span": 0.4},},)
 # endregion
 ```
 
 <div class="text-justify">
 
-In this code segment, we  add a sub-mesh in region 5.<br/>The `name` parameter defines the name of the mesh.<br/>The `general` parameter specifies the grid accuracy in the xyz directions .<br/>The `geometry` parameter sets the coordinates of the sub-mesh.
+In this code segment, we  add a sub-mesh.<br/>The `name` parameter defines the name of the mesh.<br/>The `general` parameter specifies the grid accuracy in the xyz directions .<br/>The `geometry` parameter sets the coordinates of the sub-mesh.
 
 </div>
 
 #### 2.9 EME Port
 
 <div class="text-justify">
-In region 6, we add the EME Port for calculating modes in the simulation.
+
+Then, we add the EME Port for calculating modes in the simulation.
+
 </div>
 
 ```python
-# region --- 6. Port ---
+# region --- Port ---
 pjp = pj.Port()
-
-# region --- input_te_tm ---
-pjp.add(
-    name="input_port",
-    type="eme_port",
-    property={ "modal_analysis": { "wavelength": wavelength, },
-        "geometry": { "port_location": "left", "use_full_simulation_span": True, },
-        "eme_port": {
-            "general": {"mode_selection": "fundamental_TE", "mode_index": 0},
-            "advanced": {"offset": 0.1, "number_of_trial_modes": number_of_modes }}})
-# endregion
-
-# region --- output_up_te_tm ---
-pjp.add(
-    name="output_port1",
-    type="eme_port",
-    property={ "modal_analysis": { "wavelength": wavelength, },
-            "geometry": { "port_location": "right", "use_full_simulation_span": False, "y": 0.9, "y_span": 2, "z": 0.11, "z_span": 2 },
-            "eme_port": {
-                "general": {"mode_selection": "fundamental_TE", "mode_index": 0},
-                "advanced": {"offset": 0, "number_of_trial_modes": number_of_modes}}})
-# endregion
-
-# region --- output_down_te_tm ---
-pjp.add(
-    name="output_port2",
-    type="eme_port",
-    property={
-        "modal_analysis": { "wavelength": wavelength, },
-        "geometry": { "port_location": "right", "use_full_simulation_span": False, "y": -0.9, "y_span": 2, "z": 0.11, "z_span": 2},
-        "eme_port": {
-            "general": {"mode_selection": "fundamental_TE", "mode_index": 0, "search": "max_index"},
-            "advanced": {"offset": 0, "number_of_trial_modes": number_of_modes }}})
-# endregion
+pjp.add(name="input_port", type="eme_port",
+        property={"modal_analysis": {"wavelength": wavelength,},
+                    "geometry": {"port_location": "left", "use_full_simulation_span": True,},
+                    "eme_port": {"general": {"mode_selection": "fundamental_TE", "mode_index": 0},
+                                "advanced": {"offset": 0.1, "number_of_trial_modes": number_of_modes }}})
+pjp.add(name="output_port1", type="eme_port",
+        property={"modal_analysis": {"wavelength": wavelength,},
+                    "geometry": {"port_location": "right", "use_full_simulation_span": False, "y": 0.9, "y_span": 2, "z": 0.11, "z_span": 2 },
+                    "eme_port": {"general": {"mode_selection": "fundamental_TE", "mode_index": 0},
+                            "advanced": {"offset": 0, "number_of_trial_modes": number_of_modes}}})
+pjp.add(name="output_port2", type="eme_port",
+        property={"modal_analysis": { "wavelength": wavelength, },
+                    "geometry": {"port_location": "right", "use_full_simulation_span": False,"y": -0.9, "y_span": 2, "z": 0.11, "z_span": 2},
+                    "eme_port": {"general": {"mode_selection": "fundamental_TE", "mode_index": 0, "search": "max_index"},
+                        "advanced": {"offset": 0, "number_of_trial_modes": number_of_modes}}})
 # endregion
 ```
 <div class="text-justify">
@@ -328,33 +295,51 @@ The `number_of_trial_modes` parameter determines the calculated number of modes 
 
 <div class="text-justify">
 
-In region 7, we add the profile monitors for the EME simulation.
+In this region, we add the profile monitors for the EME simulation.
 
 </div>
 
 ```python
-# region --- 7. Monitor ---
+# region --- Monitor ---
 mn = pj.Monitor()
-mn.add(
-    name="z_normal",
-    type="profile_monitor",
-    property={
-        "geometry": {
-            "monitor_type": "2d_z_normal", "x_resolution": 100,
-            "x": 30.75, "x_span": 55.5, "y": 0, "y_span": 5, "z": 0.11, "z_span": 0 }})
+mn.add(name="z_normal", type="profile_monitor",
+        property={"geometry": {"monitor_type": "2d_z_normal",
+                                "x_resolution": 100,"x": 30.75, "x_span": 55.5, "y": 0, "y_span": 5, "z": 0.11, "z_span":0 }})
 for i, pos in enumerate([10, 17.5, 23.5, 34.5, 39.5]):
-    mn.add(
-        name="section"+str(i+1),
-        type="profile_monitor",
-        property={"geometry": {"monitor_type": "2d_x_normal", "x_resolution": 100,
-                                "x": pos, "x_span": 0, "y": 0, "y_span": 5, "z": 0.11, "z_span": 2}})
+    mn.add(name="section"+str(i+1), type="profile_monitor",
+            property={"geometry": {"monitor_type": "2d_x_normal", "x_resolution": 100,
+                                    "x": pos, "x_span": 0, "y": 0, "y_span": 5, "z": 0.11, "z_span": 2}})
 # endregion
 ```
 
 The `monitor_type` parameter selects the profile monitor type and the orientation.Selections are ['2d_x_normal', '2d_y_normal', '2d_z_normal', 'x', 'y', 'z'].<br/>
 The `x_resolution` parameter decides the resolution of output simulation results in profile monitor.<br/>
 
-#### 2.11 Calculate Mode
+#### 2.11 EME Analysis
+
+<div class="text-justify">
+
+Next, we run the analysis for this simulation.In this part, we can set detailed information of wavelength sweep,groupspan sweep,periodicity and so on.
+
+</div>
+
+```python
+# region --- EME Analys ---
+grating_periods = 1
+eme_base_res = simu[simu_name].run()
+analysis = pj.Analysis()
+analysis.add(name="eme_propagate", type="eme_analysis",
+                property={"workflow_id": eme_base_res.workflow_id, "eme_propagate": run_options.run,
+                        "periodicity": {"periodicity": True,
+                                        "periodic_group_definition": [{"start_cell_group": "group_span_1", "end_cell_group": "group_span_1", "periods": grating_periods}]},
+                        "group_span_sweep": {"group_span_sweep": run_options.run_length_sweep,
+                                            "parameter": "group_span_3", "start": 10, "stop": 100, "number_of_points": 101},
+                        "wavelength_sweep": {"wavelength_sweep": run_options.run_wavelength_sweep,
+                                            "start": wavelength-wavelength_span/2, "stop": wavelength+wavelength_span/2, "number_of_wavelength_points": 11},})
+# endregion
+```
+
+#### 2.12 Calculate Mode
 
 <div class="text-justify">
 
@@ -363,129 +348,64 @@ In this region, we calculate the modes of ports. Before running EME simulation c
 </div>
 
 ```python
-# region --- 8. Calculate Mode ---
+# region --- Calculate Mode ---
 if run_options.calculate_modes:
     for port in ["input_port", "output_port1","output_port2"]:
         k = kL[2]
-        simu[simu_name].preview_modes(
-            port_name=port,
-            data="calculate_modes",
-            savepath=f"{plot_path}{k}_modeprofile_fdeonly_{port}", attribute="E", mode=0, )
-        simu[simu_name].preview_modes(
-            port_name=port,
-            data="calculate_modes",
-            savepath=f"{plot_path}{k}_Preview_{port}_neff", show=False, export_csv=True, )
+        simu[simu_name].preview_modes(port_name=port, data="calculate_modes",
+                                        savepath=f"{plot_path}{k}_modeprofile_fdeonly_{port}",
+                                        attribute="E", mode=0,)
+        simu[simu_name].preview_modes(port_name=port, data="calculate_modes",
+                                        savepath=f"{plot_path}{k}_Preview_{port}_neff",
+                                        show=False, export_csv=True,)
 # endregion
 ```
 
-#### 2.14 Run
+
+#### 2.13 Extract Results
 
 <div class="text-justify">
 
-In the region 9 ,we can recall the simulation name to run it.
+This region is uesd to retrieve and store the simulation results.
 
 </div>
 
 ```python
-# region --- 9. Run ---
-eme_base_res = simu[simu_name].run()
-# endregion
-```
-
-#### 2.15 EME Analysis
-
-<div class="text-justify">
-In region 10, we run the analysis for this simulation.In this part, we can set detailed information of wavelength sweep,groupspan sweep,periodicity and so on.
-</div>
-
-```python
-# region --- 10. Analysis ---
-grating_periods = 1
-analysis = pj.Analysis()
-analysis.add(
-    name="eme_propagate",
-    type="eme_analysis",
-    property={
-        "workflow_id": eme_base_res.workflow_id,
-        "eme_propagate": run_options.run,
-        "periodicity": {
-            "periodicity": True,
-            "periodic_group_definition": [
-                { "start_cell_group": "group_span_1", "end_cell_group": "group_span_1", "periods": grating_periods, } ], },
-        "group_span_sweep": { "group_span_sweep": run_options.run_length_sweep, "parameter": "group_span_1", "start": 0, "stop": 10, "number_of_points": 11, },
-        "wavelength_sweep": { "wavelength_sweep": run_options.run_wavelength_sweep, "start": 1.5, "stop": 1.6, "number_of_wavelength_points": 11, },
-        # "override_wavelength":{
-        #     "wavelength": 1.55
-        # }
-    },)
+# region --- See Results --
 eme_res = analysis["eme_propagate"].run()
-# endregion
-```
-
-
-#### 2.16 Extract Results
-
-<div class="text-justify">
-
-
-In region 11, we can retrieve and store the simulation results.
-
-</div>
-
-```python
-# region --- 11. See Results --
 if run_options.extract:
-    # region --- 11.1 EME Results --
     if run_options.run:
-        # region --- facet data ---
-        eme_res.extract(
-            data="eme_propagate:facet_data",
-            savepath=f"{plot_path}",
-            real=True, imag=True, export_csv=True, )
-        eme_res.extract(
-            data="eme_propagate:cell_power_total",
-            savepath=f"{plot_path}00_cell_power_total",
-            target="line", toward="forward", export_csv=True, )
-        eme_res.extract(
-            data="eme_propagate:cell_power_mode",
-            savepath=f"{plot_path}01_cell_power_mode",
-            target="intensity", toward="forward", export_csv=True, )
-        eme_res.extract(
-            data="eme_propagate:cell_neff",
-            savepath=f"{plot_path}02_cell_neff",
-            target="intensity", export_csv=True, )
+        eme_res.extract(data="eme_propagate:cell_power_total",
+                        savepath=f"{plot_path}00_cell_power_total",
+                        target="line", toward="forward", export_csv=True,)
+        eme_res.extract(data="eme_propagate:cell_power_mode",
+                        savepath=f"{plot_path}01_cell_power_mode",
+                        target="intensity", toward="forward", export_csv=True,)
+        eme_res.extract(data="eme_propagate:cell_neff",
+                        savepath=f"{plot_path}02_cell_neff", target="intensity", export_csv=True,)
+
         for port_name in ["input_port",  "output_port1","output_port2"]:
-            res = eme_res.extract(
-                data="eme_propagate:port_mesh_structure",
-                savepath=f"{plot_path}03_eme_structure_{port_name}",
-                port_name=port_name, target="intensity", )
-        # region --- smatrix_intensity ---
-        eme_res.extract(
-            data="eme_propagate:smatrix",
-            savepath=plot_path + "011_eme_smatrix_intensity",
-            target="intensity", export_csv=True)
-        # endregion
+            res = eme_res.extract(data="eme_propagate:port_mesh_structure",
+                                    savepath=f"{plot_path}03_eme_structure_{port_name}",
+                                    port_name=port_name, target="intensity",)
 
-        # region --- monitor ---
-        eme_res.extract(
-            data="eme_propagate:monitor",
-            savepath=plot_path + "013_eme_z_normal",
-            monitor_name="z_normal", attribute="E", export_csv=True )
+        eme_res.extract(data="eme_propagate:smatrix",
+                        savepath=plot_path + "04_eme_smatrix_intensity", target="intensity", export_csv=True)
+        eme_res.extract(data="eme_propagate:monitor",
+                        savepath=plot_path + "05_eme_z_normal",
+                        monitor_name="z_normal", attribute="E", export_csv=True)
+
         for i in range(5):
-            eme_res.extract(
-                data="eme_propagate:monitor",
-                savepath=plot_path + "013_eme_section"+str(i+1),
-                monitor_name="section"+str(i+1), attribute="E", export_csv=True)
-    #     # endregion
-    # # endregion
+            eme_res.extract(data="eme_propagate:monitor",
+                            savepath=plot_path + "06_eme_section"+str(i+1),
+                            monitor_name="section"+str(i+1), attribute="E", export_csv=True)
 
-    # # region --- 11.2 EME Wavelength Sweep Results ---
     if run_options.run_wavelength_sweep:
-        eme_res.extract(
-                data="wavelength_sweep:sweep",
-                savepath=plot_path + "06_wavelength_sweep",
-                plot_x="wavelength", export_csv=True, )
-    # endregion
+        eme_res.extract(data="wavelength_sweep:sweep",
+                        savepath=plot_path + "07_wavelength_sweep", plot_x="wavelength", export_csv=True,)
+    if run_options.run_length_sweep:
+        eme_res.extract(data="propagation_sweep:sweep",
+                        savepath=plot_path + "08_length_sweep", plot_x="length", export_csv=True,)
 # endregion
 return project_name
 ```
@@ -501,7 +421,7 @@ The `export_csv` parameter is to decide whether to export a csv. Default as Fals
 
 </div>
 
-#### 2.16 Switches
+#### 2.14 Switches
 
 <div class="text-justify">
 
@@ -518,9 +438,11 @@ class RunOptions(NamedTuple):
     run_wavelength_sweep: bool
     extract: bool
 
+
 if __name__ == "__main__":
-    simulation( run_mode="local", wavelength=1.55, global_mesh_grid=0.01, local_mesh_grid=0.005, number_of_modes=10,
-        run_options=RunOptions( calculate_modes=True, run=True, run_length_sweep=False, run_wavelength_sweep=True, extract=True, ), )
+    simulation(run_mode="local", wavelength=1.55, wavelength_span=0.1,
+               global_mesh_grid=0.1, local_mesh_grid=0.02, number_of_modes=10,
+               run_options=RunOptions(calculate_modes=True, run=True, run_length_sweep=True, run_wavelength_sweep=True, extract=True,),)
 ```
 
 <div class="text-justify">

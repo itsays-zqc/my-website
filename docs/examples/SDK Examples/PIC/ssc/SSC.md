@@ -8,20 +8,18 @@ import {InlineMath, BlockMath} from 'react-katex';
 <div class="text-justify">
 
 ## Introduction
-<div class="text-justify">
 
 ![](structure_ps.png)
-The spot size converter (SSC) is an important device for connecting silicon photonic integrated chips and external optical fibers, which can couple light transmitted in silicon waveguides into the fiber at low loss. As shown in the figure, SSC has a tapered silicon waveguide with gradually thinning ends and a low refractive index waveguide covered with SiON, and the entire waveguide device is placed in a silicon dioxide environment [1]. The mode field size at the end of the tapered waveguide is similar to that of the optical fiber, so it can effectively couple light from the waveguide into the fiber.
+The function of Spot Size Converter (SSC) is to connect silicon photonics integrated chips and external optical fibers, which can couple light transmitted in silicon waveguides into the fiber at low loss. As shown in the figure, SSC has a tapered silicon waveguide with gradually thinning ends and a low refractive index waveguide covered with SiON, and the entire waveguide device is placed in a silicon dioxide environment [1]. The mode field size at the end of the tapered waveguide is similar to that of the optical fiber, so it can effectively couple light from the waveguide into the fiber.
 
-Eigenmode expansion (EME) method has great advantages in calculating long taper waveguide. By dividing multiple cells in the cross-sectional variation area, and then calculating the modes at the interface of the cells and the bidirectional transmission of the modes, the s-matrix of the taper waveguide transmission can be quickly obtained. When using length sweep, only the bidirectional transmission part needs to be calculated to obtain the S parameter of length sweep.
-</div>
+Eigenmode expansion (EME) method has great advantages in designing long taper waveguide. Because using length scanning in analysis does not calculate any modes, only the bidirectional transmission part is calculated. The calculation of modes is achieved by dividing the structure with cross-sectional changes in transmission direction into multiple cells, and using FDE solver to calculate at the interface between adjacent cells.
 
 ## Simulation
 ### 1. Code Description
 #### 1.1 Import Toolkit
 <div class="text-justify">
 
-First, we need to import `maxoptics_sdk` and Python's third-party package. The import module for EME simulation as follows.
+First, we need to import `maxoptics_sdk` and Python's third-party package. The import module of EME simulation as follows.
 </div>
 
 ```python
@@ -39,12 +37,14 @@ To facilitate parameter changes, we can define function to encapsulate the entir
 </div>
 
 ```python
-def simulation(*, run_mode="local", wavelength=1.55, grid=0.08, number_of_modes=10, run_options: "RunOptions", **kwargs):
+def simulation(*, wavelength=1.55, grid=0.08, number_of_modes=10, run_options: "RunOptions", **kwargs):
 ```
 
 <div class="text-justify">
 
-The `run_mode` variable parameter is used to define the location of the simulation run.<br/>The `wavelength` variable is defined as wavelength of the optical source.<br/>The `grid` variable is defined as grid size.<br/>The `number_of_modes` variable is used to define the number of modes of calculation.
+wavelength: controls the wavelength to be solved.<br/>
+grid: controls the mesh size of the simulation region.<br/>
+number_of_modes: controls the number of modes to be calculated.
 
 </div>
 
@@ -65,45 +65,51 @@ gds_file = gds_file_root_path + "/examples_gds/SSC.gds"
 
 <div class="text-justify">
 
-The `path` variable is used to store the path of this Python file.<br/>The `simu_name` variable is used to store simulation names.<br/>The `time_str` variable is used to store the timestamp.<br/>The `project_name` variable is used to store the project name.<br/>The `plot_path` variable is used to store the result path.<br/>The `gds_file` variable is used to store the file path of GDS.
+path: this parameter is the absolute path of this Python file. <br/>
+plot_path: this parameter is the path where the calculation results are saved.<br/>
+time_str: this parameter is used to store the timestamp.<br/>
+gds_file: this parameter is used to store the file path of GDS.
 
 </div>
 
 #### 1.4 Create project
-we create a new project using the `Project` function of Max's software development toolkit.
+We create an empty project by instantiating Project in the simulation environmen and define in the simulation project name.
+
 ```python
 # region --- 1. Project ---
 pj = mo.Project(name=project_name)
 # endregion
 ```
 
-
 #### 1.5 Add Material
 <div class="text-justify">
 
- Here we demonstrate using the `Material` function to create material and using the `add_nondispersion` function to add non dispersive materials, as well as using the `add_lib` function to add materials from the material library. You can refer to the following script to set material.
+ After using `Material()` to instance the material module into the project, "add_nondispersion" and "add_lib" functions are available to create materials. You can refer to the following script to set materials.
+
 </div>
 
 ```python
 # region --- 2. Material ---
-    mt = pj.Material()
-    mt.add_nondispersion(name="Si", data=[(3.476, 0)], order=2, color="#BF2C2C")
-    mt.add_nondispersion(name="SiO2", data=[(1.465, 0)], order=2, color="#D4E5FE")
-    mt.add_nondispersion(name="SiON", data=[(1.50, 0)], order=2, color="#FBBBBB")
-    mt.add_lib(name="Air", data=mo.Material.Air, order=2)
+mt = pj.Material()
+mt.add_nondispersion(name="Si", data=[(3.476, 0)], order=2, color="#BF2C2C")
+mt.add_nondispersion(name="SiO2", data=[(1.465, 0)], order=2, color="#D4E5FE")
+mt.add_nondispersion(name="SiON", data=[(1.50, 0)], order=2, color="#FBBBBB")
+mt.add_lib(name="Air", data=mo.Material.Air, order=2)
 # endregion
 ```
 
 <div class="text-justify">
 
-The `name` is used to define the name of the added material.<br/>The `data` is used to input the real and imaginary parts of the refractive index of the material.<br/>The `order` is used to set the grid order of the material.
+The "name" defines the name of the added material.<br/>
+The "data" specifies the real and imaginary parts of the refractive index of the material.<br/>
+The "order" specifies the mesh order of the material.
 
 </div>
 
 #### 1.6 Add Structure
 <div class="text-justify">
 
-The structure is composed of silicon dioxide substrate, adiabatic tapered silicon waveguide and polymer covered waveguide. We use `Structure` to create structure , where `mesh_type` is the type of mesh, `mesh_factor` is the growth factor of the mesh, and `background_material` is the background material of the structure. Use the `add_geometry` function to add geometric structures and select "gds_file" in `type` to establish the model by importing the GDS file method. The properties of GDS modeling are shown in the table below.
+The structure is composed of silicon dioxide substrate, adiabatic tapered silicon waveguide and polymer covered waveguide. We use "Structure" to instance the structure module to the project, "add_geometry" function is available for adding structures. By selecting the type of gds_file, you can establish structure by importing the gds file method. The properties of GDS modeling are shown in the table below.
 
 </div>
 
@@ -141,17 +147,18 @@ st.add_geometry(name="cover", type="gds_file",
 
 Select simulation material by using `mesh_order` in areas where geometry overlaps, the higher the number of `mesh_order`, the higher the priority of the material.
 
-#### 1.7 Set Boundary
+#### 1.7 Add Simulaton
 <div class="text-justify">
 
-Set the boundary size of the simulation structure using optical boundary condition `OBoundary`. The properties are shown below.
+We use the "Simulation" to instance the simulation module into the project and the "add" function to add an EME solver for the simulation. The properties of the solver are shown in the table below.
+
 </div>
 
 ```python
 # region --- 4. Simulation ---
 simu = pj.Simulation()
 simu.add(name=simu_name, type="EME",
-            property={"general": {"wavelength": wavelength, "wavelength_offset": 0.0003, "use_wavelength_sweep": True},
+            property={"general": {"wavelength": wavelength, "use_wavelength_sweep": True},
                     "background_material": mt["SiO2"],
                     "mesh_settings": {"mesh_factor": 1.2, "mesh_refinement": {"mesh_refinement": "curve_mesh"}},
                     "geometry": {"x_min": -103, "y": 0, "y_span": 5.5, "z": 0.5, "z_span": 7},
@@ -167,63 +174,36 @@ simu.add(name=simu_name, type="EME",
 # endregion
 ```
 
-#### 1.8 Add Sub Mesh
-<div class="text-justify">
-
-After light passes through tapered silicon waveguide that gradually becoming smaller, the mode field is strongly limited to a very small range. Therefore, it is necessary to use `add_mesh` to add a transverse grid to accurately calculate the limited light field. Add local mesh as shown below.
-</div>
-
-```python
-# region --- 5. Sub Mesh ---
-st.add_mesh(
-         name="sub_mesh",
-         property={"general": {"dx": grid, "dy": grid, "dz": grid},
-                   "geometry": {"x": 0, "x_span": 206, "y": 0, "y_span": 5.5, "z": 0.5, "z_span": 7}})
-# endregion
-``` 
-The `dx`,`dy`,`dz` are the mesh sizes in the x, y, and z directions, respectively.
-
-#### 1.9 Add EME port
-<div class="text-justify">
-
-You can use the `port` function to create a port and use the "source_port" property to set the location of the source port. You can use the `add` function to add ports and the properties of port are shown in the table below.
-</div>
-
-```python
-# region --- 5. Port ---
-    pjp = pj.Port()
-    pjp.add(name="left_port", type="eme_port",
-            property={"geometry": {"port_location": "left"},
-                      "eme_port": {"general": {"mode_selection": "fundamental_TE", "number_of_trial_modes": number_of_modes}},
-                      "modal_analysis": {"mode_removal": {"threshold": 0.01}}        
-                        })
-                       
-
-    pjp.add(name="right_port", type="eme_port",
-            property={"geometry": {"port_location": "right"},
-                      "eme_port": {"general": {"mode_selection": "fundamental_TE", "number_of_trial_modes": number_of_modes}},
-                      "modal_analysis": {"mode_removal": {"threshold": 0.01}}
-                      })
-                      
-    # endregion
- 
-```
 | key | value | type | description |
-|-----------| ----- | ---- | -------------------------|
-| name       | left_port     | string    | the name of port                |
-|  type |  eme_port | string | select type of port |
-|  port_location | left  | string   |select the location of the port  |
-| y   |  0 | float | center position of port width |
-| y_span| 5.5 | float | port width |
-| y | 0.5 | float | center position of port height |
-| z_span | 7 | float | port height |
-| mode_selection | fundamental_TE | string |select the mode of port |
-| number_of_trial_modes&emsp;&emsp;&emsp;&emsp; | 15&emsp;&emsp;| integer&emsp;&emsp;| set the number of port modes &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
+|-----------| ----- | ---- | -------- |
+| name | simu_name&emsp; | string&emsp; | name of simulation&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; |
+| wavelength |  1.5 | float | wavelength of mode |
+| use_wavelength_sweep | True | bool | select to enable wavelength sweep |
+| eme _propagate | True | bool | select to enable EME propagation |
+| propagation_sweep &emsp;| True | bool | select to enable length sweep |
+| span | 2 | float | the span of cell group |
+| cell_number | 1 | float | number of cell in the cell group |
+| number_of_modes| 15| float| Calculate the number of modes per cell |
+| sc | none | string | select to enable subcell method | 
+| dy | 0.05|  float | horizontal mesh of cross-section |
+|dz| 0.05 | float | Longitudinal mesh of cross-section |
+|number_of_points | 50 | float | number of sweep lengths |
 
 
-#### 1.10 Add Monitor
+<div class="text-justify">
 
-The `Monitor`function is used to create monitor and `add` function is used to add a monitor. Select profile_monitor `type` monitor from the added monitors to view the mode field distribution.
+According to different geometric structures and materials, the SSC is divided into four cell groups using "cell_group_definition". Set the length of the cell group in "span", use "cell_number" to set the number of cell. The divided cell structure is shown in the following figure. Use "number_of_modes" to set the number of modes calculated at the interface of adjacent cells, and it is necessary to set a sufficient number of modes to obtain the correct results.
+
+In the area where the cross-sectional area of cells remains unchanged, the number of "cell_number" is set to 1, and "sc" is set to none; In the area of structural changes, multiple cell number need to be used to characterize the structure and the "sub_cell" method is used to reduce the staircase effect caused by discrete changes of the cross-section.
+
+</div>
+
+#### 1.8 Add EME port
+<div class="text-justify">
+
+We use the "Port" to instance the port object into the project and the "add" function to add EME ports for the simulation. The properties of the EME port are shown in the table below.
+</div>
+
 ```python
 # region --- 5. Port ---
 pjp = pj.Port()
@@ -243,14 +223,47 @@ pjp.add(name="right_port", type="eme_port",
 # endregion
  
 ```
+| key | value | type | description |
+|-----------| ----- | ---- | -------------------------|
+|  port_location | left  | string   |select the location of the port  |
+| y   |  0 | float | center position of port width |
+| y_span| 5.5 | float | port width |
+| y | 0.5 | float | center position of port height |
+| z_span | 7 | float | port height |
+| mode_selection | fundamental_TE | string |select the mode of port |
+| number_of_trial_modes&emsp;&emsp;&emsp;&emsp; | 15&emsp;&emsp;| integer&emsp;&emsp;| set the number of port modes &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
 
-#### 1.11 Add EME solver
+
+#### 1.9 Add Monitor
+
+We use the "Monitor" to instance the Monitor object into the project and the "add" function to add profile monitor for the simulation. 
+
+```python
+# region --- 5. Port ---
+
+                    
+# endregion
+ 
+```
+
+#### 1.10 Add Local Mesh
 <div class="text-justify">
 
-We use the `Simulation` function to create a simulation and the `add` function to add a solver. Select the EME solver in the type, and the properties of the solver are shown in the table below.
-
+After light passes through tapered silicon waveguide that gradually becoming smaller, the mode field is strongly limited to a very small range. Therefore, it is necessary to use `lpcal mesh` to add a transverse grid to accurately calculate the limited light field. Add local mesh as shown below.
 </div>
 
+```python
+# region --- 5. Sub Mesh ---
+st.add_mesh(
+         name="local_mesh",
+         property={"general": {"dx": grid, "dy": grid, "dz": grid},
+                   "geometry": {"x": 0, "x_span": 206, "y": 0, "y_span": 5.5, "z": 0.5, "z_span": 7}})
+# endregion
+``` 
+The dx/dy/dz are the mesh sizes in the x, y, and z directions, respectively. Note that in EME simulation, only the grid settings for dy and dz are valid.
+
+
+#### 1.11 Add EME Analysis
 
 ```python
 # region --- 8. Analysis ---
@@ -267,39 +280,9 @@ analysis.add(name="eme_propagate", type="eme_analysis",
 eme_res = analysis["eme_propagate"].run()
 # endregion
 ```
-| key | value | type | description |
-|-----------| ----- | ---- | -------- |
-| name | simu_name&emsp; | string&emsp; | name of simulation&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; |
-|  type |  EME | string | select the type of solver |
-| wavelength |  1.5 | float | wavelength of mode |
-| use_wavelength_sweep | True | bool | select to enable wavelength sweep |
-| span | 2 | float | the span of cell group |
-| cell_number | 1 | float | number of cell in the cell group |
-| number_of_modes| 15| float| Calculate the number of modes per cell |
-| sc | none | string | select to enable subcell method | 
-| dy | 0.05|  float | horizontal mesh of cross-section |
-|dz| 0.05 | float | Longitudinal mesh of cross-section |
-| eme _propagate | True | bool | select to enable EME propagation |
-| propagation_sweep &emsp;| True | bool | select to enable length sweep |
-| parameter | grop_span_3 | string | the area of length sweep |
-| start | 50 | float | starting length of sweep |
-|stop | 250 | float | stoping length of sweep |
-|number_of_points | 50 | float | number of sweep lengths |
-| phase | 0 | float | the initial phase of optical source |
-| select_mode| TE|string| mode of optical source|
-
-<div class="text-justify">
-
-According to different geometric structures and materials, the SSC is divided into four cell groups using `cell_group_definition`. Set the length of the cell group in `span`, use `cell_number` to set the number of cell. The divided cell structure is shown in the following figure. Use `number_of_modes` to set the number of modes calculated at the interface of adjacent cells, and it is necessary to set a sufficient number of modes to obtain the correct results.
-
-In the area where the cross-sectional area of cells remains unchanged, the number of `cell_number` is set to 1, and `sc` is set to "none"; In the area of structural changes, multiple cell number need to be used to characterize the structure and the "sub_cell" method is used to reduce the staircase effect caused by discrete changes of the cross-section.
-
-</div>
-
-![](EME_SSC.png)
 
 
-#### 1.12 View Structure
+#### 1.12 Show Structure
 
 You can use the `structure_show` function to view the top view of the structure, or use the `simu[simu_name].show3d()` call gui to view the structure.
 
@@ -309,12 +292,13 @@ st.structure_show(fig_type="png", show=False, savepath=plot_path + simu_name, si
 #simu[simu_name].show3d()
 # endregion
 ```
+![](EME_SSC.png)
 
 The `celldisplay` control whether to display the boundaries of the divided cells.<br/>The `xyration` controls the aspect ratio of the image.
 
-#### 1.13 Calculate Mode
+#### 1.13 Preview Modes
 
-You can create a new simulation using `simu.add` function and run the simulation using `simu.run` function. The `type` of simulation needs to be selected as "mode_selection:user_select", and its properties are shown in the table below. Before running EME simulation calculations, we can calculate the mode field distribution of the port by setting the type of mode selection to True and other simulations to False.
+ Before running EME simulation calculations, we can calculate the mode field distribution of the port by setting the type of mode selection to True and other simulations to False.
 
 ```python
 # region --- 10. Calculate Mode ---
@@ -329,20 +313,7 @@ if run_options.calculate_modes:
 # endregion
 ```
 
-|  key  |   Value   |   Type  |   Description  |
-|-------| --------- | ------- |   ----------- |
-| mesh_structure | True  |  bool  | select to view the refractive index distribution of the port |
-| calculate_modes &emsp;&emsp; | True &emsp;&emsp; | bool &emsp;&emsp;|  select to calculate the mode of cross-section&nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
-| Wavelength | wavelength |  float |  calculate the wavelength of the mode |
-|  number_of_trial_modes | number_of_modes | float  |  number of calculation modes|
-| search | "max_index"  |float | method of calculating mode |
-| calculate_group_index | True | bool | select to calculate group refractive index |
-| bent_waveguide | False |bool|  select to enable bent waveguide in calculation mode|
-| radius | 1 | float | set the radius of the bent waveguide |
-|orientation | 0 | float | set the bending direction of the waveguide|
-|location |"simulation_center"|string| set the position of the bent waveguide|
-
-#### 1.14 Run
+#### 1.14 Run and Analysis
 
 Pass in the name of the simulation and use `simu[simu_name].run` function to run the simulation, and assign the result to `eme_res`.
 ```python
@@ -361,7 +332,7 @@ eme_res = analysis["eme_propagate"].run()
 # endregion
 ```
 
-#### 1.15 Run and Extract Results
+#### 1.15 Extract Results
 <div class="text-justify">
 
 Extract data using `extract`, where `data` is the calculated result data, `savepath` is the storage path, `target` is the classification of the data, and `monitor_name` is the name of the monitor.

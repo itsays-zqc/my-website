@@ -36,7 +36,7 @@ To facilitate parameter changes, we can define function to encapsulate the entir
 </div>
 
 ```python
-def simulation(*, run_mode, wavelength=1.54, global_mesh_grid=0.02, local_mesh_grid=0.01, number_of_modes=10, run_options: "RunOptions", **kwargs):
+def simulation(*, wavelength=1.54, global_mesh_grid=0.02, local_mesh_grid=0.01, number_of_modes=10, run_options: "RunOptions", **kwargs):
 ```
 
 <div class="text-justify">
@@ -75,7 +75,7 @@ The `path` variable is used to store the path of this Python file.<br/>The `simu
 You can create a new project using the `Project` function of Max's software development toolkit.
 ```python
 # region --- 1. Project ---
-pj = mo.Project(name=project_name, location=run_mode,)
+pj = mo.Project(name=project_name)
 # endregion
 ```
 
@@ -88,8 +88,9 @@ pj = mo.Project(name=project_name, location=run_mode,)
 ```python
 # region --- 2. Material ---
 mt = pj.Material()
-mt.add_lib(name="Si", data=mo.Material.Si_Palik, order=2)
-mt.add_lib(name="SiO2", data=mo.Material.SiO2_Palik, order=2)
+    mt.add_nondispersion(name="Si", data=[(3.454996, 0)], order=2, color="#123456")
+    mt.add_nondispersion(name="SiO2", data=[(1.444991, 0)], order=2, color="#654321")
+    mt.add_lib(name="Air", data=mo.Material.Air, order=2)
 # endregion
 ```
 
@@ -108,15 +109,15 @@ The structure of PSR is shown in the figure, which consists of an adiabatic coni
 
 ```python
 # region --- 3. Structure ---
-st = pj.Structure(mesh_type="curve_mesh", mesh_factor=1.2, background_material=mt["Air"])
+st = pj.Structure()
 
 st.add_geometry(name="box", type="gds_file",
                 property={"general": {"path": gds_file, "cell_name": "PSR", "layer_name": (1, 0)},
-                            "geometry": {"x": 0, "y": 0, "z": -2, "z_span": 4},
+                            "geometry": {"z": -2, "z_span": 4},
                             "material": {"material": mt["SiO2"], "mesh_order": 2}})
 st.add_geometry(name="psr", type="gds_file",
                 property={"general": {"path": gds_file, "cell_name": "PSR", "layer_name": (2, 0)},
-                            "geometry": {"x": 0, "y": 0, "z": 0.11, "z_span": 0.22},
+                            "geometry": {"z": 0.11, "z_span": 0.22},
                             "material": {"material": mt["Si"], "mesh_order": 2}})
 # endregion
 
@@ -136,97 +137,6 @@ st.add_geometry(name="psr", type="gds_file",
 
 Select simulation material by using `mesh_order` in areas where geometry overlaps, the higher the number of `mesh_order`, the higher the priority of the material.
 
-#### 1.7 Set Boundary
-<div class="text-justify">
-
-Set the boundary size of the simulation structure using optical boundary condition `OBoundary`. The properties are shown below.
-</div>
-
-```python
-# region --- 4. Boundary ---
-st.OBoundary(property={"geometry": {"x": 6.05, "x_span": 73.1, "y": 1.256, "y_span": 8, "z": 0, "z_span": 6},
-                        "boundary": {"y_min": "PEC", "y_max": "PEC", "z_min": "PEC", "z_max": "PEC"},
-                        "general_pml": {"pml_same_settings":True,"pml_kappa": 1, "pml_sigma": 5, "pml_layer": 10, "pml_polynomial": 3}})
-# endregion
-```
-
-#### 1.8 Add Sub Mesh
-<div class="text-justify">
-
-After light passes through tapered silicon waveguide gradually becoming smaller, the mode field is strongly limited to a very small range. Therefore, it is necessary to use `add_mesh` to add a transverse grid to accurately calculate the limited light field. Add local mesh as shown below.
-</div>
-
-```python
-# region --- 5. Sub Mesh ---
-st.add_mesh(
-    name="sub_mesh",
-    property={"general": {"dy": local_mesh_grid, "dz": local_mesh_grid},
-                "geometry": {"x": 6.05, "x_span": 73.1, "y": 1.256, "y_span": 5, "z": 0.11, "z_span": 0.4}})
-# endregion
-``` 
-The `dx`,`dy`,`dz` are the mesh sizes in the x, y, and z directions, respectively.
-
-#### 1.9 Add EME port
-<div class="text-justify">
-
-You can use the `port` function to create a port and use the "source_port" property to set the location of the source port. You can use the `add` function to add ports and the properties of port are shown in the table below.
-</div>
-
-```python
- # region --- 6. Port ---
-pjp = pj.Port(property={"source_port": "input_te_tm"})
-
-# region --- input_te_tm ---
-pjp.add(name="input_te_tm", type="eme_port",
-        property={"geometry": {"port_location": "left", "use_full_simulation_span": True, "y": 1.256, "y_span": 8, "z": 0, "z_span": 6},
-                    "eme_port": {"general": {"mode_selection": "fundamental_TE_and_TM", "mode_index": 1},
-                                "advanced": {"offset": 0.1, "number_of_trial_modes": number_of_modes}}})
-# endregion
-
-# region --- output_up_te_tm ---
-pjp.add(name="output_up_te_tm", type="eme_port",
-        property={
-            "geometry": {"port_location": "right", "use_full_simulation_span": False, "y": 2.6785, "y_span": 2, "z": 0.11, "z_span": 2},
-            "eme_port": {"general": {"mode_selection": "fundamental_TE_and_TM", "mode_index": 1},
-                            "advanced": {"offset": 0, "number_of_trial_modes": number_of_modes}}})
-# endregion
-
-# region --- output_down_te_tm ---
-pjp.add(name="output_down_te_tm", type="eme_port",
-        property={"geometry": {"port_location": "right", "use_full_simulation_span": False, "y": 0, "y_span": 2, "z": 0.11, "z_span": 2},
-                    "eme_port": {"general": {"mode_selection": "fundamental_TE_and_TM", "mode_index": 1, "search": "max_index"},
-                                "advanced": {"offset": 0, "number_of_trial_modes": number_of_modes}}})
-# endregion
-# endregion
-```
-| key | value | type | description |
-|-----------| ----- | ---- | -------------------------|
-| name       | left_port     | string    | the name of port                |
-|  type |  eme_port | string | select type of port |
-|  port_location | left  | string   |select the location of the port  |
-| y   |  2.6785 | float |  center position of the port in the y-direction |
-| y_span| 2 | float | length of the port in the y-direction |
-| z | 0.11 | float | center position of the port in the z-direction |
-| z_span | 2 | float | length of the port in the z-direction |
-| mode_selection | fundamental_TE | string |select the mode of port |
-| number_of_trial_modes&emsp;&emsp;&emsp;&emsp; |number_of_modes&emsp;&emsp;| integer&emsp;&emsp;| set the number of port modes&emsp;&emsp;&emsp;&emsp;&emsp;|
-
-
-#### 1.10 Add Monitor
-
-In the simulation, `Monitor`function is used to create monitor and `add` function is used to add a monitor. Select profile_monitor `type` monitor from the added monitors to view the mode field distribution.
-```python
-# region --- 7. Monitor ---
-mn = pj.Monitor()
-mn.add(name="z_normal", type="profile_monitor",
-        property={"geometry": {"monitor_type": "2d_z_normal", "x_resolution": 100,
-                                "x": 6.05, "x_span": 73.1, "y": 1.256, "y_span": 8, "z": 0.11, "z_span": 0}})
-for i, pos in enumerate([-29.5, 17.5, 23.5, 34.5, 39.5]):
-    mn.add(name="section"+str(i+1), type="profile_monitor",
-            property={"geometry": {"monitor_type": "2d_x_normal", "x_resolution": 100,
-                                    "x": pos, "x_span": 0, "y": 1.256, "y_span": 8, "z": 0, "z_span": 6}})
-# endregion
-```
 
 #### 1.11 Add EME solver
 <div class="text-justify">
@@ -240,26 +150,22 @@ We use the `Simulation` function to create a simulation and the `add` function t
 # region --- 8. Simulation ---
 simu = pj.Simulation()
 simu.add(name=simu_name, type="EME",
-            property={"general": {"wavelength": wavelength, "use_wavelength_sweep": True},
-                    "eme_setup": {
-                        "cell_geometry": {
-                            "energy_conservation": "make_passive",  # ["none","make_passive"]
-                            "cell_group_definition": [
+         property={"general": {"wavelength": wavelength, "use_wavelength_sweep": True},
+                "background_material": mt["Air"],
+                "mesh_settings": {"mesh_factor": 1.2, "mesh_refinement": {"mesh_refinement": "curve_mesh"}},
+                "geometry": {"x_min": -30.5, "y": 1.256, "y_span": 8, "z": 0, "z_span": 6},
+                "eme_setup": {"cell_geometry": {"allow_custom_eigensolver_settings": True,
+                                "cell_group_definition": [
                                 {"span": 1, "cell_number": 1, "number_of_modes": number_of_modes, "sc": "none"},
                                 {"span": 6, "cell_number": 6, "number_of_modes": number_of_modes, "sc": "sub_cell"},
                                 {"span": 30, "cell_number": 6, "number_of_modes": number_of_modes, "sc": "sub_cell"},
                                 {"span": 12, "cell_number": 6, "number_of_modes": number_of_modes, "sc": "sub_cell"},
                                 {"span": 8.9, "cell_number": 1, "number_of_modes": number_of_modes, "sc": "none"},
-                                {"span": 5, "cell_number": 10, "number_of_modes": number_of_modes, "sc": "sub_cell"},
+                                {"span": 5, "cell_number": 50, "number_of_modes": number_of_modes, "sc": "sub_cell"},
                                 {"span": 5.2, "cell_number": 1, "number_of_modes": number_of_modes, "sc": "none"},
                                 {"span": 5, "cell_number": 1, "number_of_modes": number_of_modes, "sc": "none"}]}},
-                    "transverse_mesh_setting": {"global_mesh_uniform_grid": {"dy": global_mesh_grid, "dz": global_mesh_grid}},
-                    "eme_analysis": {
-                        "eme_propagate": run_options.run,
-                        "wavelength_sweep": {
-                            "wavelength_sweep": run_options.run_wavelength_sweep,
-                            "start": wavelength_start, "stop": wavelength_stop, "number_of_wavelength_points": wavelength_points},
-                        "select_source": {"phase": 0, "select_mode": "TE"}}})
+                "transverse_mesh_setting": {"global_mesh_uniform_grid": {"dy": global_mesh_grid, "dz": global_mesh_grid}}})
+    
 # endregion
 ```
 | key | value | type | description |
@@ -293,6 +199,101 @@ The area where the structure has not changed, the number of `cell_number` is set
 
 ![](EME_PSR.png)
 
+
+#### 1.8 Add Sub Mesh
+<div class="text-justify">
+
+After light passes through tapered silicon waveguide gradually becoming smaller, the mode field is strongly limited to a very small range. Therefore, it is necessary to use `add_mesh` to add a transverse grid to accurately calculate the limited light field. Add local mesh as shown below.
+</div>
+
+```python
+# region --- 5. Sub Mesh ---
+lm = pj.LocalMesh()
+lm.add(name="sub_mesh",
+property={"general": {"dy": local_mesh_grid, "dz": local_mesh_grid},
+                "geometry": {"x": 6.05, "x_span": 73.1, "y": 1.256, "y_span": 5, "z": 0.11, "z_span": 0.4}})
+# endregion
+``` 
+The `dx`,`dy`,`dz` are the mesh sizes in the x, y, and z directions, respectively.
+
+#### 1.9 Add EME port
+<div class="text-justify">
+
+You can use the `port` function to create a port and use the "source_port" property to set the location of the source port. You can use the `add` function to add ports and the properties of port are shown in the table below.
+</div>
+
+```python
+ # region --- 6. Port ---
+pjp = pj.Port(property={"source_port": "input_te_tm"})
+
+# region --- input_te_tm ---
+""" input_te_tm """
+    pjp.add(name="input_te_tm", type="eme_port",
+            property={"geometry": {"port_location": "left", "use_full_simulation_span": True},
+                      "eme_port": {"general": {"mode_selection": "fundamental_TE_and_TM"},
+                                   "advanced": {"offset": 0.1, "number_of_trial_modes": 20}},
+                     })
+
+    """ output_up_te_tm """
+    pjp.add(name="output_up_te_tm", type="eme_port",
+            property={"geometry": {"port_location": "right","use_full_simulation_span": False, "y": 2.6785, "y_span": 2, "z": 0.11, "z_span": 2},
+                      "eme_port": {"general": {"mode_selection": "fundamental_TE_and_TM"},
+                                   "advanced": {"offset": 0, "number_of_trial_modes": 20}},
+                      })
+    
+    """ output_down_te_tm """
+    pjp.add(name="output_down_te_tm", type="eme_port",
+            property={"geometry": {"port_location": "right","use_full_simulation_span": False, "y": 0, "y_span": 2, "z": 0.11, "z_span": 2},
+                      "eme_port": {"general": {"mode_selection": "fundamental_TE_and_TM"},
+                                   "advanced": {"offset": 0, "number_of_trial_modes": 20}},
+                      })
+# endregion
+# endregion
+```
+| key | value | type | description |
+|-----------| ----- | ---- | -------------------------|
+| name       | left_port     | string    | the name of port                |
+|  type |  eme_port | string | select type of port |
+|  port_location | left  | string   |select the location of the port  |
+| y   |  2.6785 | float |  center position of the port in the y-direction |
+| y_span| 2 | float | length of the port in the y-direction |
+| z | 0.11 | float | center position of the port in the z-direction |
+| z_span | 2 | float | length of the port in the z-direction |
+| mode_selection | fundamental_TE | string |select the mode of port |
+| number_of_trial_modes&emsp;&emsp;&emsp;&emsp; |number_of_modes&emsp;&emsp;| integer&emsp;&emsp;| set the number of port modes&emsp;&emsp;&emsp;&emsp;&emsp;|
+
+
+#### 1.10 Add Monitor
+
+In the simulation, `Monitor`function is used to create monitor and `add` function is used to add a monitor. Select profile_monitor `type` monitor from the added monitors to view the mode field distribution.
+```python
+# region --- 7. Monitor ---
+mn = pj.Monitor()
+mn.add(name="z_normal", type="profile_monitor",
+        property={"geometry": {"monitor_type": "2d_z_normal", "x_resolution": 100,
+                                "x": 6.05, "x_span": 73.1, "y": 1.256, "y_span": 8, "z": 0.11, "z_span": 0}})
+for i, pos in enumerate([-29.5, 17.5, 23.5, 34.5, 39.5]):
+    mn.add(name="section"+str(i+1), type="profile_monitor",
+            property={"geometry": {"monitor_type": "2d_x_normal", "x_resolution": 100,
+                                    "x": pos, "x_span": 0, "y": 1.256, "y_span": 8, "z": 0, "z_span": 6}})
+# endregion
+```
+
+
+
+# region --- 9. Analysis ---
+eme_base_res = simu[simu_name].run()
+analysis = pj.Analysis()
+analysis.add(name="eme_propagate", type="eme_analysis",
+                property={"workflow_id": eme_base_res.workflow_id, "eme_propagate": run_options.run,
+                        "energy_conservation": "make_passive",
+                        "periodicity": {"periodicity": False},
+                        "group_span_sweep": {"group_span_sweep": False},
+                        "wavelength_sweep": {"wavelength_sweep": run_options.run_wavelength_sweep, "start": 1.5, "stop": 1.6, "number_of_wavelength_points": 11},
+                        "select_source": {"phase": 0, "select_mode": "TE"}})
+eme_res = analysis["eme_propagate"].run()
+# endregion
+
 #### 1.12 View Structure
 
 You can use the `structure_show` function to view the top view of the structure, or use the `simu[simu_name].show3d()` call gui to view the structure.
@@ -300,8 +301,8 @@ You can use the `structure_show` function to view the top view of the structure,
 
 ```python
 # region --- 9. Structure Show ---
-st.structure_show(fig_type="png", savepath=plot_path + simu_name, simulation_name=simu_name, celldisplay=True, xyratio=(1, 5), disabled_components=("box.coordinate",), show=False)
-#simu[simu_name].show3d()
+st.structure_show(fig_type="png", show=False, savepath=f"{plot_path}00_{simu_name}", celldisplay=True, xyratio=(1, 10))
+# simu[simu_name].show3d()
 # endregion
 ```
 
@@ -313,6 +314,9 @@ You can create a new simulation using `simu.add` function and run the simulation
 
 ```python
 # region --- 10. Calculate Mode ---
+if run_options.calculate_modes:
+# region --- 8. Calculate Mode ---
+
 if run_options.calculate_modes:
     for port in ["input_te_tm", "output_up_te_tm", "output_down_te_tm"]:
         simu.add(name=simu_name+"_"+port+"_cal_mode", simulation_name=simu_name, source_name=port, type="mode_selection:user_select",
@@ -350,35 +354,31 @@ eme_res = simu[simu_name].run()
 
 ```python
 # region --- 12. See Results --
-if run_options.extract:
-    # region --- 12.1 EME Results --
-    if run_options.run:
-        # region --- facet data ---
-        eme_res.extract(data='eme_propagate:facet_data', savepath=plot_path, real=True, imag=True, export_csv=True)
-        # endregion
+if run_options.extract and run_options.run:
+# region --- facet data ---
+eme_res.extract(data='eme_propagate:facet_data', savepath=plot_path, real=True, imag=True, export_csv=True)
+# endregion
 
-        # region --- smatrix_intensity ---
-        eme_res.extract(data="eme_propagate:smatrix", savepath=plot_path + "011_eme_smatrix_intensity",
-                        target="intensity", export_csv=True)
-        # endregion
+# region --- smatrix_intensity ---
+eme_res.extract(data="eme_propagate:smatrix", savepath=plot_path + "011_eme_smatrix_intensity",
+                target="intensity", export_csv=True)
+# endregion
 
-        # region --- monitor ---
-        eme_res.extract(data="eme_propagate:monitor", savepath=plot_path + "013_eme_z_normal",
-                        monitor_name="z_normal", attribute="E", export_csv=True)
+# region --- monitor ---
+eme_res.extract(data="eme_propagate:monitor", savepath=plot_path + "013_eme_z_normal",
+                monitor_name="z_normal", attribute="E", export_csv=True)
 
-        for i in range(5):
-            eme_res.extract(data="eme_propagate:monitor", savepath=plot_path + "013_eme_section"+str(i+1),
-                            monitor_name="section"+str(i+1), attribute="E", export_csv=True)
-        # endregion
-    # endregion
+for i in range(5):
+    eme_res.extract(data="eme_propagate:monitor", savepath=plot_path + "013_eme_section"+str(i+1),
+                    monitor_name="section"+str(i+1), attribute="E", export_csv=True)
+# endregion
 
-    # region --- 12.2 EME Wavelength Sweep Results ---
-    if run_options.run_wavelength_sweep:
-        """ 20_wavelength_sweep """
-        eme_res.extract(data="wavelength_sweep:sweep", savepath=plot_path + "20_wavelength_sweep",
-                        plot_x="wavelength", export_csv=True)
-    # endregion
-    # endregion
+    
+if run_options.run_wavelength_sweep:
+    """ 20_wavelength_sweep """
+    eme_res.extract(data="wavelength_sweep:sweep", savepath=plot_path + "20_wavelength_sweep",
+                    plot_x="wavelength", export_csv=True)
+
 ```
 
 
@@ -394,7 +394,7 @@ class RunOptions(NamedTuple):
     extract: bool
 
 if __name__ == "__main__":
-    simulation(run_mode="local", wavelength=1.50, global_mesh_grid=0.05, local_mesh_grid=0.03, number_of_modes=15,
+    simulation(wavelength=1.50, global_mesh_grid=0.05, local_mesh_grid=0.03, number_of_modes=15,
                run_options=RunOptions(calculate_modes=True, run=True, run_wavelength_sweep=True, extract=True))
 ```
 
@@ -411,15 +411,11 @@ It should be noted that the tapered waveguide must be long enough to convert the
 
 #### 2.2 Coupling waveguide
 
-
 Add a narrow waveguide near the conical waveguide and convert TE1 in the wide waveguide to TE0 in the narrow waveguide through the design of an asymmetric directional coupler. In this way, the input TM mode is converted to TE0 mode, while the input TE0 mode maintains the same polarization in the conical waveguide transmission, and does not meet the mode conversion conditions in the asymmetric directional coupling region and is output from the through port.
-
-
 
 #### 2.3 Mode filtering
 
 The polarization beam splitter rotator cascades an MMI mode filter at the through port to eliminate residual TM0 and TE1 modes at the output port and improve the extinction ratio of the modes.
-
 
 #### 2.2 EME Propagation    
 
@@ -437,8 +433,6 @@ For the calculation of long-distance waveguide transmission models, EME has sign
 The mode field distribution of input TE0 and TM0 is shown in the following figure.
 
 ![](PSR_FDE.png)
-
-
 
 ## References
 Dai D, Wu H. Realization of a compact polarization splitter-rotator on silicon[J]. Optics letters, 2016, 41(10): 2346-2349.

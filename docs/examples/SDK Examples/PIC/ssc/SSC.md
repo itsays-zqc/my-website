@@ -213,13 +213,11 @@ pjp.add(name="left_port", type="eme_port",
                     "modal_analysis": {"mode_removal": {"threshold": 0.01}}        
                     })
                     
-
 pjp.add(name="right_port", type="eme_port",
         property={"geometry": {"port_location": "right"},
                     "eme_port": {"general": {"mode_selection": "fundamental_TE", "number_of_trial_modes": number_of_modes}},
                     "modal_analysis": {"mode_removal": {"threshold": 0.01}}
-                    })
-                    
+                    })                 
 # endregion
  
 ```
@@ -234,17 +232,6 @@ pjp.add(name="right_port", type="eme_port",
 | number_of_trial_modes&emsp;&emsp;&emsp;&emsp; | 15&emsp;&emsp;| integer&emsp;&emsp;| set the number of port modes &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
 
 
-#### 1.9 Add Monitor
-
-We use the "Monitor" to instance the Monitor object into the project and the "add" function to add profile monitor for the simulation. 
-
-```python
-# region --- 5. Port ---
-
-                    
-# endregion
- 
-```
 
 #### 1.10 Add Local Mesh
 <div class="text-justify">

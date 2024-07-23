@@ -31,13 +31,17 @@ from maxoptics_sdk.helper import timed, with_path
 To facilitate parameter changes, we can define function to encapsulate the entire simulation project. Before starting the simulation, you can define variables to control the parameters. As shown below.
 
 ```python
-def simulation(*, run_mode, wavelength, grid, number_of_trial_modes, run_options: "RunOptions", **kwargs):
+def simulation(*, wavelength, grid, number_of_trial_modes, run_options: "RunOptions", **kwargs):
     # region --- 0. General Parameters ---
-    time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime())
+    width = 0.4
+    radius = 2.8
+    waveform_name = f"wv{wavelength*1e3}"
+
     path = kwargs["path"]
-    simu_name = f"Microring_FDE"
-    project_name = f"{simu_name}_{run_mode}_{time_str}"
-    plot_path = f'{kwargs.get("plot_dir", path)}/plots/{project_name}/'
+    simu_name = f"Microring_resonator"
+    time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime())
+    project_name = f"{simu_name}_local_{time_str}"
+    plot_path = f"{path}/plots/{project_name}/"
     kL = [f"0{k}" for k in range(5)]
     export_options = {"export_csv": True, "export_mat": True, "export_zbf": True}
     # endregion
@@ -48,7 +52,7 @@ def simulation(*, run_mode, wavelength, grid, number_of_trial_modes, run_options
 You can create a new project using the `Project` function of Max's software development toolkit.
 ```python
 # region --- 1. Project ---
-pj = mo.Project(name=project_name, location=run_mode,)
+pj = mo.Project(name=project_name)
 # endregion
 ```
 #### 1.4 Add Material
@@ -76,7 +80,16 @@ Adding a light source for simulating in 3D FDTD, and we use `Waveform` to set th
 ```python
 # region --- 3. Waveform ---
 wv = pj.Waveform()
-wv.add(name=waveform_name, wavelength_center=wavelength, wavelength_span=0.1)
+    wv.add(name=waveform_name, type='gaussian_waveform',
+           property={'set': 'frequency_wavelength',  # selections are ['frequency_wavelength','time_domain']
+                     'set_frequency_wavelength': {
+                            'range_type': 'wavelength',  # selections are ['frequency','wavelength']
+                            'range_limit': 'center_span',  # selections are ['min_max','center_span']
+                            'wavelength_center': wavelength,
+                            'wavelength_span': 0.1,},
+                     }
+           )
+    wv_id = wv[waveform_name]
 # endregion
 ```
 `name` sets the name of the waveform, `wavelength_center` sets the center wavelength of the light source, and `wavelength_span` sets the wavelength range of the light source.
@@ -90,18 +103,18 @@ We use `Structure` to create structure , where `mesh_type` is the type of mesh, 
 
 ```python
 # region --- 4. Structure ---
-st = pj.Structure(mesh_type="curve_mesh", mesh_factor=1.2, background_material=mt["SiO2"])
-st.add_geometry(name="ring", type="Ring",property={"material": {"material": mt["Si"], "mesh_order": 3},
-                    "geometry": {"x": 0, "y": 0, "z": 0, "z_span": 0.22,"inner_radius": 2.6, "outer_radius": 3}})
-st.add_geometry(name="waveguide1", type="Rectangle",
-                property={"geometry": {"x": 0, "x_span":15, "y": 3.3, "y_span": 0.4, "z": 0, "z_span": 0.22},
-                            "material": {"material": mt["Si"], "mesh_order":3}} )
-st.add_geometry(name="waveguide2", type="Rectangle",
-                property={"geometry": {"x": 0, "x_span":15, "y": -3.3, "y_span": 0.4, "z": 0, "z_span": 0.22},
-                            "material": {"material": mt["Si"], "mesh_order":3}} )
-st.add_geometry(name="substrate", type="Rectangle",
-                property={"geometry": {"x": 0, "x_span":15, "y": 0, "y_span": 10, "z_min": -3, "z_max": -0.11},
-                            "material": {"material": mt["SiO2"], "mesh_order":3}} )
+st = pj.Structure()
+
+st.add_geometry(name="ring", type="Ring",
+                property={ "geometry": { "x": 0, "y": 0, "z": 0, "z_span": 0.22,
+                                        "inner_radius": radius - width/2, "outer_radius": radius + width/2},
+                            "material": {"material": mt["Si"], "mesh_order": 3 }})
+st.add_geometry(name="wg_1", type="Rectangle",
+                property={"geometry": {"x": 0, "x_span": 15, "y": 3.3, "y_span": width, "z": 0, "z_span": 0.22},
+                            "material": {"material": mt["Si"], "mesh_order": 3}})
+st.add_geometry(name="wg_2", type="Rectangle",
+                property={"geometry": {"x": 0, "x_span": 15, "y": -3.3, "y_span": width, "z": 0, "z_span": 0.22},
+                            "material": {"material": mt["Si"], "mesh_order": 3}})
 # endregion                           
 ```
 
@@ -129,33 +142,6 @@ Set the boundary size of the simulation structure using optical boundary conditi
 
 </div>
 
-```python
-# region --- 5. Boundary ---
-if run_options.run_fde:
-    st.OBoundary(property={"geometry": {"x": -4, "x_span": 0, "y": -3.3, "y_span": 3, "z": 0, "z_span": 3},
-                        "boundary": {"y_min": "PEC", "y_max": "PEC", "z_min": "PEC", "z_max": "PEC"}})
-if run_options.run_fdtd:
-    st.OBoundary(property={"geometry": {"x": 0, "x_span": 9, "y": 0, "y_span": 9, "z": 0, "z_span": 3},
-                        "boundary": {"x_min": "PML", "x_max": "PML", "y_min":"PML", "y_max":"PML", "z_min": "PML", "z_max": "PML"}})
-# endregion
-```
-
-#### 1.8 Add source
-<div class="text-justify">
-
-In 3D FDTD simulation, a light source is required. We use `Source` to create the light source and `add` to add the required light source. The settings for the light source as follows.
-</div>
-
-```python
-# region --- 6. Source ---
-src = pj.Source()
-if run_options.run_fdtd:
-    src.add(name="modesource",type="mode_source",axis="x_forward",property={
-        "general":{"mode_selection":"fundamental_TE","waveform":{"waveform_id_select":wv[waveform_name]}},
-        "geometry":{"x":-4,"x_span":0,"y":3.3,"y_span":2,"z":0,"z_span":2}})
-# endregion
-```
-
 #### 1.9 Add Solver
 <div class="text-justify">
 
@@ -163,31 +149,21 @@ We use the `Simulation` function to create a simulation and the `add` function t
 </div>
 
 ```python
-# region --- 7. Simulation ---
+# region --- 7. Simulation
 simu = pj.Simulation()
-if run_options.run_fde:
-    simu.add(name=simu_name, type="FDE",
-            property={
-                "general": {"solver_type": "2d_x_normal"},  # default is "2d_x_normal" ["2d_x_normal","2d_y_normal","2d_z_normal"]
-                "mesh_settings": {
-                    "global_mesh_uniform_grid": {"dy": grid, "dz": grid},  # "minimum_mesh_step_settings": {"min_mesh_step": 1.0e-4}
-                },
-                "fde_analysis": {
-                    "modal_analysis": {
-                        "calculate_modes": run_options.run_fde, "mesh_structure": False,
-                        "wavelength": wavelength, "wavelength_offset": 0.0001, "number_of_trial_modes": number_of_trial_modes,
-                        "search": "max_index", "calculate_group_index": True,
-                        "mode_removal": {"threshold": 0.02}}}})
-                     
-if run_options.run_fdtd:
-    simu.add(name=simu_name, type='FDTD',
-            property={'general': {'simulation_time': 5000 },
-                    'mesh_settings': {'mesh_type': 'auto_non_uniform',
-                                        'mesh_accuracy': {'cells_per_wavelength': grids_per_lambda},
-                                        'minimum_mesh_step_settings': {'min_mesh_step': 1e-4}},
-                    'advanced_options': {'auto_shutoff': {'auto_shutoff_min': 1.00e-4, 'down_sample_time': 200}},
-                    'thread_setting': {'thread': 12}
-                    })
+simu.add(name=simu_name, type="FDTD",
+            property={"background_material": mt["SiO2"],
+                    "geometry": {"x": 0, "x_span": 9, "y": 0, "y_span": 9, "z": 0, "z_span": 2},
+                    "boundary_conditions": {
+                    "x_min_bc": "PML", "x_max_bc": "PML", "y_min_bc": "PML", "y_max_bc": "PML", "z_min_bc": "PML", "z_max_bc": "PML",
+                    "pml_settings": {"all_pml": {"layers": 8, "kappa": 2, "sigma": 0.8, "polynomial": 3, "alpha": 0, "alpha_polynomial": 1}}},
+                    "general": {"simulation_time": 500},
+                    "mesh_settings": {"mesh_factor": 1.2, "mesh_type": "auto_non_uniform",
+                                    "mesh_accuracy": {"cells_per_wavelength": grids_per_lambda},
+                                    "minimum_mesh_step_settings": {"min_mesh_step": 1e-4},
+                                    "mesh_refinement": {"mesh_refinement": "curve_mesh"}},
+                    "advanced_options": {"auto_shutoff": {"auto_shutoff_min": 1.00e-4, "down_sample_time": 200}},
+                })
 # endregion
 
 ```
@@ -221,26 +197,56 @@ In the settings of the FDE solver, use `calculate_ modes` controls whether to ca
 
 In the setting of the FDTD solver, `simulation_time` is used to control the simulation time. We set the simulation time to 5000 fs, which is greater than the default value of 1000 fs. The micro ring resonator has a high quality factor, its simulation requires longer time. If the simulation time is set too small and the simulation stops before the field decays, the results obtained are incorrect.
 
+
+#### 1.8 Add source
+<div class="text-justify">
+
+In 3D FDTD simulation, a light source is required. We use `Source` to create the light source and `add` to add the required light source. The settings for the light source as follows.
+</div>
+
+```python
+# region --- 6. Source ---
+pt = pj.Port(property={"waveform_id": wv_struct, "source_port": "port_1","monitor_frequency_points":9})
+
+pt.add(name="port_1", type="fdtd_port",
+        property={"geometry": {"x": -4.25, "x_span": 0, "y": 3.3, "y_span": 2.5, "z": 0, "z_span": 2},
+                    "modal_properties": {"general": {"inject_axis": "x_axis", "direction": "forward", "mode_selection": "fundamental"}}})
+pt.add(name="port_2", type="fdtd_port",
+        property={"geometry": {"x": -4.25, "x_span": 0, "y": -3.3, "y_span": 2.5, "z": 0, "z_span": 2},
+                    "modal_properties": {"general": {"inject_axis": "x_axis", "direction": "forward", "mode_selection": "fundamental"}}})
+pt.add(name="port_3", type="fdtd_port",
+        property={"geometry": {"x": 4.25, "x_span": 0, "y": 3.3, "y_span": 2.5, "z": 0, "z_span": 2},
+                    "modal_properties": {"general": {"inject_axis": "x_axis", "direction": "backward", "mode_selection": "fundamental"}}})
+pt.add(name="port_4", type="fdtd_port",
+        property={"geometry": {"x": 4.25, "x_span": 0, "y": -3.3, "y_span": 2.5, "z": 0, "z_span": 2},
+                    "modal_properties": {"general": {"inject_axis": "x_axis", "direction": "backward", "mode_selection": "fundamental"}}})
+# endregion
+```
+
+# endregion
+
+
 #### 1.10 Add Monitor
 
 In the simulation, `Monitor`function is used to create monitor and `add` function is used to add a monitor. By using `type` to select a power monitor, the transmittance and field distribution of the cross-section can be obtained. It is necessary to add a time monitor at the end of the simulation to check the field strength to judge the accuracy of the simulation results.
 
 ```python
 # region --- 8. Monitor ---  
+""" 6.0 GlobalMonitor """
 mn = pj.Monitor()
-mn.add(name='time_monitor1', type='time_monitor',
-        property={'general': {
-            'stop_method': 'end_of_simulation', 'start_time': 0, 'stop_time': 100, 'number_of_snapshots': 0},
-            'geometry': {'monitor_type': 'point', 'x': 0, 'x_span': 0, 'y': 0, 'y_span': 0, 'z': 0, 'z_span': 0},
-            'advanced': {'sampling_rate': {'min_sampling_per_cycle': 10}}})
-mn.add(name='x_normal', type='power_monitor',property={'general': {
-            'frequency_profile': {'wavelength_center': wavelength, 'wavelength_span': 0.1, 'frequency_points': 300}, },
-            'geometry': {'monitor_type': '2d_x_normal',
-                        'x': -4, 'x_span': 0, 'y': -3.3, 'y_span': 2, 'z': 0, 'z_span': 2}})
-mn.add(name='z_normal', type='power_monitor',property={'general': {
-            'frequency_profile': {'wavelength_center': wavelength, 'wavelength_span': 0.1, 'frequency_points': 100}, },
-            'geometry': {'monitor_type': '2d_z_normal',
-                        'x': 0, 'x_span': 9, 'y': 0, 'y_span': 9, 'z': 0, 'z_span': 0}})
+mn.add(name="Global Option", type="global_option", property={
+        "frequency_power": {  # "sample_spacing": "uniform", "use_wavelength_spacing": True, ["min_max","center_span"]
+            "spacing_type": "wavelength", "spacing_limit": "center_span", "wavelength_center": wavelength, "wavelength_span": 0.1, "frequency_points": 11 } }, )
+mn.add(name="time_monitor_point", type="time_monitor", 
+        property={ "general": { "stop_method": "end_of_simulation", "start_time": 0, "stop_time": 100, "number_of_snapshots": 0 }, 
+        "geometry": { "monitor_type": "point", "x": 0, "x_span": 0, "y": 2.8, "y_span": 0, "z": 0, "z_span": 0 }, 
+        "advanced": {"sampling_rate": {"min_sampling_per_cycle": 10}}})
+
+mn.add(name="z_normal", type="power_monitor",
+        property={ "general": {
+            "frequency_profile": { "wavelength_center": wavelength, "wavelength_span": 0.1, "frequency_points": 11}},
+            "geometry": { "monitor_type": "2d_z_normal",
+                            "x": 0, "x_span": 9, "y": 0, "y_span": 9, "z": 0, "z_span": 0 } })
 #endregion
 ```
 
@@ -250,10 +256,18 @@ You can use the `structure_show` function to view the top view of the structure,
 
 ```python
 # region --- 9. Structure Show ---
-st.structure_show(fig_type="png", show=False, savepath=f"{plot_path}{kL[0]}_{simu_name}", simulation_name=simu_name)
-#simu[simu_name].show3d()
+st.structure_show(fig_type="png", show=False, savepath=f"{plot_path}{kL[0]}{simu_name}")
+# simu[simu_name].show3d()
 # endregion
 ```
+
+# region --- 12. Index Preview ---
+if run_options.index_preview:
+    simu[simu_name].preview_index(
+        port_name="port_1", savepath=plot_path + "_preview_index", export_csv=True, show=False)
+    simu[simu_name].preview_modes(
+        port_name="port_1", savepath=plot_path + "_preview_modes", export_csv=True, show=False)
+# endregion
 
 #### 1.12 Run
 
@@ -285,10 +299,35 @@ if run_options.extract:
 
     if run_options.run_fdtd:
 
-        res = results.extract(data='fdtd:power_monitor', savepath=f'{plot_path}{kL[3]}_profile',
-                        monitor_name='x_normal', target='line', plot_x='wavelength', attribute='T', real=True, imag=False, **export_options, show=False)
-        res = results.extract(data='fdtd:power_monitor', savepath=f'{plot_path}{kL[4]}_profile',
-                        monitor_name='z_normal', target='intensity', plot_x='x', plot_y='y', attribute='E', real=True, imag=True, **export_options, show=False)
+        """ 01_time monitor """
+        fdtd_res.extract(data='fdtd:time_monitor', savepath=f"{plot_path}{kL[1]}_TransVstime",
+                         monitor_name='time_monitor_point', target='line', attribute='E',plot_x='time', real=True, 
+                         imag=True, export_csv=True, show=False)
+
+        """ 02_top_profile """
+        fdtd_res.extract(data="fdtd:power_monitor", savepath=f"{plot_path}{kL[2]}_profile", monitor_name="z_normal", 
+                            target="intensity", attribute="E", wavelength=f"{wavelength}",  export_csv=True)
+
+        """ 03port1_modeprofile """
+        fdtd_res.extract(data="fdtd:port_mode_info", savepath=f"{plot_path}{kL[3]}_port_1_profile",
+                            target="intensity", attribute="E", port_name="port_1", mode=0, export_csv=True)
+
+        """ 031_port1_Lambda_power """
+        fdtd_res.extract(data="fdtd:power_monitor", savepath=f"{plot_path}{kL[3]}_port_1_T",
+                            target="line", attribute="T", port_name="port_1", plot_x="wavelength", export_csv=True)
+
+        """ 032_port2_Lambda_power """
+        fdtd_res.extract(data="fdtd:power_monitor", savepath=f"{plot_path}{kL[3]}_port_2_T",
+                            target="line", attribute="T", port_name="port_2", plot_x="wavelength", export_csv=True)
+                            
+        """ 033_port3_Lambda_power """
+        fdtd_res.extract(data="fdtd:power_monitor", savepath=f"{plot_path}{kL[3]}_port_3_T",
+                            target="line", attribute="T", port_name="port_3", plot_x="wavelength", export_csv=True)
+
+        """ 034_port4_Lambda_power """
+        fdtd_res.extract(data="fdtd:power_monitor", savepath=f"{plot_path}{kL[3]}_port_4_T",
+                            target="line", attribute="T", port_name="port_4", plot_x="wavelength", export_csv=True)    
+
 # endregion
 
 ```
@@ -305,9 +344,7 @@ class RunOptions(NamedTuple):
     extract: bool
 
 if __name__ == "__main__":
-    simulation( 
-            run_mode="local", wavelength=1.55, grid=0.01, grids_per_lambda=14, number_of_trial_modes=5, 
-               run_options=RunOptions(index_preview=False,run_fde=False,run_fdtd=True,extract=True))
+        simulation(wavelength=1.55, grids_per_lambda=6, run_options=RunOptions(index_preview=False, run=True, extract=True))
 
 ```
 

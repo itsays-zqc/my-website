@@ -5,8 +5,7 @@
 
 <div class="text-justify">
 
-
-Type of the monitor, Selections are ["index_monitor", "time_monitor", "power_monitor", "profile_monitor", "global_option"]
+The monitor is used to record or extract the results of interest in the simulation. Using `Monitor()` to instance the monitor module to the projec, the available monitor types are "index_monitor", "time_monitor", "power_monitor", "profile_monitor" and "global_option".
 
 
 ## 5.1 Index Monitor
@@ -44,6 +43,8 @@ mn.add(name="x_normal_index", type="index_monitor",
 
 ## 5.2 Time monitor
 
+The syntax and properties for adding time monitor are as follows. This function does not return any data.
+
 ```python
 add(
         name: str,
@@ -54,27 +55,26 @@ add(
 ### General
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
-|  stop_method                | string  | "end_of_simulation" | Selects "end_of_simulation", "choose_stop_time" or "choose_number_of_snapshots" to stop  |
-|  start_time                | number  | 0                 | A float, or a parameter, or a parameter expression that evaluates to a float                                                |
-|   stop_time               | number  | 1000             | A float, or a parameter, or a parameter expression that evaluates to a float                                                |
-|  number_of_snapshots       | integer |0 |                                                                                                       |
+|  stop_method                | string  | "end_of_simulation" | Selects "end_of_simulation", "choose_stop_time" or "choose_number_of_snapshots" to stop recording data.  |
+|  start_time                | number  | 0                 |  The time to start recording data.                                              |
+|   stop_time               | number  | 1000             |   The time to stop recording data.         |
+|  number_of_snapshots       | integer |10 |       The number of time step to record, related to the dt setting in mesh settings.   |
 
 ### Geometry 
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
-| monitor_type    | string | -          | The types of time monitor that can be selected are "point", "2d_x_normal","2d_y_normal","2d_z_normal", "x_linear", "y_linear", "z_linear", "three_dimension"|
+| monitor_type    | string | -          | Selects "point", "2d_x_normal","2d_y_normal","2d_z_normal", "x_linear", "y_linear", "z_linear" or "three_dimension" to control of spatial setting.|
 | x, y, z               | number  |     -    | The center position of the time monitor. |
 | x_span,  y_span, z_span | number  |     -   | X span, Y span, Z span of the time monitor. |
 | x_min, x_max           | number  |     -     | X min, X max position of the time monitor. |
 | y_min, y_max           | number  |     -     | Y min, Y max position of the time monitor. |
 | z_min, z_max           | number  |     -     | Z min, Z max position of the time monitor. |
 
-### Data to record                                                                                                                  
+<!-- ### Data to record                                                                                                                   -->
 
 ### Advancd 
 
-sampling_rate:
-min_sampling_per_cycle:
+sampling_rate: Sets "min_stampling_per_cycle" to control the minimum sampling amount that can be used for each optical cycle.
 
 **Example:**
 The following script add a time monitor and set its dimension and position. This script assumes that FDTD solver has been added to the simulation environment, and the pj is an instance of the project.
@@ -90,10 +90,12 @@ mn.add(name="time_monitor1", type="time_monitor",
 
 ## 5.3 Power monitor
 
+The syntax and properties for adding power monitor are as follows. This function does not return any data.
+
 ```python
 add(
         name: str,
-        typename: Literal["index_monitor"],
+        typename: Literal["power_monitor"],
         property: dict,
     ):
 ```
@@ -102,21 +104,22 @@ add(
 ### Frequency profile 
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
-|  sample spacing                            |    string              |                                            |
-|  use_wavelength_spacing                    | boolean | True              |                                                                                                                             |
-|  use source limits                         | boolean | False             |                                                                                                                             |
-|   spacing type                              | string  | wavelength        | Selections are "wavelength", "frequency"                                                                                 |
-|   spacing_limit                             | string  | min_max           | Selections are "min_max", "center_span"                                                                                 |
-| wavelength center, frequency center     | number  |      -             | A float, or a parameter, or a parameter expression that evaluates to a float                                                |
-|  wavelength span, frequency span     | number  |-                   | A float, or a parameter, or a parameter expression that evaluates to a float                      |
-|  wavelength min, wavelength wax                            | number  | -                  | A float, or a parameter, or a parameter expression that evaluates to a float           |
-| frequency min, frequency max       | number  | -                  | A float, or a parameter, or a parameter expression that evaluates to a float           |
-| frequency_points                | integer | 5                 |                     |
+|  use_source_limits                         | boolean | False             |    Choose whether to use light source limits to set the wavelength/frequency range for recording data.      |
+|   spacing type                              | string  | wavelength        | Selects are "wavelength" or "frequency" to control the interval at which data is recorded.           |
+|   spacing_limit                             | string  | min_max           | Selects "min_max" or "center_span" to control of spacing limit setting.                    |
+| wavelength center, frequency center     | number  |      -             |Set frequency or wavelength center for recording data.                                            |
+|  wavelength span, frequency span     | number  |-                   | Sets frequency or wavelength span for recording data.           |
+|  wavelength min, wavelength wax                            | number  | -                  | Set the minimum and maximum wavelength for recording data.       |
+| frequency min, frequency max       | number  | -                  |Sets the minimum and maximum frequency for recording data.        |
+| frequency_points                | integer | 5                 |    Sets the number of frequency points for recording data.     |
+
+<!-- |  sample spacing                            |    string              |                                            | -->
+<!-- |  use_wavelength_spacing                    | boolean | True              |                             | -->
 
 ### Geometry
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
-| monitor_type    | string | -          | The types of power monitor that can be selected are "point", "2d_x_normal","2d_y_normal","2d_z_normal", "x_linear", "y_linear", "z_linear". |
+| monitor_type    | string | -          | Selects "point", "2d_x_normal","2d_y_normal","2d_z_normal", "x_linear", "y_linear" or "z_linear" to control of spatial setting.|
 | x, y, z               | number  |     -    | The center position of the power monitor. |
 | X span, Y span, z_span | number  |     -   | Xspan, Y span, Z span of the power monitor. |
 | x_min, x_max           | number  |     -     | X min, X max position of the power monitor. |
@@ -141,10 +144,21 @@ mn.add(name="z_normal", type="power_monitor",
 
 ## 5.4 Profile monitor
 
+The syntax and properties for adding properties monitor are as follows. This function does not return any data.
+
+
+```python
+add(
+        name: str,
+        typename: Literal["profile_monitor"],
+        property: dict,
+    ):
+```
+
 ### Geometry properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
-| monitor type    | string | -          | The types of profile monitor that can be selected are "2d_x_normal","2d_y_normal" and "2d_z_normal".        |
+| monitor type    | string | -          | Selects are "2d_x_normal","2d_y_normal" and "2d_z_normal" to control of spatial setting.      |
 | x_resolution | integer | 100       |   The resolution of output simulation results of profile monitor.        |
 | x, y, z               | number  |     -    | The center position of the profile monitor. |
 | x_span, y_span, z_span | number  |     -   | X span, Y span, Z span of the profile monitor. |
@@ -162,24 +176,32 @@ mn.add(name="y_normal", type="profile_monitor",
                               "x": 0, "x_span": 206, "y": 0, "y_span": 0, "z": 0, "z_span": 7}})
 ```
 
-## 5.5 Global monitor/Global option
+## 5.5 Global monitor/option
+
+The syntax and properties for adding global monitor/option are as follows. This function does not return any data.
+
+```python
+add(
+        name: str,
+        typename: Literal["global_monitor, global_optional"],
+        property: dict,
+    ):
+```
 
 ### Frequency power properties
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
-|  sample spacing          | integer | 0              |  Set the type of frequency interval for the frequency monitor. |
-|  use wavelength_spacing  | boolean | True           |                                                                              |
-|  use source limits       | boolean | False          |                                                                              |
-|  spacing type            | string  | wavelength     | Selections are ["wavelength", "frequency"]                                   |
-|  spacing limit           | string  | min_max        | Selections are ["min_max", "center_span"]                                    |
-|  wavelength center, wavelength center  | number  |-                | A float, or a parameter, or a parameter expression that evaluates to a float |
-|  wavelength span, frequency span  | number  |-                | A float, or a parameter, or a parameter expression that evaluates to a float |
-|  wavelength min, wavelength max        | number  | -               | A float, or a parameter, or a parameter expression that evaluates to a float |
-|  frequency_min, frequency max          | number  |-                | A float, or a parameter, or a parameter expression that evaluates to a float |
-| frequency_points        | integer | 5              |                                                                              |
+|  use_source_limits                         | boolean | False             |    Choose whether to use light source limits to set the wavelength/frequency range for recording data.      |
+|   spacing type                              | string  | wavelength        | Selects are "wavelength" or "frequency" to control the interval at which data is recorded.           |
+|   spacing_limit                             | string  | min_max           | Selects "min_max" or "center_span" to control of spacing limit setting.                    |
+| wavelength center, frequency center     | number  |      -             |Set frequency or wavelength center for recording data.                                            |
+|  wavelength span, frequency span     | number  |-                   | Sets frequency or wavelength span for recording data.           |
+|  wavelength min, wavelength wax                            | number  | -                  | Set the minimum and maximum wavelength for recording data.       |
+| frequency min, frequency max       | number  | -                  |Sets the minimum and maximum frequency for recording data.        |
+| frequency_points                | integer | 5                 |    Sets the number of frequency points for recording data.     |
 
 ### Advanced 
-min_sampling_per_cycle  
+min_sampling_per_cycle: Sets the minimum sampling amount that can be used for each optical cycle.
 
 **Example:**
 The following script add the global monitor and set its frequency domain range and number of frequency points. This script assumes that FDTD solver has been added to the simulation environment, and the pj is an instance of the project.

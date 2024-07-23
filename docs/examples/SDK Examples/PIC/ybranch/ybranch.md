@@ -90,7 +90,7 @@ Firstly, We define parameters and give them a default value, such as the simulat
 ```python
 @timed
 @with_path
-def simulation( *, wavelength=1.575, grids_per_lambda=25, run_options: 'RunOptions', **kwargs ):
+def simulation(*, wavelength=1.575,grids_per_lambda=25,run_options: 'RunOptions',**kwargs):
 ```
 
 <div class="text-justify">
@@ -104,14 +104,14 @@ The provided code contains comments that define the simulation parameters. Let's
 
 <div class="text-justify">
 
-Define commonly used parameters in region 0, such as the mesh grid of the simulation boundary, the start time of the simulation, the path and name for the simulation output, the path to the imported GDS layout, and other parameters required for structural parameterized modeling.
+Define commonly used parameters, such as the mesh grid of the simulation boundary, the start time of the simulation, the path and name for the simulation output, the path to the imported GDS layout, and other parameters required for structural parameterized modeling.
 
 If you need to calculate the bandwith of the device in the EME simulation, you can also decide the wavelength for sweeping in this section.
 
 </div>
 
 ```python
-# region --- 0. General Parameters --
+# region --- General Parameters --
 waveform_name = f'wv{wavelength * 1e3}'
 path = kwargs['path']
 simu_name = 'FDTD_y_branch'
@@ -131,10 +131,10 @@ The code defines several parameters and variables necessary for the simulation p
 
 #### 2.4 Creat Project
 
-You can create a new project using the Project function of Max's software development toolkit in region 1.
+You can create a new project using the Project function of Max's software development toolkit.
 
 ```python
-# region --- 1. Project ---
+# region --- Project ---
 pj = mo.Project(name=project_name)
 # endregion
 ```
@@ -143,12 +143,12 @@ pj = mo.Project(name=project_name)
 
 <div class="text-justify">
 
-Let's proceed to the next step, where we set up the materials required for the simulation in region 2. In this case, we will directly use relevant materials from the MO  material library.
+Let's proceed to the next step, where we set up the materials required for the simulation. In this case, we will directly use relevant materials from the MO  material library.
 
 </div>
 
 ```python
-# region --- 2. Material ---
+# region --- Material ---
 mt = pj.Material()
 mt.add_lib(name='Si', data=mo.Material.Si_Palik, order=2)
 mt.add_lib(name='SiO2', data=mo.Material.SiO2_Palik, order=2)
@@ -168,9 +168,15 @@ In this section, we will define the property of wave.
 </div>
 
 ```python
-# region --- 3. Waveform ---
+# region --- Waveform ---
 wv = pj.Waveform()
-wv.add(name=waveform_name, wavelength_center=wavelength, wavelength_span=0.15)
+wv.add(name=waveform_name,type='gaussian_waveform',
+        property={'set': 'frequency_wavelength',  # selections are ['frequency_wavelength','time_domain']
+                    'set_frequency_wavelength': {
+                        'range_type': 'wavelength',  # selections are ['frequency','wavelength']
+                        'range_limit': 'center_span',  # selections are ['min_max','center_span']
+                        'wavelength_center': wavelength,
+                        'wavelength_span': 0.15,},})
 wv_struct = wv[waveform_name]
 # endregion
 ```
@@ -184,33 +190,29 @@ Next, we will create the structure of Y branch.
 </div>
 
 ```python
-# region --- 4. Structure ---
+# region --- Structure ---
 st = pj.Structure()
 st.add_geometry(name='in', type='Rectangle',
                 property={'geometry': {'x': -1.5, 'x_span': 1, 'y': 0, 'y_span': 0.5, 'z': 0, 'z_span': 0.22},
                             'material': {'material': mt['Si'], 'mesh_order': 2}})
-st.add_geometry(name="gds_file", type="gds_file", property={
-    "material": {"material": mt["Si"], "mesh_order": 2},
-    "geometry": {"x": 1, "y": 0, "z": 0, "z_span": 0.22},
-    "general": {"path": gds_file, "cell_name": "splitter1", "layer_name": (0, 0)}})
+st.add_geometry(name="gds_file", type="gds_file",
+                property={"material": {"material": mt["Si"], "mesh_order": 2},
+                            "geometry": {"x": 1, "y": 0, "z": 0, "z_span": 0.22},
+                            "general": {"path": gds_file, "cell_name": "splitter1", "layer_name": (0, 0)}})
 st.add_geometry(name='out_up', type='Rectangle',
                 property={'geometry': {'x': 3.1, 'x_span': 0.2, 'y': 0.35, 'y_span': 0.5, 'z': 0, 'z_span': 0.22},
                             'material': {'material': mt['Si'], 'mesh_order': 2}})
 st.add_geometry(name='out_down', type='Rectangle',
                 property={'geometry': {'x': 3.1, 'x_span': 0.2, 'y': -0.35, 'y_span': 0.5, 'z': 0, 'z_span': 0.22},
                             'material': {'material': mt['Si'], 'mesh_order': 2}})
-st.add_geometry(name="waveguide_up", type="BezierWaveguide", property={
-"material": {"material": mt["Si"], "mesh_order": 2},
-"geometry": {"x": 0, "y": 0, "z": 0, "z_span": 0.22, "width": 0.5,
-                "control_points":
-                        [{"x": 3.2, "y": 0.35}, {"x": 4, "y": 0.35}, {"x": 4, "y": 0.85},{"x": 5.2, "y": 0.85}]
-            }})
-st.add_geometry(name="waveguide_down", type="BezierWaveguide", property={
-"material": {"material": mt["Si"], "mesh_order": 2},
-"geometry": {"x": 0, "y": 0, "z": 0, "z_span": 0.22, "width": 0.5,
-                "control_points":
-                        [{"x": 3.2, "y": -0.35}, {"x": 4, "y": -0.35}, {"x": 4, "y": -0.85},{"x": 5.2, "y":-0.85}]
-            }})
+st.add_geometry(name="waveguide_up", type="BezierWaveguide",
+                property={"material": {"material": mt["Si"], "mesh_order": 2},
+                            "geometry": {"x": 0, "y": 0, "z": 0, "z_span": 0.22, "width": 0.5,
+                            "control_points":[{"x": 3.2, "y": 0.35}, {"x": 4, "y": 0.35}, {"x": 4, "y": 0.85},{"x": 5.2, "y": 0.85}]}})
+st.add_geometry(name="waveguide_down", type="BezierWaveguide",
+                property={"material": {"material": mt["Si"], "mesh_order": 2},
+                            "geometry": {"x": 0, "y": 0, "z": 0, "z_span": 0.22, "width": 0.5,
+                            "control_points":[{"x": 3.2, "y": -0.35}, {"x": 4, "y": -0.35}, {"x": 4, "y": -0.85},{"x": 5.2, "y":-0.85}]                 }})
 st.add_geometry(name='wg_up', type='Rectangle',
                 property={'geometry': {'x': 5.4, 'x_span': 0.8, 'y': 0.85, 'y_span': 0.5, 'z': 0, 'z_span': 0.22},
                             'material': {'material': mt['Si'], 'mesh_order': 2}})
@@ -231,33 +233,23 @@ We import the core of Y branch from the GDS file when other part is created by M
 
 <div class="text-justify">
 
-After establishing the model, we can add the simulation in region 5 and define the simulation boundary conditions. This involves specifying the geometry of the simulation region, the boundary conditions in the xyz directions, and the other detailed parameters.
+After establishing the model, we can add the simulation and define the simulation boundary conditions. This involves specifying the geometry of the simulation region, the boundary conditions in the xyz directions, and the other detailed parameters.
 
 </div>
 
 ```python
-# region --- 5. Simulation ---
-bc = { "pml_layer": 6, "pml_kappa": 2, "pml_sigma": 0.8, "pml_polynomial": 3, "pml_alpha": 0, "pml_alpha_polynomial": 1, }
+# region --- Simulation ---
 simu = pj.Simulation()
-simu.add(
-    name=simu_name,
-    type="FDTD",
-    property={
-        "background_material": mt["SiO2"],
-        "geometry": { "x": 2, "x_span": 7, "y": 0, "y_span": 3, "z": 0, "z_span": 3, },
-        "boundary_conditions": { "x_min_bc": "PML", "x_max_bc": "PML", "y_min_bc": "anti_symmetric", "y_max_bc": "PML", "z_min_bc": "PML", "z_max_bc": "PML",
-            "pml_settings": { "x_min_pml": bc, "x_max_pml": bc, "y_min_pml": bc, "y_max_pml": bc, "z_min_pml": bc, "z_max_pml": bc, }, },
-        "general": { "simulation_time": 10000, },
-        "mesh_settings": {
-            "mesh_factor": 1.2,
-            "mesh_type": "auto_non_uniform",
-            "mesh_accuracy": {"cells_per_wavelength": grids_per_lambda},
-            "minimum_mesh_step_settings": {"min_mesh_step": 1e-4},
-            "mesh_refinement": {
-                "mesh_refinement": "curve_mesh", } },
-        # 'advanced_options': {'auto_shutoff': {'auto_shutoff_min': 1.00e-4, 'down_sample_time': 200}},
-        # 'thread_setting': {'thread': 4}
-    }, )
+simu.add(name=simu_name,type="FDTD",
+            property={"background_material": mt["SiO2"],
+                    "geometry": {"x": 2,"x_span": 7,"y": 0,"y_span": 3,"z": 0,"z_span": 3,},
+                    "boundary_conditions": {"x_min_bc": "PML", "x_max_bc": "PML", "y_min_bc": "PML", "y_max_bc": "PML", "z_min_bc": "PML", "z_max_bc": "PML",
+                                            "pml_settings": {"all_pml": {"layers": 8, "kappa": 2, "sigma": 0.8, "polynomial": 3, "alpha": 0, "alpha_polynomial": 1, }}},
+                    "general": {"simulation_time": 10000,},
+                    "mesh_settings": {"mesh_factor": 1.2,"mesh_type": "auto_non_uniform",
+                                        "mesh_accuracy": {"cells_per_wavelength": grids_per_lambda},
+                                        "minimum_mesh_step_settings": {"min_mesh_step": 1e-4},
+                                        "mesh_refinement": {"mesh_refinement": "curve_mesh",}},},)
 # endregion
 ```
 The `Simulation` manager is critical for setting up and running simulations in the current project.<br/>The `name` parameter allows users to assign a unique name to the simulation for identification purposes.<br/>The `type` parameter defines the type of the simulation.<br/>The `simulation_time` parameter specifies the duration of the simulation.<br/>The `mesh_settings` parameter enables users to configure various settings related to the simulation mesh. The `mesh_accuracy` parameter controls the precision of the mesh used in the simulation.<br/>The `cells_per_wavelength` parameter determines the wavelength precision used in the simulation.<br/>The `minimum_mesh_step_settings` parameter sets the minimum mesh step, allowing users to define the smallest allowable size for mesh elements.<br/>Users can tailor the simulation setup to meet their requirements by utilizing these input parameters, enabling accurate and efficient electromagnetic simulations of complex optical structures.
@@ -266,19 +258,18 @@ The `Simulation` manager is critical for setting up and running simulations in t
 
 <div class="text-justify">
 
-Then we need to establish the light source in the input waveguide, as shown in Region 6.
+Then we need to establish the light source in the input waveguide, as shown below.
 
 </div>
 
 ```python
-# region --- 6. ModeSource ---
+# region --- ModeSource ---
 src = pj.Source()
-src.add(
-    name='source',
-    type='mode_source',
-        property={
-            'general': { 'mode_selection': 'fundamental', 'waveform': {'waveform_id_select': wv_struct}, "inject_axis": "x", "direction": "forward", },
-            'geometry': { 'x': -1.2, 'x_span': 0, 'y': 0, 'y_span': 1, 'z': 0, 'z_span':1.2, } } )
+src.add(name='source',type='mode_source',
+        property={'general': {'mode_selection': 'fundamental',
+                                'waveform': {'waveform_id': wv_struct},
+                                "inject_axis": "x_axis","direction": "forward",},
+                    'geometry': {'x': -1.2, 'x_span': 0,'y': 0, 'y_span': 1,'z': 0, 'z_span':1.2,}})
 # endregion
 ```
 
@@ -293,31 +284,22 @@ The `Source` function is utilized to retrieve the source manager for the current
 
 <div class="text-justify">
 
-In Region 7, we set up the monitors.
+In this region, we set up the monitors.
 
 </div>
 
 ```python
-# region --- 7. Monitor ---
+# region --- Monitor ---
 mn = pj.Monitor()
-mn.add(
-    name='Global Option',
-    type='global_option',
-    property={
-        'frequency_power': {  # 'sample_spacing': 'uniform', 'use_wavelength_spacing': True,
-            # ['min_max','center_span']
-            'spacing_type': 'wavelength', 'spacing_limit': 'center_span', 'wavelength_center': wavelength, 'wavelength_span': 0.15, 'frequency_points': 100 }})
+mn.add(name='Global Option',type='global_option',
+        property={'frequency_power': {'spacing_type': 'wavelength', 'spacing_limit': 'center_span',
+                                        'wavelength_center': wavelength,'wavelength_span': 0.15,'frequency_points': 100}})
 mn.add(name='monitor_out', type='power_monitor',
-        property={'general': {
-            'frequency_profile': {'wavelength_center': wavelength, 'wavelength_span': 0.15,'frequency_points': 200},},
-            'geometry': {'monitor_type': '2d_x_normal',
-                        'x': 5.4, 'x_span': 0, 'y': 0.85, 'y_span': 1.2, 'z': 0, 'z_span': 1.2}})
+        property={'general': {'frequency_profile': {'wavelength_center': wavelength, 'wavelength_span': 0.15,'frequency_points': 200},},
+                    'geometry': {'monitor_type': '2d_x_normal','x': 5.4, 'x_span': 0, 'y': 0.85, 'y_span': 1.2, 'z': 0, 'z_span': 1.2}})
 mn.add(name='filed_power', type='power_monitor',
-        property={'general': {
-            'frequency_profile': {'wavelength_center': wavelength, 'wavelength_span': 0.15,
-                                    'frequency_points': 100}, },
-            'geometry': {'monitor_type': '2d_z_normal',
-                        'x': 2, 'x_span': 7, 'y': 0, 'y_span': 3, 'z': 0, 'z_span': 0}})
+        property={'general': {'frequency_profile': {'wavelength_center': wavelength, 'wavelength_span': 0.15,'frequency_points': 100}, },
+                    'geometry': {'monitor_type': '2d_z_normal','x': 2, 'x_span': 7, 'y': 0, 'y_span': 3, 'z': 0, 'z_span': 0}})
 # endregion
 ```
 
@@ -334,7 +316,7 @@ The power monitor is a configuration setting that allows users to specify variou
 
 <div class="text-justify">
 
-In the region 8 ,we can recall the simulation name to run it.we run the simulation. We support users to calculate the simulation with GPU by `resources` to improve the simulation efficiency.
+In the region ,we can recall the simulation name to run it. we run the simulation.We also support users to calculate the simulation with GPU by `resources` to improve the simulation efficiency.
 
 </div>
 
@@ -351,27 +333,24 @@ if run_options.run:
 
 <div class="text-justify">
 
-In region 9, we can retrieve and store the simulation results.
+Next, we can retrieve and store the simulation results.
 
 </div>
 
 ```python
-# region --- 10. See Results ---
-if run_options.extract and run_options.run:
-    fdtd_res.extract(
-        data='fdtd:power_monitor',
-        savepath=f'{plot_path}02_x_normal_abs(T)',
-        monitor_name='x_normal', attribute='T', target='line', plot_x='wavelength', real=True, imag=True, export_csv=True, show=False )
-    fdtd_res.extract(
-        data='fdtd:power_monitor',
-        savepath=f'{plot_path}02_y_normal_abs(T)',
-        monitor_name='y_normal', attribute='T', target='line', plot_x='wavelength', real=True, imag=True, export_csv=True, show=False )
-    fdtd_res.extract(
-        data='fdtd:power_monitor',
-        savepath=f'{plot_path}02_y_normal_E_{wavelength}_um',
-        monitor_name='y_normal', target="intensity", attribute="E", real=True, imag=False, wavelength=f"{wavelength}", plot_x="x", plot_y="z", show=False, export_csv=True, )
+# region --- See Results ---
+if run_options.extract:
+    if run_options.run:
+        fdtd_res.extract(data='fdtd:mode_source_mode_info', savepath=f'{plot_path}_source_modeprofile',
+                            source_name='source', attribute='E', target='intensity', mode=0, export_csv=True)
+        fdtd_res.extract(data='fdtd:power_monitor', savepath=f'{plot_path}_monitor_out_abs(T)',
+                            monitor_name='monitor_out', attribute='T', target='line', plot_x='wavelength',
+                            export_csv=True)
+        fdtd_res.extract(data='fdtd:power_monitor', savepath=f'{plot_path}_filed_power_abs(T)',
+                            monitor_name='filed_power', attribute='E', target='intensity', plot_x='x', plot_y='y',
+                            real=True, imag=True, export_csv=True, show=False)
+return fdtd_res
 # endregion
-return fdtd_res if run_options.run else None
 
 # endregion
 ```
@@ -388,7 +367,7 @@ The `export_csv` parameter is to decide whether to export a csv. Default as Fals
 
 </div>
 
-#### 2.16 Switches
+#### 2.13 Switches
 
 <div class="text-justify">
 
@@ -402,7 +381,7 @@ class RunOptions(NamedTuple):
     extract: bool
 
 if __name__ == '__main__':
-    simulation(is_gds_import=True, wavelength=1.55, grids_per_lambda=8,
+    out_file_path=simulation(run_mode='local', wavelength=1.575, grids_per_lambda=25,
                run_options=RunOptions(run=True, extract=True))
 ```
 

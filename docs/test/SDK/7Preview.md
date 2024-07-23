@@ -11,7 +11,7 @@ This preview serves to validate the structues before initiating the formal simul
 ## 8.1 Preview index
 
 
-Preview the index plot of a source or port or monitor in the project by using the  `preview_index` function. The syntax and properties of this function are shown below, and it return visualizer.
+Preview the index profile of a source or port or monitor in the project by using the  `preview_index` function. The syntax and properties of this function are shown below, and it return visualizer.
 
 ```python
 preview_index(
@@ -28,27 +28,26 @@ preview_index(
 
 | parameter                      | type    | default   | description                                                                  |
 |:-------------------------------|:--------|:----------|:-----------------------------------------------------------------------------|
-| monitor_name                   | string  |  -         | Only one of monitor_name, port_name and source_name can be set               |
-| port_name                      | string  |-           |                                                                              |
-| source_name                    | string  |  -         |                                                                              |
-| savepath                       | string  |  -         |                                                                              |
-| export_n                       | boolean | True      | If True, export the index.                                                   |
-| export_c                       | boolean | False     | If True, export the conductivity.                                            |
-| export_csv                     | boolean | False     |                                                                              |
-| export_mat                     | boolean | False     |                                                                              |
+| monitor_name                   | string  |  -         | Only one of monitor_name, port_name and source_name can be specify.               |
+| port_name                      | string  |-           |  Only one of monitor_name, port_name and source_name can be specify.           |
+| source_name                    | string  |  -         |  Only one of monitor_name, port_name and source_name can be specify.          |
+| savepath                       | string  |  -         |   Savepath of the preview result.                           |
+| export_n                       | boolean | True      | Choose whether to export the refractive index component of the results.                                               |
+| export_c                       | boolean | False     | Choose whether to export the conductivity component of the results.                                      |
+| export_csv                     | boolean | False     |  Choose whether to export the results in csv format.                                |
+| export_mat                     | boolean | False     |   Choose whether to export the results in mat format.                           |
 
 
 **Example:**
 
-The following command previews the refractive index distribution of the "test_preview" monitor and saves the data to the specified path.
+The following command previews the refractive index profile of the "power monitor" monitor and saves the data to the specified path. This script assumes that the structure and  power monitor have been set up, and the pj is an instance of the Project.
 
 ```python
 simu_name = 'preview_index'
-path = f"{plot_path}"
 m_name = "power monitor"
-path_name = path + "preview_index"
+path_name = f'path/preview_index'
 
-simu = Project.Simulation()
+simu = pj.Simulation()
 simu[simu_name].preview_index(
     monitor_name=m_name, savepath=path_name, export_csv=True, show=False, )
 
@@ -76,19 +75,19 @@ preview_index(
 
 | parameter                      | type    | default   | description                                                                  |
 |:-------------------------------|:--------|:----------|:-----------------------------------------------------------------------------|
-| monitor_name                   | string  |  -         | Only one of monitor_name, port_name and source_name can be set               |
-| port_name                      | string  | -          |                                                                              |
-| source_name                    | string  | -          |                                                                              |
-| savepath                       | string  |  -         |                                                                              |
-| target                         | string  |  -         | Selections are ["intensity","target"]                                                                             |
-| attribute                      | string  |  -         | Selections are ['E', 'H', 'Ex', 'Ey', 'Ez', 'Hx', 'Hy', 'Hz']                |
-| mode                           | integer | 0         |                                                                              |
-| export_csv                     | boolean | False     |                                                                              |
-| export_mat                     | boolean | False     |                                                                              |
+| monitor_name                   | string  |  -         |  Only one of monitor_name, port_name and source_name can be specify.               |
+| port_name                      | string  | -          |  Only one of monitor_name, port_name and source_name can be specify.       |
+| source_name                    | string  | -          |   Only one of monitor_name, port_name and source_name can be specify.        |
+| savepath                       | string  |  -         |   Savepath of the preview result.                      |
+| target                         | string  |  -         | The options include "intensity" and "target" to extract two-dimensional and one-dimensional data.        |
+| attribute                      | string  |  -         | Selections are 'E', 'H', 'Ex', 'Ey', 'Ez', 'Hx', 'Hy', 'Hz'.               |
+| mode                           | integer | 0         |   Extract the mode from the mode list and sort it from 0.                               |
+| export_csv                     | boolean | False     |  Choose whether to export the results in csv format.                          |
+| export_mat                     | boolean | False     |   Choose whether to export the results in mat format.                                  |
 
 **Example:**
 
-The following command previews the mode field distribution of the 'mode_source' light source fundamental mode and saves the data to the specified path.
+The following command previews the fundamental mode of the mode source and saves the data to the specified path. This script assumes that the mode source has been set up, and the pj is an instance of the Project.
 
 ```python
 simu_name = 'preview_mode'
@@ -96,13 +95,13 @@ path = f"{plot_path}"
 s_name = "mode_source"
 path_name = path + "preview_index"
 
-simu = Project.Simulation()
+simu = pj.Simulation()
 simu[simu_name].preview_modes(source_name=s_name, savepath=path_name,
                                       target="intensity", attribute="E", real=True, imag=True, mode=0, show=False, export_csv=True)   
 ```
 
 
-## 8.3 Structure show and show 3D
+## 8.3 Structure show 
 
 This portion of the code is primarily intended for show structure. Please note that this method becomes invalid if the current structure manager contains Pyramid or Arc-Waveguide 3D type geometries.
 
@@ -115,7 +114,7 @@ structure_show(
 
     )
 ```
-Show the structure.
+<!-- Show the structure.
 
 :param mode: Mode of show
 :param show: Whether to show the structure
@@ -125,44 +124,44 @@ Show the structure.
 :param xyratio: Ratio of x and y
 :param celldisplay: Whether to display the cell
 :param view: Whether to view the structure
-:return: None
+:return: None -->
 
 | parameter                      | type    | default   | description                                                                  |
 |:-------------------------------|:--------|:----------|:-----------------------------------------------------------------------------|
-| mode                           | string  | XY        | Only XY is supported at present                                              |
 | show                           | boolean |-           | If True, show the picture of the structure                                   |
-| savepath                       | string  |-           |                                                                              |
+| savepath                       | string  |-           |  Savepath of the preview result.                     |
 | fig_type                       | string  | png       | Selections are ['png', 'svg']                                                |
 | disabled_components            | tuple   | -          | Currently invalid                                                            |
 | xyratio                        | tuple   | (1,1)     | Currently invalid                                                            |
 | celldisplay                    | boolean | False     | Currently invalid                                                            |
 
- 
 
-Show 3D structure in a pop up windows.
-
-```python
-show3d(self, show_with: Literal["webviewer", "matplotlib"，"local_gui"] = "webviewer")
-    st.structure_show(fig_type="png", show=False,
-                      savepath=f"{plot_path}00_{simu_name}")
-```
-
-| **Parameters** |                         Description                          |
-| :------------: | :----------------------------------------------------------: |
-|   show_with    | Choose the type of display. The selection are "webviewer", "matplotlib"，"local_gui". The "webviewer" will start a server and toggle a browser windows. "matplotlib" will toggle a Axes3D windows. Default as "webviewer". |
 
 **Example:**
 
+The following command shows the physical structure in the simulation, including the simulation area and monitor, etc. This script assumes that the project has been added to the simulation environment, and the pj is an instance of the Project.
+
 ```python
+st = pj.Structure()
 st.structure_show(fig_type='png', show=False,
                   savepath=f'{plot_path}{kL[0]}{simu_name}', simulation_name=simu_name)
+```
+
+## 8.4 Show 3D
+
+ show_with: Choose the type of display. The selection are "webviewer", "matplotlib"，"local_gui". The "webviewer" will start a server and toggle a browser windows. "matplotlib" will toggle a Axes3D windows. Default as "webviewer". 
+
+**Example:**
+
+The following script uses a local GUI to show simulation settings, and the project needs to be saved before use.. This script assumes that the project has been added to the simulation environment, and the pj is an instance of the Project.
+
+```python
+simu = pj.Simulation()
+pj.save_project()
 simu[simu_name].show3d(show_with="local_gui")
 ```
 
-
-
-
-## 8.4 Preview doping
+## 8.5 Preview doping
 
 The code within this module enables the preview of doping results for the respective structures.
 

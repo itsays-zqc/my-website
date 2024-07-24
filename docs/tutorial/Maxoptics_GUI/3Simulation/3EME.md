@@ -32,13 +32,13 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 3) **Background Material** : The combo box allow user to set the background material from drop down menu. Project, object defined dielectric, and go to material library can be operated.
 
-①**Project**: The background material inherits from the project’s material setting.
+①　**Project**: The background material inherits from the project’s material setting.
 
-②**Object Defined Dielectric**: The object-defined dielectric material, a default setting if user forgets to set background material, is defined for the current object background material setting, and once the user chooses this option, he does not need to set any material from the standard, user, or project material database. And the object-defined dielectric will not be loaded into any material database.
+②　**Object Defined Dielectric**: The object-defined dielectric material, a default setting if user forgets to set background material, is defined for the current object background material setting, and once the user chooses this option, he does not need to set any material from the standard, user, or project material database. And the object-defined dielectric will not be loaded into any material database.
 
-③**Go to Material Library**: If selected, user can go to standard material database to set background material according to needs. And the selected material relative property from standard material database will be displayed in the material data list.
+③　**Go to Material Library**: If selected, user can go to standard material database to set background material according to needs. And the selected material relative property from standard material database will be displayed in the material data list.
 
-④**Refractive Index**: This refers to the refractive index of the ambient background medium inside the simulation window (Default: 1)
+④　**Refractive Index**: This refers to the refractive index of the ambient background medium inside the simulation window (Default: 1)
 
 4) **Frequency/Wavelength**: Sets the frequency (Default: 193.414 THz) or wavelength (Default:1.55 μm) to calculate.
 
@@ -147,6 +147,7 @@ Since the propagation in the EME solver is along the x-direction, the mesh setti
 
 
 1) **EME settings**:
+
 ①　Max Stored Modes: Maximum number of modes for each cell in the EME setup.(Default: 1000, the input is limited to [1,1000]).
 
 2) **Dispersion Settings**:

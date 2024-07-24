@@ -175,14 +175,12 @@ Enable users to transform selected objects. Clicking the “Transform” button 
 | ![](../../../static/img/tutorial/structures/ts2.png)|
 | :------------------------------------------------------------: |
 
-
-Type -- A drop-down menu, with options for “Translate”, “Scale”, “Rotate”, or “Mirror”.
-
-Shape Center -- When in the “on” state, X0, Y0, and Z0 are non-editable; the switch is defaulted to “on”. Note that, the shape center does not support “Translate” feature.
-
-X/Y/Z -- Define translate vector / scale vector / rotate angle / mirror plane normal.
-
-X0/Y0/Z0 -- Specify the origin for the transform operation, excluding the translate operation.
+| Transform | Description                                      |
+|--------------------|--------------------------------------------------|
+|Type| A drop-down menu, with options for “Translate”, “Scale”, “Rotate”, or “Mirror”.|
+|Shape Center| When in the “on” state, X0, Y0, and Z0 are non-editable; the switch is defaulted to “on”. Note that, the shape center does not support “Translate” feature.|
+|X/Y/Z | Define translate vector / scale vector / rotate angle / mirror plane normal.|
+|X0/Y0/Z0 | Specify the origin for the transform operation, excluding the translate operation.|
 
 
 </div>

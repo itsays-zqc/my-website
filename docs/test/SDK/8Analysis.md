@@ -178,21 +178,21 @@ direction: Selections are 'positive', 'negative'.
 monitors_for_expansion: The name of the power monitor needs to analyze mode expansion.
 
 mode_calculation:
+
 |Parameter                                 | Type    | Default        | Description                                                                               |
 |:---------------------------------------|:--------|:---------------|:------------------------------------------------------------------------------------------|
 | mode_selection                                         | string  | -                  | Selections are 'fundamental', 'fundamental_TE', 'fundamental_TM' 'fundamental_TE_and_TM' and 'user_select'.|
-| number_of_trial_modes                                   | integer | 20                |                                                                                  |
-| override_global_options                                 | boolean | False             |                                                                                  |
-|sample_spacing          | string | uniform               |                                                                                  |
-| use_wavelength_spacing  | boolean | True              |                                                                                  |
-|  use_source_limits       | boolean | False             |    Choose whether to use light source limits to set the wavelength/frequency range for recording data.            |
-|override_global_monitor_setting| boolean | False             |               |
+| number_of_trial_modes                                   | integer | 20                |    The maximum number of modes to search for.                         |
+|override_global_monitor_setting| boolean | False             |     Selects the override settings of the monitor.  |
+|use_source_limits       | boolean | False             |    Choose whether to use light source limits to set the wavelength/frequency range for recording data.            |
 |spacing_type            | string  | wavelength        | Selects are "wavelength" or "frequency" to control the interval at which data is recorded.                                       |
 |spacing_limit           | string  | min_max           | Selects "min_max" or "center_span" to control of spacing limit setting.                                    |
+|sample_spacing          | string | uniform               |  Choose whether to record data at uniform intervals.                |
+| use_wavelength_spacing  | boolean | True              |      Choose to use wavelength or frequency to separate data.                      |
 |wavelength_min          | number  |-                   | Sets frequency or wavelength span for recording data.          |
-| override_global_monitor_setting.frequency_points        | integer | 5                 |            Sets the number of frequency points for recording data.       |
-| bent_waveguide.use_bent_waveguide                       | boolean | False             |                                                                                  |
-
+| frequency_points        | integer | 5                 |            Sets the number of frequency points for recording data.       |
+| bent_waveguide                      | boolean | False             |             Choose to study bent structure.                                |
+<!-- 
 | bent_waveguide.radius                                   | number  | 1.0               | A float, or a parameter, or a parameter expression that evaluates to a float     |
 | bent_waveguide.orientation                              | number  | 0.0               | A float, or a parameter, or a parameter expression that evaluates to a float     |
 | bent_waveguide.location                                 | string  | simulation_center | Selections are ['simulation_center']                                             |
@@ -200,7 +200,7 @@ mode_calculation:
 rotate_settings.theta                                                                   | number  | 0                 | A float, or a parameter, or a parameter expression that evaluates to a float     |
 | rotate_settings.phi                                                                     | number  | 0                 | A float, or a parameter, or a parameter expression that evaluates to a float     |
 | rotate_settings.rotation_offset                                                         | number  | 0                 | A float, or a parameter, or a parameter expression that evaluates to a float     |
-| modal_analysis.mode_removal.threshold                                                   | number  | 0.01              | A float, or a parameter, or a parameter expression that evaluates to a float     |
+| modal_analysis.mode_removal.threshold                                                   | number  | 0.01              | A float, or a parameter, or a parameter expression that evaluates to a float     | -->
 
 **Example:**
 

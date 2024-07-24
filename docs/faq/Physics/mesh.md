@@ -55,9 +55,9 @@ In the case of multiple materials in the grid, the equivalent refractive index w
 
 The mesh accuracy represents the size of the mesh, and the commonly used grid accuracy is shown in the table below.
 
-| Mesh Accuracy of "Gloden" |1|2|3|4|5|
+| Mesh Accuracy of Gloden |1|2|3|4|5|
 |---------------------------|--|--|--|--|--|
-|&emsp;&emsp;cells per wavelength of "Max-optics" &emsp;&emsp;&emsp;&emsp;|&emsp;&emsp;6&emsp;&emsp;|&emsp;&emsp;10&emsp;&emsp;|&emsp;&emsp;14&emsp;&emsp;|&emsp;&emsp;18&emsp;&emsp;|&emsp;&emsp;22&emsp;&emsp;|
+|&emsp;&emsp;cells per wavelength of Max-Optics &emsp;&emsp;&emsp;&emsp;|&emsp;&emsp;6&emsp;&emsp;|&emsp;&emsp;10&emsp;&emsp;|&emsp;&emsp;14&emsp;&emsp;|&emsp;&emsp;18&emsp;&emsp;|&emsp;&emsp;22&emsp;&emsp;|
 
 <div class="text-justify">
 

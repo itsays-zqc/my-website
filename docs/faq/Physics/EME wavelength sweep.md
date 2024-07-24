@@ -1,4 +1,4 @@
-# How to set up EME scanning?
+# How to set up EME sweep?
 
 ## EME length sweep
 

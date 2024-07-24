@@ -182,11 +182,11 @@ Users could define the time of on and off source from parameters of "Time Start"
 
 - `Surface Type`:
 - `Solid,Solid`: Define the surface recombination between two solid structure of simulation.
-- `Solid1`:Names of the two structures at the interface. They must be set explicitly when "Surface Type" is "Solid,Solid".
-- `Solid2`:Names of the two structures at the interface. They must be set explicitly when "Surface Type" is "Solid,Solid".
+ - `Solid1`:Names of the two structures at the interface. They must be set explicitly when "Surface Type" is "Solid,Solid".
+ - `Solid2`:Names of the two structures at the interface. They must be set explicitly when "Surface Type" is "Solid,Solid".
 - `Material,Material`: Define the surface recombination between two material of simulation.
-- `Material1`:The two materials at the interface. They must be set explicitly when "Surface Type" is "Material,Material".
-- `Material2`:The two materials at the interface. They must be set explicitly when "Surface Type" is "Material,Material".
+ - `Material1`:The two materials at the interface. They must be set explicitly when "Surface Type" is "Material,Material".
+ - `Material2`:The two materials at the interface. They must be set explicitly when "Surface Type" is "Material,Material".
 
 ## 5 Monitor
 

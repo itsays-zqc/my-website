@@ -284,10 +284,10 @@ Sampling rate:
 ![](../../static/img/tutorial/monitor/charge_gen.png)
 
 - `Data to Record`:
- - `Electrons`: The distribution of electron concentration in monitor.
- - `Hole`:The distribution of hole concentration in monitor. 
- - `Total Charge`: Available when monitor_type is in “2d_x_normal”, “2d_y_normal”, “2d_z_normal”.
- - `Interpolate Accuracy`: Restrained by condition: >=1 && <= 10.
+  - `Electrons`: The distribution of electron concentration in monitor.
+  - `Hole`:The distribution of hole concentration in monitor. 
+  - `Total Charge`: Available when monitor_type is in “2d_x_normal”, “2d_y_normal”, “2d_z_normal”.
+- `Interpolate Accuracy`: Restrained by condition: >=1 && <= 10.
 
 ### 8.2 Geometry tab
 

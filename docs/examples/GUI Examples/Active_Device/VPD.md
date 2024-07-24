@@ -10,7 +10,7 @@ This example introduces the modeling and optoelectronic simulation of a vertical
 
 ## 1. Overview
 
-This example utilizes FDTD simulation to obtain the optical field distribution in the Ge absorption layer. Subsequently, the photo-induced carrier generation rate is calculated based on the optical field, which is then imported into the OEDevice simulation to obtain the photo current. We also provide scripts for dark current, capacitance and resistance, frequency response, and saturation power. These simulations are divided into separate scripts, and they all call a unified script for modeling and material setup, making it convenient for modifications and management.
+This example utilizes FDTD simulation to obtain the optical field distribution in the Ge absorption layer. Subsequently, the photo-induced carrier generation rate is calculated based on the optical field, which is then imported into the DDM simulation to obtain the photo current. We also provide scripts for dark current, capacitance and resistance, frequency response, and saturation power. These simulations are divided into separate scripts, and they all call a unified script for modeling and material setup, making it convenient for modifications and management.
 
 
 <br/>
@@ -23,7 +23,6 @@ This example utilizes FDTD simulation to obtain the optical field distribution i
 Creating a new project about DDM solver, which can setting materials, modeling, doping, setting boundary conditions, etc.
 
 ![](../Active_Device/img/VPD/project.png)
-
 
 <br/>
 
@@ -965,9 +964,6 @@ Description:
     - `high_field`--Set the switch of high field mobility model and Fermi-Dirac statistics model
 
     - `vsat`--Set the model and parameters of velocity saturation
-
-
-For the detailed introduction about electronic parameters, please refer to the document `examples/active_demo/Physics_Model_in_OEDevice.pdf`.
 
 
 <br/>

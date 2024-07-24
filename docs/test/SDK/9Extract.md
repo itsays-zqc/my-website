@@ -756,7 +756,7 @@ The simulation results are extracted by the `extract` function in SDK.
 ## 8.5 DDM
 ### 8.5.1 Extract generation rate
 
-Generation Rate is extracted from result_afdtd (result of AFDTD simulation). The format is
+Generation Rate is extracted from result_afdtd (result of FDTD simulation). 
 
 ```python
 result_generate = result_afdtd.run_generation_rate_analysis(name, monitor, average_dimension, light_power, coordinate_unit, field_length_unit)

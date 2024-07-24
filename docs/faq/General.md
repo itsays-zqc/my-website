@@ -220,7 +220,7 @@ Setting Up Group Licensing Checkout Mode:
 
 ![](../../static/img/faq/General/8.png)
 
-## How to configure a jupyter environment for AIO SDK?
+## How to configure a jupyter environment for maxoptics_sdk?
 
 In the command line, activate the virtual environment where the All-in-One SDK is located, and then follow these steps:
 

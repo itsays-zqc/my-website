@@ -11,7 +11,7 @@ This example introduces the modeling and optoelectronic simulation of a vertical
 
 ## 1. Overview
 
-This example utilizes FDTD simulation to obtain the optical field distribution in the Ge absorption layer. Subsequently, the photo-induced carrier generation rate is calculated based on the optical field, which is then imported into the OEDevice simulation to obtain the photo current. We also provide scripts for dark current, capacitance and resistance, frequency response, and saturation power. These simulations are divided into separate scripts, and they all call a unified script for modeling and material setup, making it convenient for modifications and management.
+This example utilizes FDTD simulation to obtain the optical field distribution in the Ge absorption layer. Subsequently, the photo-induced carrier generation rate is calculated based on the optical field, which is then imported into the DDM simulation to obtain the photo current. We also provide scripts for dark current, capacitance and resistance, frequency response, and saturation power. These simulations are divided into separate scripts, and they all call a unified script for modeling and material setup, making it convenient for modifications and management.
 
 
 <br/>
@@ -1688,7 +1688,7 @@ For the result extraction:
 
 ### 3.4 Optical generation rate
 
-This section performs a FDTD simulation to obtain the optical field profile in the structure of `"Ge"`, and then calculate the photo-induced carrier generation rate. The average of the optical generation rate in the light propagating direction, which is the x-direction, is then taken to obtain the profile in the yz plane to be imported to the OEDevice simulation. The script is in the `VPD01_FDTD.py` file.
+This section performs a FDTD simulation to obtain the optical field profile in the structure of `"Ge"`, and then calculate the photo-induced carrier generation rate. The average of the optical generation rate in the light propagating direction, which is the x-direction, is then taken to obtain the profile in the yz plane to be imported to the DDM simulation. The script is in the `VPD01_FDTD.py` file.
 
 
 <br/>
@@ -2746,7 +2746,7 @@ Description:
 
 
 
-For the detailed introduction about electronic parameters, please refer to the document `examples/active_demo/Physics_Model_in_OEDevice.pdf`.
+For the detailed introduction about electronic parameters, please refer to the document `examples/active_demo/Physics_Model_in_DDM.pdf`.
 
 
 <br/>

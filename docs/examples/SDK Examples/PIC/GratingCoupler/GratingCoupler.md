@@ -240,8 +240,6 @@ Extract data using `extract`, where `data` is the calculation result data, `save
 if run_options.extract and run_options.run:
     fdtd_res.extract(data='fdtd:power_monitor',savepath=f'{plot_path}02_x_normal_abs(T)',
                         monitor_name='x_normal',attribute='T',target='line',plot_x='wavelength',real=True,imag=True,export_csv=True,show=False)
-    fdtd_res.extract(data='fdtd:power_monitor',savepath=f'{plot_path}02_y_normal_abs(T)',
-                        monitor_name='y_normal',attribute='T',target='line',plot_x='wavelength',real=True,imag=True,export_csv=True,show=False)
     fdtd_res.extract(data='fdtd:power_monitor',savepath=f'{plot_path}02_y_normal_E_{wavelength}_um',
                         monitor_name='y_normal',target="intensity",attribute="E",real=True,imag=False,
                         wavelength=f"{wavelength}",plot_x="x",plot_y="z",show=False,export_csv=True,)

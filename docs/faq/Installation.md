@@ -140,8 +140,6 @@ View SDK results: After the simulation is completed, users can view and check th
 
 ![](../../static/img/faq/Installation/install/install28.png)
 
-## How to
-
 ## How to configure and use group services?
 
 Our Max-Optics series products utilize group authorization services to provide a secure and reliable software protection and authorization management solution. The same licensing configuration method is available for end-users. Since standalone active software products involve and utilize third-party software, you will need to separately configure the license for third-party software.

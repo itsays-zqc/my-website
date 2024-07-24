@@ -13,7 +13,8 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 **Solver Physics**: 
 
-**Feature Description**: 
+Discretize and solve the carrier drift-diffusion model equations on unstructured grid points using the Finite Volume Method (FVM), obtain the carrier and potential distributions on the grid points, and further obtain the relevant electrical characteristics of the device. Supports steady-state/transient/AC small signal simulation, supports modification of material band structure/density of states/mobility/composite and other related models and parameters, supports importing doping distribution, photogenerated carrier generation rate distribution, and supports high-performance multi-threaded computing.
+
 
 ## 1 Simulation
 
@@ -172,6 +173,7 @@ Users could define the time of on and off source from parameters of "Time Start"
 
 - `Electron s0`: Surface recombination velocity of electrons.
 - `Hole s0`: Surface recombination velocity of holes.
+
 ![](../../../static/img/tutorial/simulation/DDM/SurfRecom_Gen.png)
 
 #### 4.2.2 Geometry Label
@@ -258,7 +260,7 @@ To calculate optical current in simulations, users need to import optical genera
 
 ### 5.1 Data Space
 
-Users can select "Import Generation" in the popup within the "Data Space" section. Then, by clicking "Select" in the "Import Generation Data," they can choose the required "gfile" file.
+Users can select "Import Generation" in the popup within the "Data Space" section. Then, by clicking "Select" in the "Import Generation Data", they can choose the required "gfile" file.
 
 ![](../../../static/img/tutorial/Source/DataSpace_Gener.png)
 

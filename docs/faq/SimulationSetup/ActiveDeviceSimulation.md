@@ -47,9 +47,7 @@ def add_ddm_settings(pj: Project, run_options: RunOptions):
 ### 2.1 Function doping
 
 When `type` is set to `"n"` or `"p"`, function doping is applied. In this case, `type` also means the doping species, with `"n"` for donor and `"p"` for acceptor.
-
 <br/>
-
 Property list of function doping:
 
 |                               | default | type  | notes                                              |
@@ -942,8 +940,6 @@ Description:
 
 < br/>
 
-### 9.1 Electrical local mesh in a rectangle region
-
 Electrical local mesh in a rectangle region is added and set up through `pj.LocalMesh()` function. The format is
 
 ```python
@@ -1027,6 +1023,7 @@ st.add_emesh(name="local_mesh", type="EMesh", property={
                      "growth_ratio": 2}
     })
 ```
+
 <br/>
 
 

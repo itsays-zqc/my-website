@@ -67,11 +67,6 @@ To learn more about our SDK software products, please visit the 'Max-Optics SDK'
 Around complex application requirements, Max-Optics Studio has created a variety of functional combinations in the physical modeling, simulation calculation, result processing, and other stages of the simulation process to help designers quickly optimize device performance and iterate design solutions for different applications. The table below summarizes some commonly used functions in the design process.
 
 
-| FDTD Module                                                   |  Shared Module | EME Module                                                     |
-| :----------------------------------------------------------- | :----------------------------------------------------------- | :----------------------------------------------------------- |
-| • Mode/Gaussian/Import source<br/>• PML/PEC/Symmetric/Anti-Symmetric boundary<br/>• 0D/1D/2D/3D frequency monitor<br/>• 0D/1D/2D/3D time monitor <br/>• Early Shutoff<br/>• Transmission calculation<br/>• Mode expansion<br/>• S-parameters calculation<br/>• Global parameter sweeping<br/>• Multi-threaded computing | • 3D Modeling•<br/> GDS import<br/>• Tilt slope of waveguide profile<br/>• Non-Uniform/Uniform Mesh<br/>• Conformal Mesh Refinement<br/>• Standard material library<br/>• Custom isotropic/diagonally<br/>anisotropic materials<br/>• Far field | • Effective Index Calculation<br/>• Group Index Calculation<br/>• Arbitrary port settings<br/>• PEC/PMC/PML boundary<br/>• 2D frequency domain monitor<br/>• S-parameter calculation<br/>• Frequency Sweeping<br/>• Group span quick sweeping<br/>• Overlap Analysis<br/>• Multi-threaded Computing |
-
-
 |         FDTD Module       |            EME Module     |       FDE Module          |       Shared Module       |
 |:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|
 |Mode/Gaussian/Import source|   Arbitrary port settings |PML/PEC/Symmetric/Anti-Symmetric/Periodic boundary|3D Modeling  |
@@ -172,12 +167,11 @@ Software Support Team:
 
 Our software support team consists of experienced engineers dedicated to software product feature and algorithm development. They also provide license verification, software, and computing platform installation services to customers.
 
+Feel free to reach out to us via phone or email:
 
-
-Feel free to reach out to us via phone or email:：
-Phone：150 6666 1688
-E-mail：sales@max-optics.com
-E-mail：support@max-optics.com
+- Phone：150 6666 1688
+- E-mail：sales@max-optics.com
+- E-mail：support@max-optics.com
 
 
 ## How to access technical support services?

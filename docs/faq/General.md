@@ -23,24 +23,11 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 ### Company Profile:
 
-<div class="text-justify">
 
 Shanghai Max-Optics Information Technology Co.,Ltd was established in August 2018. With the support of the research team from Shandong University, the company has developed electromagnetic field visualization software and hardware products covering microwave and optical frequency bands, based on solid electromagnetic field simulation and analysis theory and technology foundation, as well as comprehensive capabilities in automated equipment design and manufacturing, software design and development. These products provide customers with comprehensive solutions for electromagnetic field simulation, design, analysis, and measurement.
 
 The company's business focuses on 5G, optical communication, optoelectronic sensing, optical computing, industrial IoT, and defense security. It mainly covers two major businesses: electromagnetic field simulation and measurement. The electromagnetic simulation business includes simulation design software for passive/active optoelectronic chips and systems, optoelectronic chip simulation design services, and microwave/radio frequency antenna simulation design services. The electromagnetic field measurement business includes optoelectronic device measurement and parameter extraction platforms. The microwave millimeter wave measurement business mainly includes 5G NR OTA testing systems, planar/cylindrical/spherical near-field and far-field antenna testing systems. The company is customer-oriented, starting from the direct needs of customers, and completes turnkey projects that cover customized design, manufacturing, development, and delivery of automated measurement equipment hardware and software. It also provides value-added services for electromagnetic field design and measurement analysis.
-</div>
 
-
-<!-- | 曼光     | 曼光     | 曼光科技     |
-| ------- | ------- | ------- |
-| 单元格1 | 单元格2 | 单元格3 |
-| 单元格4 | 单元格5 | 单元格6 |
- -->
-<!-- 这是一个行内公式： <InlineMath math="E=mc^2" />
-
-这是一个块级公式：
-
-<BlockMath math="\sum_{i=1}^{n} i = \frac{n(n+1)}{2}" /> -->
 
 ## What are our advantages?
 
@@ -50,7 +37,6 @@ We are the first company in the industry to offer a "local + cloud" computing pl
 
 As semiconductor devices continue to evolve towards smaller sizes and more complex structures, the use of simulation software solutions offers numerous advantages over laboratory measurement methods, playing a crucial role in semiconductor device development. Highly accurate algorithms enable rapid modeling and simulation of devices, allowing the observation of internal physical processes. Through simulation software, customers can not only design new and complex device structures but also propose solutions to optimize device performance by altering operating conditions or various physical quantities and parameters within device models. From simulating photonic integrated circuits to various types of simulations in different fields, spanning from materials to systems, the use of simulation software not only reduces production costs, shortens development cycles, and increases productivity but also provides clear and concise results data for researchers in various domains to collaborate on complex projects more effectively.
 
-</div>
 Max-Optics Studio's simulation design platform for optical chips focuses on the simulation needs of optoelectronic devices in the integrated optoelectronic chip design phase, providing key functions such as device modeling, device simulation, and performance optimization. This comprehensive solution composed of these functions can help designers accelerate the development of groundbreaking optical products, while improving product performance, reliability, and yield. With high-precision physical solvers and comprehensive functions, Max-Optics Studio can provide a user-friendly workflow for designing cross-scale systems (spanning from nanoscale to macroscale) and support numerous application scenarios.
 
 
@@ -58,7 +44,7 @@ Max-Optics Studio's simulation design platform for optical chips focuses on the 
 
 We offer two software forms based on 'local + cloud' integration. The first is a software development toolkit SDK based on Python scripting, which includes modeling, simulation, post-processing, and data visualization capabilities. It can call all modules and is user-friendly, easy to learn, and easy to extend. The second is a GUI user interface, enabling interactive simulations using both forms. Additionally, we incorporate advanced grid optimization and GPU acceleration to reduce simulation times. We also provide virtual machine and Windows versions to accommodate various simulation environments preferred by our customers.
 
-</div>
+
 Max-Optics Studio's software model of "local + cloud" breaks the geographical limitations, allowing users to model, simulate, and view simulation results on any platform at any time. In addition to the GUI user interface, Max-Optics Studio also provides a software development kit (SDK) based on Python scripts, including modeling, simulation, post-processing, and data visualization functions. It can call all modules and has advantages such as user-friendliness, low learning cost, and easy scalability.
 
 ***Key Product Advantages:***
@@ -98,8 +84,8 @@ Around complex application requirements, Max-Optics Studio has created a variety
 |Mode expansion          | Wavelength sweep          |                      |           Far-field |
 |S-parameter calculation | structural length sweep|                         |                     |
 |Global parameter scanning | multi-threaded computation|                    |                     |
-|Multi-threaded computation|                         |                      |                     | 
-|Multi GPU acceleration  |                           |                      |                     | 
+|Multi-threaded computation|                         |                      |                     |
+|Multi GPU acceleration  |                           |                      |                     |
 
 
 
@@ -277,3 +263,4 @@ path = "C:/Program files/Python/python.exe"
 </font>
 
 </div>
+

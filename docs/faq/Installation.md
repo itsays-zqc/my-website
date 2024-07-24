@@ -8,7 +8,7 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 <font face = "Calibri">
 
-### How to Install Max-Optics GUI Software? 
+### How to Install Max-Optics GUI Software?
 
 Max-Optics Studio Local Passive Software Installation
 
@@ -20,22 +20,22 @@ Max-Optics Studio Local Passive Software Installation
 
 Find the "Setup.exe" package, double-click to open the installation package.
 
-![](../../static/img/faq/Installation/install/install1.png) 
+![](../../static/img/faq/Installation/install/install1.png)
 
 If there is a pop-up window come out, please press the “Run” button and wait to run.
 
-![](../../static/img/faq/Installation/install/install2.png) 
+![](../../static/img/faq/Installation/install/install2.png)
 
 Check the contents and click "I Accept The Agreement" item, then click "Next".
 
-![](../../static/img/faq/Installation/install/install3.png ) 
+![](../../static/img/faq/Installation/install/install3.png )
 
 #### 2. Select Destination Location
 
 User can custom destination location by pressing “Browse...” button , or just use the auto-default
 location, then press the “Next” button.
 
-![](../../static/img/faq/Installation/install/install4.png ) 
+![](../../static/img/faq/Installation/install/install4.png )
 
 #### 3.  Configuration License
 
@@ -57,7 +57,7 @@ Choose method two: please contact ManGuang staff and configure according to the 
 
 Active Mulaes:<br />
 
-Configuration windows will be altered if the software has active modules.Active license enhances the licensing file and license server for specific users. 
+Configuration windows will be altered if the software has active modules.Active license enhances the licensing file and license server for specific users.
 After choosing "License Server”, user may choose "Host" and "Port" and click "Next".
 
 ![](../../static/img/faq/Installation/install/install29.png)
@@ -105,7 +105,7 @@ Please press “Finish” button to exit setup, then click the shortcuts to invo
 
 ![](../../static/img/faq/Installation/install/install22.jpg)
 
-##### 3.7 Complete 
+##### 3.7 Complete
 
 Once the installation is complete, the user can find a shortcut to the software on their desktop.
 
@@ -138,9 +138,9 @@ Workflow: Navigate to the examples folder, select a sample library script, and t
 
 View SDK results: After the simulation is completed, users can view and check the simulation results of fast_fdtd in the drawing files in the fast_demo folder.
 
-![](../../static/img/faq/Installation/install/install28.png.png)
+![](../../static/img/faq/Installation/install/install28.png)
 
-## How to 
+## How to
 
 ## How to configure and use group services?
 
@@ -155,11 +155,11 @@ After installing the relevant Max-Optics software product, the process for confi
 
 2、In the software installation package, locate the BitAnswer user client configuration software, typically found within the BitAnswer folder.
 
-![](../../static/img/faq/Installation/37.png) 
+![](../../static/img/faq/Installation/37.png)
 
 3、Double-click the configuration software to open the configuration interface.
 
-![](../../static/img/faq/Installation/38.png) 
+![](../../static/img/faq/Installation/38.png)
 
 4、You can configure the License service address using either the "自动查找" or "手动设置" method.
 
@@ -167,29 +167,29 @@ After installing the relevant Max-Optics software product, the process for confi
 
 ① In the "集团服务器列表" select the corresponding IP address row. If there is no corresponding IP address, click the "刷新" button.
 
-![](../../static/img/faq/Installation/39.png) 
+![](../../static/img/faq/Installation/39.png)
 
 ② In the "集团服务器列表" select the corresponding IP address row, and then click the "应用" button.
 
-![](../../static/img/faq/Installation/40.png) 
+![](../../static/img/faq/Installation/40.png)
 
 ③ A prompt saying "服务器设置成功" will appear. Click the "确定" button.
 
-![](../../static/img/faq/Installation/41.png) 
+![](../../static/img/faq/Installation/41.png)
 
 ④ In the "集团服务器设置工具" window, click the "退出" button. Your configuration is now complete.
 
-![](../../static/img/faq/Installation/42.png) 
+![](../../static/img/faq/Installation/42.png)
 
 (2) Manual Settings
 
 ① In the "设置集团服务器地址" window, enter the IP address and port number that you obtained, then click the "设置" button.
 
-![](../../static/img/faq/Installation/43.png) 
+![](../../static/img/faq/Installation/43.png)
 
 ② In the "Group Server Configuration Tool" window, click the "Exit" button. Your configuration is now complete.
 
-![](../../static/img/faq/Installation/44.png) 
+![](../../static/img/faq/Installation/44.png)
 
 4、Max-Optics Studio Active Standalone Version and SDK Extra Configuration
 
@@ -203,33 +203,33 @@ First, place the license file, and then configure the environment variables. Thi
 
 ① Start by placing the license file in a specified directory. The path for this directory can be chosen based on your preferences. In this document, the author has set the path as shown in the following image:
 
-![](../../static/img/faq/Installation/45.png) 
+![](../../static/img/faq/Installation/45.png)
 
 ② Open the system environment variable configuration interface and create a new variable in the system variables. The variable name should be "LM_LICENSE_FILE" (it must be this name) , and the value of the variable should be the absolute path to the license file.
 
 Open the "Search" window and type "environment variables" to find "Edit the system environment variables." Select and open this window.
 
-![](../../static/img/faq/Installation/46.png) 
+![](../../static/img/faq/Installation/46.png)
 
 Select the "Advanced" tab, then choose the "Environment Variables" button.
 
-![](../../static/img/faq/Installation/47.png) 
+![](../../static/img/faq/Installation/47.png)
 
 Click the "New" button.
 
-![](../../static/img/faq/Installation/48.png) 
+![](../../static/img/faq/Installation/48.png)
 
 After filling in the "Variable name" and "Variable value," click the "OK" button to return to the previous screen.
 
-![](../../static/img/faq/Installation/49.png) 
+![](../../static/img/faq/Installation/49.png)
 
 After filling in the "Variable name" and "Variable value," click the "OK" button to return to the previous screen.
 
-![](../../static/img/faq/Installation/50.png) 
+![](../../static/img/faq/Installation/50.png)
 
 On the interface, click the "OK" button to complete the setup.
 
-![](../../static/img/faq/Installation/51.png) 
+![](../../static/img/faq/Installation/51.png)
 
 (1) Configuration Method 2
 
@@ -239,13 +239,13 @@ Formal version license files are only applicable to Configuration Method 2, but 
 
 Run "ipconfig /all" in the command line to view the Windows IP configuration. Take note of two pieces of data: the hostname and the physical address of the Ethernet adapter, as you will need them in the following steps.
 
-![](../../static/img/faq/Installation/52.png) 
+![](../../static/img/faq/Installation/52.png)
 
 ② Modify the License File
 
 You need to modify the license file (*.lic)  that was provided to you. The normal content should be as follows:
 
-![](../../static/img/faq/Installation/53.png) 
+![](../../static/img/faq/Installation/53.png)
 
 In the first line, modify the data according to your local machine. Replace "MG-SE-limao-01" with your machine's hostname, and "1C697AF3CF58" with your machine's physical address (do not include the hyphens when inputting) .
 
@@ -257,17 +257,17 @@ The third line must be "USE_SERVER," also keep it consistent with the image.
 
 Locate the directory where you have installed the third-party software (default installation path: C:\Program Files\Genius) . Enter the "Bin" folder and copy the modified license file there. Then, double-click the "shell.bat" located in the same directory.
 
-![](../../static/img/faq/Installation/54.png) 
+![](../../static/img/faq/Installation/54.png)
 
 ④ Enter the Activation Service Command
 
 In the startup window, enter the command: "lmgrd -c license_filename.lic," where the "-c" option is the certificate address path for the third-party software.
 
-![](../../static/img/faq/Installation/55.png) 
+![](../../static/img/faq/Installation/55.png)
 
 After successful validation, two windows will pop up. Do not close these windows while using the third-party software.
 
-![](../../static/img/faq/Installation/56.png) 
+![](../../static/img/faq/Installation/56.png)
 
 Group authorization services support a specific number of users. When the user limit is reached, it will prompt: "The number of activated machines has reached the limit, and the authorization code cannot be used on more machines." For more common issues and error messages, please visit the following URL: https://bit.bitanswer.cn/doc/?t=welcome
 

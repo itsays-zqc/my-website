@@ -15,7 +15,7 @@ The mode source is used to inject a guided mode into the simulation region in FD
 
 ### 1.1 General tab
 
-|![](../../static/img/tutorial/Source/Source1.png)|
+|![](../../../static/img/tutorial/Source/Source1.png)|
 | :------------------------------------------------------------: |
 
 
@@ -36,7 +36,7 @@ The mode source is used to inject a guided mode into the simulation region in FD
 ③ Mode Index: This field sets the ID number of mode source calculated modes using FDE Analysis. It is only enabled when "Mode Selection" is "User Select".
 
 
-|![](../../static/img/tutorial/Source/1.png )|
+|![](../../../static/img/tutorial/Source/1.png )|
 | :------------------------------------------------------------: |
 
 ④ Import Data:When 'Mode Selection' selects 'User Import', a mode field profile can be imported as the mode light source through 'Import Data'. In the pop-up dialog box, use 'Select' to support importing file formats including mat and zbf.
@@ -44,7 +44,7 @@ The mode source is used to inject a guided mode into the simulation region in FD
 ⑤ View Data: You can use this field to check the mode field profile imported by “Import Data”.
 
 
-|![](../../static/img/tutorial/Source/2.png )|
+|![](../../../static/img/tutorial/Source/2.png )|
 | :------------------------------------------------------------: |
 
 
@@ -59,7 +59,7 @@ The mode source is used to inject a guided mode into the simulation region in FD
 
 ### 1.2 Geometry tab
 
-|![](../../static/img/tutorial/Source/3.png )|
+|![](../../../static/img/tutorial/Source/3.png )|
 | :------------------------------------------------------------: |
 
 1) **X, Y, Z**: The center position of the simulation region.
@@ -74,7 +74,7 @@ The mode source is used to inject a guided mode into the simulation region in FD
 
 ### 1.3 Waveform tab
 
-|![](../../static/img/tutorial/Source/4.png )|
+|![](../../../static/img/tutorial/Source/4.png )|
 | :------------------------------------------------------------: |
 
 1) **Waveform**: This field sets the waveform of the light source. You can use predefined waveforms, such as "Waveform_1550", "Waveform_1310" or "Visible_Light". You can also use 'User Custom' to set a new desired waveform on this interface.
@@ -107,7 +107,7 @@ The mode source is used to inject a guided mode into the simulation region in FD
 
 ### 2.1 General tab
 
-|&emsp;&ensp;![](../../static/img/tutorial/Source/Source7.png )&emsp;&emsp;|
+|&emsp;&ensp;![](../../../static/img/tutorial/Source/Source7.png )&emsp;&emsp;|
 | :------------------------------------------------------------: |
 
 
@@ -141,7 +141,7 @@ The mode source is used to inject a guided mode into the simulation region in FD
 
 ### 2.2 Geometry tab
 
-|![](../../static/img/tutorial/Source/Source8.png )|
+|![](../../../static/img/tutorial/Source/Source8.png )|
 | :------------------------------------------------------------: |
 
 The geometry tab contains options to change the size and location of the sources.You can set the position and size of the light source through X, X Span, Y, Y Span, Z and Z Span. Note that when the Injection Axis is selected as X-Axis, X Span is automatically set to 0 and cannot be edited.
@@ -149,7 +149,7 @@ The geometry tab contains options to change the size and location of the sources
 
 ### 2.3 Waveform Tab
 
-|![](../../static/img/tutorial/Source/5.png )|
+|![](../../../static/img/tutorial/Source/5.png )|
 | :------------------------------------------------------------: |
 
 The waveform of Gaussian light source is similar to that of mode light source, and users can set it by analogy with mode light source.
@@ -161,7 +161,7 @@ The waveform of Gaussian light source is similar to that of mode light source, a
 
 ### 3.1 General tab
 
-|![](../../static/img/tutorial/Source/6.png )|
+|![](../../../static/img/tutorial/Source/6.png )|
 | :------------------------------------------------------------: |
 
 1) **Dipole Type:**: Two options are available: “Electric Dipole” and “Magnetic Dipole”.
@@ -177,7 +177,7 @@ The waveform of Gaussian light source is similar to that of mode light source, a
 
 ### 3.2 Geometry tab
 
-|![](../../static/img/tutorial/Source/7.png )|
+|![](../../../static/img/tutorial/Source/7.png )|
 | :------------------------------------------------------------: |
 
 1) **X, Y, Z**: The center position of the simulation region.
@@ -192,7 +192,7 @@ The waveform of Gaussian light source is similar to that of mode light source, a
 
 ### 3.3 Waveform Tab
 
-|![](../../static/img/tutorial/Source/8.png )|
+|![](../../../static/img/tutorial/Source/8.png )|
 | :------------------------------------------------------------: |
 
 The waveform of Gaussian light source is similar to that of mode light source, and users can set it by analogy with mode light source.
@@ -202,7 +202,7 @@ The waveform of Gaussian light source is similar to that of mode light source, a
 
 **Features Description:** Global waveforms settings include only one part, the standard waveform list. There are three default waveforms in the standard waveform list, includes Waveform_1550, Waveform_1310 and Visible_Light. The default waveforms in the standard waveform list cannot be edited directly. user can add a new waveform via right-click in the standard waveform list. User only can delete newly added waveforms in the standard waveform list.
 
-|![](../../static/img/tutorial/waveform/waveforms.png) |
+|![](../../../static/img/tutorial/waveform/waveforms.png) |
 | :------------------------------------------------------------: |
 
 ## 5 Optical Generation
@@ -213,9 +213,9 @@ To calculate optical current in simulations, users need to import optical genera
 
 Users can select "Import Generation" in the popup within the "Data Space" section. Then, by clicking "Select" in the "Import Generation Data," they can choose the required "gfile" file.
 
-![](../../static/img/tutorial/Source/DataSpace_Gener.png)
+![](../../../static/img/tutorial/Source/DataSpace_Gener.png)
 
-![](../../static/img/tutorial/Source/DataSpace_ImpGenRate.png)
+![](../../../static/img/tutorial/Source/DataSpace_ImpGenRate.png)
 
 - `Name`: Users can read and edit the name of this generation rate, which defaults to the name of the imported file.
 - `Choose Data to Add`:
@@ -226,15 +226,15 @@ Users can select "Import Generation" in the popup within the "Data Space" sectio
 
 Users can access "Optical Generation" under "Sources" in the simulation menu.
 
-![](../../static/img/tutorial/Source/DataSpac3_GenRatData.png)
+![](../../../static/img/tutorial/Source/DataSpac3_GenRatData.png)
 
 - `Import`:
   - `Generation Data`:
 Users can select data from the Data Space of the project or shared files, or import from a new generation file.
-  - `Source Fraction`: 
+  - `Source Fraction`:
 Multiplies the dataset values by the scale factor.
 
-![](../../static/img/tutorial/Source/DataSpace_Trans.png)
+![](../../../static/img/tutorial/Source/DataSpace_Trans.png)
 
 - `Transient`:
 Choosing "Uniform" requires users to define "Amplitude" and "Time Delay”.
@@ -244,8 +244,8 @@ For `Pulse`, users should define parameters such as `High Amplitude`, `Low Ampli
 - `Pulse`:
   - `High Amplitude`: Amplitude of pulse after on shutter.
   - `Low Amplitude`: Amplitude of pulse after off shutter.
-  - `Time Delay`: 
-   Time Delay, Rising Edge, Falling Edge, Pulse Width, and Period: Specify timing and duration parameters. The period's duration should be large. 
+  - `Time Delay`:
+   Time Delay, Rising Edge, Falling Edge, Pulse Width, and Period: Specify timing and duration parameters. The period's duration should be large.
 
 </font>
 

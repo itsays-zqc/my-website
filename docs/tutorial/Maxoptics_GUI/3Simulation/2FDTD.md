@@ -18,7 +18,7 @@ sidebar_position: 2
 
 ### 1.1 General tab
 
-|!['fde1'](../../../static/img/tutorial/simulation/fdtd/1.png)|
+|!['fde1'](../../../../static/img/tutorial/simulation/fdtd/1.png)|
 | :------------------------------------------------------------: |
 
 1) **Dimension**: Number of dimensions of the simulation region. (Default: 3D)
@@ -41,7 +41,7 @@ sidebar_position: 2
 
 ### 1.2 Geometry tab:
 
-|![](../../../static/img/tutorial/simulation/fdtd/geometryTab.png)|
+|![](../../../../static/img/tutorial/simulation/fdtd/geometryTab.png)|
 | :------------------------------------------------------------: |
 
 1) **X, Y, Z**: The center position of the simulation region.
@@ -58,7 +58,7 @@ sidebar_position: 2
 ###  1.3 Mesh Settings tab:
 
 
-|![](../../../static/img/tutorial/simulation/fdtd/meshSetting.png)|
+|![](../../../../static/img/tutorial/simulation/fdtd/meshSetting.png)|
 | :------------------------------------------------------------: |
 
 1) **Mesh Type:** Algorithms for generating the mesh are available, to be explained as follows:
@@ -82,7 +82,7 @@ sidebar_position: 2
 
 ### 1.4 Boundary Conditions tab:
 
-|![](../../../static/img/tutorial/simulation/fdtd/boundaryConditionTab.png)|
+|![](../../../../static/img/tutorial/simulation/fdtd/boundaryConditionTab.png)|
 | :------------------------------------------------------------: |
 
 1) **PML:** A PML (Perfectly Matched Layer) mimics in essence an ideally open (or reflectionless) boundary upon which is  designed to absorb all the incident electromagnetic waves with impedance matched materials to eliminate reflections.
@@ -98,7 +98,7 @@ sidebar_position: 2
 
 ### 1.5 Advanced Options tab:
 
-|![](../../../static/img/tutorial/simulation/fdtd/advancedOptionsTab.png)|
+|![](../../../../static/img/tutorial/simulation/fdtd/advancedOptionsTab.png)|
 | :------------------------------------------------------------: |
 
 1) **Auto Shutoff :** Stops the simulation when the energy in the simulation goes below the “Auto Shutoff Min” when the “Use Early Shutoff ” state is on , you can set min auto shutoff (Default: 1e-4) and down sample time (Default: 200)

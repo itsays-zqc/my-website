@@ -19,7 +19,7 @@ Press the "Port" button in the menu bar, and select "FDTD Port" from the drop-do
 
 ### 1.1 Geometry tab
 
-|!['Port1'](../../static/img/tutorial/Port/Port1.png)|
+|!['Port1'](../../../static/img/tutorial/Port/Port1.png)|
 | :------------------------------------------------------------: |
 
 1) **X,Y,Z:**
@@ -39,7 +39,7 @@ X, Y, Z span of the simulation region.
 
 ### 1.2 Modal properties tab
 
-|!['Port3'](../../static/img/tutorial/Port/Port3.png )|
+|!['Port3'](../../../static/img/tutorial/Port/Port3.png )|
 | :------------------------------------------------------------: |
 
 1) **Injection Axis:**
@@ -77,7 +77,7 @@ Selecting this option enables the bent waveguide solver to work with the followi
 
 ### 2.1 Geometry tab
 
-|!['Port8'](../../static/img/tutorial/Port/emeport1.png)|
+|!['Port8'](../../../static/img/tutorial/Port/emeport1.png)|
 | :------------------------------------------------------------: |
 
 1) **Port Location**: The port can be selected to locate at the left or right end of the EME solver region.
@@ -97,7 +97,7 @@ simulation span inheritted from the EME simulation region is employed. (Default:
 
 ### 2.2 EME Port tab
 
-|!['Port8'](../../static/img/tutorial/Port/emeport2.png)|
+|!['Port8'](../../../static/img/tutorial/Port/emeport2.png)|
 | :------------------------------------------------------------: |
 
 1) **Mode Selection:**

@@ -14,7 +14,7 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 **Features Description**: The EME analysis window can be opened in the “Analyses” of “Objects Tree”. By right clicking “EME Analysis” to add a new  analysis in this project. But before running the analysis, it’s necessary to run the EME solver first. in the drop-down menu “Run” which will calculate the modes at each cell of the EME solver region, changing the simulation to Analysis mode. In Analysis mode, we can use the EME analysis window to propagate the fields and calculate scattering parameters (s-matrix) for the structure. The propagation distances can be changed in analysis mode, and the fields can be propagated without recalculating the modes. In addition, it is possible to compare the s-matrix results for a different number of modes (up to the number used in the simulation), without having to recalculate the modes.
 
-|![](../../static/img/tutorial/analysis/1.png)|
+|![](../../../static/img/tutorial/analysis/1.png)|
 | :------------------------------------------------------------: |
 
 1) **Make Passive/None/Energy Conservation**: Choose the energy conservation type for the Page S-matrix. The Page S-matrix is calculated at every Page of the neighboring cells accounting for the modes at the left- and right- hand sides of the Page.
@@ -48,7 +48,7 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 ### 2.1 Modal Analysis Tab
 
-|![](../../static/img/tutorial/analysis/2.png)|
+|![](../../../static/img/tutorial/analysis/2.png)|
 | :------------------------------------------------------------: |
 
 This tab provides two options “Set Calculation parameters” and “Power and Impedance Integration”, where you can calculate the integration of specific mode in selected region.
@@ -71,7 +71,7 @@ This tab provides two options “Set Calculation parameters” and “Power and 
 
 6) **Bent waveguide**: Three parameters, radius, orientation and central location as illustrated in the figure below, suffice for a description of the bent waveguide structure.
 
-|![](../../static/img/tutorial/analysis/3.png)|
+|![](../../../static/img/tutorial/analysis/3.png)|
 | :------------------------------------------------------------: |
 
 
@@ -89,17 +89,17 @@ We have XY, YZ, and ZX coordinate systems, in which the horizontal direction is 
 
 9) **Mode Plot Area**：To view the results in the Mode Plot Area.
 
-|![](../../static/img/tutorial/analysis/5.png)|
+|![](../../../static/img/tutorial/analysis/5.png)|
 | :------------------------------------------------------------: |
 
 10) **Mode List**:The mode list shows all of the modes that were calculated in the modal analysis tab along with your effective index, group index (if applicable), wavelength, loss and TE polarization.
 
-|![](../../static/img/tutorial/analysis/6.png)|
+|![](../../../static/img/tutorial/analysis/6.png)|
 | :------------------------------------------------------------: |
 
 #### 2.1.2 Power and Impedance Integration
 
-|![](../../static/img/tutorial/analysis/7.png)|
+|![](../../../static/img/tutorial/analysis/7.png)|
 | :------------------------------------------------------------: |
 
 1) **Integration Shape**：To calculate the integration of the mode distribution within the selected region. This selected region provides two options: “Rectangular” and “Circular”.
@@ -120,7 +120,7 @@ We have XY, YZ, and ZX coordinate systems, in which the horizontal direction is 
 
 This tab is used to analyse the attributes of modes in the range of start frequency and stop frequency.
 
-|![](../../static/img/tutorial/analysis/8.png)|
+|![](../../../static/img/tutorial/analysis/8.png)|
 | :------------------------------------------------------------: |
 
 1) **Track selected mode**: Check this option to enable tracking the modes selected from the mode list.
@@ -148,14 +148,14 @@ These settings are same as bent waveguide inside modal analysis tab.
 
 ## 3 Far Field
 
-|![](../../static/img/tutorial/analysis/9.png)|
+|![](../../../static/img/tutorial/analysis/9.png)|
 | :------------------------------------------------------------: |
 
 1) **Field Data**:Import the near-field data.There are two selections. The “Data Space” means importing the near-field data from this simulation project, which user already import from simulation results. The “New Data” allows user to import a new data.
 
 **Import File**
 
-|![](../../static/img/tutorial/analysis/10.png)|
+|![](../../../static/img/tutorial/analysis/10.png)|
 | :------------------------------------------------------------: |
 
 ① Name: To set the name of imported near-field data.
@@ -191,7 +191,7 @@ These settings are same as bent waveguide inside modal analysis tab.
 
 <BlockMath math="filter=\frac{a}{(a+b)} " />
 
-|![](../../static/img/tutorial/analysis/12.png)|
+|![](../../../static/img/tutorial/analysis/12.png)|
 | :------------------------------------------------------------: |
 
 ③ Projection Direction: To set the direction of projection, including “Forward” and “Backward”.
@@ -214,7 +214,7 @@ These settings are same as bent waveguide inside modal analysis tab.
 
 <BlockMath math="\text { overlap }=\left|\operatorname{Re}\left[\frac{\left(\int \overrightarrow{E_{1}} \times \overrightarrow{H_{2}^{*}} \cdot d \vec{S}\right)\left(\int \overrightarrow{E_{2}} \times \overrightarrow{H_{1}^{*}} \cdot d \vec{S}\right)}{\int \overrightarrow{E_{1}} \times \overrightarrow{H_{1}^{*}} \cdot d \vec{S}}\right] \frac{1}{\operatorname{Re}\left(\int \overrightarrow{E_{2}} \times \overrightarrow{H_{2}^{*}} \cdot d \vec{S}\right)}\right| " />
 
-|![](../../static/img/tutorial/analysis/13.png)|
+|![](../../../static/img/tutorial/analysis/13.png)|
 | :------------------------------------------------------------: |
 
 
@@ -240,7 +240,7 @@ Recenter: This pull-down button enables the user to recenter the X Shift, Y Shif
 
 3) **Create Beam**: The Beam tab enables the user to modify the default Gaussian beam for overlap evaluations, as well as to generate Gaussian beams in the deck which can be accessed via scripting. There are two options for defining Gaussian beams: the scalar approximation for the electric field or the fully vectorial beam profile(currently not supported).
 
-|![](../../static/img/tutorial/analysis/14.png)|
+|![](../../../static/img/tutorial/analysis/14.png)|
 | :------------------------------------------------------------: |
 
 ① **Beam Direction**: Options available for the direction of beam are 2D X normal, 2D Y normal and 2D Z normal.
@@ -257,7 +257,7 @@ Recenter: This pull-down button enables the user to recenter the X Shift, Y Shif
 
 --> Divergence angle: This is the angle of radiation spreading into the far field as measured, illustrated in the figure below. Positive/Negative angles correspond to diverging/converging beams, respectively.
 
-|![](../../static/img/tutorial/analysis/15.png)|
+|![](../../../static/img/tutorial/analysis/15.png)|
 | :------------------------------------------------------------: |
 
 ④ **Refractive index**: This is the refractive index of the homogeneous material inside which the Gaussian beam is present.
@@ -273,7 +273,7 @@ Sample Resolution: This specifies the beam resolution, the number of sampling po
 
 ## 5 Mode Expansion
 
-|![](../../static/img/tutorial/analysis/16.png)|
+|![](../../../static/img/tutorial/analysis/16.png)|
 | :------------------------------------------------------------: |
 
 1) **Import Data**:
@@ -314,16 +314,16 @@ Sample Resolution: This specifies the beam resolution, the number of sampling po
 
 ## 5 Generation Rate
 
-**Feature Description**: 
-The user can use the Power monitor simulation objects to extract the distribution of photogeneration rates in the device. 
+**Feature Description**:
+The user can use the Power monitor simulation objects to extract the distribution of photogeneration rates in the device.
 
-![](../../static/img/tutorial/analysis/GenerRate.png)
+![](../../../static/img/tutorial/analysis/GenerRate.png)
 
 **Import Data**:
 
 1. Power Monitor: Choice 3D power monitor from Monitors of Simulations.
 
-2. Average Dimension: Choice one’s average dimension of `X`,`Y` or `Z` for 2D simulation of power monitor. Choice the travels through injection plane of optical generation in source injuction direction. 
+2. Average Dimension: Choice one’s average dimension of `X`,`Y` or `Z` for 2D simulation of power monitor. Choice the travels through injection plane of optical generation in source injuction direction.
 
 3. Light Power: Define the amount of source power injected into the simulation.
 

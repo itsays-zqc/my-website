@@ -14,7 +14,7 @@ sidebar_position: 6
 
 ### 1.1 Geometry tab
 
-|![](../../static/img/tutorial/monitor/monitor_1.png)|
+|![](../../../static/img/tutorial/monitor/monitor_1.png)|
 | :------------------------------------------------------------: |
 
 1) **Monitor type**: This field selects a refractive index monitor that is perpendicular to different coordinate axes. You can choose "2D X-Normal", "2D Y-Normal", or "2D Z-Normal".
@@ -31,7 +31,7 @@ sidebar_position: 6
 
 7) **Index Preview**: You can use “Index Preview” to view the refractive index distribution of the structure before running the simulation. Double click to run “Index Preview” in the drop-down box of the refractive index monitor in the Object tree.
 
-|![](../../static/img/tutorial/monitor/1.png)|
+|![](../../../static/img/tutorial/monitor/1.png)|
 | :------------------------------------------------------------: |
 
 
@@ -42,7 +42,7 @@ Frequency domain field monitors work in the frequency domain and extract the fie
 
 ### 2.1 General tab
 
-|![](../../static/img/tutorial/monitor/monitor_3.png)|
+|![](../../../static/img/tutorial/monitor/monitor_3.png)|
 | :------------------------------------------------------------: |
 
 1) **Override Global Options:** This is a toggle for overriding the global monitor settings. Checking this option enables the user to specify the frequency spans and number of points at which frequency-domain data will be collected. Otherwise the following options should be specified from the global monitor settings.
@@ -66,7 +66,7 @@ Frequency domain field monitors work in the frequency domain and extract the fie
 
 ### 2.2 Geometry Tab
 
-|![](../../static/img/tutorial/monitor/monitor_4.png)|
+|![](../../../static/img/tutorial/monitor/monitor_4.png)|
 | :------------------------------------------------------------: |
 
 1)	**Monitor Type:** The monitor type and orientation, this option will control the available of spatial setting below, **Point, Linear X/Y/Z, 2D X-Normal/2D Y-Normal/2D Z-Normal, 3D** are included. ( Default: 2D X-normal)
@@ -88,7 +88,7 @@ Frequency domain field monitors work in the frequency domain and extract the fie
 <div class="centered">
 
 
-|![](../../static/img/tutorial/monitor/monitor_5.png)|
+|![](../../../static/img/tutorial/monitor/monitor_5.png)|
 | :------------------------------------------------------------: |
 
 
@@ -105,7 +105,7 @@ For 3D simulations, only part of the components are non-vanishing (i.e., for TE 
 
 <div class="centered">
 
-|![](../../static/img/tutorial/monitor/monitor_6.png)|
+|![](../../../static/img/tutorial/monitor/monitor_6.png)|
 | :------------------------------------------------------------: |
 
 
@@ -126,7 +126,7 @@ For 3D simulations, only part of the components are non-vanishing (i.e., for TE 
 
 **Notes:** Right-click on the **“Frequency-Domain Field and Power”** monitor in the object tree and utilize **“Preview Modes”** or **“Preview Index”** to pre-visualize modes or index distribution at the cross-section of the monitor. Once the calculation concludes, the Mode Analysis interface (Preview Index and Modes) will pop out. Follow the same steps to select **“Mode Expansion Analysis”** for advanced analysis of waveguide or fiber modes by right-clicking the **“Run Analysis”** button.
 
-|![](../../static/img/tutorial/monitor/2.png)|
+|![](../../../static/img/tutorial/monitor/2.png)|
 | :------------------------------------------------------------: |
 
 
@@ -138,7 +138,7 @@ For 3D simulations, only part of the components are non-vanishing (i.e., for TE 
 
 The general tab for the time  monitor includes options to edit the amount of data, and time period over which data is collected.
 
-|![](../../static/img/tutorial/monitor/fieldmonitor.png)|
+|![](../../../static/img/tutorial/monitor/fieldmonitor.png)|
 | :------------------------------------------------------------: |
 
 1) **Stop Method**: “**End of Simulation**”, “**Choose Stop Time**” and “**Choose Number of Snapshots**”.
@@ -151,7 +151,7 @@ The general tab for the time  monitor includes options to edit the amount of dat
 
 ### 3.2 Geometry tab
 
-|![](../../static/img/tutorial/monitor/fieldmonitor2.png)|
+|![](../../../static/img/tutorial/monitor/fieldmonitor2.png)|
 | :------------------------------------------------------------: |
 
 1) **Monitor Type**: The monitor type and orientation, this option will control the available of spatial setting below , “Point”, “Linear X”, “Linear Y”, “Linear Z”, “2D X-Normal”, “2D Y-Normal”, “2D Z-Normal”,3D are included. (Default: Point)
@@ -169,14 +169,14 @@ The general tab for the time  monitor includes options to edit the amount of dat
 
 ### 3.3 Data to Record tab
 
-|![](../../static/img/tutorial/monitor/monitor_17.png)|
+|![](../../../static/img/tutorial/monitor/monitor_17.png)|
 | :------------------------------------------------------------: |
 
 1) **Fields & Poynting vector and power:** Output quantities EX, EY, EZ, HX, HY, HZ, PX, PY, PZ: The user can select from the field components (EX, EY, EZ, HX, HY, HZ) or the Poynting vector (PX, PY, PZ).
 
 ### 3.4  Advanced tab
 
-|![](../../static/img/tutorial/monitor/monitor_18.png)|
+|![](../../../static/img/tutorial/monitor/monitor_18.png)|
 | :------------------------------------------------------------: |
 
 Sampling rate:
@@ -193,7 +193,7 @@ Sampling rate:
 
 ### 4.1 Geometry tab
 
-|![](../../static/img/tutorial/monitor/monitor_19.png)|
+|![](../../../static/img/tutorial/monitor/monitor_19.png)|
 | :------------------------------------------------------------: |
 
 
@@ -218,7 +218,7 @@ Sampling rate:
 
 ### 5.1 Frequency power tab
 
-|![](../../static/img/tutorial/monitor/monitor_20.png)|
+|![](../../../static/img/tutorial/monitor/monitor_20.png)|
 | :------------------------------------------------------------: |
 
 1) **Sample Spacing:** The sampling frequency or wavelength is determined somehow based on this choice parameter. Only the "uniform" option is available at present.
@@ -239,7 +239,7 @@ Sampling rate:
 
 ### 5.2 Advanced tab
 
-|![](../../static/img/tutorial/monitor/monitor_21.png)|
+|![](../../../static/img/tutorial/monitor/monitor_21.png)|
 | :------------------------------------------------------------: |
 
 
@@ -257,7 +257,7 @@ Sampling rate:
 
 ### 7.1 General tab
 
-![](../../static/img/tutorial/monitor/Doping_gen.png)
+![](../../../static/img/tutorial/monitor/Doping_gen.png)
 
 - `Data to Record`:
   - `Donor`: The distribution of donor doping in monitor.
@@ -267,7 +267,7 @@ Sampling rate:
 
 ### 7.2 Geometry tab
 
-![](../../static/img/tutorial/monitor/Doping_geo.png)
+![](../../../static/img/tutorial/monitor/Doping_geo.png)
 
 - `Monitor Type`: The monitor type and orientation, this option will control the available of spatial setting below , `2D X-Normal`, `2D Y-Normal`, `2D Z-Normal` are included. (Default: 2D X-Normal)
 - `X`, `Y`, `Z`: The center position of the simulation region.
@@ -281,17 +281,17 @@ Sampling rate:
 
 ### 8.1 General tab
 
-![](../../static/img/tutorial/monitor/charge_gen.png)
+![](../../../static/img/tutorial/monitor/charge_gen.png)
 
 - `Data to Record`:
   - `Electrons`: The distribution of electron concentration in monitor.
-  - `Hole`:The distribution of hole concentration in monitor. 
+  - `Hole`:The distribution of hole concentration in monitor.
   - `Total Charge`: Available when monitor_type is in “2d_x_normal”, “2d_y_normal”, “2d_z_normal”.
 - `Interpolate Accuracy`: Restrained by condition: >=1 && <= 10.
 
 ### 8.2 Geometry tab
 
-![](../../static/img/tutorial/monitor/charge_geo.png)
+![](../../../static/img/tutorial/monitor/charge_geo.png)
 
 - `Monitor Type`: The monitor type and orientation, this option will control the available of spatial setting below , `Linear X`, `Linear Y`, `Linear Z`, `2D X-Normal`, `2D Y-Normal`, `2D Z-Normal` are included. (Default: 2D X-Normal)
 - `X`, `Y`, `Z`: The center position of the simulation region.
@@ -304,21 +304,21 @@ Sampling rate:
 
 ### 9.1 General tab
 
-![](../../static/img/tutorial/monitor/Band_gen.png)
+![](../../../static/img/tutorial/monitor/Band_gen.png)
 
 - `Name`: Name of band monitor
-- `Data to Record`: 
+- `Data to Record`:
   - `Ec`: The conduction band edge energy at 300K.
   - `Ev`: The valance band edge energy at 300K.
   - `Evac`: The vacuum level energy at 300K.
   - `Efn`: The electron quasi-Fermi energy.
   - `Efp`: The hole quasi-Fermi energy.
-- `Interpolate Accuracy`: 
+- `Interpolate Accuracy`:
 Set the accuracy of the rectangular grid for extracting monitored results. It should be within the range of 1 to 10. Here, 1 corresponds to a grid size of 10nm, and 10 corresponds to a grid size of 1nm. The grid size uniformly varies with changes in “Interpolation Accuracy”.
 
 ### 9.2 Geometry tab
 
-![](../../static/img/tutorial/monitor/Band_geo.png)
+![](../../../static/img/tutorial/monitor/Band_geo.png)
 
 - `Monitor Type`: The monitor type and orientation, this option will control the available of spatial setting below , `Linear X`, `Linear Y`, `Linear Z`are included. (Default: 2D X-Normal)
 - `X`, `Y`, `Z`: The center position of the simulation region.
@@ -331,9 +331,9 @@ Set the accuracy of the rectangular grid for extracting monitored results. It sh
 
 ### 10.1 General tab
 
-![](../../static/img/tutorial/monitor/Electrical_gen.png)
+![](../../../static/img/tutorial/monitor/Electrical_gen.png)
 
-- `Data to Record`: 
+- `Data to Record`:
   - `Electric Field`: The distribution of electric field in monitor.
   - `Electrostatic Potential`: The distribution of electric potential in monitor.
 - `Interpolate Accuracy`:
@@ -341,7 +341,7 @@ Set the accuracy of the rectangular grid for extracting monitored results. It sh
 
 ### 10.2 Geometry tab
 
-![](../../static/img/tutorial/monitor/Electrical_geo.png)
+![](../../../static/img/tutorial/monitor/Electrical_geo.png)
 
 - `Monitor Type`: The monitor type and orientation, this option will control the available of spatial setting below , `Linear X`, `Linear Y`, `Linear Z`, `2D X-Normal`, `2D Y-Normal`, `2D Z-Normal` are included. (Default: 2D X-Normal)
 - `X`, `Y`, `Z`: The center position of the simulation region.

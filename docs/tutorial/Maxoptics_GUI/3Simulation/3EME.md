@@ -23,7 +23,7 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 ### 1.1 General tab
 
-|![](../../../static/img/tutorial/simulation/eme/EME1.png)|
+|![](../../../../static/img/tutorial/simulation/eme/EME1.png)|
 | :------------------------------------------------------------: |
 
 1) **Algorithm**: The type of mesh algorithm used (Currently，it is not available ).
@@ -46,7 +46,7 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 ### 1.2 EME Setup tab
 
-|![](../../../static/img/tutorial/simulation/eme/setuptab.png)|
+|![](../../../../static/img/tutorial/simulation/eme/setuptab.png)|
 | :------------------------------------------------------------: |
 
 1) **Y, Z**: The center position of the simulation region.
@@ -80,10 +80,10 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 --> Add button: Allow you to make custom settings for the selected cell group.
 
-|![](../../../static/img/tutorial/simulation/eme/1.png)|
+|![](../../../../static/img/tutorial/simulation/eme/1.png)|
 | :------------------------------------------------------------: |
 
-|![](../../../static/img/tutorial/simulation/eme/2.png)|
+|![](../../../../static/img/tutorial/simulation/eme/2.png)|
 | :------------------------------------------------------------: |
 
 ⑤　**Clear Settings for Cell Group**: Clears the custom settings for the selected cell group.
@@ -100,7 +100,7 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 Since the propagation in the EME solver is along the x-direction, the mesh settings are applicable merely along the y and/or z axes, depending on the solver type (3DX2D).
 
-|![](../../../static/img/tutorial/simulation/eme/transtab.png)|
+|![](../../../../static/img/tutorial/simulation/eme/transtab.png)|
 | :------------------------------------------------------------: |
 
 1) **Mesh Refinement**: Select an approach to calculate refined mesh properties.
@@ -117,7 +117,7 @@ Since the propagation in the EME solver is along the x-direction, the mesh setti
 
 ### 1.4 Boundary Conditions tab
 
-|![](../../../static/img/tutorial/simulation/eme/3.png)|
+|![](../../../../static/img/tutorial/simulation/eme/3.png)|
 | :------------------------------------------------------------: |
 
 1) **PML**: The electromagnetic waves incident upon a perfectly matched layer (PML) boundary will all be absorbed, i.e., a PML mimics in essence an ideally open (or reflection-less) boundary. In contrast to conventional boundary conditions, a PML boundary occupies a finite volume surrounding the simulation region and hence possesses only a finite thickness, and the process of light absorption takes place inside this thickness span.
@@ -142,7 +142,7 @@ Since the propagation in the EME solver is along the x-direction, the mesh setti
 
 ### 1.5 Advanced tab
 
-|![](../../../static/img/tutorial/simulation/eme/4.png)|
+|![](../../../../static/img/tutorial/simulation/eme/4.png)|
 | :------------------------------------------------------------: |
 
 

@@ -60,29 +60,29 @@ const FeatureList = [
               {/* <hr /> */}
 
       <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/tutorial/3Simulation/1FDE">1.What is FDE?</a>
+        <a href="/my-website/docs/tutorial/Maxoptics_GUI/3Simulation/1FDE">1.What is FDE?</a>
       </div>
       <hr style={{ margin: '0.25rem 0' }}/>
 
 
       <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/tutorial/3Simulation/2FDTD">2.What is the FDTD?</a>
+        <a href="/my-website/docs/tutorial/Maxoptics_GUI/3Simulation/2FDTD">2.What is the FDTD?</a>
       </div>
       <hr style={{ margin: '0.25rem 0' }}/>
 
       <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/tutorial/3Simulation/3EME">3.What is the EME?</a>
+        <a href="/my-website/docs/tutorial/Maxoptics_GUI/3Simulation/3EME">3.What is the EME?</a>
       </div>
       <hr style={{ margin: '0.25rem 0' }}/>
 
 
       <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/tutorial/1Material">4.How to set material?</a>
+        <a href="/my-website/docs/tutorial/Maxoptics_GUI/1Material">4.How to set material?</a>
       </div>
       <hr style={{ margin: '0.25rem 0' }}/>
 
       <div style={{ textAlign: 'left' }}>
-        <a href="/my-website/docs/tutorial/2Structure">5.How to add the structures?</a>
+        <a href="/my-website/docs/tutorial/Maxoptics_GUI/2Structure">5.How to add the structures?</a>
       </div>
       <hr style={{ margin: '0.25rem 0' }}/>
 

@@ -17,7 +17,7 @@ The intensity of the light field after entering the PML will decay, which can be
 * Increasing the value of Alpha/Sigma improves the stability of absorption, but the absorption effect will decrease.
 * Increasing Alpha/Sigma increases stability and reduces absorption capacity.
 
-The light on the PML interface also generates reflections, which can be reduced by extending the structure through the boundary region.For the EME solver, Max-Optics optimized PML to improve mode orthogonality, which resulted in reduced absorption of guided modes. The general PML parameters of FDTD  are as follows: {"pml_layer":8,"pml_kappa:2,"pml_sigma":0.8,"pml_polynomial":3,"pml_alpha":0,"pml_alpha_polynomial":1}.
+The light on the PML interface also generates reflections, which can be reduced by extending the structure through the boundary region.For the EME solver, Max-Optics optimized PML to improve mode orthogonality, which resulted in reduced absorption of guided modes. The general PML parameters of FDTD  are as follows:{"layers": 8, "kappa": 2, "sigma": 0.8, "polynomial": 3, "alpha": 0, "alpha_polynomial": 1, }.
 
 
 

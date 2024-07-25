@@ -16,7 +16,7 @@ sidebar_position: 9
 
 **Interaction Logic**: Clicking the Check Memory button prompts the software to display a popup window showing estimated memory information.
 
-|![](../../static/img/tutorial/checkmemory/checkmemory1.png)|
+|![](../../../static/img/tutorial/checkmemory/checkmemory1.png)|
 | :------------------------------------------------------------: |
 
 
@@ -25,14 +25,14 @@ sidebar_position: 9
 
 - **Feature description** : Call the "Solver" or "Solver+Analysis" activated in the project for simulation calculation.
 
-|![](../../static/img/tutorial/checkmemory/2.png)|
+|![](../../../static/img/tutorial/checkmemory/2.png)|
 | :------------------------------------------------------------: |
 
 - ***Notes:***
 
 1) Save the project project project and then run the simulation. If not saved, the following dialog box will pop up. Click "Conform" to save the project and run the simulation.
 
-|![](../../static/img/tutorial/checkmemory/3.png)|
+|![](../../../static/img/tutorial/checkmemory/3.png)|
 | :------------------------------------------------------------: |
 
 2) Before the version in the project is completed, new simulations cannot be run, otherwise the following dialog box will pop up.

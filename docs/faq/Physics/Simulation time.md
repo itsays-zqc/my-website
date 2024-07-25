@@ -22,12 +22,14 @@ When either the maximum simulation time is reached or the energy in the simulati
 
 <div class="text-justify">
 At the beginning of the simulation, a maximum simulation time will be estimated based on the number of grid points, simulation time, and current computer performance, corresponding to the sum of "elapsed" and "remaining" times in each row of the following figure. 
+</div>
+<br/>
 
 ![](./img/early_shutoff.png) 
 
 After each iteration, the program will calculate the current elapsed time elapsed time and the maximum required simulation time remaining time until the end of the simulation. When the simulation time is set sufficiently large, the Early shutdown condition will be triggered when the energy of light in the simulation area decreases to the convergence level, and the simulation time used is less than 100%.
                                
                                step = elapsed_time/(elapsed_time + remain_time)            
-</div>
+
 
 </font>

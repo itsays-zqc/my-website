@@ -23,7 +23,7 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 ### 1.1 General tab
 
-|![](../../../static/img/tutorial/simulation/eme/EME1.png)|
+|![](../../../../static/img/tutorial/simulation/eme/EME1.png)|
 | :------------------------------------------------------------: |
 
 1) **Algorithm**: The type of mesh algorithm used (Currently，it is not available ).
@@ -32,13 +32,13 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 3) **Background Material** : The combo box allow user to set the background material from drop down menu. Project, object defined dielectric, and go to material library can be operated.
 
-①**Project**: The background material inherits from the project’s material setting.
+①　**Project**: The background material inherits from the project’s material setting.
 
-②**Object Defined Dielectric**: The object-defined dielectric material, a default setting if user forgets to set background material, is defined for the current object background material setting, and once the user chooses this option, he does not need to set any material from the standard, user, or project material database. And the object-defined dielectric will not be loaded into any material database.
+②　**Object Defined Dielectric**: The object-defined dielectric material, a default setting if user forgets to set background material, is defined for the current object background material setting, and once the user chooses this option, he does not need to set any material from the standard, user, or project material database. And the object-defined dielectric will not be loaded into any material database.
 
-③**Go to Material Library**: If selected, user can go to standard material database to set background material according to needs. And the selected material relative property from standard material database will be displayed in the material data list.
+③　**Go to Material Library**: If selected, user can go to standard material database to set background material according to needs. And the selected material relative property from standard material database will be displayed in the material data list.
 
-④**Refractive Index**: This refers to the refractive index of the ambient background medium inside the simulation window (Default: 1)
+④　**Refractive Index**: This refers to the refractive index of the ambient background medium inside the simulation window (Default: 1)
 
 4) **Frequency/Wavelength**: Sets the frequency (Default: 193.414 THz) or wavelength (Default:1.55 μm) to calculate.
 
@@ -46,7 +46,7 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 ### 1.2 EME Setup tab
 
-|![](../../../static/img/tutorial/simulation/eme/setuptab.png)|
+|![](../../../../static/img/tutorial/simulation/eme/setuptab.png)|
 | :------------------------------------------------------------: |
 
 1) **Y, Z**: The center position of the simulation region.
@@ -80,10 +80,10 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 --> Add button: Allow you to make custom settings for the selected cell group.
 
-|![](../../../static/img/tutorial/simulation/eme/1.png)|
+|![](../../../../static/img/tutorial/simulation/eme/1.png)|
 | :------------------------------------------------------------: |
 
-|![](../../../static/img/tutorial/simulation/eme/2.png)|
+|![](../../../../static/img/tutorial/simulation/eme/2.png)|
 | :------------------------------------------------------------: |
 
 ⑤　**Clear Settings for Cell Group**: Clears the custom settings for the selected cell group.
@@ -100,7 +100,7 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 Since the propagation in the EME solver is along the x-direction, the mesh settings are applicable merely along the y and/or z axes, depending on the solver type (3DX2D).
 
-|![](../../../static/img/tutorial/simulation/eme/transtab.png)|
+|![](../../../../static/img/tutorial/simulation/eme/transtab.png)|
 | :------------------------------------------------------------: |
 
 1) **Mesh Refinement**: Select an approach to calculate refined mesh properties.
@@ -117,7 +117,7 @@ Since the propagation in the EME solver is along the x-direction, the mesh setti
 
 ### 1.4 Boundary Conditions tab
 
-|![](../../../static/img/tutorial/simulation/eme/3.png)|
+|![](../../../../static/img/tutorial/simulation/eme/3.png)|
 | :------------------------------------------------------------: |
 
 1) **PML**: The electromagnetic waves incident upon a perfectly matched layer (PML) boundary will all be absorbed, i.e., a PML mimics in essence an ideally open (or reflection-less) boundary. In contrast to conventional boundary conditions, a PML boundary occupies a finite volume surrounding the simulation region and hence possesses only a finite thickness, and the process of light absorption takes place inside this thickness span.
@@ -142,11 +142,12 @@ Since the propagation in the EME solver is along the x-direction, the mesh setti
 
 ### 1.5 Advanced tab
 
-|![](../../../static/img/tutorial/simulation/eme/4.png)|
+|![](../../../../static/img/tutorial/simulation/eme/4.png)|
 | :------------------------------------------------------------: |
 
 
 1) **EME settings**:
+
 ①　Max Stored Modes: Maximum number of modes for each cell in the EME setup.(Default: 1000, the input is limited to [1,1000]).
 
 2) **Dispersion Settings**:

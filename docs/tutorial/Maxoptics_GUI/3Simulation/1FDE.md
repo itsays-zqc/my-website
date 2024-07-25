@@ -13,7 +13,7 @@ import { InlineMath, BlockMath } from 'react-katex';
 
 **Solver Physics**: The FDE solver employs finite-difference techniques to compute the spatial characteristics and frequency dependence of modes. By solving the Maxwell's equations on a cross-sectional mesh of the waveguide, the solver determines the mode field profiles, effective index, and loss values.
 
-|!['fde1'](../../../static/img/tutorial/simulation/FDE/1.png)|
+|!['fde1'](../../../../static/img/tutorial/simulation/FDE/1.png)|
 | :------------------------------------------------------------: |
 
 The simulation example for the z-normal eigenmode solver features the following vector fields:
@@ -34,7 +34,7 @@ In this example, we show how to use Max-Optics local passive to run FDE and view
 
 ### 1.1 General tab
 
-|!['fde1'](../../../static/img/tutorial/simulation/FDE/2.png)|
+|!['fde1'](../../../../static/img/tutorial/simulation/FDE/2.png)|
 | :------------------------------------------------------------: |
 
 1) **Solver Type**: Chooses either a 2D X/Y/Z normal. (Default: 2D X normal)
@@ -52,7 +52,7 @@ In this example, we show how to use Max-Optics local passive to run FDE and view
 
 ### 1.2 Geometry tab
 
-|!['fde1'](../../../static/img/tutorial/simulation/FDE/3.png)|
+|!['fde1'](../../../../static/img/tutorial/simulation/FDE/3.png)|
 | :------------------------------------------------------------: |
 
 1) **X, Y, Z**: The center of the simulation region.
@@ -68,7 +68,7 @@ In this example, we show how to use Max-Optics local passive to run FDE and view
 
 ### 1.3 Mesh setting tab
 
-|!['fde1'](../../../static/img/tutorial/simulation/FDE/4.png)|
+|!['fde1'](../../../../static/img/tutorial/simulation/FDE/4.png)|
 | :------------------------------------------------------------: |
 
 1) **DX/ DY/DZ**: Maximum mesh step settings. The default setting is 0.02 μm.
@@ -87,7 +87,7 @@ In this example, we show how to use Max-Optics local passive to run FDE and view
 
 ### 1.4 Boundary conditions tab
 
-|!['fde1'](../../../static/img/tutorial/simulation/FDE/5.png)|
+|!['fde1'](../../../../static/img/tutorial/simulation/FDE/5.png)|
 | :------------------------------------------------------------: |
 
 1) **PML**: The electromagnetic waves indicent upon a perfectly matched layer (PML) boundary will all be absorbed without any reflection at all frequencies and omni direction, i.e., a PML mimics in essence an ideally open (or reflectionless) boundary. In contrast to conventional boundary conditions, a PML boundary occupies a finite volume surrounding the simulation region and hence possesses only a finite thickness, and the process of light absorption takes place inside this thickness span.
@@ -112,7 +112,7 @@ In this example, we show how to use Max-Optics local passive to run FDE and view
 
 ### 1.5 Advanced tab
 
-|!['fde1'](../../../static/img/tutorial/simulation/FDE/6.png)|
+|!['fde1'](../../../../static/img/tutorial/simulation/FDE/6.png)|
 | :------------------------------------------------------------: |
 
 

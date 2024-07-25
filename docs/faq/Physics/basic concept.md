@@ -23,7 +23,7 @@ The real part of the propagation constant represents the phase velocity, while t
 <div class="text-justify">
 The direction and velocity of propagation vary with wavelength, medium structure, and refractive index. The ratio of propagation constant to vacuum wave vector is defined as the effective refractive index of the propagation direction.
 
-<BlockMath math="β = n_{eff} \frac{2π}{λ}" />
+<BlockMath math="n_{eff} = \frac{βλ}{2π}" />
 
 </div>
 

@@ -37,7 +37,7 @@ const config = {
   url: 'https://itsays-zqc.github.io/',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/my-website/',
+  baseUrl: '/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -156,7 +156,7 @@ const config = {
           // },
           {
             type: 'docSidebar',
-            sidebarId: 'testSidebar',
+            sidebarId: 'manualSidebar',
             position: 'left',
             label: 'Max-Optics SDK',
           },

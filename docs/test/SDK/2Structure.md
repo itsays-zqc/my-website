@@ -17,8 +17,8 @@ The syntax for adding geometry is as follows. "name" defines the name of the geo
 
 ```python
 add_geometry(
-        name: str, 
-        type: Optional[str], 
+        name: str,
+        type: Optional[str],
         property: dict
     )
 ```
@@ -31,8 +31,8 @@ The geometric properties and material properties of triangle and an example of a
 
 ```python
 add_geometry(
-        name: str, 
-        type: Literal["triangle"], 
+        name: str,
+        type: Literal["triangle"],
         property: dict
     )
 ```
@@ -64,8 +64,8 @@ The following script adds a triangle to the project, with three vertices of (0,0
 
 ```python
 st = pj.Structure()
-st.add_geometry(name="triangle", type="Triangle", property={  
-    "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},  
+st.add_geometry(name="triangle", type="Triangle", property={
+    "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},
     "geometry": {"control_points":[{"x": 0, "y": 0}, {"x": 0, "y": 2}, {"x": 2, "y": 2}],
                  "x": 0, "y": 0, "z": 0, "z_span": 0.22,
                  "tilt_angle": 90, "tilt_position": "bottom"}})
@@ -77,8 +77,8 @@ The geometric properties and material properties of rectangle and an example of 
 
 ```python
 add_geometry(
-        name: str, 
-        type: Literal["rectangle"], 
+        name: str,
+        type: Literal["rectangle"],
         property: dict
     )
 ```
@@ -109,8 +109,8 @@ The following script adds a rectangle to the project, and sets the dimension and
 ```python
 st = pj.Structure()
 st.add_geometry(name="rectangle", type="Rectangle", property={
-    "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},  
-    "geometry": {"x": 0, "x_span": 1, "y": 0, "y_span": 1, "z": 0, "z_span": 1, 
+    "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},
+    "geometry": {"x": 0, "x_span": 1, "y": 0, "y_span": 1, "z": 0, "z_span": 1,
                  "tilt_angle": 90, "tilt_position": "top"}})
 ```
 
@@ -120,8 +120,8 @@ The geometric properties and material properties of circle and an example of add
 
 ```python
 add_geometry(
-        name: str, 
-        type: Literal["circle"], 
+        name: str,
+        type: Literal["circle"],
         property: dict
     )
 ```
@@ -152,7 +152,7 @@ The following script adds a circle to the project, sets the radius of the circle
 ```python
 st = pj.Structure()
 st.add_geometry(name="circle", type="Circle", property={
-    "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},  
+    "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},
     "geometry": {"radius": 2, "angle": 360, "x": 0, "y": 0, "z": 0, "z_span": 0.5
                  "tilt_angle":90, "tilt_position":"top"}})
 ```
@@ -163,8 +163,8 @@ The geometric properties and material properties of ring and an example of addin
 
 ```python
 add_geometry(
-        name: str, 
-        type: Literal["ring"], 
+        name: str,
+        type: Literal["ring"],
         property: dict
     )
 ```
@@ -198,7 +198,7 @@ The following script adds a ring to the project, sets the inner radius to 4 um, 
 ```python
 st = pj.Structure()
 st.add_geometry(name="ring", type="Ring", property={
-    "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},  
+    "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},
     "geometry": {"x": 0, "y": 0, "z": 0, "z_span": 0.5,
                  "tilt_angle1": 90, "tilt_position": "top", "tilt_angle2": 90,
                  "angle": 360, "inner_radius": 4, "outer_radius": 6,}})
@@ -209,8 +209,8 @@ The geometric properties and material properties of polygon and an example of ad
 
 ```python
 add_geometry(
-        name: str, 
-        type: Literal["polygon"], 
+        name: str,
+        type: Literal["polygon"],
         property: dict
     )
 ```
@@ -241,11 +241,11 @@ The following script adds a polygon to the project, sets the vertex coordinates 
 ```python
 st = pj.Structure()
 st.add_geometry(name="polygon", type="polygon", property={
-        "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2}, 
+        "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},
         "geometry": {"x": 0, "y": 0, "z": 0, "z_span": 0.5,
                      "control_points":
                         [{"x": -2, "y": -2}, {"x": 2, "y": -2}, {"x": 2, "y": 2}, {"x": -2, "y": 2}],
-                    "tilt_angle": 90, "tilt_position": "top", 
+                    "tilt_angle": 90, "tilt_position": "top",
         }})
 ```
 
@@ -255,8 +255,8 @@ The geometric properties and material properties of ellipse and an example of ad
 
 ```python
 add_geometry(
-        name: str, 
-        type: Literal["ellipse"], 
+        name: str,
+        type: Literal["ellipse"],
         property: dict
     )
 ```
@@ -288,11 +288,11 @@ The following script adds a ellipse to the project, sets the radius in the x dir
 ```python
 st = pj.Structure()
 st.add_geometry(name="ellipse", type="Ellipse", property={
-    "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2}, 
+    "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},
     "geometry": {"x_radius": 3, "y_radius": 5,
                  "x": 0, "y": 0, "z": 0, "z_span": 0.5,
                  "tilt_angle": 90, "tilt_position": "top"}})
-```  
+```
 
 ### 2.1.7 Linear trapezoid
 
@@ -300,8 +300,8 @@ The geometric properties and material properties of linear trapezoid and an exam
 
 ```python
 add_geometry(
-        name: str, 
-        type: Literal["linear_trapezoid"], 
+        name: str,
+        type: Literal["linear_trapezoid"],
         property: dict
     )
 ```
@@ -332,7 +332,7 @@ The following script adds a linear trapezoid to the project, sets the vertex coo
 ```python
 st = pj.Structrure()
 st.add_geometry(name="linear_trapezoid", type="LinearTrapezoid", property={
-    "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2}, 
+    "material": {"material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},
     "geometry": { "control_points":
                   [{"x": -2, "y": 2}, {"x": -4, "y": -2}, {"x": 4, "y": -2}, {"x": 2, "y": 2}],
                  "x": 0, "y": 0, "z": 0, "z_span": 0.5,
@@ -345,8 +345,8 @@ The geometric properties and material properties of pyramid and an example of ad
 
 ```python
 add_geometry(
-        name: str, 
-        type: Literal["pyramid"], 
+        name: str,
+        type: Literal["pyramid"],
         property: dict
     )
 ```
@@ -382,14 +382,14 @@ st.add_geometry(name="pyramid", type="Pyramid", property={
     "geometry": {"x": 0, "x_span_top": 3,"x_span_bottom": 5,
                   "y": 0,"y_span_top": 3,"y_span_bottom": 5,
                   "z": 0, "z_span": 0.5,"delta_x": 0, "delta_y": 0}})
-```    
+```
 
 ### 2.1.9 Sphere
 
 ```python
 add_geometry(
-        name: str, 
-        type: Literal["sphere"], 
+        name: str,
+        type: Literal["sphere"],
         property: dict
     )
 ```
@@ -425,8 +425,8 @@ The geometric properties and material properties of straight waveguide and an ex
 
 ```python
 add_geometry(
-        name: str, 
-        type: Literal["straight_waveguide"], 
+        name: str,
+        type: Literal["straight_waveguide"],
         property: dict
     )
 ```
@@ -471,8 +471,8 @@ The geometric properties and material properties of bezier waveguide and an exam
 
 ```python
 add_geometry(
-        name: str, 
-        type: Literal["bezier_waveguide"], 
+        name: str,
+        type: Literal["bezier_waveguide"],
         property: dict
     )
 ```
@@ -513,14 +513,14 @@ st.add_geometry(name="bezier", type="BezierWaveguide", property={
                 }})
 ```
 
-### 2.1.12 Analytical waveguide 
+### 2.1.12 Analytical waveguide
 
 The geometric properties and material properties of analytical waveguide and an example of adding analytical waveguide into the project are shown below.
 
 ```python
 add_geometry(
-        name: str, 
-        type: Literal["analytical_waveguide"], 
+        name: str,
+        type: Literal["analytical_waveguide"],
         property: dict
     )
 ```
@@ -570,8 +570,8 @@ The geometric properties and material properties of sphere and an example of add
 
 ```python
 add_geometry(
-        name: str, 
-        type: Literal["gds_file"], 
+        name: str,
+        type: Literal["gds_file"],
         property: dict
     )
 ```
@@ -597,7 +597,7 @@ add_geometry(
 | refractive_index      | number  |      -  | Define refractive index of the material.                                                                             |
 | color                 | string  |     -   | Define color of the material, default "#70AD47".                                                                     |
 
-  
+
 **Example:**
 
 ```python
@@ -611,7 +611,7 @@ st.add_geometry(name="gds_file", type="gds_file", property={
                         "general": {"path": path_name, "cell_name": cell_name "layer_name": layer_name },
                         "geometry": {"x": 0, "y": 0, "z": 0, "z_span": 0.22},
                         "material": {"object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2}})
-```    
+```
 
 
 ### 2.1.14 Mesh order
@@ -629,7 +629,7 @@ The advantage is that increasing the value of mesh order allows user to make new
 
 ## 2.2 Add doping
 
-When participating in optoelectronic simulation, you have the option to utilize the provided code for introducing doping into the simulation structure. 
+When participating in optoelectronic simulation, you have the option to utilize the provided code for introducing doping into the simulation structure.
 
 Our platform offers assistance in importing doping data from  files and also allows for the customization of doping regions according to your requirements.
 
@@ -714,7 +714,7 @@ st.add_doping(name="import_n", type="file", property={
 
 ## 2.3 Add electrode
 
-In this section, we will demonstrate how to integrate electrode structures into optoelectronic simulations using the provided code. Currently, the platform allows configuring both steady-state and transient voltages for the electrodes. 
+In this section, we will demonstrate how to integrate electrode structures into optoelectronic simulations using the provided code. Currently, the platform allows configuring both steady-state and transient voltages for the electrodes.
 
 Detailed code descriptions and specific examples are provided below for reference.
 

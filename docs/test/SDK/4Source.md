@@ -242,6 +242,8 @@ add(
 | z min, z max           | number  |     -     | Z min, Z max position of the EME port. |
 
 ### EME port
+| Parameter                | Type    | Default   | Description        |
+|:---------------|:--------|:----------:|:----------------------|
 | mode selection                          | string  |                   | Selects "fundamental", "fundamental TE", "fundamental TM" or "user select" to inject mode.|
 | mode index                              | integer | 0                 |Selects the mode number from the list of calculated modes.                   |
 | search                                  | string  | max index         | Selects "max index" or "near n" to search modes.           |

@@ -50,6 +50,7 @@ add_geometry(
 | user_defined_position | number  |      -  | This parameter is required when tilt position is "user_defined".     |
 
 #### Material properties
+
 | Parameter                | Type    | Default   | Description        |
 |:---------------|:--------|:----------:|:----------------------|
 | material              | object  |     -   | Select a material object in the material database.                                                                    |
@@ -678,7 +679,6 @@ st.add_doping(name="Uniform", type="p", property={
 |   geometry.z_span   |     -    |  float   | The thinckness in z direction of doping box. Restrained by condition: >0.  |
 |   geometry.z_min    |    -     |  float   |The z-coordinate of the bottom position of the height of doping box.      |
 |   geometry.z_max    |    -     |  float   |  The z-coordinate of the top position of the height of doping box.     |
-
 | general.distribution_function |      -   |  str  |    To set the type of distribution function for doping region. Selections are ["constant", "gaussian"]. When it"s set to "constant", constant doping is applied and only "concentration" is required. When it"s set to "gaussian", Gaussian function doping is applied, and "concentration", "ref_concentration", "junction_width", "source_face"  are required.       |
 |     general.concentration     |     -    |  float |  To set the doping concentration in non-diffusion area.    |
 |      general.source_face      |     -    |  str  | To set the doping source surface. Available when distribution_function is "gaussian". Selections are ["low_x", "low_y","low_z"]."lower_x" means the source face is "x=x_min". Similarly for the rest. There is no diffusion area on the edge of source face. As for the other edges, there is a diffusion area respectively within the doping box. |
@@ -767,13 +767,13 @@ st.add_electrode(name="cathode", property={
 
 ### 2.3.2 SSAC (Small signal alternating current)
 
-When solving the frequency response of optical signal for the device, transient simulation should be performed. In this case, the bc_mode of the corresponding electrode should be set to "transient", and the solver_mode of OEDevice solver should be set to "transient", too.
+When solving the frequency response of optical signal for the device, transient simulation should be performed. In this case, the bc_mode of the corresponding electrode should be set to "transient", and the solver_mode of DDM solver should be set to "transient", too.
 
 In most of other cases, steady state or SSAC simulation is needed, the "bc_mode" of electrodes should be "steady_state".
 
-When solving capacitance and resistance with respect to frequency, SSAC simulation is required. The solver_mode of OEDevice solver should be set to "SSAC", and the apply_AC_small_signal of the corresponding electrode should be set to "All".
+When solving capacitance and resistance with respect to frequency, SSAC simulation is required. The solver_mode of DDM solver should be set to "SSAC", and the apply_AC_small_signal of the corresponding electrode should be set to "All".
 
-When running steady state simulation, just set the solver_mode of OEDevice solver to "steady_state".
+When running steady state simulation, just set the solver_mode of DDM solver to "steady_state".
 
 **Example:**
 

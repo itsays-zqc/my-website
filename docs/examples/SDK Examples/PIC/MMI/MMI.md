@@ -265,18 +265,18 @@ pjp = pj.Port()
 pjp.add(name="input_port", type="eme_port",
         property={"modal_analysis": {"wavelength": wavelength,},
                     "geometry": {"port_location": "left", "use_full_simulation_span": True,},
-                    "eme_port": {"general": {"mode_selection": "fundamental_TE", "mode_index": 0},
-                                "advanced": {"offset": 0.1, "number_of_trial_modes": number_of_modes }}})
+                    "eme_port": {"general": {"mode_selection": "fundamental_TE", "number_of_trial_modes": number_of_modes},
+                                "advanced": {"offset": 0.1,}}})
 pjp.add(name="output_port1", type="eme_port",
         property={"modal_analysis": {"wavelength": wavelength,},
                     "geometry": {"port_location": "right", "use_full_simulation_span": False, "y": 0.9, "y_span": 2, "z": 0.11, "z_span": 2 },
-                    "eme_port": {"general": {"mode_selection": "fundamental_TE", "mode_index": 0},
-                            "advanced": {"offset": 0, "number_of_trial_modes": number_of_modes}}})
+                    "eme_port": {"general": {"mode_selection": "fundamental_TE", "number_of_trial_modes": number_of_modes},
+                    "advanced": {"offset": 0,}}})
 pjp.add(name="output_port2", type="eme_port",
         property={"modal_analysis": { "wavelength": wavelength, },
                     "geometry": {"port_location": "right", "use_full_simulation_span": False,"y": -0.9, "y_span": 2, "z": 0.11, "z_span": 2},
-                    "eme_port": {"general": {"mode_selection": "fundamental_TE", "mode_index": 0, "search": "max_index"},
-                        "advanced": {"offset": 0, "number_of_trial_modes": number_of_modes}}})
+                    "eme_port": {"general": {"mode_selection": "fundamental_TE", "number_of_trial_modes": number_of_modes},
+                        "advanced": {"offset": 0, }}})
 # endregion
 ```
 <div class="text-justify">
@@ -285,8 +285,6 @@ The `name` parameter defines the name of the EME port.<br/>
 The `port_location` parameter sets the location type of EME port. Selections are ['left', 'right'].<br/>
 The `use_full_simulation_span` parameter confirms whether to use full simulation span.<br/>
 The `mode_selection` parameter decides the mode which propagates in the waveguide. Selections are ['fundamental', 'fundamental_TE', 'fundamental_TM', 'fundamental_TE_and_TM', 'user_select', 'user_import'].<br/>
-The `mode_index` is used to decide the source mode in the 'user_select' condition.<br/>
-The `search` parameter calculates the mode based on the maximum refractive index or user defined refractive index in the structure. Selections are ['near_n', 'max_index']. Selections are ['near_n', 'max_index'].<br/>
 The `number_of_trial_modes` parameter determines the calculated number of modes around the refractive index.<br/>
 
 </div>

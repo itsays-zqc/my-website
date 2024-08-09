@@ -17,7 +17,7 @@ In this example, we demonstrate the use of finite difference eigenmode(FDE) solv
 ### 1 Code Description
 #### 1.1 Import Toolkit
 
-First, we need to import `maxoptics_sdk` and Python's third-party package. The import module for FDE and FDTD simulation as follows.
+First, we need to import "maxoptics_sdk" and third-party package of Python. The import module for FDE and FDTD simulation as follows.
 
 
 ```python
@@ -32,24 +32,23 @@ To facilitate parameter changes, we can define function to encapsulate the entir
 
 ```python
 def simulation(*, wavelength, grid, number_of_trial_modes, run_options: "RunOptions", **kwargs):
-    # region --- 0. General Parameters ---
-    width = 0.4
-    radius = 2.8
-    waveform_name = f"wv{wavelength*1e3}"
+# region --- 0. General Parameters ---
+width = 0.4
+radius = 2.8
+waveform_name = f"wv{wavelength*1e3}"
 
-    path = kwargs["path"]
-    simu_name = f"Microring_resonator"
-    time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime())
-    project_name = f"{simu_name}_local_{time_str}"
-    plot_path = f"{path}/plots/{project_name}/"
-    kL = [f"0{k}" for k in range(5)]
-    export_options = {"export_csv": True, "export_mat": True, "export_zbf": True}
-    # endregion
-
+path = kwargs["path"]
+simu_name = f"Microring_resonator"
+time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime())
+project_name = f"{simu_name}_local_{time_str}"
+plot_path = f"{path}/plots/{project_name}/"
+kL = [f"0{k}" for k in range(5)]
+export_options = {"export_csv": True, "export_mat": True, "export_zbf": True}
+# endregion
 ```
 
 #### 1.3 Create project
-You can create a new project using the `Project` function of Max's software development toolkit.
+We create an empty project by instantiating "Project()" in the simulation environment and define the name of project.
 ```python
 # region --- 1. Project ---
 pj = mo.Project(name=project_name)
@@ -58,7 +57,7 @@ pj = mo.Project(name=project_name)
 #### 1.4 Add Material
 <div class="text-justify">
 
- Here we demonstrate using the `Material` function to create material and using the `add_lib` function to add material from the material library. You can refer to the following script to set material.
+ Here we demonstrate using "Material()" to instance the material module into the project, "add_nondispersion" and "add_lib" functions are available to create materials. You can refer to the following script to set materials.
 </div>
 
 ```python
@@ -69,10 +68,9 @@ mt.add_lib(name="SiO2", data=mo.Material.SiO2_Palik, order=2)
 # endregion
 ```
 
-<div class="text-justify">
-
-The `name` is used to define the name of the added material.<br/>The `data` is used to receive refractive index data extracted from the material library.<br/>The `order` is used to set the material priority of the grid.
-</div>
+The "name" defines the name of the added material.<br/>
+The "data" specifies the real and imaginary parts of the refractive index of the material.<br/>
+The "order" specifies the mesh order of the material.
 
 #### 1.5 Add waveform
 Adding a light source for simulating in 3D FDTD, and we use `Waveform` to set the waveform parameters of the light source.
@@ -80,25 +78,25 @@ Adding a light source for simulating in 3D FDTD, and we use `Waveform` to set th
 ```python
 # region --- 3. Waveform ---
 wv = pj.Waveform()
-    wv.add(name=waveform_name, type='gaussian_waveform',
-           property={'set': 'frequency_wavelength',  # selections are ['frequency_wavelength','time_domain']
-                     'set_frequency_wavelength': {
-                            'range_type': 'wavelength',  # selections are ['frequency','wavelength']
-                            'range_limit': 'center_span',  # selections are ['min_max','center_span']
-                            'wavelength_center': wavelength,
-                            'wavelength_span': 0.1,},
-                     }
-           )
-    wv_id = wv[waveform_name]
+wv.add(name=waveform_name, type='gaussian_waveform',
+        property={'set': 'frequency_wavelength',  # selections are ['frequency_wavelength','time_domain']
+                    'set_frequency_wavelength': {
+                        'range_type': 'wavelength',  # selections are ['frequency','wavelength']
+                        'range_limit': 'center_span',  # selections are ['min_max','center_span']
+                        'wavelength_center': wavelength,
+                        'wavelength_span': 0.1,},
+                    }
+        )
+wv_id = wv[waveform_name]
 # endregion
 ```
-`name` sets the name of the waveform, `wavelength_center` sets the center wavelength of the light source, and `wavelength_span` sets the wavelength range of the light source.
+The "name" sets the name of the waveform.<br/> 
+The "wavelength_center" sets the center wavelength of the light source.
+The "wavelength_span" sets the wavelength range of the light source.
 
 #### 1.6 Add Structure
 <div class="text-justify">
-The microring resonator is typical filter for SOI waveguide, including two straight optical waveguides and a ring-shaped waveguide. 
-
-We use `Structure` to create structure , where `mesh_type` is the type of mesh, `mesh_factor` is the growth factor of the mesh, and `background_material` is the background material of the structure. Use the `add_geometry` function to add geometric structures and select the type from the structural components. Properties settings as follows.
+The microring resonator is typical filter for SOI waveguide, including two straight optical waveguides and a ring-shaped waveguide. We use "Structure()" to instance the structure module to the project, "add_geometry" function is available for adding structures. 
 </div>
 
 ```python
@@ -118,10 +116,8 @@ st.add_geometry(name="wg_2", type="Rectangle",
 # endregion                           
 ```
 
-|Key| Value |type|Description|
-|-----|------|---------------|-----|
-|name|ring|string|name the added geometry|
-|type|Ring|string|select the type of structure |
+|Key| Value |Type|Description|
+|:---------------|:--------|:----------:|:----------------------|
 |x&emsp;&emsp;&emsp;&emsp;|0&emsp;&emsp;&emsp;&emsp;|float&emsp;&emsp;&emsp;&emsp;|center position in the x-direction of the geometric structure &nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;|
 |material|mt["Si"]|material | select the material added Materials|
 |mesh_order|3|integer|set the priority of the material|
@@ -134,18 +130,9 @@ st.add_geometry(name="wg_2", type="Rectangle",
 
 The properties of the ring structure are shown in the table above, properties of `Rectangle` can refer to the settings of the ring. Select simulation material by using `mesh_order` in areas where geometry overlaps, the priority of structural materials needs to be higher than that of background material.
 
-#### 1.7 Set Boundary
-
-<div class="text-justify">
-
-Set the boundary size of the simulation structure using optical boundary condition `OBoundary`. Use `geometry` to set the size and position of the boundary, and use `boundary` to set the boundary conditions at the boundary. The boundary properties of FDE and FDTD  as follows.
-
-</div>
-
 #### 1.9 Add Solver
 <div class="text-justify">
-
-We use the `Simulation` function to create a simulation and the `add` function to add a solver. The properties settings of FDE and FDTD solvers as follows.
+We use the "Simulation()" to instance the simulation module into the project and the "add" function to add an EME solver for the simulation. The properties settings of FDE and FDTD solvers as follows.
 </div>
 
 ```python
@@ -157,7 +144,7 @@ simu.add(name=simu_name, type="FDTD",
                     "boundary_conditions": {
                     "x_min_bc": "PML", "x_max_bc": "PML", "y_min_bc": "PML", "y_max_bc": "PML", "z_min_bc": "PML", "z_max_bc": "PML",
                     "pml_settings": {"all_pml": {"layers": 8, "kappa": 2, "sigma": 0.8, "polynomial": 3, "alpha": 0, "alpha_polynomial": 1}}},
-                    "general": {"simulation_time": 500},
+                    "general": {"simulation_time": 4000},
                     "mesh_settings": {"mesh_factor": 1.2, "mesh_type": "auto_non_uniform",
                                     "mesh_accuracy": {"cells_per_wavelength": grids_per_lambda},
                                     "minimum_mesh_step_settings": {"min_mesh_step": 1e-4},
@@ -193,15 +180,15 @@ The properties settings for the FDTD solver as follows.
 |down_sample_time |200 |float | set additional simulation duration|
 |thread | 4 |integer | number of threads allocated to run the program|
 
-In the settings of the FDE solver, use `calculate_ modes` controls whether to calculate the mode. Note that we need to calculate the group refractive index of the waveguide, so set the `calculate_ group_index`  to True.
+In the settings of the FDE solver, use "calculate_modes" controls whether to calculate the mode. Note that we need to calculate the group refractive index of the waveguide, so set the "calculate_ group_index" to True.
 
-In the setting of the FDTD solver, `simulation_time` is used to control the simulation time. We set the simulation time to 5000 fs, which is greater than the default value of 1000 fs. The micro ring resonator has a high quality factor, its simulation requires longer time. If the simulation time is set too small and the simulation stops before the field decays, the results obtained are incorrect.
+In the setting of the FDTD solver, "simulation_time" is used to control the simulation time. We set the simulation time to 4000 fs, which is greater than the default value of 1000 fs. The micro ring resonator has a high quality factor, its simulation requires longer time. If the simulation time is set too small and the simulation stops before the field decays, the results obtained are incorrect.
 
 
-#### 1.8 Add source
+#### 1.8 Add FDTD Port
 <div class="text-justify">
 
-In 3D FDTD simulation, a light source is required. We use `Source` to create the light source and `add` to add the required light source. The settings for the light source as follows.
+In the FDTD simulation, at least a light source is required. We use the "Port()" to instance the port object into the project and the "add" function to add FDTD ports for the simulation. A port can serve not only as a source but also as a monitor. If there are multiple ports, it is necessary to specify which port is the source in the port group. The settings for the FDTD ports as follows.
 </div>
 
 ```python
@@ -222,13 +209,12 @@ pt.add(name="port_4", type="fdtd_port",
                     "modal_properties": {"general": {"inject_axis": "x_axis", "direction": "backward", "mode_selection": "fundamental"}}})
 # endregion
 ```
-
 # endregion
 
 
 #### 1.10 Add Monitor
 
-In the simulation, `Monitor`function is used to create monitor and `add` function is used to add a monitor. By using `type` to select a power monitor, the transmittance and field distribution of the cross-section can be obtained. It is necessary to add a time monitor at the end of the simulation to check the field strength to judge the accuracy of the simulation results.
+We use the "Monitor()" to instance the monitor object into the project and the "add" function to add monitors. The port can automatically calculate the transmittance and field profile of the cross-section. In time-domain simulation, it is necessary to add a time monitor at the end of the simulation to check the field strength to judge the accuracy of the simulation results.
 
 ```python
 # region --- 8. Monitor ---  
@@ -252,26 +238,18 @@ mn.add(name="z_normal", type="power_monitor",
 
 #### 1.11 View Structure
 
-You can use the `structure_show` function to view the top view of the structure, or use the `simu[simu_name].show3d()` call gui to view the structure.
+You can use the "structure_show" function to view the top view of the structure, or use the "show3d()" call gui to check simulation settings.
 
 ```python
 # region --- 9. Structure Show ---
-st.structure_show(fig_type="png", show=False, savepath=f"{plot_path}{kL[0]}{simu_name}")
+st.structure_show(fig_type="png", show=False, savepath=f"{plot_path}00_{simu_name}")
 # simu[simu_name].show3d()
 # endregion
 ```
 
-# region --- 12. Index Preview ---
-if run_options.index_preview:
-    simu[simu_name].preview_index(
-        port_name="port_1", savepath=plot_path + "_preview_index", export_csv=True, show=False)
-    simu[simu_name].preview_modes(
-        port_name="port_1", savepath=plot_path + "_preview_modes", export_csv=True, show=False)
-# endregion
-
 #### 1.12 Run
 
-Pass in the name of the simulation and use `simu[simu_name].run` function to run the simulation.
+Pass in the name of the simulation and use "run" function to run the simulation.
 ```python
 # region --- 10. Run ---
 eme_res = simu[simu_name].run()
@@ -280,8 +258,8 @@ eme_res = simu[simu_name].run()
 
 #### 1.13 Run and Extract Results
 <div class="text-justify">
+The extract function is used to extract data from the result data, where "data" is the calculation result data, "savepath" is the storage path, "target" is the classification of the data, and "monitor_name" is the name of the monitor. The data extraction reference is as follows.. The script demonstration is as follows.
 
-Extract data using `extract`, where `data` is the calculation result data, `savepath` is the storage path, `target` is the classification of the data, and `monitor_name` is the name of the monitor. The data extraction reference is as follows.
 </div>
 
 ```python

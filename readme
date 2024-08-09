@@ -1,0 +1,5 @@
+cd /root/my-website
+
+npm run build
+
+mv /root/my-website/build/* /var/www/html/

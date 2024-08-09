@@ -550,14 +550,14 @@ add_geometry(
 | color                 | string  |     -   | Define color of the material, default "#70AD47".                                                                     |
 
 **Example:**
-The following script adds an analytical waveguide to the project, sets the expression for x>0 (equation1) is "1/{x}". This script assumes that the project has been added to the simulation environment, and the pj is an instance of the Project.
+The following script adds an analytical waveguide to the project, sets the expression for x>0 (equation1) is "1/x". This script assumes that the project has been added to the simulation environment, and the pj is an instance of the Project.
 
 ```python
 st = pj.Structure()
 st.add_geometry(name="analyticalwaveguide", type="AnalyticalWaveguide",property={
                     "material": "object_defined_dielectric", "refractive_index": 1.4, "mesh_order": 2},
                     "geometry": {"x": 0, "x_span": 3, "y": 0, "y_span": 3, "z": 0, "z_span": 0.22,
-                                       "equation1": "1/{x}", "nonsymmetric": False,
+                                       "equation1": "1/x", "nonsymmetric": False,
                                       #  "equation2": "x^2",
                                        "tilt_position": "top", "tilt_angle": 90,  "resolution": 100,
                           })

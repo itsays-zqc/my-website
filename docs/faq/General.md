@@ -141,7 +141,7 @@ We have introduced two software formats that accommodate both offline and cloud-
 
 | Product Formats | Web-based | Standalone | SDK                                                          |
 | -------- | ----------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Display  | ![](../../static/img/faq/General/12.png) | ![](../../static/img/faq/General/13.png)  | ![](../../static/img/faq/General/14.png)  |
+| Display  | ![](../../static/img/faq/General/12.png) | ![](../../static/img/faq/General/13.png) | ![](../../static/img/faq/General/14.png)  |
 | Features | •Supports cross-platform login<br/>•Flexible scheduling of cloud-based computing resources | •Local computing resources<br/>•Familiar and straightforward operation<br/>•Complete 3D modeling interface<br/>•Automatic simulation history saving and playback<br/>•Allows setting global variable expressions in any input box<br/>•Supports non-proportional scaling of simulation structures<br/> | •Supports script-based modeling <br/>•Supports GDS-II import<br/>•Integrates a variety of third-party Python open-source libraries<br/>•Allows for the use of local and cloud-based computing resources<br/>•Convenient interaction with third-party tools<br/>•Includes built-in example code for quick start<br/> |
 
 
@@ -199,60 +199,6 @@ Contact Information:
 - Phone: 150 6666 1688
 - E-mail: sales@max-optics.com
 - E-mail：support@max-optics.com
-
-## How to set up licensing for remote work or home office use?
-
-If your company has a group licensing arrangement with the server set up on the corporate intranet, this answer explains how individuals can set up licensing to successfully use our software when working remotely or from home.
-
-You can use a VPN to connect to the corporate network from a remote location. If you don't have VPN access, you can request permission from your company's internal licensing server administrator to open public access (with a public IP and port) for you. Then, in the software settings, you can specify the server's IP address as the newly approved public address.
-
-Alternatively, we can guide the administrators of your company's licensing server to implement a 'group licensing checkout' mode, allocating one license from the total number of licenses purchased as a temporary offline license. The specific steps for this process are as follows.
-
-Setting Up Group Licensing Checkout Mode:
-
-(1) Log in to https://bit.bitanswer.cn
-
-(2) In the left sidebar, select the '业务' menu.
-
-![](../../static/img/faq/General/7.png)
-
-(3) In the '授权信息' on the right, select '授权借出'.
-
-![](../../static/img/faq/General/8.png)
-
-## How to configure a jupyter environment for maxoptics_sdk?
-
-In the command line, activate the virtual environment where the All-in-One SDK is located, and then follow these steps:
-
-(1) Install ipykernel.
-
-```python
-    pip install ipykernel
-```
-
-(2) Write the environment to the kernel of notebook.
-
-```python
-    python -m ipykernel install --user --name "mang1903" --display-name "mang1903"
-```
-
-(3) Open Jupyter Notebook.
-
-```python
-    jupyter notebook
-```
-
-(4) Click 'New' to create an ipynb file. You will see the kernel option 'mang1903' ('mang1903' is the display name of the previously set 'mang1903' virtual environment, and users can customize it).
-
-![](../../static/img/faq/General/9.png)
-
-## What to do if there are spaces in the python installation path?
-
-If there are spaces in the Python installation path, you may encounter errors when creating a virtual environment in the first step of installing AIO. The system may mistakenly interpret the path before the space as a separate command. In such cases, if you cannot modify the Python installation path, you can enclose the path in double quotes or use a raw string, as shown below:
-
-```python
-path = "C:/Program files/Python/python.exe"
-```
 
 </font>
 

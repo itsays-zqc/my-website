@@ -27,7 +27,7 @@ Contact Information:
 - Official website: https://www.max-optics.com/
 - Knowledge base: https://kb.max-optics.com/
 - Technical support: support@max-optics.com
-- Phon: 15066661688
+- Phone: 15066661688
 - Office Address: 上海市浦东新区丹桂路799号国创中心三期5号楼6楼
 
 Trademark:
